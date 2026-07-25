@@ -1,11 +1,15 @@
 import type { Metadata } from "next";
 import { MainHeader } from "@/components/funnel/main-header";
 import { HeroSection } from "@/components/funnel/hero-section";
+import { WhyInstallProsSection } from "@/components/funnel/why-installpros-section";
 import { CoverageSection } from "@/components/funnel/coverage-section";
-import { TestimonialsSection } from "@/components/funnel/testimonials-section";
-import { ProfessionalInstallationSection } from "@/components/funnel/professional-installation-section";
-import { AvailabilitySection } from "@/components/funnel/availability-section";
-import { FaqSection } from "@/components/funnel/faq-section";
+import { CustomerStoriesSection } from "@/components/funnel/customer-stories-section";
+import { TrustpilotSection } from "@/components/funnel/trustpilot-section";
+import { EquipmentSection } from "@/components/funnel/equipment-section";
+import { BeforeAfterSection } from "@/components/funnel/before-after-section";
+import { CoverageMapSection } from "@/components/funnel/coverage-map-section";
+import { TrackRecordSection } from "@/components/funnel/track-record-section";
+import { FaqSectionAlt } from "@/components/funnel/faq-section-alt";
 import { LANDING_FAQS } from "@/lib/funnel/faqs";
 import { CtaSection } from "@/components/funnel/cta-section";
 import { FunnelFooter } from "@/components/funnel/funnel-footer";
@@ -35,6 +39,12 @@ const faqStructuredData = {
   })),
 };
 
+/**
+ * Postcode variant of the landing (A/B pair with /starlink-installation).
+ * Identical to /starlink-installation in every section EXCEPT the hero: this
+ * page asks for a postcode; /starlink-installation asks for a full address.
+ * That single difference is the experiment.
+ */
 export default function InstallQuotePage() {
   return (
     <div className="theme-funnel min-h-screen bg-background text-foreground">
@@ -43,35 +53,20 @@ export default function InstallQuotePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqStructuredData) }}
       />
       <MainHeader />
-      {/* ExperimentProvider assigns A/B variants and exposes their config to the
-          hero (and anywhere else). Fails open when no experiments are running. */}
       <ExperimentProvider>
-      {/* Flex + responsive `order` lets us front-load proof on mobile (where ~80%
-          of visitors are and most stop after a screen or two) while keeping the
-          desktop order unchanged. Reviews jump up right under the hero on phones. */}
-      <main className="flex flex-col">
-        <div className="order-1">
+        <main className="flex flex-col">
           <HeroSection />
-        </div>
-        <div className="order-2 md:order-3">
-          <TestimonialsSection />
-        </div>
-        <div className="order-3 md:order-2">
+          <WhyInstallProsSection />
           <CoverageSection />
-        </div>
-        <div className="order-4 md:order-4">
-          <ProfessionalInstallationSection />
-        </div>
-        <div className="order-5">
-          <AvailabilitySection />
-        </div>
-        <div className="order-6">
-          <FaqSection />
-        </div>
-        <div className="order-7">
+          <CustomerStoriesSection />
+          <TrustpilotSection />
+          <EquipmentSection />
+          <BeforeAfterSection />
+          <CoverageMapSection />
+          <TrackRecordSection />
+          <FaqSectionAlt />
           <CtaSection />
-        </div>
-      </main>
+        </main>
       </ExperimentProvider>
       <FunnelFooter />
     </div>
