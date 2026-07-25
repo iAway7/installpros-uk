@@ -1,0 +1,78 @@
+const EQUIPMENT = [
+  {
+    t: "Starlink Standard",
+    badge: "Supply & Fit",
+    d: "The dish — supplied, mounted and aligned for a clear view of the sky.",
+    img: "/funnel/starlink-standard.png",
+  },
+  {
+    t: "Gen 3 Router",
+    badge: "Setup Included",
+    d: "Wi-Fi 6, configured and positioned for whole-home coverage.",
+    img: "/funnel/gen-3-router.webp",
+  },
+  {
+    t: "Mounts & Masts",
+    badge: "All-metal",
+    d: "Durable roof, wall and pole mounts for any property type.",
+    img: "/funnel/mounts-masts.webp",
+  },
+  {
+    t: "Mesh Nodes",
+    badge: "Add-on",
+    d: "Seamless coverage across every floor and outbuilding.",
+    img: "/funnel/mesh-nodes.webp",
+  },
+];
+
+/** "The hardware, handled." — the four equipment cards, ported from the
+ *  /starlink-installations landing. */
+export function EquipmentSection() {
+  return (
+    <section id="equipment" className="w-full scroll-mt-28 bg-background py-16 md:py-24">
+      <div className="container mx-auto max-w-6xl px-6">
+        <div className="mb-12 text-center">
+          <p className="text-[12px] font-semibold uppercase tracking-[0.24em] text-primary">Equipment</p>
+          <h2
+            className="mt-4 text-[2.5rem] font-bold text-foreground md:text-[3.25rem]"
+            style={{ fontWeight: 600, lineHeight: "1.06em", letterSpacing: "-0.035em" }}
+          >
+            The hardware, handled.
+          </h2>
+          <p className="mx-auto mt-5 max-w-xl text-base text-muted-foreground md:text-lg" style={{ lineHeight: "1.6" }}>
+            We supply, mount and configure the full Starlink ecosystem — nothing for you to source.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {EQUIPMENT.map((e) => (
+            <div
+              key={e.t}
+              className="rounded-[26px] border border-border bg-secondary/50 p-[18px] pb-7 transition-all duration-300 hover:-translate-y-1 hover:border-primary/30"
+            >
+              <div
+                className="flex aspect-square items-center justify-center overflow-hidden rounded-[18px] border border-border"
+                style={{ background: "radial-gradient(90% 90% at 50% 20%, #f2f3f6, #e7e9ef)" }}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={e.img} alt={e.t} loading="lazy" className="h-full w-full object-contain p-[12%]" />
+              </div>
+
+              <div className="px-2.5 pt-5">
+                <div className="flex items-start justify-between gap-2.5">
+                  <h3 className="text-lg font-bold leading-tight text-foreground">{e.t}</h3>
+                  <span className="shrink-0 whitespace-nowrap rounded-full border border-[rgba(255,90,90,0.3)] px-2.5 py-1 text-[10.5px] font-semibold uppercase tracking-[0.14em] text-[#e5484d]">
+                    {e.badge}
+                  </span>
+                </div>
+                <p className="mt-2.5 text-[15px] text-muted-foreground" style={{ lineHeight: "1.55" }}>
+                  {e.d}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
