@@ -1,6 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { WhatsAppIcon } from "./ui/whatsapp-icon";
+
+const WHATSAPP_URL = "https://wa.me/447446112343";
 
 /** Cloudflare datacenter (colo) codes → friendly city names. UK + Western
  *  Europe covered; anything else falls back to the raw code. */
@@ -303,6 +306,26 @@ export function BeforeAfterSection() {
               </svg>
             </div>
           </div>
+        </div>
+
+        <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
+          <a
+            href="#quote"
+            className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-primary px-[22px] font-bold uppercase leading-none tracking-[-0.2px] text-primary-foreground transition-all hover:bg-primary/90"
+            style={{ fontSize: "14px" }}
+          >
+            Check Availability
+          </a>
+          <a
+            href={WHATSAPP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex h-12 items-center justify-center gap-2.5 rounded-xl border border-border bg-transparent px-[22px] font-bold uppercase leading-none tracking-[-0.2px] text-foreground transition-all hover:bg-secondary/50"
+            style={{ fontSize: "14px" }}
+          >
+            <WhatsAppIcon className="h-5 w-5 text-[#25D366]" />
+            Talk on WhatsApp
+          </a>
         </div>
       </div>
     </section>
