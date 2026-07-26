@@ -267,13 +267,12 @@ export function ZipAvailabilityChecker(
                         <span className="font-semibold text-green-500">Great!</span>
                         <span>
                           We&apos;re available in{" "}
-                          <span className="font-semibold text-green-500 underline">{region}</span>. Let&apos;s get your
-                          installation quote started.
+                          <span className="font-semibold text-green-500 underline">{region}</span>.
                         </span>
                       </p>
                     )}
                     <FunnelButton onClick={next} className="w-full">
-                      Next <ArrowRight className="ml-2 h-4 w-4" />
+                      {addressMode ? "Get a quote" : "Next"} <ArrowRight className="ml-2 h-4 w-4" />
                     </FunnelButton>
                   </div>
                 )}
