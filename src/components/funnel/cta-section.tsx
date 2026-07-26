@@ -24,6 +24,8 @@ export function CtaSection({ addressMode = false }: { addressMode?: boolean } = 
           Kingdom. Company No. 14896859. VAT No. GB456635174. Registered office: Rotunda Buildings, Montpellier
           Exchange, Cheltenham, GL50 1SX. Tel: 020 3397 7003 | Email: admin@installpros.co.uk | All rights reserved
         </p>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/funnel/payment-methods.svg" alt="Accepted payment methods" className="mx-auto mt-6 h-5" />
       </div>
     </section>
   );
