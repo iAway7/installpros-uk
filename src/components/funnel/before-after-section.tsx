@@ -199,7 +199,7 @@ export function BeforeAfterSection() {
               <div className="mt-5 text-[13px] leading-[1.7] text-[#6b7280]">
                 {phase === "done" && result ? (
                   <>
-                    Latency ~{Math.round(result.latency ?? 0)} ms
+                    Latency {Math.round(result.latency ?? 0)} ms
                     <br />
                     Measured on your connection just now
                   </>
