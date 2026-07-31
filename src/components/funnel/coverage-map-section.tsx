@@ -19,10 +19,9 @@ export function CoverageMapSection() {
         <div className="grid items-center gap-12 md:grid-cols-2 md:gap-16">
           {/* Left — copy + stats */}
           <div className="animate-fade-in-up">
-            <p className="text-[12px] font-semibold uppercase tracking-[0.24em] text-primary">Coverage</p>
+            <p className="eyebrow">Coverage</p>
             <h2
-              className="mt-4 text-[2.5rem] font-bold text-foreground md:text-[3.25rem]"
-              style={{ fontWeight: 600, lineHeight: "1.06em", letterSpacing: "-0.035em" }}
+              className="mt-4 h2-section text-foreground"
             >
               One team.
               <br />
@@ -39,10 +38,7 @@ export function CoverageMapSection() {
                   key={s.label}
                   className={`py-6 ${i % 2 === 1 ? "border-l border-border pl-6" : "pr-6"} ${i >= 2 ? "border-t border-border" : ""}`}
                 >
-                  <div
-                    className="text-[34px] font-normal text-foreground"
-                    style={{ letterSpacing: "-0.03em", lineHeight: 1.1 }}
-                  >
+                  <div className="text-[34px] font-normal leading-[1.1] tracking-[-0.03em] text-foreground">
                     {s.value}
                   </div>
                   <div className="mt-1 text-[13px] text-muted-foreground">{s.label}</div>

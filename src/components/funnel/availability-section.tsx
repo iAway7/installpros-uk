@@ -65,7 +65,7 @@ export function AvailabilitySection() {
     <section id="coverage" className="w-full scroll-mt-28 bg-background py-12 md:py-20">
       <div className="container mx-auto max-w-7xl">
         <div className="animate-fade-in-up mb-12 text-center">
-          <h2 className="mb-4 text-[2.5rem] font-bold text-foreground md:text-[3.25rem]" style={{ fontWeight: 600, lineHeight: "1.06em", letterSpacing: "-0.035em" }}>
+          <h2 className="mb-4 h2-section text-foreground">
             Nationwide Starlink Installation Coverage
           </h2>
           <p className="mx-auto max-w-2xl text-base text-muted-foreground md:text-lg">

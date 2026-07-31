@@ -4,16 +4,26 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 /**
- * Funnel button — matches the installpros.io funnel: red fill, uppercase,
- * 12px bold, pill-ish rounded-xl. Kept separate from the Phase-1 Button so the
- * two design languages don't collide.
+ * Funnel button — red fill, uppercase, bold, radius 12px. This is the agreed
+ * button spec: it stays exactly as /install-quote has it today.
+ *
+ * Two things changed from v1:
+ *  · `size="lg"` used to be a byte-for-byte copy of `default`. It is now
+ *    genuinely larger, so the variant means something.
+ *  · Hover darkens (--brand-hover, #9E0404) instead of going translucent, so
+ *    the button keeps its weight over any background.
+ *
+ * The focus ring is --ring, which in .theme-funnel is the neutral
+ * --selection, not brand red — a red ring on a red button is unreadable.
  */
 const funnelButtonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-bold uppercase leading-[1.3] tracking-[-0.2px] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  // text-[12px] (arbitrary) NOT text-sm: this project overrides text-sm to 16px,
+  // which is why the buttons kept rendering at 16 instead of the 12px spec.
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-[12px] font-bold uppercase leading-[1.3] tracking-[-0.2px] transition-all duration-200 ease-ds focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90",
+        default: "bg-primary text-primary-foreground hover:bg-brand-hover",
         secondary: "bg-secondary/80 text-foreground hover:bg-secondary border border-border/30",
         outline: "border border-border/50 bg-transparent text-foreground hover:bg-secondary/50",
         ghost: "hover:bg-accent hover:text-accent-foreground",
@@ -21,7 +31,7 @@ const funnelButtonVariants = cva(
       size: {
         default: "h-12 px-[18px] py-[14px]",
         sm: "h-9 px-4 py-2",
-        lg: "h-12 px-[18px] py-[14px]",
+        lg: "h-14 px-6 py-4",
         icon: "h-10 w-10",
       },
     },

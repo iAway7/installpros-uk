@@ -32,10 +32,9 @@ export function EquipmentSection() {
     <section id="equipment" className="w-full scroll-mt-28 bg-background py-16 md:py-24">
       <div className="container mx-auto max-w-6xl px-6">
         <div className="mb-12 text-center">
-          <p className="text-[12px] font-semibold uppercase tracking-[0.24em] text-primary">Equipment</p>
+          <p className="eyebrow">Equipment</p>
           <h2
-            className="mt-4 text-[2.5rem] font-bold text-foreground md:text-[3.25rem]"
-            style={{ fontWeight: 600, lineHeight: "1.06em", letterSpacing: "-0.035em" }}
+            className="mt-4 h2-section text-foreground"
           >
             The hardware, handled.
           </h2>
@@ -48,11 +47,11 @@ export function EquipmentSection() {
           {EQUIPMENT.map((e) => (
             <div
               key={e.t}
-              className="rounded-[26px] border border-border bg-secondary/50 p-[18px] pb-7 transition-all duration-300 hover:-translate-y-1 hover:border-primary/30"
+              className="rounded-[26px] border border-border bg-secondary/50 p-[18px] pb-7 transition-all duration-450 ease-ds hover:-translate-y-[5px] hover:border-brand-soft/35"
             >
               <div
                 className="flex aspect-square items-center justify-center overflow-hidden rounded-[18px] border border-border"
-                style={{ background: "radial-gradient(90% 90% at 50% 20%, #f2f3f6, #e7e9ef)" }}
+                style={{ background: "var(--eq-img-grad)" }}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={e.img} alt={e.t} loading="lazy" className="h-full w-full object-contain p-[12%]" />
@@ -61,7 +60,7 @@ export function EquipmentSection() {
               <div className="px-2.5 pt-5">
                 <div className="flex items-start justify-between gap-2.5">
                   <h3 className="text-lg font-bold leading-tight text-foreground">{e.t}</h3>
-                  <span className="shrink-0 whitespace-nowrap rounded-full border border-[rgba(255,90,90,0.3)] px-2.5 py-1 text-[10.5px] font-semibold uppercase tracking-[0.14em] text-[#e5484d]">
+                  <span className="shrink-0 whitespace-nowrap rounded-full border border-brand-soft/30 px-2.5 py-1 text-[10.5px] font-semibold uppercase tracking-[0.14em] text-brand-icon">
                     {e.badge}
                   </span>
                 </div>

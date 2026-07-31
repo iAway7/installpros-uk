@@ -9,7 +9,10 @@ interface FormOptionProps {
   icon?: ReactNode;
 }
 
-/** Selectable card used for the installation-type step. */
+/**
+ * Selectable card used for the installation-type step.
+ * Selection is the neutral --selection token, never brand red.
+ */
 export function FormOption({ label, selected, onClick, className, icon }: FormOptionProps) {
   return (
     <button
@@ -17,15 +20,16 @@ export function FormOption({ label, selected, onClick, className, icon }: FormOp
       onClick={onClick}
       aria-pressed={selected}
       className={cn(
-        "w-full rounded-xl border-2 p-4 font-semibold text-foreground transition-all duration-200",
-        icon ? "flex flex-col items-center gap-2 text-center" : "text-left",
+        "w-full rounded-xl border-2 p-4 font-semibold text-foreground transition-all duration-200 ease-ds",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-selection focus-visible:ring-offset-2",
+        icon ? "flex flex-col items-center justify-center gap-2 text-center" : "text-left",
         selected
-          ? "border-[#1A1512] bg-card ring-1 ring-[#1A1512]"
-          : "border-neutral-300 bg-secondary hover:border-neutral-500 hover:bg-card",
+          ? "border-selection bg-card"
+          : "border-field bg-secondary hover:border-field-hover hover:bg-card",
         className,
       )}
     >
-      {icon && <span className={cn(selected ? "text-[#1A1512]" : "text-muted-foreground")}>{icon}</span>}
+      {icon && <span className={cn("contents", selected ? "text-selection" : "text-muted-foreground")}>{icon}</span>}
       {label}
     </button>
   );

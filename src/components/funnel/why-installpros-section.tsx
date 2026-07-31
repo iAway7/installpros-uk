@@ -60,10 +60,9 @@ export function WhyInstallProsSection() {
       <div className="container mx-auto max-w-6xl px-6">
         <div className="flex flex-wrap items-end justify-between gap-7">
           <div>
-            <p className="text-[12px] font-semibold uppercase tracking-[0.24em] text-primary">Why InstallPros</p>
+            <p className="eyebrow">Why InstallPros</p>
             <h2
-              className="mt-4 max-w-[640px] text-[2.5rem] font-bold text-foreground md:text-[3.25rem]"
-              style={{ fontWeight: 600, lineHeight: "1.06em", letterSpacing: "-0.035em" }}
+              className="mt-4 max-w-[640px] h2-section text-foreground"
             >
               Engineered installs,
               <br />
@@ -82,11 +81,10 @@ export function WhyInstallProsSection() {
           {FEATURES.map((f) => (
             <div
               key={f.t}
-              className="rounded-[22px] border border-border bg-secondary/40 p-7 transition-all duration-300 hover:-translate-y-1 hover:border-primary/30"
+              className="rounded-[22px] border border-border bg-secondary/40 p-7 transition-all duration-450 ease-ds hover:-translate-y-[5px] hover:border-brand-soft/35"
             >
               <div
-                className="flex h-11 w-11 items-center justify-center rounded-[13px]"
-                style={{ background: "rgba(199,5,5,0.10)", border: "1px solid rgba(255,90,90,0.25)", color: "#e5484d" }}
+                className="flex h-11 w-11 items-center justify-center rounded-[13px] border border-brand-soft/25 bg-primary/10 text-brand-icon"
               >
                 {f.i}
               </div>

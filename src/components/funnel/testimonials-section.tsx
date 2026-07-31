@@ -35,8 +35,7 @@ export function TestimonialsSection() {
           ))}
         </div>
         <h2
-          className="mb-12 text-center text-[2.5rem] font-bold text-foreground md:text-[3.25rem]"
-          style={{ fontWeight: 600, lineHeight: "1.06em", letterSpacing: "-0.035em" }}
+          className="mb-12 text-center h2-section text-foreground"
         >
           Top-Rated by Our Clients
         </h2>

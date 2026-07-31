@@ -1,5 +1,6 @@
 import { MapPin, CalendarCheck, Boxes } from "lucide-react";
 import { WhatsAppIcon } from "./ui/whatsapp-icon";
+import { FunnelButton } from "./ui/funnel-button";
 
 const WHATSAPP_URL = "https://wa.me/447446112343";
 
@@ -29,10 +30,9 @@ export function CoverageSection() {
     <section className="w-full scroll-mt-28 bg-background py-16 md:py-24">
       <div className="container mx-auto max-w-6xl px-6">
         <div className="text-center">
-          <p className="text-[12px] font-semibold uppercase tracking-[0.24em] text-primary">What We Offer</p>
+          <p className="eyebrow">What We Offer</p>
           <h2
-            className="mx-auto mt-4 max-w-[760px] text-[2.5rem] font-bold text-foreground md:text-[3.25rem]"
-            style={{ fontWeight: 600, lineHeight: "1.06em", letterSpacing: "-0.035em" }}
+            className="mx-auto mt-4 max-w-[760px] h2-section text-foreground"
           >
             Any property, anywhere — connected this week.
           </h2>
@@ -45,11 +45,10 @@ export function CoverageSection() {
           {FEATURES.map((f) => (
             <div
               key={f.title}
-              className="rounded-[22px] border border-border bg-secondary/40 p-8 transition-all duration-300 hover:-translate-y-1 hover:border-primary/30"
+              className="rounded-[22px] border border-border bg-secondary/40 p-8 transition-all duration-450 ease-ds hover:-translate-y-[5px] hover:border-brand-soft/35"
             >
               <div
-                className="flex h-11 w-11 items-center justify-center rounded-[13px]"
-                style={{ background: "rgba(199,5,5,0.10)", border: "1px solid rgba(255,90,90,0.25)", color: "#e5484d" }}
+                className="flex h-11 w-11 items-center justify-center rounded-[13px] border border-brand-soft/25 bg-primary/10 text-brand-icon"
               >
                 <f.icon className="h-[21px] w-[21px]" strokeWidth={1.6} />
               </div>
@@ -62,23 +61,18 @@ export function CoverageSection() {
         </div>
 
         <div className="mt-12 flex flex-wrap items-center justify-center gap-3">
-          <a
-            href="#quote"
-            className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-primary px-[22px] font-bold uppercase leading-none tracking-[-0.2px] text-primary-foreground transition-all hover:bg-primary/90"
-            style={{ fontSize: "14px" }}
-          >
-            Check Availability
-          </a>
-          <a
-            href={WHATSAPP_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex h-12 items-center justify-center gap-2.5 rounded-xl border border-border bg-transparent px-[22px] font-bold uppercase leading-none tracking-[-0.2px] text-foreground transition-all hover:bg-secondary/50"
-            style={{ fontSize: "14px" }}
-          >
-            <WhatsAppIcon className="h-5 w-5 text-[#25D366]" />
-            Talk on WhatsApp
-          </a>
+          {/* Both CTAs go through FunnelButton so there is exactly one button
+              spec on the page. They used to be hand-rolled <a> tags at 14px
+              while every other button rendered at 16px. */}
+          <FunnelButton asChild>
+            <a href="#quote">Check Availability</a>
+          </FunnelButton>
+          <FunnelButton asChild variant="outline">
+            <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
+              <WhatsAppIcon className="h-5 w-5 text-whatsapp" />
+              Talk on WhatsApp
+            </a>
+          </FunnelButton>
         </div>
       </div>
     </section>

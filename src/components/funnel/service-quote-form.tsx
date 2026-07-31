@@ -73,6 +73,7 @@ export function ServiceQuoteForm({
   const [showPhoneCheck, setShowPhoneCheck] = useState(false);
   const [showEmailCheck, setShowEmailCheck] = useState(false);
   const [consent, setConsent] = useState(false);
+  const [consentError, setConsentError] = useState(false);
 
   const nameRef = useRef<HTMLInputElement>(null);
   const phoneRef = useRef<HTMLInputElement>(null);
@@ -175,7 +176,7 @@ export function ServiceQuoteForm({
   async function submit() {
     if (!checkName() || !checkPhone() || !checkEmail()) { toast.error("Please check all fields for errors"); return; }
     if (!formData.installationType) { toast.error("Please select a service"); return; }
-    if (!consent) { toast.error("Please accept the terms to continue"); return; }
+    if (!consent) { setConsentError(true); toast.error("Please accept the terms to continue"); return; }
     setIsSubmitting(true);
     try {
       const leadId = await submitLead({
@@ -208,7 +209,7 @@ export function ServiceQuoteForm({
           {step === 0 && (
             <div className={`space-y-4 ${anim}`}>
               <div className="text-center">
-                <h2 className="text-2xl font-bold tracking-tight text-foreground md:text-3xl">Check Availability</h2>
+                <h2 className="h2-form text-foreground">Check Availability</h2>
               </div>
               <div className="relative">
                 {addressMode ? (
@@ -224,24 +225,26 @@ export function ServiceQuoteForm({
                     <FunnelInput
                       type="text" value={postcode} onChange={onPostcodeChange} placeholder="e.g. SW1A 1AA"
                       inputSize="lg" maxLength={8} aria-label="Postcode" autoComplete="postal-code"
+                      state={status === "invalid" ? "error" : "default"}
+                      aria-describedby={error ? "cta-err-postcode" : undefined}
                       className="text-center text-base uppercase md:text-[1.4rem]"
                     />
                     {status === "checking" && <Loader2 className="absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 animate-spin text-primary" />}
-                    {status === "available" && <Check className="absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-green-600" />}
+                    {status === "available" && <Check className="absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-success" />}
                   </>
                 )}
               </div>
-              {error && <p className="text-center text-base text-red-600">{error}</p>}
+              {error && <p id="cta-err-postcode" role="alert" className="text-center text-base text-error">{error}</p>}
               <div className="min-h-[100px]">
                 {status === "checking" && <p className="text-center text-muted-foreground">Checking availability...</p>}
                 {status === "available" && (
                   <div className="space-y-4">
                     <p className="flex flex-wrap items-center justify-center gap-x-1.5 text-center text-base text-foreground">
-                      <Check className="h-5 w-5 rounded bg-green-600/20 p-0.5 text-green-700" />
-                      <span className="font-semibold text-green-700">Great!</span>
+                      <Check className="h-5 w-5 rounded bg-success/20 p-0.5 text-success" />
+                      <span className="font-semibold text-success">Great!</span>
                       <span>
                         We&apos;re available in{" "}
-                        <span className="font-semibold text-green-700 underline">{region}</span>.
+                        <span className="font-semibold text-success underline">{region}</span>.
                       </span>
                     </p>
                     <FunnelButton onClick={next} className="w-full">Get a Quote <ArrowRight className="ml-2 h-4 w-4" /></FunnelButton>
@@ -252,23 +255,23 @@ export function ServiceQuoteForm({
           )}
 
           {step === 1 && (
-            <StepField anim={anim} label={`Step 1 of ${TOTAL_STEPS}`} title="What's your name?" error={errors.fullName}>
-              <FunnelInput ref={nameRef} type="text" value={formData.fullName} onChange={(e) => setFormData((d) => ({ ...d, fullName: e.target.value }))} placeholder="Full Name" inputSize="lg" aria-label="Full name" className="text-center text-base md:text-[1.4rem]" />
+            <StepField anim={anim} label={`Step 1 of ${TOTAL_STEPS}`} title="What's your name?" error={errors.fullName} errorId="cta-err-name">
+              <FunnelInput ref={nameRef} type="text" value={formData.fullName} onChange={(e) => setFormData((d) => ({ ...d, fullName: e.target.value }))} placeholder="Full Name" inputSize="lg" aria-label="Full name" state={errors.fullName ? "error" : "default"} aria-describedby={errors.fullName ? "cta-err-name" : undefined} className="text-center text-base md:text-[1.4rem]" />
             </StepField>
           )}
           {step === 2 && (
-            <StepField anim={anim} label={`Step 2 of ${TOTAL_STEPS}`} title="What's your phone number?" error={errors.phone}>
+            <StepField anim={anim} label={`Step 2 of ${TOTAL_STEPS}`} title="What's your phone number?" error={errors.phone} errorId="cta-err-phone">
               <div className="relative">
-                <FunnelInput ref={phoneRef} type="tel" value={formData.phone} onChange={onPhoneChange} placeholder="07123 456789" inputSize="lg" aria-label="Phone number" className="text-center text-base md:text-[1.4rem]" />
-                {showPhoneCheck && <Check className="absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-green-600" />}
+                <FunnelInput ref={phoneRef} type="tel" value={formData.phone} onChange={onPhoneChange} placeholder="07123 456789" inputSize="lg" aria-label="Phone number" state={errors.phone ? "error" : "default"} aria-describedby={errors.phone ? "cta-err-phone" : undefined} className="text-center text-base md:text-[1.4rem]" />
+                {showPhoneCheck && <Check className="absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-success" />}
               </div>
             </StepField>
           )}
           {step === 3 && (
-            <StepField anim={anim} label={`Step 3 of ${TOTAL_STEPS}`} title="What's your email?" error={errors.email}>
+            <StepField anim={anim} label={`Step 3 of ${TOTAL_STEPS}`} title="What's your email?" error={errors.email} errorId="cta-err-email">
               <div className="relative">
-                <FunnelInput ref={emailRef} type="email" value={formData.email} onChange={onEmailChange} placeholder="you@example.com" inputSize="lg" aria-label="Email" className="text-center text-base md:text-[1.4rem]" />
-                {showEmailCheck && <Check className="absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-green-600" />}
+                <FunnelInput ref={emailRef} type="email" value={formData.email} onChange={onEmailChange} placeholder="you@example.com" inputSize="lg" aria-label="Email" state={errors.email ? "error" : "default"} aria-describedby={errors.email ? "cta-err-email" : undefined} className="text-center text-base md:text-[1.4rem]" />
+                {showEmailCheck && <Check className="absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-success" />}
               </div>
             </StepField>
           )}
@@ -276,7 +279,7 @@ export function ServiceQuoteForm({
             <div className={`space-y-4 ${anim}`}>
               <div className="space-y-2 text-center">
                 <p className="text-sm font-semibold text-primary">Step 4 of {TOTAL_STEPS}</p>
-                <h2 className="text-2xl font-bold text-foreground md:text-3xl">
+                <h2 className="h2-form text-foreground">
                   {serviceMode === "starlink" ? "What are we installing?" : "Which service are you looking for?"}
                 </h2>
                 {serviceMode === "any" && (
@@ -297,7 +300,7 @@ export function ServiceQuoteForm({
                 </div>
               ) : (
                 <Select value={formData.installationType} onValueChange={(v) => setFormData((d) => ({ ...d, installationType: v }))}>
-                  <SelectTrigger className="h-14 border-neutral-300 bg-white text-base text-black focus:border-[#404040] focus:ring-2 focus:ring-[#1A1512]/15">
+                  <SelectTrigger className="h-14 border-field bg-white text-base text-black focus:border-selection-border focus:ring-2 focus:ring-[hsl(var(--selection)/0.15)]">
                     <SelectValue placeholder="Select a service..." />
                   </SelectTrigger>
                   <SelectContent className="bg-white">
@@ -305,7 +308,7 @@ export function ServiceQuoteForm({
                       <SelectItem
                         key={s}
                         value={s}
-                        className="focus:bg-neutral-100 focus:text-foreground data-[highlighted]:bg-neutral-100 data-[highlighted]:text-foreground data-[state=checked]:bg-neutral-100"
+                        className="focus:bg-secondary focus:text-foreground data-[highlighted]:bg-secondary data-[highlighted]:text-foreground data-[state=checked]:bg-secondary"
                       >
                         {s}
                       </SelectItem>
@@ -313,7 +316,13 @@ export function ServiceQuoteForm({
                   </SelectContent>
                 </Select>
               )}
-              <ConsentCheckbox checked={consent} onChange={setConsent} tone="light" />
+              <ConsentCheckbox
+                checked={consent}
+                onChange={(v) => { setConsent(v); if (v) setConsentError(false); }}
+                tone="light"
+                error={consentError}
+                id="cta-gdpr"
+              />
             </div>
           )}
         </div>
@@ -337,15 +346,17 @@ export function ServiceQuoteForm({
   );
 }
 
-function StepField({ anim, label, title, error, children }: { anim: string; label: string; title: string; error?: string; children: React.ReactNode }) {
+function StepField({ anim, label, title, error, errorId, children }: { anim: string; label: string; title: string; error?: string; errorId?: string; children: React.ReactNode }) {
   return (
     <div className={`space-y-4 ${anim}`}>
       <div className="space-y-2 text-center">
         <p className="text-sm font-semibold text-primary">{label}</p>
-        <h2 className="text-2xl font-bold text-foreground md:text-3xl">{title}</h2>
+        <h2 className="h2-form text-foreground">{title}</h2>
       </div>
       {children}
-      {error && <p className="text-center text-base text-red-600">{error}</p>}
+      {error && (
+        <p id={errorId} role="alert" className="text-center text-base text-error">{error}</p>
+      )}
     </div>
   );
 }

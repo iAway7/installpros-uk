@@ -6,8 +6,7 @@ export function FaqSection() {
     <section id="faq" className="scroll-mt-24 bg-background py-12 md:py-20">
       <div className="container mx-auto max-w-4xl">
         <h2
-          className="mb-8 text-center text-[2.5rem] font-bold text-foreground md:text-[3.25rem]"
-          style={{ fontWeight: 600, lineHeight: "1.06em", letterSpacing: "-0.035em" }}
+          className="mb-8 text-center h2-section text-foreground"
         >
           FAQ&apos;s
         </h2>

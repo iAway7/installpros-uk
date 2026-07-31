@@ -39,10 +39,10 @@ export function SlimHeader() {
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => track(EVENTS.WHATSAPP_CLICKED, { channel: "whatsapp", cta_location: "header_slim" })}
-            className="flex items-center justify-center rounded-xl bg-[#25D366] p-3 text-white md:gap-2 md:rounded-none md:bg-transparent md:p-0 md:text-base md:font-semibold md:text-foreground md:hover:text-[#25D366]"
+            className="flex items-center justify-center rounded-xl bg-[#25D366] p-3 text-white md:gap-2 md:rounded-none md:bg-transparent md:p-0 md:text-base md:font-semibold md:text-foreground md:hover:text-whatsapp"
             aria-label="Message us on WhatsApp"
           >
-            <WhatsAppIcon className="h-5 w-5 md:h-5 md:w-5 md:text-[#25D366]" />
+            <WhatsAppIcon className="h-5 w-5 md:h-5 md:w-5 md:text-whatsapp" />
             <span className="hidden md:inline">WhatsApp</span>
           </a>
           <a

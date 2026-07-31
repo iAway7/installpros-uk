@@ -40,10 +40,9 @@ export async function CustomerStoriesSection() {
       <div className="container mx-auto max-w-6xl px-6">
         <div className="flex flex-wrap items-end justify-between gap-7">
           <div>
-            <p className="text-[12px] font-semibold uppercase tracking-[0.24em] text-primary">Customer Stories</p>
+            <p className="eyebrow">Customer Stories</p>
             <h2
-              className="mt-4 text-[2.5rem] font-bold text-foreground md:text-[3.25rem]"
-              style={{ fontWeight: 600, lineHeight: "1.06em", letterSpacing: "-0.035em" }}
+              className="mt-4 h2-section text-foreground"
             >
               Five stars,
               <br />
@@ -54,7 +53,7 @@ export async function CustomerStoriesSection() {
             href="https://maps.app.goo.gl/UvqYwqVrAV6R9T5m6"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-3 transition-opacity hover:opacity-80"
+            className="flex items-center gap-3 transition-opacity duration-200 ease-ds hover:opacity-80"
           >
             <GoogleG size={22} />
             <div>

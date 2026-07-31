@@ -52,7 +52,7 @@ export function ReviewCard({ r, source = "google" }: { r: Review; source?: "goog
           // eslint-disable-next-line @next/next/no-img-element
           <img src={r.photo} alt={r.name} className="h-12 w-12 rounded-full object-cover" referrerPolicy="no-referrer" />
         ) : (
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#e5e7eb] text-[17px] font-medium text-[#171717]">
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-secondary text-[17px] font-medium text-foreground">
             {r.initial}
           </div>
         )}
@@ -65,7 +65,7 @@ export function ReviewCard({ r, source = "google" }: { r: Review; source?: "goog
 
       {/* Stars + verified */}
       <div className="mt-4 flex items-center gap-2">
-        <span className="text-[15px] tracking-[2px] text-[#fbbc04]">{"★".repeat(Math.min(5, Math.max(4, r.rating)))}</span>
+        <span className="text-[15px] tracking-[2px] text-gold">{"★".repeat(Math.min(5, Math.max(4, r.rating)))}</span>
         <VerifiedBadge />
       </div>
 
@@ -77,7 +77,7 @@ export function ReviewCard({ r, source = "google" }: { r: Review; source?: "goog
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
-          className="mt-2 self-start text-[14px] font-medium text-muted-foreground transition-colors hover:text-foreground"
+          className="-mb-2 mt-1 flex min-h-[48px] items-center self-start pr-6 text-[14px] font-medium text-muted-foreground transition-colors duration-200 hover:text-foreground"
         >
           {open ? "Show less" : "Read more"}
         </button>

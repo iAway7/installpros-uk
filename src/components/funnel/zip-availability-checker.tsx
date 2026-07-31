@@ -56,6 +56,7 @@ export function ZipAvailabilityChecker(
   const [showPhoneCheck, setShowPhoneCheck] = useState(false);
   const [showEmailCheck, setShowEmailCheck] = useState(false);
   const [consent, setConsent] = useState(false);
+  const [consentError, setConsentError] = useState(false);
 
   const nameRef = useRef<HTMLInputElement>(null);
   const phoneRef = useRef<HTMLInputElement>(null);
@@ -188,7 +189,7 @@ export function ZipAvailabilityChecker(
   async function submit() {
     if (!checkName() || !checkPhone() || !checkEmail()) { toast.error("Please check all fields for errors"); return; }
     if (!formData.installationType) { toast.error("Please select an installation type"); return; }
-    if (!consent) { toast.error("Please accept the terms to continue"); return; }
+    if (!consent) { setConsentError(true); toast.error("Please accept the terms to continue"); return; }
     setIsSubmitting(true);
     try {
       const leadId = await submitLead({
@@ -222,7 +223,7 @@ export function ZipAvailabilityChecker(
           {step === 0 && (
             <div className={`space-y-6 ${anim}`}>
               <div className="text-center">
-                <h2 className="mb-2 text-2xl font-bold text-white md:text-3xl" style={{ lineHeight: "1.1em", letterSpacing: "-1px" }}>Check Availability</h2>
+                <h2 className="h2-form mb-2 text-white">Check Availability</h2>
               </div>
               <div className="relative !mt-4">
                 {addressMode ? (
@@ -239,35 +240,39 @@ export function ZipAvailabilityChecker(
                       type="text" value={postcode} onChange={onPostcodeChange}
                       placeholder="e.g. SW1A 1AA" inputSize="lg" maxLength={8} aria-label="Postcode"
                       autoComplete="postal-code"
+                      state={status === "invalid" ? "error" : "default"}
+                      aria-describedby={error ? "err-postcode" : undefined}
                       className="text-center text-base uppercase md:text-[1.4rem]"
                     />
                     {status === "checking" && (
                       <Loader2 className="absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 animate-spin text-primary" />
                     )}
                     {status === "available" && (
-                      <Check className="absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-green-500" />
+                      <Check className="absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-success-bright" />
                     )}
                   </>
                 )}
               </div>
-              {(status === "invalid" || error) && error && <p className="text-center text-base text-red-500">{error}</p>}
+              {(status === "invalid" || error) && error && (
+                <p id="err-postcode" role="alert" className="text-center text-base text-error">{error}</p>
+              )}
               <div className="min-h-[100px]">
                 {status === "checking" && <p className="text-center text-white/70">Checking availability...</p>}
                 {status === "available" && (
                   <div className="space-y-4">
                     {smartMessage ? (
                       <p className="flex flex-wrap items-center justify-center gap-x-1.5 text-center text-base text-white">
-                        <Check className="h-5 w-5 rounded bg-green-500/20 p-0.5 text-green-500" />
-                        <span className="font-semibold text-green-500">We cover {region}.</span>
+                        <Check className="h-5 w-5 rounded bg-success-bright/20 p-0.5 text-success-bright" />
+                        <span className="font-semibold text-success-bright">We cover {region}.</span>
                         <span>{smartMessage}</span>
                       </p>
                     ) : (
                       <p className="flex flex-wrap items-center justify-center gap-x-1.5 text-center text-base text-white">
-                        <Check className="h-5 w-5 rounded bg-green-500/20 p-0.5 text-green-500" />
-                        <span className="font-semibold text-green-500">Great!</span>
+                        <Check className="h-5 w-5 rounded bg-success-bright/20 p-0.5 text-success-bright" />
+                        <span className="font-semibold text-success-bright">Great!</span>
                         <span>
                           We&apos;re available in{" "}
-                          <span className="font-semibold text-green-500 underline">{region}</span>.
+                          <span className="font-semibold text-success-bright underline">{region}</span>.
                         </span>
                       </p>
                     )}
@@ -281,38 +286,44 @@ export function ZipAvailabilityChecker(
           )}
 
           {step === 1 && (
-            <StepField anim={anim} stepLabel={`Step 1 of ${TOTAL_STEPS}`} title="What's your name?" error={errors.fullName}>
+            <StepField anim={anim} stepLabel={`Step 1 of ${TOTAL_STEPS}`} title="What's your name?" error={errors.fullName} errorId="err-name">
               <FunnelInput
                 ref={nameRef} type="text" value={formData.fullName}
                 onChange={(e) => setFormData((d) => ({ ...d, fullName: e.target.value }))}
                 placeholder="Full Name" inputSize="lg" aria-label="Full name"
+                state={errors.fullName ? "error" : "default"}
+                aria-describedby={errors.fullName ? "err-name" : undefined}
                 className="text-center text-base md:text-[1.4rem]"
               />
             </StepField>
           )}
 
           {step === 2 && (
-            <StepField anim={anim} stepLabel={`Step 2 of ${TOTAL_STEPS}`} title="What's your phone number?" error={errors.phone}>
+            <StepField anim={anim} stepLabel={`Step 2 of ${TOTAL_STEPS}`} title="What's your phone number?" error={errors.phone} errorId="err-phone">
               <div className="relative">
                 <FunnelInput
                   ref={phoneRef} type="tel" value={formData.phone} onChange={onPhoneChange}
                   placeholder="(555) 555-5555" inputSize="lg" aria-label="Phone number"
+                  state={errors.phone ? "error" : "default"}
+                  aria-describedby={errors.phone ? "err-phone" : undefined}
                   className="text-center text-base md:text-[1.4rem]"
                 />
-                {showPhoneCheck && <Check className="absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-green-500" />}
+                {showPhoneCheck && <Check className="absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-success-bright" />}
               </div>
             </StepField>
           )}
 
           {step === 3 && (
-            <StepField anim={anim} stepLabel={`Step 3 of ${TOTAL_STEPS}`} title="What's your email?" error={errors.email}>
+            <StepField anim={anim} stepLabel={`Step 3 of ${TOTAL_STEPS}`} title="What's your email?" error={errors.email} errorId="err-email">
               <div className="relative">
                 <FunnelInput
                   ref={emailRef} type="email" value={formData.email} onChange={onEmailChange}
                   placeholder="you@example.com" inputSize="lg" aria-label="Email"
+                  state={errors.email ? "error" : "default"}
+                  aria-describedby={errors.email ? "err-email" : undefined}
                   className="text-center text-base md:text-[1.4rem]"
                 />
-                {showEmailCheck && <Check className="absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-green-500" />}
+                {showEmailCheck && <Check className="absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-success-bright" />}
               </div>
             </StepField>
           )}
@@ -320,8 +331,8 @@ export function ZipAvailabilityChecker(
           {step === 4 && (
             <div className={`space-y-6 ${anim}`}>
               <div className="space-y-2 text-center">
-                <p className="text-sm font-semibold text-primary">Step 4 of {TOTAL_STEPS}</p>
-                <h2 className="text-2xl font-bold text-white md:text-3xl" style={{ lineHeight: "1.1em", letterSpacing: "-1px" }}>What are we installing?</h2>
+                <p className="text-sm font-semibold text-white/80">Step 4 of {TOTAL_STEPS}</p>
+                <h2 className="h2-form text-white">What are we installing?</h2>
               </div>
               <div className="grid grid-cols-2 gap-3">
                 {INSTALL_OPTIONS.map((o) => (
@@ -334,7 +345,13 @@ export function ZipAvailabilityChecker(
                   />
                 ))}
               </div>
-              <ConsentCheckbox checked={consent} onChange={setConsent} tone="dark" />
+              <ConsentCheckbox
+                checked={consent}
+                onChange={(v) => { setConsent(v); if (v) setConsentError(false); }}
+                tone="dark"
+                error={consentError}
+                id="hero-gdpr"
+              />
             </div>
           )}
         </div>
@@ -366,18 +383,20 @@ const INSTALL_OPTIONS = [
 ];
 
 function StepField({
-  anim, stepLabel, title, error, children,
+  anim, stepLabel, title, error, errorId, children,
 }: {
-  anim: string; stepLabel: string; title: string; error?: string; children: React.ReactNode;
+  anim: string; stepLabel: string; title: string; error?: string; errorId?: string; children: React.ReactNode;
 }) {
   return (
     <div className={`space-y-6 ${anim}`}>
       <div className="space-y-2 text-center">
-        <p className="text-sm font-semibold text-primary">{stepLabel}</p>
-        <h2 className="text-2xl font-bold text-white md:text-3xl" style={{ lineHeight: "1.1em", letterSpacing: "-1px" }}>{title}</h2>
+        <p className="text-sm font-semibold text-white/80">{stepLabel}</p>
+        <h2 className="h2-form text-white">{title}</h2>
       </div>
       {children}
-      {error && <p className="text-center text-base text-red-500">{error}</p>}
+      {error && (
+        <p id={errorId} role="alert" className="text-center text-base text-error">{error}</p>
+      )}
     </div>
   );
 }

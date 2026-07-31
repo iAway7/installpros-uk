@@ -6,8 +6,7 @@ export function CtaSection({ addressMode = false }: { addressMode?: boolean } = 
       <div className="container mx-auto" style={{ maxWidth: "1140px" }}>
         <div className="rounded-[32px] bg-secondary px-8 py-16 text-center">
           <h2
-            className="mb-4 text-[2.5rem] font-bold text-foreground md:text-[3.25rem]"
-            style={{ fontWeight: 600, lineHeight: "1.06em", letterSpacing: "-0.035em" }}
+            className="mb-4 h2-section text-foreground"
           >
             Ready To Get Your Starlink Installed?
           </h2>

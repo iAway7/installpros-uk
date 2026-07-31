@@ -51,7 +51,7 @@ export function ReviewsCarousel({
             type="button"
             aria-label="Previous reviews"
             onClick={() => scrollByCard(-1)}
-            className="absolute -left-3 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-white text-foreground shadow-md transition hover:bg-secondary md:-left-5"
+            className="absolute -left-3 top-1/2 hidden h-11 w-11 sm:flex -translate-y-1/2 items-center justify-center rounded-full border border-border bg-white text-foreground shadow-md transition duration-200 ease-ds hover:bg-secondary md:-left-5"
           >
             <ChevronLeft className="h-5 w-5" />
           </button>
@@ -59,7 +59,7 @@ export function ReviewsCarousel({
             type="button"
             aria-label="Next reviews"
             onClick={() => scrollByCard(1)}
-            className="absolute -right-3 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-white text-foreground shadow-md transition hover:bg-secondary md:-right-5"
+            className="absolute -right-3 top-1/2 hidden h-11 w-11 sm:flex -translate-y-1/2 items-center justify-center rounded-full border border-border bg-white text-foreground shadow-md transition duration-200 ease-ds hover:bg-secondary md:-right-5"
           >
             <ChevronRight className="h-5 w-5" />
           </button>

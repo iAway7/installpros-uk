@@ -7,17 +7,19 @@ export function HeroSection(
   { smartCoverage = false, addressMode = false }: { smartCoverage?: boolean; addressMode?: boolean } = {},
 ) {
   return (
-    <section className="relative flex min-h-screen flex-col overflow-hidden">
+    <section className="relative flex min-h-[100svh] flex-col overflow-hidden">
       <div
         className="absolute inset-0"
         style={{
           backgroundImage: "url(/funnel/vr-hero.webp)",
           backgroundSize: "cover",
           backgroundPosition: "center top",
-          backgroundAttachment: "fixed",
         }}
+        // `fixed` is broken on iOS Safari (the image rescales and jumps), so the
+        // parallax only kicks in from md up, where it actually works.
+        data-parallax
       >
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0a1929]/60 via-[#0d1b2a]/70 to-[#000000]/85 md:from-[#0a1929]/40 md:via-[#0d1b2a]/50 md:to-[#000000]/70" />
+        <div className="hero-overlay absolute inset-0" />
       </div>
 
       {/* Centered content. Extra top padding offsets the fixed header so the

@@ -53,7 +53,41 @@ const config: Config = {
         success: {
           DEFAULT: "hsl(var(--success))",
           foreground: "hsl(var(--success-foreground))",
+          // Lighter green for dark surfaces (the hero). .theme-funnel-v2 only.
+          bright: "hsl(var(--success-bright))",
         },
+        // ── Tokens introduced by .theme-funnel-v2 ───────────────────────────
+        // Additive: these resolve to nothing outside that scope, so the
+        // Phase-1 (`:root`), admin and v1 funnel themes are untouched.
+        brand: {
+          DEFAULT: "hsl(var(--primary))",
+          hover: "hsl(var(--brand-hover))",
+          icon: "hsl(var(--brand-icon))",
+          soft: "hsl(var(--brand-soft))",
+        },
+        selection: {
+          DEFAULT: "hsl(var(--selection))",
+          border: "hsl(var(--selection-border))",
+        },
+        field: {
+          DEFAULT: "hsl(var(--field))",
+          hover: "hsl(var(--field-hover))",
+        },
+        error: {
+          DEFAULT: "hsl(var(--error))",
+          foreground: "hsl(var(--error-foreground))",
+        },
+        gold: "hsl(var(--gold))",
+        whatsapp: "hsl(var(--whatsapp))",
+      },
+      transitionTimingFunction: {
+        // Design-system easing — cubic-bezier(0.16, 1, 0.3, 1)
+        ds: "var(--ease-out)",
+      },
+      transitionDuration: {
+        // DS durations: card hover 450ms, accordion 550ms, nav 400ms
+        450: "450ms",
+        550: "550ms",
       },
       borderRadius: {
         lg: "var(--radius)",

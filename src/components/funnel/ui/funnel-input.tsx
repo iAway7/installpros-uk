@@ -2,7 +2,13 @@ import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
-/** Funnel input — white field with sm / default / lg sizing, like the original. */
+/**
+ * Funnel input — white field with sm / default / lg sizing.
+ *
+ * Focus and error are token-driven: focus uses --selection (the neutral), never
+ * brand red, because red is reserved for the primary button. Error uses the
+ * single --error token (#DC2626, 4.83:1 on white).
+ */
 const funnelInputVariants = cva(
   "flex w-full rounded-md border bg-white text-black ring-offset-background placeholder:text-gray-500 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 transition-colors duration-200",
   {
@@ -13,8 +19,10 @@ const funnelInputVariants = cva(
         lg: "h-14 px-6 py-3 text-base",
       },
       state: {
-        default: "border-[1.5px] border-neutral-300 focus-visible:border-[#404040] focus-visible:ring-2 focus-visible:ring-[#1A1512]/15",
-        error: "border-[1.5px] border-destructive focus-visible:ring-2 focus-visible:ring-destructive/20",
+        default:
+          "border-[1.5px] border-field focus-visible:border-selection-border focus-visible:ring-2 focus-visible:ring-[hsl(var(--selection)/0.15)]",
+        error:
+          "border-[1.5px] border-error focus-visible:border-error focus-visible:ring-2 focus-visible:ring-error/20",
       },
     },
     defaultVariants: { inputSize: "default", state: "default" },
@@ -30,6 +38,9 @@ export const FunnelInput = React.forwardRef<HTMLInputElement, FunnelInputProps>(
     <input
       ref={ref}
       type={type}
+      // Keep the visual error state and the accessibility state in sync — a
+      // red border alone is invisible to a screen reader.
+      aria-invalid={state === "error" ? true : undefined}
       className={cn(funnelInputVariants({ inputSize, state }), className)}
       {...props}
     />

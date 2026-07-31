@@ -189,7 +189,7 @@ export function AddressAutocomplete({
               }}
               onMouseEnter={() => setActive(i)}
               className={`flex cursor-pointer items-start gap-3 px-4 py-3 ${
-                i === active ? "bg-neutral-100" : "hover:bg-neutral-100"
+                i === active ? "bg-secondary" : "hover:bg-secondary"
               }`}
             >
               <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-primary" />

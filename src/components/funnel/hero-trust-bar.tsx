@@ -1,3 +1,7 @@
+"use client";
+
+import { useEffect, useState, type ReactNode } from "react";
+
 /** Google "G" mark. */
 function GoogleG({ size = 20 }: { size?: number }) {
   return (
@@ -10,78 +14,119 @@ function GoogleG({ size = 20 }: { size?: number }) {
   );
 }
 
+/** The five trust badges (inner content only — centered, no dividers). Reused
+ *  by the desktop row and the mobile auto-rotator. */
+const BADGES: ReactNode[] = [
+  <a
+    key="google"
+    href="https://maps.app.goo.gl/UvqYwqVrAV6R9T5m6"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Read our reviews on Google"
+    className="flex items-center gap-2 transition-opacity hover:opacity-80"
+  >
+    <GoogleG size={20} />
+    <span className="text-sm font-semibold">5.0</span>
+    <span className="text-sm tracking-[2px] text-gold">★★★★★</span>
+  </a>,
+  <a
+    key="trustpilot"
+    href="https://uk.trustpilot.com/review/installpros.co.uk"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Read our reviews on Trustpilot"
+    className="flex items-center gap-2 transition-opacity hover:opacity-80"
+  >
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="#00B67A" aria-hidden="true">
+      <path d="M12 1.5l3.09 6.83 7.41.66-5.62 4.93 1.68 7.26L12 17.35l-6.56 3.83 1.68-7.26L1.5 8.99l7.41-.66L12 1.5z" />
+    </svg>
+    <span className="text-sm text-white/70">
+      <b className="text-white">Excellent</b> on Trustpilot
+    </span>
+  </a>,
+  <div key="installs" className="flex items-center gap-2">
+    <span className="text-sm font-semibold">9,163+</span>
+    <span className="text-sm text-white/70">UK installations</span>
+  </div>,
+  <div key="times" className="flex flex-col items-center gap-0.5">
+    <span className="text-[8.5px] font-medium uppercase tracking-[0.24em] text-white/70">As featured in</span>
+    <span className="text-[15px] font-semibold text-white" style={{ fontFamily: "Georgia, serif", letterSpacing: "0.03em" }}>
+      THE TIMES
+    </span>
+  </div>,
+  <div key="authorized" className="flex items-center gap-2.5">
+    {/* eslint-disable-next-line @next/next/no-img-element */}
+    <img
+      src="/funnel/Authorised-Starlink-Installer-Getmedigital.png"
+      alt="Authorized Starlink Installer"
+      className="block h-[72px] w-[72px] rounded-[9px]"
+    />
+    <div className="flex flex-col leading-tight">
+      <span className="text-sm text-white/70">Authorized</span>
+      <span className="text-sm font-semibold text-white">Starlink Installer</span>
+    </div>
+  </div>,
+];
+
+const MARQUEE_S = 22; // seconds for one full loop (lower = faster)
+
 /**
- * Hero trust bar — ported from the /starlink-installations landing. Google
- * rating, Trustpilot, install count, The Times, and the Authorized Starlink
- * Installer badge, in one centered row. On the dark hero (white text).
+ * Hero trust bar. Desktop: all five badges in one row with dividers. Mobile:
+ * a continuous right-to-left marquee to save vertical space where ~80% of
+ * traffic is. All badges stay in the DOM for SEO/screen readers; the marquee
+ * respects prefers-reduced-motion (falls back to a static stack).
  */
 export function HeroTrustBar() {
+  const [rotate, setRotate] = useState(false);
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    setRotate(true);
+  }, []);
+
   return (
-    <div className="relative z-10 w-full border-t border-white/10 bg-black/85 backdrop-blur">
+    <div className="relative z-10 w-full border-t border-white/10 bg-black/85 text-white backdrop-blur">
+      {/* Desktop: full row */}
       <div
-        className="container mx-auto flex flex-wrap items-center justify-center gap-y-3 px-6 py-4 text-white"
+        className="container mx-auto hidden flex-wrap items-center justify-center gap-y-3 px-6 py-4 sm:flex"
         style={{ maxWidth: "1160px" }}
       >
-        {/* Google rating */}
-        <a
-          href="https://maps.app.goo.gl/UvqYwqVrAV6R9T5m6"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Read our reviews on Google"
-          className="flex items-center gap-2 px-4 transition-opacity hover:opacity-80 lg:px-6"
-        >
-          <GoogleG size={20} />
-          <span className="text-sm font-semibold">5.0</span>
-          <span className="text-sm tracking-[2px] text-[#fbbc04]">★★★★★</span>
-        </a>
-
-        {/* Trustpilot */}
-        <a
-          href="https://uk.trustpilot.com/review/installpros.co.uk"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Read our reviews on Trustpilot"
-          className="flex items-center gap-2 px-4 transition-opacity hover:opacity-80 sm:border-l sm:border-white/15 lg:px-6"
-        >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="#00B67A" aria-hidden="true">
-            <path d="M12 1.5l3.09 6.83 7.41.66-5.62 4.93 1.68 7.26L12 17.35l-6.56 3.83 1.68-7.26L1.5 8.99l7.41-.66L12 1.5z" />
-          </svg>
-          <span className="text-sm text-white/70">
-            <b className="text-white">Excellent</b> on Trustpilot
-          </span>
-        </a>
-
-        {/* Install count */}
-        <div className="flex items-center gap-2 px-4 sm:border-l sm:border-white/15 lg:px-6">
-          <span className="text-sm font-semibold">9,163+</span>
-          <span className="text-sm text-white/70">UK installations</span>
-        </div>
-
-        {/* As featured in The Times */}
-        <div className="flex flex-col items-start gap-0.5 px-4 sm:border-l sm:border-white/15 lg:px-6">
-          <span className="text-[8.5px] font-medium uppercase tracking-[0.24em] text-white/70">As featured in</span>
-          <span
-            className="text-[15px] font-semibold text-white"
-            style={{ fontFamily: "Georgia, serif", letterSpacing: "0.03em" }}
+        {BADGES.map((badge, i) => (
+          <div
+            key={i}
+            className={`flex items-center px-4 lg:px-6 ${i > 0 ? "border-l border-white/15" : ""}`}
           >
-            THE TIMES
-          </span>
-        </div>
-
-        {/* Authorized Starlink Installer */}
-        <div className="flex items-center gap-2.5 px-4 sm:border-l sm:border-white/15 lg:px-6">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/funnel/Authorised-Starlink-Installer-Getmedigital.png"
-            alt="Authorized Starlink Installer"
-            className="block h-[72px] w-[72px] rounded-[9px]"
-          />
-          <div className="flex flex-col leading-tight">
-            <span className="text-sm text-white/70">Authorized</span>
-            <span className="text-sm font-semibold text-white">Starlink Installer</span>
+            {badge}
           </div>
-        </div>
+        ))}
       </div>
+
+      {/* Mobile: continuous right-to-left marquee (or static stack if reduced-motion) */}
+      {rotate ? (
+        <div className="overflow-hidden py-4 sm:hidden">
+          <div className="flex w-max items-center" style={{ animation: `marquee ${MARQUEE_S}s linear infinite` }}>
+            {[...BADGES, ...BADGES].map((badge, i) => (
+              <div key={i} className="flex shrink-0 items-center justify-center px-8" aria-hidden={i >= BADGES.length}>
+                {badge}
+              </div>
+            ))}
+          </div>
+          <style jsx>{`
+            @keyframes marquee {
+              from { transform: translateX(0); }
+              to { transform: translateX(-50%); }
+            }
+          `}</style>
+        </div>
+      ) : (
+        <div className="flex flex-col items-center gap-6 px-6 py-7 sm:hidden">
+          {BADGES.map((badge, i) => (
+            <div key={i} className="flex items-center justify-center">
+              {badge}
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
