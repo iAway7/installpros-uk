@@ -277,7 +277,7 @@ export function ZipAvailabilityChecker(
                       </p>
                     )}
                     <FunnelButton onClick={next} className="w-full">
-                      {addressMode ? "Get a quote" : "Next"} <ArrowRight className="ml-2 h-4 w-4" />
+                      Get a quote <ArrowRight className="ml-2 h-4 w-4" />
                     </FunnelButton>
                   </div>
                 )}

@@ -219,7 +219,7 @@ export function PropertyImageUpload() {
             <div className="mt-8 rounded-xl border border-white/10 bg-white/5 p-5">
               <h3 className="mb-3 font-semibold text-white">What to include:</h3>
               <ul className="space-y-2">
-                {["Front of the house (roof visible)", "Install location", "Trees or obstacles"].map((tip) => (
+                {["Front of the house (roof visible)", "Trees or obstacles"].map((tip) => (
                   <li key={tip} className="flex items-start gap-2 text-sm text-white/80">
                     <span className="mt-1.5 leading-none text-primary">•</span>
                     <span>{tip}</span>

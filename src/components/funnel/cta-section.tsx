@@ -19,7 +19,7 @@ export function CtaSection({ addressMode = false }: { addressMode?: boolean } = 
         </div>
 
         <p className="mx-auto mt-8 max-w-4xl text-center text-base leading-relaxed text-muted-foreground">
-          © 2024 Install Pros® is a registered trade mark of InstallPros Group Ltd (UK), registered in the United
+          © {new Date().getFullYear()} Install Pros® is a registered trade mark of InstallPros Group Ltd (UK), registered in the United
           Kingdom. Company No. 14896859. VAT No. GB456635174. Registered office: Rotunda Buildings, Montpellier
           Exchange, Cheltenham, GL50 1SX. Tel: 020 3397 7003 | Email: admin@installpros.co.uk | All rights reserved
         </p>
