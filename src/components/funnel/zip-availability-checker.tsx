@@ -11,7 +11,7 @@ import { FormOption } from "./ui/form-option";
 import { ConsentCheckbox } from "./consent-checkbox";
 import { isValidUkPostcode, normalisePostcode } from "@/lib/utils";
 import { checkUkPostcode } from "@/lib/funnel/check-postcode";
-import { validateName, validatePhone, validateEmail, formatPhone } from "@/lib/funnel/validation";
+import { validateName, validatePhone, validateEmail, formatPhone, isValidUkPhone } from "@/lib/funnel/validation";
 import { submitLead } from "@/lib/funnel/submit-lead";
 import { track, EVENTS } from "@/lib/analytics";
 
@@ -62,12 +62,27 @@ export function ZipAvailabilityChecker(
   const phoneRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
 
+  // Last postcode actually sent to the API, in canonical form.
+  const lastChecked = useRef("");
+
   // Live check once the input forms a valid UK postcode (step 0, postcode mode)
   useEffect(() => {
     if (step !== 0 || addressMode) return;
     const pc = normalisePostcode(postcode);
-    if (isValidUkPostcode(pc)) check(pc);
-    else { setStatus("idle"); setError(""); }
+    if (isValidUkPostcode(pc)) {
+      // "SW1A1AA" and "SW1A 1AA" are the same postcode. Re-checking on the
+      // blur-triggered reformat sent status back to "checking", which unmounts
+      // the Continue button — and since blur fires before click, the button
+      // vanished from under the cursor and the first press did nothing.
+      // Guarding on the canonical value also stops duplicate API calls.
+      if (pc === lastChecked.current) return;
+      lastChecked.current = pc;
+      check(pc);
+    } else {
+      lastChecked.current = "";
+      setStatus("idle");
+      setError("");
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [postcode, step]);
 
@@ -138,10 +153,27 @@ export function ZipAvailabilityChecker(
     } else {
       setStatus("idle");
       setError("We couldn't check your postcode just now. Please try again.");
+      // Transient failure: forget it so retyping the same postcode retries
+      // instead of being swallowed by the duplicate guard.
+      lastChecked.current = "";
     }
   }
 
   const onPostcodeChange = (e: React.ChangeEvent<HTMLInputElement>) => setPostcode(cleanPostcode(e.target.value));
+  /*
+   * NOTE — do not reformat this field on blur.
+   *
+   * Tidying "SW1A1AA" into "SW1A 1AA" when the field loses focus looks
+   * harmless, but blur fires on mousedown, i.e. *inside* the click on the
+   * Continue button. The resulting state update re-renders the button between
+   * mousedown and mouseup and the first press is swallowed — the user has to
+   * click twice on the single most important control in the funnel.
+   *
+   * The canonical form is still what gets sent to the API and stored on the
+   * lead (see `normalisePostcode` in the effect below); only the input is left
+   * exactly as the user typed it. A cosmetic space is not worth putting a
+   * state change in the path of the primary CTA.
+   */
 
   function next() {
     setIsTransitioning(true);
@@ -166,7 +198,10 @@ export function ZipAvailabilityChecker(
   function onPhoneChange(e: React.ChangeEvent<HTMLInputElement>) {
     const f = formatPhone(e.target.value);
     setFormData((d) => ({ ...d, phone: f }));
-    setShowPhoneCheck(f.length >= 14);
+    // The tick means "this is a valid UK number", not "you've typed enough
+    // characters" — a length check showed a green tick on numbers the form
+    // then rejected on submit.
+    setShowPhoneCheck(isValidUkPhone(f));
   }
   function onEmailChange(e: React.ChangeEvent<HTMLInputElement>) {
     const v = e.target.value;
@@ -179,9 +214,17 @@ export function ZipAvailabilityChecker(
   function canProceed() {
     switch (step) {
       case 1: return formData.fullName.trim().length > 0;
-      case 2: return formData.phone.length === 14;
+      // Was `length === 14` — the width of the old US "(XXX) XXX-XXXX" mask.
+      // No valid UK number is ever exactly 14 characters, so Next never enabled.
+      case 2: return isValidUkPhone(formData.phone);
       case 3: return formData.email.includes("@");
-      case 4: return formData.installationType !== "" && consent;
+      // Consent deliberately NOT gated here. `submit()` already handles it —
+      // it sets consentError, shows the inline message and toasts. But if the
+      // button is disabled, none of that can ever fire: the user selects an
+      // install type, the button stays grey, and nothing says why. A disabled
+      // control that won't explain itself is a dead end (and screen readers
+      // skip it entirely). Let them click; then tell them what's missing.
+      case 4: return formData.installationType !== "";
       default: return true;
     }
   }
@@ -303,7 +346,7 @@ export function ZipAvailabilityChecker(
               <div className="relative">
                 <FunnelInput
                   ref={phoneRef} type="tel" value={formData.phone} onChange={onPhoneChange}
-                  placeholder="(555) 555-5555" inputSize="lg" aria-label="Phone number"
+                  placeholder="07700 900123" inputSize="lg" aria-label="Phone number"
                   state={errors.phone ? "error" : "default"}
                   aria-describedby={errors.phone ? "err-phone" : undefined}
                   className="text-center text-base md:text-[1.4rem]"

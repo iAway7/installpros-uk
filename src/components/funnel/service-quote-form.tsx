@@ -13,7 +13,7 @@ import { ConsentCheckbox } from "./consent-checkbox";
 import { SERVICE_OPTIONS } from "@/lib/funnel/states";
 import { isValidUkPostcode, normalisePostcode } from "@/lib/utils";
 import { checkUkPostcode } from "@/lib/funnel/check-postcode";
-import { validateName, validatePhone, validateEmail, formatPhone } from "@/lib/funnel/validation";
+import { validateName, validatePhone, validateEmail, formatPhone, isValidUkPhone } from "@/lib/funnel/validation";
 import { submitLead } from "@/lib/funnel/submit-lead";
 import { track, EVENTS } from "@/lib/analytics";
 
@@ -153,7 +153,10 @@ export function ServiceQuoteForm({
   function onPhoneChange(e: React.ChangeEvent<HTMLInputElement>) {
     const f = formatPhone(e.target.value);
     setFormData((d) => ({ ...d, phone: f }));
-    setShowPhoneCheck(f.length >= 14);
+    // The tick means "this is a valid UK number", not "you've typed enough
+    // characters" — a length check showed a green tick on numbers the form
+    // then rejected on submit.
+    setShowPhoneCheck(isValidUkPhone(f));
   }
   function onEmailChange(e: React.ChangeEvent<HTMLInputElement>) {
     const v = e.target.value;
@@ -166,9 +169,14 @@ export function ServiceQuoteForm({
   function canProceed() {
     switch (step) {
       case 1: return formData.fullName.trim().length > 0;
-      case 2: return formData.phone.length === 14;
+      // Was `length === 14` — the width of the old US "(XXX) XXX-XXXX" mask.
+      // No valid UK number is ever exactly 14 characters, so Next never enabled.
+      case 2: return isValidUkPhone(formData.phone);
       case 3: return formData.email.includes("@");
-      case 4: return formData.installationType !== "" && consent;
+      // See zip-availability-checker: gating on consent here disables the
+      // button, which makes submit()'s consent error unreachable — the user is
+      // blocked with no explanation. Let the click through and explain.
+      case 4: return formData.installationType !== "";
       default: return true;
     }
   }

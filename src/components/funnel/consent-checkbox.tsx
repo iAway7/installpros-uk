@@ -34,7 +34,15 @@ export function ConsentCheckbox({
   return (
     <div>
       <label htmlFor={id} className="flex cursor-pointer items-start gap-2.5 text-left">
-        <span className="relative mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center">
+        {/* Two steps, and both are needed.
+            1. Wrapper height = the first line box (14px x leading-relaxed
+               1.625 = 22.75px), so `items-center` centres the box on line one
+               regardless of how many lines the label wraps to.
+            2. A 2px optical nudge down. This typeface has a tall ascender and a
+               short descender, so glyphs sit low inside the line box and a
+               mathematically centred square reads as floating high. Optical
+               centring beats metric centring for small squares next to text. */}
+        <span className="relative inline-flex h-[22.75px] w-5 shrink-0 translate-y-[2px] items-center justify-center">
           <input
             id={id}
             type="checkbox"
@@ -44,7 +52,10 @@ export function ConsentCheckbox({
             aria-invalid={error || undefined}
             aria-describedby={error ? errorId : undefined}
             className={cn(
-              "peer h-5 w-5 cursor-pointer appearance-none rounded-md border-2 bg-white transition-colors",
+              // NOTE: not `rounded-md`. --radius is 0.75rem, so `md` resolves to
+              // 10px — exactly half of this 20px box, which renders a circle and
+              // reads as a radio button. Consent needs a square box.
+              "peer h-5 w-5 cursor-pointer appearance-none rounded-[5px] border-2 bg-white transition-colors",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:ring-[hsl(var(--selection)/0.4)]",
               dark
                 ? "border-white/50 bg-transparent checked:border-white checked:bg-white"
@@ -62,8 +73,11 @@ export function ConsentCheckbox({
           />
         </span>
         <span className={cn("text-sm leading-relaxed", textClass)}>
-          By providing your details, you have consented to being contacted by Install Pros in accordance with GDPR. Read
-          our{" "}
+          {/* First person and present tense on purpose: ticking the box IS the
+              act of consenting, so copy that says the user "has consented"
+              describes something that hasn't happened yet. UK GDPR asks for a
+              clear affirmative action. */}
+          I agree to be contacted by Install Pros about my quote. Read our{" "}
           <a
             href="https://installpros.co.uk/terms-and-conditions/"
             target="_blank"

@@ -54,7 +54,11 @@ export function MainHeader() {
             className={`${linkBase} ${linkTone} min-w-[48px] justify-center hover:text-whatsapp sm:min-w-0 sm:justify-start`}
           >
             <WhatsAppIcon className="h-5 w-5 text-whatsapp" />
-            <span className="hidden sm:inline">WhatsApp</span>
+            {/* Not `hidden sm:inline`: `display:none` drops the text from the
+                accessibility tree, leaving this link with no accessible name on
+                mobile — where most of the traffic is. `sr-only` keeps it
+                announced at every width and shows it from `sm` up. */}
+            <span className="sr-only sm:not-sr-only sm:inline">WhatsApp</span>
           </a>
           <a
             href="tel:02033977003"
