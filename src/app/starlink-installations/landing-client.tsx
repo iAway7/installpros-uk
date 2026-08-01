@@ -613,9 +613,9 @@ export function StarlinkInstallationsLanding({
               </div>
               <div className="trust-cell">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/funnel/Authorised-Starlink-Installer-Getmedigital.png" alt="Authorized Starlink Installer" style={{ height: 46, width: 46, borderRadius: 9, display: "block" }} />
+                <img src="/funnel/Authorised-Starlink-Installer-Getmedigital.png" alt="Authorised Starlink Installer" style={{ height: 46, width: 46, borderRadius: 9, display: "block" }} />
                 <div style={{ display: "flex", flexDirection: "column", lineHeight: 1.2 }}>
-                  <span style={{ fontSize: 13, color: "var(--secondary)", fontWeight: 400 }}>Authorized</span>
+                  <span style={{ fontSize: 13, color: "var(--secondary)", fontWeight: 400 }}>Authorised</span>
                   <span style={{ fontSize: 14, color: "var(--primary)", fontWeight: 600 }}>Starlink Installer</span>
                 </div>
               </div>

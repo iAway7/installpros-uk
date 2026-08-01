@@ -11,7 +11,7 @@ export function CtaSection({ addressMode = false }: { addressMode?: boolean } = 
             Ready To Get Your Starlink Installed?
           </h2>
           <p className="mb-8 text-base text-foreground md:text-lg">
-            Let&apos;s make your Starlink setup stress-free, fast, and fully optimized.
+            Let&apos;s make your Starlink setup stress-free, fast, and fully optimised.
           </p>
           <div className="mx-auto max-w-xl">
             <ServiceQuoteForm addressMode={addressMode} />
