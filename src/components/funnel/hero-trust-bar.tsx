@@ -88,7 +88,7 @@ export function HeroTrustBar() {
     <div className="relative z-10 w-full border-t border-white/10 bg-black/85 text-white backdrop-blur">
       {/* Desktop: full row */}
       <div
-        className="container mx-auto hidden flex-wrap items-center justify-center gap-y-3 px-6 py-4 sm:flex"
+        className="container mx-auto hidden flex-wrap items-center justify-center gap-y-3 py-4 sm:flex"
         style={{ maxWidth: "1160px" }}
       >
         {BADGES.map((badge, i) => (

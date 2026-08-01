@@ -264,7 +264,7 @@ export function BeforeAfterSection() {
 
   return (
     <section id="difference" className="w-full scroll-mt-28 bg-background py-16 md:py-24">
-      <div className="container mx-auto max-w-6xl px-6">
+      <div className="container mx-auto max-w-6xl">
         <div className="mb-12 text-center">
           <p className="eyebrow">The Difference</p>
           <h2

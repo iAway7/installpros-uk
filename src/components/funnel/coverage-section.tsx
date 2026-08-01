@@ -28,7 +28,7 @@ const FEATURES = [
 export function CoverageSection() {
   return (
     <section className="w-full scroll-mt-28 bg-background py-16 md:py-24">
-      <div className="container mx-auto max-w-6xl px-6">
+      <div className="container mx-auto max-w-6xl">
         <div className="text-center">
           <p className="eyebrow">What We Offer</p>
           <h2

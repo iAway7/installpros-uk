@@ -27,7 +27,7 @@ const STATS: { value: ReactNode; label: string }[] = [
 export function TrackRecordSection() {
   return (
     <section id="track-record" className="w-full scroll-mt-28 bg-background py-16 md:py-24">
-      <div className="container mx-auto max-w-6xl px-6">
+      <div className="container mx-auto max-w-6xl">
         <p className="eyebrow">Track Record</p>
         <h2
           className="mt-4 h2-section text-foreground"

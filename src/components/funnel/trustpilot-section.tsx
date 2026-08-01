@@ -27,7 +27,7 @@ export function TrustpilotSection() {
         src="https://widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js"
         strategy="afterInteractive"
       />
-      <div className="container mx-auto max-w-6xl px-6">
+      <div className="container mx-auto max-w-6xl">
         {/* TrustBox widget — Grid */}
         <div
           ref={ref}

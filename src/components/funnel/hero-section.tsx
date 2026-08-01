@@ -22,10 +22,16 @@ export function HeroSection(
         <div className="hero-overlay absolute inset-0" />
       </div>
 
-      {/* Centered content. Extra top padding offsets the fixed header so the
-          content sits optically centred in the visible area (not behind it). */}
-      <div className="relative z-10 flex flex-1 items-center justify-center px-6 pt-28 pb-16 md:pt-36 md:pb-16">
-        <div className="container mx-auto text-center text-white">
+      {/* Centred content, but centred with `my-auto` on the child rather than
+          `items-center` on the parent. They look identical while the content
+          fits — and behave completely differently when it doesn't. Centre
+          alignment overflows equally in both directions, so on a short viewport
+          the tallest step (step 4: four cards, consent copy, two buttons) pushed
+          its own heading up underneath the fixed header, where it was clipped
+          and unreachable. Auto margins collapse to zero instead of overflowing,
+          so the content always starts below `pt-28`. */}
+      <div className="relative z-10 flex flex-1 justify-center pt-28 pb-16 md:pt-36 md:pb-16">
+        <div className="container mx-auto my-auto text-center text-white">
           {/* Supporting label, not a headline: it sits above the value
               proposition, so it has to read as subordinate to it. The pill
               already supplies contrast and containment — adding size and

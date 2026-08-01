@@ -10,6 +10,10 @@ const config: Config = {
   theme: {
     container: {
       center: true,
+      // Single source of truth for the page gutter: 24px on every breakpoint.
+      // Do NOT add px-* to an element that already has `container` — it stacks
+      // on top of this instead of replacing it, which is how the site ended up
+      // with 48px gutters in the sections and 40px in the headers.
       padding: "1.5rem",
       screens: { "2xl": "1200px" },
     },

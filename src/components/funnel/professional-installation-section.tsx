@@ -18,7 +18,7 @@ const FEATURES = [
 export function ProfessionalInstallationSection() {
   return (
     <section className="bg-secondary py-16 md:py-24">
-      <div className="container mx-auto max-w-[1280px] px-4">
+      <div className="container mx-auto max-w-[1280px]">
         <h2
           className="mb-4 text-center text-[2.5rem] font-bold italic text-foreground md:text-[3.25rem]"
           style={{ lineHeight: "1.1em", letterSpacing: "-1px" }}

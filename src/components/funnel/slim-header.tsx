@@ -28,7 +28,7 @@ export function SlimHeader() {
         scrolled ? "shadow-md" : ""
       }`}
     >
-      <div className="container mx-auto flex items-center justify-between px-4 py-3" style={{ maxWidth: "1140px" }}>
+      <div className="container mx-auto flex items-center justify-between py-3" style={{ maxWidth: "1140px" }}>
         <a href="/starlink-installation" className="flex items-center" aria-label="InstallPros">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/funnel/installpros-logo-colored-new.svg" alt="Install Pros" className="h-8 md:h-10" />

@@ -37,7 +37,7 @@ export async function CustomerStoriesSection() {
 
   return (
     <section id="stories" className="w-full scroll-mt-28 bg-background py-16 md:py-24">
-      <div className="container mx-auto max-w-6xl px-6">
+      <div className="container mx-auto max-w-6xl">
         <div className="flex flex-wrap items-end justify-between gap-7">
           <div>
             <p className="eyebrow">Customer Stories</p>

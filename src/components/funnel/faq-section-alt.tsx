@@ -12,7 +12,7 @@ import { LANDING_FAQS } from "@/lib/funnel/faqs";
 export function FaqSectionAlt() {
   return (
     <section id="faq" className="w-full scroll-mt-28 bg-background py-16 md:py-24">
-      <div className="container mx-auto max-w-4xl px-6">
+      <div className="container mx-auto max-w-4xl">
         <p className="text-center eyebrow">FAQ</p>
         <h2
           className="mb-12 mt-4 text-center h2-section text-foreground"

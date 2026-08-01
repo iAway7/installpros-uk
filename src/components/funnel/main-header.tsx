@@ -33,7 +33,7 @@ export function MainHeader() {
       }`}
     >
       <div
-        className="container mx-auto flex items-center justify-between px-4 py-4"
+        className="container mx-auto flex items-center justify-between py-4"
         style={{ maxWidth: "1140px" }}
       >
         <a href="/install-quote" className="flex min-h-[48px] items-center" aria-label="Install Pros">
