@@ -48,7 +48,6 @@ export function ConsentCheckbox({
             type="checkbox"
             checked={checked}
             onChange={(e) => onChange(e.target.checked)}
-            aria-label="Accept terms and GDPR consent"
             aria-invalid={error || undefined}
             aria-describedby={error ? errorId : undefined}
             className={cn(

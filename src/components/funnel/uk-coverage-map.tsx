@@ -38,8 +38,12 @@ const CITIES = [
 
 const VB = { w: 760, h: 836 };
 
+// London is where most of our traffic is — show its tooltip by default, but
+// only until the user first interacts. After any hover it behaves normally.
+const DEFAULT_CITY = CITIES.find((c) => c.n === "London") ?? CITIES[0];
+
 export function UkCoverageMap({ baseColor = "var(--primary)" }: { baseColor?: string } = {}) {
-  const [hover, setHover] = useState<(typeof CITIES)[number] | null>(null);
+  const [hover, setHover] = useState<(typeof CITIES)[number] | null>(DEFAULT_CITY);
 
   return (
     <div style={{ position: "relative", width: "100%" }}>
