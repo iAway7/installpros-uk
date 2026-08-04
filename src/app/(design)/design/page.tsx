@@ -49,13 +49,24 @@ export default function DesignHome() {
       </section>
 
       <section>
-        <h2 className="text-[22px] font-semibold tracking-[-0.02em]">Start here</h2>
+        <h2 className="text-[22px] font-semibold tracking-[-0.02em]">How this is organised</h2>
+        <p className="mt-2 max-w-2xl text-[15px] leading-[1.6] text-neutral-500">
+          Foundations and tokens are the decisions. Primitives, composites and patterns are the things built from them.
+          The rest is the scaffolding that keeps it consistent.
+        </p>
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
           {[
-            { href: "/design/foundations/color", t: "Color", d: "Tokens in both modes, and which red means what." },
-            { href: "/design/foundations/typography", t: "Typography", d: "Display-XL through Caption, with every spec." },
-            { href: "/design/foundations/spacing", t: "Spacing & radius", d: "The vertical rhythm and the radius scale." },
-            { href: "/design/components/button", t: "Button", d: "Variants, sizes and states, rendered live." },
+            { href: "/design/foundations/color", t: "Foundations", d: "Color, typography, spacing, motion — the raw visual decisions." },
+            { href: "/design/tokens", t: "Design tokens", d: "How a decision travels from globals.css into a component." },
+            { href: "/design/primitives/button", t: "Primitives", d: "Button, input, selection. No business logic." },
+            { href: "/design/composites", t: "Composites", d: "Cards, stats, accordion — primitives assembled." },
+            { href: "/design/patterns", t: "Patterns", d: "How the lead capture and the proof stacking work." },
+            { href: "/design/layout", t: "Layout system", d: "One container, one rhythm, three grids." },
+            { href: "/design/responsive", t: "Responsive rules", d: "Two layouts. Everything happens at 768px." },
+            { href: "/design/accessibility", t: "Accessibility", d: "WCAG AA — what is guaranteed and what is not." },
+            { href: "/design/conventions/naming", t: "Naming", d: "Why --primary is red and there is only one H2." },
+            { href: "/design/conventions/structure", t: "Folder structure", d: "Where a file goes, and the three themes." },
+            { href: "/design/migration", t: "Migration plan", d: "Six phases. Three done, one in progress." },
           ].map((c) => (
             <Link
               key={c.href}

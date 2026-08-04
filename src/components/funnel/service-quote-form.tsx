@@ -4,10 +4,10 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Check, Loader2, ArrowRight, ArrowLeft, Home, Ship, Building2, Caravan } from "lucide-react";
 import { toast } from "sonner";
-import { FunnelInput } from "./ui/funnel-input";
+import { FunnelInput } from "@/components/system/funnel-input";
 import { AddressAutocomplete, type AddressSelection } from "./ui/address-autocomplete";
-import { FunnelButton } from "./ui/funnel-button";
-import { FormOption } from "./ui/form-option";
+import { FunnelButton } from "@/components/system/funnel-button";
+import { FormOption } from "@/components/system/form-option";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ConsentCheckbox } from "./consent-checkbox";
 import { SERVICE_OPTIONS } from "@/lib/funnel/states";
@@ -235,7 +235,7 @@ export function ServiceQuoteForm({
                       inputSize="lg" maxLength={8} aria-label="Postcode" autoComplete="postal-code"
                       state={status === "invalid" ? "error" : "default"}
                       aria-describedby={error ? "cta-err-postcode" : undefined}
-                      className="text-center text-base uppercase md:text-[1.4rem]"
+                      className="text-center text-base uppercase md:text-[22px]"
                     />
                     {status === "checking" && <Loader2 className="absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 animate-spin text-primary" />}
                     {status === "available" && <Check className="absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-success" />}
@@ -264,13 +264,13 @@ export function ServiceQuoteForm({
 
           {step === 1 && (
             <StepField anim={anim} label={`Step 1 of ${TOTAL_STEPS}`} title="What's your name?" error={errors.fullName} errorId="cta-err-name">
-              <FunnelInput ref={nameRef} type="text" value={formData.fullName} onChange={(e) => setFormData((d) => ({ ...d, fullName: e.target.value }))} placeholder="Full Name" inputSize="lg" aria-label="Full name" state={errors.fullName ? "error" : "default"} aria-describedby={errors.fullName ? "cta-err-name" : undefined} className="text-center text-base md:text-[1.4rem]" />
+              <FunnelInput ref={nameRef} type="text" value={formData.fullName} onChange={(e) => setFormData((d) => ({ ...d, fullName: e.target.value }))} placeholder="Full Name" inputSize="lg" aria-label="Full name" state={errors.fullName ? "error" : "default"} aria-describedby={errors.fullName ? "cta-err-name" : undefined} className="text-center text-base md:text-[22px]" />
             </StepField>
           )}
           {step === 2 && (
             <StepField anim={anim} label={`Step 2 of ${TOTAL_STEPS}`} title="What's your phone number?" error={errors.phone} errorId="cta-err-phone">
               <div className="relative">
-                <FunnelInput ref={phoneRef} type="tel" value={formData.phone} onChange={onPhoneChange} placeholder="07123 456789" inputSize="lg" aria-label="Phone number" state={errors.phone ? "error" : "default"} aria-describedby={errors.phone ? "cta-err-phone" : undefined} className="text-center text-base md:text-[1.4rem]" />
+                <FunnelInput ref={phoneRef} type="tel" value={formData.phone} onChange={onPhoneChange} placeholder="07123 456789" inputSize="lg" aria-label="Phone number" state={errors.phone ? "error" : "default"} aria-describedby={errors.phone ? "cta-err-phone" : undefined} className="text-center text-base md:text-[22px]" />
                 {showPhoneCheck && <Check className="absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-success" />}
               </div>
             </StepField>
@@ -278,7 +278,7 @@ export function ServiceQuoteForm({
           {step === 3 && (
             <StepField anim={anim} label={`Step 3 of ${TOTAL_STEPS}`} title="What's your email?" error={errors.email} errorId="cta-err-email">
               <div className="relative">
-                <FunnelInput ref={emailRef} type="email" value={formData.email} onChange={onEmailChange} placeholder="you@example.com" inputSize="lg" aria-label="Email" state={errors.email ? "error" : "default"} aria-describedby={errors.email ? "cta-err-email" : undefined} className="text-center text-base md:text-[1.4rem]" />
+                <FunnelInput ref={emailRef} type="email" value={formData.email} onChange={onEmailChange} placeholder="you@example.com" inputSize="lg" aria-label="Email" state={errors.email ? "error" : "default"} aria-describedby={errors.email ? "cta-err-email" : undefined} className="text-center text-base md:text-[22px]" />
                 {showEmailCheck && <Check className="absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-success" />}
               </div>
             </StepField>

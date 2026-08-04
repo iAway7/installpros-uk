@@ -2,7 +2,7 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import { Loader2, MapPin } from "lucide-react";
-import { FunnelInput } from "./funnel-input";
+import { FunnelInput } from "@/components/system/funnel-input";
 
 export interface AddressSelection {
   address: string;

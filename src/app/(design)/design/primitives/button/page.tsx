@@ -1,6 +1,6 @@
 import { ArrowRight } from "lucide-react";
-import { FunnelButton } from "@/components/funnel/ui/funnel-button";
-import { PageHeader, Section, Preview, Code, Table, Mono, Rule } from "../../_components/docs";
+import { FunnelButton } from "@/components/system/funnel-button";
+import { PageHeader, Section, Preview, Code, Table, Mono, Rule, BestPractices } from "../../_components/docs";
 
 export const metadata = { title: "Button" };
 
@@ -18,7 +18,7 @@ export default function ButtonPage() {
           <FunnelButton variant="secondary">Back</FunnelButton>
           <FunnelButton variant="outline">Talk on WhatsApp</FunnelButton>
         </Preview>
-        <Code>{`import { FunnelButton } from "@/components/funnel/ui/funnel-button";
+        <Code>{`import { FunnelButton } from "@/components/system/funnel-button";
 
 <FunnelButton>Get my free quote</FunnelButton>
 <FunnelButton variant="secondary">Back</FunnelButton>
@@ -73,24 +73,30 @@ export default function ButtonPage() {
         </Rule>
       </Section>
 
-      <Section title="Anti-patterns">
-        <ul className="space-y-3 text-[15px] leading-[1.7] text-neutral-600">
-          <li>
-            <strong className="text-neutral-900">Do not hand-roll a button.</strong> Two CTAs on the page were{" "}
-            <Mono>&lt;a&gt;</Mono> tags with copied classes and a 14px inline font size. They drifted from the component
-            within a release.
-          </li>
-          <li>
-            <strong className="text-neutral-900">Use asChild for links.</strong>{" "}
-            <Mono>{`<FunnelButton asChild><a href="#quote">…</a></FunnelButton>`}</Mono> keeps the semantics right without
-            duplicating styles.
-          </li>
-          <li>
-            <strong className="text-neutral-900">Do not stack two primaries.</strong> If both options are red, neither is
-            the call to action.
-          </li>
-        </ul>
-      </Section>
+      <BestPractices
+        when={[
+          "Use a button for something that happens — submitting the quote, advancing a step. Use <code>asChild</code> with an <code>&lt;a&gt;</code> for anything that changes the URL.",
+          "Primary is the commitment. Outline is the low-friction alternative next to it (&ldquo;Talk on WhatsApp&rdquo;). Secondary is for going backwards.",
+          "Never two primaries in a row. If both options are red, neither is the call to action.",
+        ]}
+        behavior={[
+          "Hover darkens the fill to <code>--brand-hover</code> rather than dropping opacity, so the button holds its weight over the photo in the hero.",
+          "Disable only when the action is genuinely impossible right now — an incomplete step, a submit already in flight. A disabled button with no explanation reads as broken.",
+          "During submit the label swaps to a spinner plus &ldquo;Submitting…&rdquo; instead of the button disappearing, so the layout does not jump.",
+          "Do not hand-roll one. The two CTAs that were <code>&lt;a&gt;</code> tags with copied classes drifted to 14px while every real button rendered 16px.",
+        ]}
+        content={[
+          "Name what happens: <code>Get My Free Quote</code>, <code>Check Availability</code>. Not <code>Submit</code>, not <code>Continue</code> where something more specific is true.",
+          "Labels render uppercase from the style, so write them in normal case in the JSX — <code>text-transform</code> is presentation, not content.",
+          "Keep them short. At 12px uppercase with +0.5px tracking, a long label stops reading as a button and starts reading as a sentence.",
+        ]}
+        accessibility={[
+          "Focus draws a 2px ring in <code>--selection</code>, never red. A red ring on a red button cannot be seen.",
+          "An icon-only button needs an <code>aria-label</code> naming the action and its target — &ldquo;Previous reviews&rdquo;, not &ldquo;Previous&rdquo;.",
+          "Do not put an <code>aria-label</code> on a button that already has visible text; it overrides the label and the screen reader says something different from what is on screen.",
+          "48px tall by default, comfortably over the 44px touch minimum. <code>size=\"sm\"</code> is 36px and is desktop-only for that reason.",
+        ]}
+      />
     </>
   );
 }

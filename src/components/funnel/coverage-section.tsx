@@ -1,6 +1,6 @@
 import { MapPin, CalendarCheck, Boxes } from "lucide-react";
 import { WhatsAppIcon } from "./ui/whatsapp-icon";
-import { FunnelButton } from "./ui/funnel-button";
+import { FunnelButton } from "@/components/system/funnel-button";
 
 const WHATSAPP_URL = "https://wa.me/447446112343";
 
@@ -53,7 +53,7 @@ export function CoverageSection() {
                 <f.icon className="h-[21px] w-[21px]" strokeWidth={1.6} />
               </div>
               <h3 className="mt-5 text-[17px] font-semibold text-foreground">{f.title}</h3>
-              <p className="mt-2.5 text-[14.5px] text-muted-foreground" style={{ lineHeight: "1.6" }}>
+              <p className="mt-2.5 text-[14px] text-muted-foreground" style={{ lineHeight: "1.6" }}>
                 {f.description}
               </p>
             </div>

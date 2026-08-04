@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { NAV } from "./_components/nav";
+import { DocsFooter } from "./_components/docs-footer";
 
 export const metadata: Metadata = {
   title: { default: "InstallPros Design System", template: "%s | InstallPros Design" },
@@ -7,26 +9,6 @@ export const metadata: Metadata = {
     "The design system behind installpros.co.uk — tokens, typography and components, rendered from the same code that ships.",
   robots: { index: false, follow: false },
 };
-
-const NAV: { group: string; items: { href: string; label: string }[] }[] = [
-  {
-    group: "Foundations",
-    items: [
-      { href: "/design/foundations/color", label: "Color" },
-      { href: "/design/foundations/typography", label: "Typography" },
-      { href: "/design/foundations/spacing", label: "Spacing & radius" },
-      { href: "/design/foundations/motion", label: "Motion" },
-    ],
-  },
-  {
-    group: "Components",
-    items: [
-      { href: "/design/components/button", label: "Button" },
-      { href: "/design/components/input", label: "Input" },
-      { href: "/design/components/selection", label: "Selection" },
-    ],
-  },
-];
 
 export default function DesignLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -60,7 +42,10 @@ export default function DesignLayout({ children }: { children: React.ReactNode }
           </nav>
         </aside>
 
-        <main className="min-w-0 flex-1 py-10 lg:py-16">{children}</main>
+        <main className="min-w-0 flex-1 py-10 lg:py-16">
+          {children}
+          <DocsFooter />
+        </main>
       </div>
     </div>
   );

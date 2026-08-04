@@ -120,6 +120,26 @@
   --input: 0 0% 92%;
   --ring: 0 0% 9%;
   --radius: 0.75rem;
+
+  /* ---- Shared system tokens ------------------------------------------------
+     The same semantic names the funnel uses, so a primitive from
+     components/system renders correctly in both themes. Values are the admin's
+     own: monochrome, because there is no brand red in here. Status keeps its
+     hue — an error is red wherever it appears. */
+  --field: 0 0% 85%;
+  --field-hover: 0 0% 60%;
+  --selection: 0 0% 9%;
+  --selection-border: 0 0% 25%;
+  --brand-hover: 0 0% 20%;
+  --brand-icon: 0 0% 42%;
+  --brand-soft: 0 0% 85%;
+  --error: 0 72% 51%;
+  --error-foreground: 0 0% 100%;
+  --success: 142 72% 29%;
+  --success-foreground: 0 0% 100%;
+  --success-bright: 142 71% 45%;
+  --gold: 45 97% 50%;
+  --whatsapp: 142 70% 49%;
 }
 
 /* Webapp type scale — data-dense UI wants smaller text than marketing pages.
@@ -226,7 +246,9 @@
 }
 
 .theme-funnel .h2-section {
-  font-size: 2.5rem;                /* 40px */
+  /* 32px on mobile, not 40: at 40 the section headings matched the hero H1
+     exactly and the page lost its top-level hierarchy below 768px. */
+  font-size: 2rem;                  /* 32px */
   font-weight: 600;
   line-height: 1.06;
   letter-spacing: -0.035em;

@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Camera, ImagePlus, Loader2, X } from "lucide-react";
 import { toast } from "sonner";
-import { FunnelButton } from "./ui/funnel-button";
+import { FunnelButton } from "@/components/system/funnel-button";
 import { StepIndicator } from "./step-indicator";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { track, EVENTS } from "@/lib/analytics";

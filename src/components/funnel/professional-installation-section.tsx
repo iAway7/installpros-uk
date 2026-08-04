@@ -1,5 +1,5 @@
 import { Check } from "lucide-react";
-import { FunnelButton } from "./ui/funnel-button";
+import { FunnelButton } from "@/components/system/funnel-button";
 
 const FEATURES = [
   { title: "Customised Setup", description: "We customise installations for Residential, Commercial, Marine, and Mobile needs." },

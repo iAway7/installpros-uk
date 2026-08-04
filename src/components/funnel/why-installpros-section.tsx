@@ -89,7 +89,7 @@ export function WhyInstallProsSection() {
                 {f.i}
               </div>
               <h3 className="mt-5 text-[17px] font-semibold text-foreground">{f.t}</h3>
-              <p className="mt-2.5 text-[14.5px] text-muted-foreground" style={{ lineHeight: "1.6" }}>
+              <p className="mt-2.5 text-[14px] text-muted-foreground" style={{ lineHeight: "1.6" }}>
                 {f.d}
               </p>
             </div>

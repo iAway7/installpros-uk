@@ -4,10 +4,10 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Check, Loader2, ArrowRight, ArrowLeft, Home, Ship, Building2, Caravan } from "lucide-react";
 import { toast } from "sonner";
-import { FunnelInput } from "./ui/funnel-input";
+import { FunnelInput } from "@/components/system/funnel-input";
 import { AddressAutocomplete, type AddressSelection } from "./ui/address-autocomplete";
-import { FunnelButton } from "./ui/funnel-button";
-import { FormOption } from "./ui/form-option";
+import { FunnelButton } from "@/components/system/funnel-button";
+import { FormOption } from "@/components/system/form-option";
 import { ConsentCheckbox } from "./consent-checkbox";
 import { isValidUkPostcode, normalisePostcode } from "@/lib/utils";
 import { checkUkPostcode } from "@/lib/funnel/check-postcode";
@@ -285,7 +285,7 @@ export function ZipAvailabilityChecker(
                       autoComplete="postal-code"
                       state={status === "invalid" ? "error" : "default"}
                       aria-describedby={error ? "err-postcode" : undefined}
-                      className="text-center text-base uppercase md:text-[1.4rem]"
+                      className="text-center text-base uppercase md:text-[22px]"
                     />
                     {status === "checking" && (
                       <Loader2 className="absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 animate-spin text-primary" />
@@ -336,7 +336,7 @@ export function ZipAvailabilityChecker(
                 placeholder="Full Name" inputSize="lg" aria-label="Full name"
                 state={errors.fullName ? "error" : "default"}
                 aria-describedby={errors.fullName ? "err-name" : undefined}
-                className="text-center text-base md:text-[1.4rem]"
+                className="text-center text-base md:text-[22px]"
               />
             </StepField>
           )}
@@ -349,7 +349,7 @@ export function ZipAvailabilityChecker(
                   placeholder="07700 900123" inputSize="lg" aria-label="Phone number"
                   state={errors.phone ? "error" : "default"}
                   aria-describedby={errors.phone ? "err-phone" : undefined}
-                  className="text-center text-base md:text-[1.4rem]"
+                  className="text-center text-base md:text-[22px]"
                 />
                 {showPhoneCheck && <Check className="absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-success-bright" />}
               </div>
@@ -364,7 +364,7 @@ export function ZipAvailabilityChecker(
                   placeholder="you@example.com" inputSize="lg" aria-label="Email"
                   state={errors.email ? "error" : "default"}
                   aria-describedby={errors.email ? "err-email" : undefined}
-                  className="text-center text-base md:text-[1.4rem]"
+                  className="text-center text-base md:text-[22px]"
                 />
                 {showEmailCheck && <Check className="absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-success-bright" />}
               </div>

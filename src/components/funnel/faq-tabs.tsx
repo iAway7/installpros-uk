@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "./ui/funnel-accordion";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/system/funnel-accordion";
 import { cn } from "@/lib/utils";
 import type { Faq } from "@/lib/funnel/faqs";
 

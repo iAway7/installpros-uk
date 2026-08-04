@@ -13,10 +13,14 @@ const funnelInputVariants = cva(
   "flex w-full rounded-md border bg-white text-black ring-offset-background placeholder:text-gray-500 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 transition-colors duration-200",
   {
     variants: {
+      // Explicit 16px, not text-sm/text-base: .theme-admin rewrites those
+      // utilities to 13/14px, so a shared input would silently shrink in the
+      // dashboard. 16px is also the threshold below which iOS Safari zooms the
+      // page on focus — inputs should stay here regardless of density.
       inputSize: {
-        sm: "h-9 px-4 py-1 text-sm",
-        default: "h-12 px-5 py-2 text-base",
-        lg: "h-14 px-6 py-3 text-base",
+        sm: "h-9 px-4 py-1 text-[16px]",
+        default: "h-12 px-5 py-2 text-[16px]",
+        lg: "h-14 px-6 py-3 text-[16px]",
       },
       state: {
         default:

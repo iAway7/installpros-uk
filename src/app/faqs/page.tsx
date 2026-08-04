@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { ArrowRight } from "lucide-react";
 import { MainHeader } from "@/components/funnel/main-header";
 import { FunnelFooter } from "@/components/funnel/funnel-footer";
-import { FunnelButton } from "@/components/funnel/ui/funnel-button";
+import { FunnelButton } from "@/components/system/funnel-button";
 import { FaqTabs } from "@/components/funnel/faq-tabs";
 import { ALL_FAQS, FAQ_SERVICES } from "@/lib/funnel/faqs";
 

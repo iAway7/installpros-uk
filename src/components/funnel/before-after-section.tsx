@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { WhatsAppIcon } from "./ui/whatsapp-icon";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { FunnelButton } from "./ui/funnel-button";
+import { FunnelButton } from "@/components/system/funnel-button";
 
 const WHATSAPP_URL = "https://wa.me/447446112343";
 

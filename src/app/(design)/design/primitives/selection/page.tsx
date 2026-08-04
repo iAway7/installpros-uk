@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { Home, Ship, Building2, Caravan } from "lucide-react";
-import { FormOption } from "@/components/funnel/ui/form-option";
+import { FormOption } from "@/components/system/form-option";
 import { ConsentCheckbox } from "@/components/funnel/consent-checkbox";
-import { PageHeader, Section, Preview, Code, Rule, Mono } from "../../_components/docs";
+import { PageHeader, Section, Preview, Code, Rule, Mono, BestPractices } from "../../_components/docs";
 
 const OPTIONS = [
   { value: "residential", label: "Residential", icon: <Home className="h-6 w-6" /> },
@@ -88,6 +88,30 @@ export default function SelectionPage() {
           </Rule>
         </div>
       </Section>
+      <BestPractices
+        when={[
+          "<code>FormOption</code> for the install-type step, where each card commits the step on its own.",
+          "<code>ConsentCheckbox</code> for an acknowledgment the user must actively affirm. It is the only checkbox on the funnel and it is deliberately the last thing before submit.",
+          "For a generic multi-select with descriptions, reach for <code>Choicebox</code> instead — it is the generalised version of this pattern.",
+        ]}
+        behavior={[
+          "Consent is never pre-ticked and blocks submit twice, in <code>canProceed()</code> and again in <code>submit()</code>. A pre-ticked GDPR box is not consent.",
+          "The consent error appears on a blocked submit, not on blur — ticking and unticking should not flash red.",
+          "Selection uses <code>--selection</code>, never brand red, so the CTA below stays the only red thing on the step.",
+          "On the dark hero the checkbox inverts to white and the terms link goes white too, because brand red on that background only reaches 3.4:1.",
+        ]}
+        content={[
+          "The consent sentence is full prose ending in a period, not a fragment. It is a legal statement and should read like one.",
+          "Option labels are single Title Case nouns — <em>Residential</em>, <em>Marine</em>, <em>Commercial</em>. Parallel and scannable.",
+          "The terms link says <em>terms and conditions</em>, not <em>here</em> or <em>this link</em>.",
+        ]}
+        accessibility={[
+          "<code>FormOption</code> is a <code>&lt;button&gt;</code> with <code>aria-pressed</code>, not a radio — there is no group semantic because each card commits the step.",
+          "The consent checkbox sets <code>aria-invalid</code> and <code>aria-describedby</code> when it errors, and the message carries <code>role=\"alert\"</code>.",
+          "The whole label row is the click target, so the real target is 44px+ even though the box itself is 20px.",
+          "Selected state is a border plus a ring plus a filled indicator — never colour alone.",
+        ]}
+      />
     </>
   );
 }
