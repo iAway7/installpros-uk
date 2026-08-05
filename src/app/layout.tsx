@@ -1,7 +1,18 @@
 import type { Metadata, Viewport } from "next";
 import { Suspense } from "react";
+import { Inter, Be_Vietnam_Pro } from "next/font/google";
 import { Toaster } from "sonner";
 import "./globals.css";
+
+// Self-hosted via next/font — no render-blocking request to Google, and the
+// size-adjusted fallback metrics eliminate the font-swap layout shift (CLS).
+const inter = Inter({ subsets: ["latin"], display: "swap", variable: "--font-inter" });
+const beVietnamPro = Be_Vietnam_Pro({
+  subsets: ["latin"],
+  weight: ["200", "300", "400", "500", "600", "700"],
+  display: "swap",
+  variable: "--font-be-vietnam",
+});
 import { siteConfig } from "@/lib/site-config";
 import { PostHogProvider, PageViewTracker } from "@/components/analytics/posthog-provider";
 import { ScrollDepthTracker } from "@/components/analytics/scroll-depth-tracker";
@@ -47,16 +58,8 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en-GB" suppressHydrationWarning>
+    <html lang="en-GB" className={`${inter.variable} ${beVietnamPro.variable}`} suppressHydrationWarning>
       <head>
-        {/* Inter via standard link (no build-time fetch — builds in any CI). */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        {/* eslint-disable-next-line @next/next/no-page-custom-font -- App Router root layout, loads site-wide */}
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Be+Vietnam+Pro:wght@200;300;400;500;600;700&family=Geist:wght@400;500;600;700&display=swap"
-          rel="stylesheet"
-        />
         <AnalyticsScripts />
         <script
           type="application/ld+json"

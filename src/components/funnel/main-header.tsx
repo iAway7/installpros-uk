@@ -42,6 +42,7 @@ export function MainHeader() {
             src={scrolled ? "/funnel/installpros-logo-colored-new.svg" : "/funnel/installpros-logo-new.svg"}
             alt="Install Pros"
             className="h-8 md:h-10"
+            fetchPriority="high"
           />
         </a>
 
