@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Hero trust-bar marquee (mobile). Pure CSS so it renders identically on the
+   server and after hydration — no layout shift. */
+@keyframes hero-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.hero-marquee { animation: hero-marquee 22s linear infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .hero-marquee { animation: none; }
+}
+
 @layer base {
   :root {
     --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -133,6 +144,7 @@
   --brand-hover: 0 0% 20%;
   --brand-icon: 0 0% 42%;
   --brand-soft: 0 0% 85%;
+  --brand-deep: 0 0% 25%;
   --error: 0 72% 51%;
   --error-foreground: 0 0% 100%;
   --success: 142 72% 29%;
@@ -186,6 +198,9 @@
   --brand-hover: 0 95% 32%;         /* #9E0404 — darkens on hover (from the DS) */
   --brand-icon: 358 75% 59%;        /* #E5484D — card icon glyphs */
   --brand-soft: 0 100% 68%;         /* #FF5A5A — decorative borders/glows ONLY */
+  --brand-deep: 0 90% 35%;          /* #AB0909 — brand red dark enough for small
+                                       text: 7.6:1 on white, where --brand-icon
+                                       only reaches 3.9:1 and fails AA. */
 
   /* ---- Selection + focus. Deliberately neutral, never brand red ---- */
   --selection: 0 0% 9%;             /* #171717 — checked, selected, focus ring.

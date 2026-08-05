@@ -60,7 +60,7 @@ export function EquipmentSection() {
               <div className="px-2.5 pt-5">
                 <div className="flex items-start justify-between gap-2.5">
                   <h3 className="text-lg font-bold leading-tight text-foreground">{e.t}</h3>
-                  <span className="shrink-0 whitespace-nowrap rounded-full border border-brand-soft/30 px-2.5 py-1 text-[10.5px] font-semibold uppercase tracking-[0.14em] text-brand-icon">
+                  <span className="shrink-0 whitespace-nowrap rounded-full border border-brand-deep px-2.5 py-1 text-[10.5px] font-semibold uppercase tracking-[0.14em] text-brand-deep">
                     {e.badge}
                   </span>
                 </div>

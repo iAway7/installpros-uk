@@ -111,6 +111,12 @@ export const THEME_TOKENS: Token[] = [
     "note": "#FF5A5A — decorative borders/glows ONLY"
   },
   {
+    "name": "--brand-deep",
+    "value": "0 90% 35%",
+    "hex": "#AA0909",
+    "note": null
+  },
+  {
     "name": "--selection",
     "value": "0 0% 9%",
     "hex": "#171717",

@@ -68,6 +68,7 @@ const config: Config = {
           hover: "hsl(var(--brand-hover))",
           icon: "hsl(var(--brand-icon))",
           soft: "hsl(var(--brand-soft))",
+          deep: "hsl(var(--brand-deep))",
         },
         selection: {
           DEFAULT: "hsl(var(--selection))",

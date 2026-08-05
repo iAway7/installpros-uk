@@ -1,6 +1,4 @@
-"use client";
-
-import { useEffect, useState, type ReactNode } from "react";
+import type { ReactNode } from "react";
 
 /** Google "G" mark. */
 function GoogleG({ size = 20 }: { size?: number }) {
@@ -14,8 +12,8 @@ function GoogleG({ size = 20 }: { size?: number }) {
   );
 }
 
-/** The five trust badges (inner content only — centered, no dividers). Reused
- *  by the desktop row and the mobile auto-rotator. */
+/** The five trust badges (inner content only). Reused by the desktop row and
+ *  the mobile marquee. */
 const BADGES: ReactNode[] = [
   <a
     key="google"
@@ -58,37 +56,28 @@ const BADGES: ReactNode[] = [
     {/* eslint-disable-next-line @next/next/no-img-element */}
     <img
       src="/funnel/Authorised-Starlink-Installer-Getmedigital.png"
-      alt="Authorised Starlink Installer"
+      alt="Authorized Starlink Installer"
       className="block h-[72px] w-[72px] rounded-[9px]"
     />
     <div className="flex flex-col leading-tight">
-      <span className="text-sm text-white/70">Authorised</span>
+      <span className="text-sm text-white/70">Authorized</span>
       <span className="text-sm font-semibold text-white">Starlink Installer</span>
     </div>
   </div>,
 ];
 
-const MARQUEE_S = 22; // seconds for one full loop (lower = faster)
-
 /**
- * Hero trust bar. Desktop: all five badges in one row with dividers. Mobile:
- * a continuous right-to-left marquee to save vertical space where ~80% of
- * traffic is. All badges stay in the DOM for SEO/screen readers; the marquee
- * respects prefers-reduced-motion (falls back to a static stack).
+ * Hero trust bar. Desktop: all five badges in one row with dividers. Mobile: a
+ * continuous right-to-left marquee. Both are pure CSS / server-rendered (no
+ * client state), so the height is identical on the server and after hydration —
+ * which is what keeps the my-auto-centred hero from shifting (CLS).
  */
 export function HeroTrustBar() {
-  const [rotate, setRotate] = useState(false);
-
-  useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    setRotate(true);
-  }, []);
-
   return (
     <div className="relative z-10 w-full border-t border-white/10 bg-black/85 text-white backdrop-blur">
       {/* Desktop: full row */}
       <div
-        className="container mx-auto hidden flex-wrap items-center justify-center gap-y-3 py-4 sm:flex"
+        className="container mx-auto hidden flex-wrap items-center justify-center gap-y-3 px-6 py-4 sm:flex"
         style={{ maxWidth: "1160px" }}
       >
         {BADGES.map((badge, i) => (
@@ -101,32 +90,16 @@ export function HeroTrustBar() {
         ))}
       </div>
 
-      {/* Mobile: continuous right-to-left marquee (or static stack if reduced-motion) */}
-      {rotate ? (
-        <div className="overflow-hidden py-4 sm:hidden">
-          <div className="flex w-max items-center" style={{ animation: `marquee ${MARQUEE_S}s linear infinite` }}>
-            {[...BADGES, ...BADGES].map((badge, i) => (
-              <div key={i} className="flex shrink-0 items-center justify-center px-8" aria-hidden={i >= BADGES.length}>
-                {badge}
-              </div>
-            ))}
-          </div>
-          <style jsx>{`
-            @keyframes marquee {
-              from { transform: translateX(0); }
-              to { transform: translateX(-50%); }
-            }
-          `}</style>
-        </div>
-      ) : (
-        <div className="flex flex-col items-center gap-6 px-6 py-7 sm:hidden">
-          {BADGES.map((badge, i) => (
-            <div key={i} className="flex items-center justify-center">
+      {/* Mobile: continuous marquee (fixed height, server-rendered) */}
+      <div className="overflow-hidden py-4 sm:hidden">
+        <div className="hero-marquee flex w-max items-center">
+          {[...BADGES, ...BADGES].map((badge, i) => (
+            <div key={i} className="flex shrink-0 items-center justify-center px-8" aria-hidden={i >= BADGES.length}>
               {badge}
             </div>
           ))}
         </div>
-      )}
+      </div>
     </div>
   );
 }
