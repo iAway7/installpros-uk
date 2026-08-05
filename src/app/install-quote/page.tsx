@@ -54,7 +54,7 @@ export default function InstallQuotePage() {
       />
       <MainHeader />
       <ExperimentProvider>
-        <main className="flex flex-col">
+        <main id="main" tabIndex={-1} className="flex flex-col outline-none">
           <HeroSection />
           <WhyInstallProsSection />
           <CoverageSection />

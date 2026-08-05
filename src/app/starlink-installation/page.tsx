@@ -56,7 +56,7 @@ export default function StarlinkInstallationPage() {
       />
       <MainHeader />
       <ExperimentProvider>
-        <main className="flex flex-col">
+        <main id="main" tabIndex={-1} className="flex flex-col outline-none">
           <HeroSection smartCoverage addressMode />
           <WhyInstallProsSection />
           <CoverageSection />
