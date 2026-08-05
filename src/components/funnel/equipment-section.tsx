@@ -58,12 +58,15 @@ export function EquipmentSection() {
               </div>
 
               <div className="px-2.5 pt-5">
-                <div className="flex items-start justify-between gap-2.5">
-                  <h3 className="text-lg font-bold leading-tight text-foreground">{e.t}</h3>
-                  <span className="shrink-0 whitespace-nowrap rounded-full border border-brand-deep px-2.5 py-1 text-[10.5px] font-semibold uppercase tracking-[0.14em] text-brand-deep">
-                    {e.badge}
-                  </span>
-                </div>
+                {/* Badge above the title, not beside it. Side by side they share
+                    the card width, so "Starlink Standard" wrapped to two lines
+                    while "Mesh Nodes" sat on one — the row heights went ragged.
+                    Stacked, the title gets the full width and a longer product
+                    name later cannot squeeze the badge. */}
+                <span className="inline-flex whitespace-nowrap rounded-full border border-brand-deep px-2.5 py-1 text-[10.5px] font-semibold uppercase tracking-[0.14em] text-brand-deep">
+                  {e.badge}
+                </span>
+                <h3 className="mt-3 text-lg font-bold leading-tight text-foreground">{e.t}</h3>
                 <p className="mt-2.5 text-[15px] text-muted-foreground" style={{ lineHeight: "1.55" }}>
                   {e.d}
                 </p>
