@@ -36,7 +36,7 @@ export default function AccessibilityPage() {
 focus-visible:ring-2 focus-visible:ring-ring
 focus-visible:ring-offset-2`}</Code>
         <p className="mt-4 max-w-2xl text-[15px] leading-[1.6] text-neutral-500">
-          <Mono>--ring</Mono> resolves to <Mono>--selection</Mono> (#1A1512), not brand red. A red ring on a red button
+          <Mono>--ring</Mono> resolves to <Mono>--selection</Mono> (#171717), not brand red. A red ring on a red button
           is invisible. <Mono>focus-visible</Mono> rather than <Mono>focus</Mono>, so mouse users do not see a ring they
           did not ask for.
         </p>

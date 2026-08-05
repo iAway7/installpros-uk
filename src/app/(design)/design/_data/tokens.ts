@@ -112,9 +112,9 @@ export const THEME_TOKENS: Token[] = [
   },
   {
     "name": "--selection",
-    "value": "23 18% 9%",
-    "hex": "#1B1613",
-    "note": "#1A1512 — checked, selected, focus ring"
+    "value": "0 0% 9%",
+    "hex": "#171717",
+    "note": null
   },
   {
     "name": "--selection-border",
@@ -136,8 +136,8 @@ export const THEME_TOKENS: Token[] = [
   },
   {
     "name": "--ring",
-    "value": "23 18% 9%",
-    "hex": "#1B1613",
+    "value": "0 0% 9%",
+    "hex": "#171717",
     "note": "focus ring = selection, not red"
   },
   {

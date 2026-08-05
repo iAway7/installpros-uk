@@ -1,0 +1,76 @@
+import { AlertOctagon, AlertTriangle, CheckCircle2, Info } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+type Variant = "default" | "success" | "warning" | "error" | "secondary";
+
+const ICON = {
+  default: Info,
+  success: CheckCircle2,
+  warning: AlertTriangle,
+  error: AlertOctagon,
+  secondary: Info,
+} as const;
+
+const TONE: Record<Variant, { border: string; fill: string; icon: string }> = {
+  default:   { border: "border-border",       fill: "bg-secondary",      icon: "text-muted-foreground" },
+  secondary: { border: "border-border",       fill: "bg-secondary",      icon: "text-muted-foreground" },
+  success:   { border: "border-success/30",   fill: "bg-success/[0.06]", icon: "text-success" },
+  warning:   { border: "border-gold/40",      fill: "bg-gold/[0.08]",    icon: "text-gold" },
+  error:     { border: "border-error/30",     fill: "bg-error/[0.06]",   icon: "text-error" },
+};
+
+/**
+ * Inline contextual message, sitting next to the thing it describes.
+ *
+ * A Note is persistent — it stays until the underlying state changes. If the
+ * message is page-level, use Banner. If it is transient, use a toast. There is
+ * no dismiss control here on purpose: a dismissable note competes with its own
+ * message.
+ */
+export function Note({
+  children,
+  variant = "default",
+  label,
+  action,
+  size = "default",
+  fill = false,
+  icon,
+  className,
+}: {
+  children: React.ReactNode;
+  variant?: Variant;
+  /** 1–2 word Title Case prefix naming the topic: "Coverage", "Rate limit". */
+  label?: string;
+  /** A single inline CTA. Never two. */
+  action?: React.ReactNode;
+  size?: "sm" | "default";
+  fill?: boolean;
+  /** Pass null to render no icon at all. */
+  icon?: React.ReactNode | null;
+  className?: string;
+}) {
+  const tone = TONE[variant];
+  const Icon = ICON[variant];
+  const text = size === "sm" ? "text-[14px]" : "text-[15px]";
+
+  return (
+    <div
+      role="note"
+      className={cn(
+        "flex items-start gap-3 rounded-xl border",
+        size === "sm" ? "px-3.5 py-2.5" : "px-4 py-3.5",
+        tone.border,
+        fill ? tone.fill : "bg-transparent",
+        className,
+      )}
+    >
+      {icon !== null &&
+        (icon ?? <Icon className={cn("mt-0.5 h-[18px] w-[18px] shrink-0", tone.icon)} aria-hidden />)}
+      <div className={cn("min-w-0 flex-1 leading-[1.55] text-foreground", text)}>
+        {label && <strong className="font-semibold">{label}: </strong>}
+        {children}
+      </div>
+      {action && <div className="shrink-0">{action}</div>}
+    </div>
+  );
+}

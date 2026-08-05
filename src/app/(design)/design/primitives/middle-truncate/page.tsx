@@ -33,7 +33,7 @@ export default function MiddleTruncatePage() {
             max={720}
             value={width}
             onChange={(e) => setWidth(Number(e.target.value))}
-            className="flex-1 accent-[#1A1512]"
+            className="flex-1 accent-[#171717]"
           />
           <span className="w-16 text-right font-mono text-[13px] text-neutral-600">{width}px</span>
         </div>

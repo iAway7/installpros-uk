@@ -1,10 +1,5 @@
-import createMDX from "@next/mdx";
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // .mdx alongside .tsx so the design-system docs can be written as prose that
-  // imports the real components.
-  pageExtensions: ["ts", "tsx", "js", "jsx", "md", "mdx"],
   reactStrictMode: true,
   poweredByHeader: false,
   compress: true,
@@ -31,6 +26,4 @@ const nextConfig = {
   skipTrailingSlashRedirect: true,
 };
 
-const withMDX = createMDX({});
-
-export default withMDX(nextConfig);
+export default nextConfig;

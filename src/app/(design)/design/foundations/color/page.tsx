@@ -39,7 +39,7 @@ export default function ColorPage() {
       <Section title="The rule that matters">
         <Rule>
           <strong>Brand red is for the primary button and the section eyebrow.</strong> Selected options, checked boxes
-          and focus rings use <Mono>--selection</Mono> (<Mono>#1A1512</Mono>), a near-black neutral. A red focus ring on
+          and focus rings use <Mono>--selection</Mono> (<Mono>#171717</Mono>), the same near-black as body text. A red focus ring on
           a red button is unreadable, and a page where five things are red has no call to action.
         </Rule>
       </Section>

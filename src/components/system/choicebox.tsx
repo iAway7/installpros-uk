@@ -75,6 +75,9 @@ export function Choicebox({
   );
 }
 
+// min-w-0 on the fieldset is not cosmetic: a <fieldset> defaults to
+// min-width:min-content and refuses to shrink inside a flex row, which pushes
+// the whole page wider and creates horizontal scroll.
 export function ChoiceboxGroup({
   label,
   children,
@@ -85,7 +88,7 @@ export function ChoiceboxGroup({
   className?: string;
 }) {
   return (
-    <fieldset className={className}>
+    <fieldset className={cn("min-w-0", className)}>
       <legend className="sr-only">{label}</legend>
       <div className="flex flex-wrap gap-3">{children}</div>
     </fieldset>

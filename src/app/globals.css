@@ -152,8 +152,8 @@
 /* ════════════════════════════════════════════════════════════════════════
    FUNNEL THEME — scoped tokens for /install-quote, /starlink-installation,
    /faqs, /same-day-quote and /upload-property-images. Every colour is a
-   token: the four reds are unified, the selection neutral (#1A1512) is
-   named, and error/success get a single value each.
+   token: the four reds are unified, the selection neutral is named, and
+   error/success get a single value each.
 
    Decisions baked in (agreed 2026-07-27, promoted from staging same day):
    · Naming stays shadcn/Tailwind — --primary IS the brand red.
@@ -188,11 +188,13 @@
   --brand-soft: 0 100% 68%;         /* #FF5A5A — decorative borders/glows ONLY */
 
   /* ---- Selection + focus. Deliberately neutral, never brand red ---- */
-  --selection: 23 18% 9%;           /* #1A1512 — checked, selected, focus ring */
+  --selection: 0 0% 9%;             /* #171717 — checked, selected, focus ring.
+                                       Same value as --foreground: two near-blacks
+                                       three RGB points apart were the same colour. */
   --selection-border: 0 0% 25%;     /* #404040 — input border on focus */
   --field: 0 0% 83%;                /* #D4D4D4 — input/option border at rest */
   --field-hover: 0 0% 45%;          /* #737373 — border on hover */
-  --ring: 23 18% 9%;                /* focus ring = selection, not red */
+  --ring: 0 0% 9%;                  /* focus ring = selection, not red */
 
   /* ---- Status. One value each (was 2 reds + 3 greens) ---- */
   --error: 0 72% 51%;               /* #DC2626 — 4.83:1 on white ✓ AA */

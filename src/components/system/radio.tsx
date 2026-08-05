@@ -20,6 +20,8 @@ const RadioCtx = createContext<Ctx | null>(null);
  *
  * For options that need a description or an icon, use Choicebox instead.
  */
+// See ChoiceboxGroup: a <fieldset> will not shrink without an explicit
+// min-width, so it needs min-w-0 to behave inside a flex layout.
 export function RadioGroup({
   label,
   showLabel = false,
@@ -46,7 +48,7 @@ export function RadioGroup({
   const auto = useId();
   return (
     <RadioCtx.Provider value={{ name: name ?? auto, value, onChange, disabled }}>
-      <fieldset className={className} aria-required={required || undefined}>
+      <fieldset className={cn("min-w-0", className)} aria-required={required || undefined}>
         <legend className={cn("mb-3 text-[15px] font-semibold text-foreground", !showLabel && "sr-only")}>
           {label}
           {required && showLabel && <span className="ml-1 text-error">*</span>}
