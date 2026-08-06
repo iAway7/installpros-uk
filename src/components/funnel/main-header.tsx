@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Phone } from "lucide-react";
 import { WhatsAppIcon } from "./ui/whatsapp-icon";
+import { InstallProsLogo } from "./ui/installpros-logo";
 import { track, EVENTS } from "@/lib/analytics";
 
 const WHATSAPP_URL = "https://wa.me/447446112343";
@@ -37,12 +38,14 @@ export function MainHeader() {
         style={{ maxWidth: "1140px" }}
       >
         <a href="/install-quote" className="flex min-h-[48px] items-center" aria-label="Install Pros">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={scrolled ? "/funnel/installpros-logo-colored-new.svg" : "/funnel/installpros-logo-new.svg"}
-            alt="Install Pros"
-            className="h-8 md:h-10"
-            fetchPriority="high"
+          {/* Inline SVG, not <img src>: this is the LCP element and as a file it
+              put a network round trip on the critical path. Swapping colour with
+              a text-* class also removes the second download that used to happen
+              the moment the user scrolled and the header went white. */}
+          <InstallProsLogo
+            className={`h-8 w-auto transition-colors duration-450 ease-ds md:h-10 ${
+              scrolled ? "text-black" : "text-white"
+            }`}
           />
         </a>
 

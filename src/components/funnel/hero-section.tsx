@@ -1,3 +1,4 @@
+import ReactDOM from "react-dom";
 import { ZipAvailabilityChecker } from "./zip-availability-checker";
 import { HeroTrustBar } from "./hero-trust-bar";
 import { HeroHeadline } from "./hero-headline";
@@ -6,6 +7,17 @@ import { HeroHeadline } from "./hero-headline";
 export function HeroSection(
   { smartCoverage = false, addressMode = false }: { smartCoverage?: boolean; addressMode?: boolean } = {},
 ) {
+  // The hero photo is a CSS background, so the browser's preload scanner never
+  // sees it: it has to fetch the HTML, parse it, build the CSSOM and only then
+  // discover the URL. That round trip — not the 19.5 KB — is what pushed LCP to
+  // 4.4s on mobile. Emitting the preload here keeps it scoped to the pages that
+  // actually render a hero, unlike a link in the root layout.
+  ReactDOM.preload("/funnel/vr-hero.webp", {
+    as: "image",
+    fetchPriority: "high",
+    type: "image/webp",
+  });
+
   return (
     <section className="relative flex min-h-[100svh] flex-col overflow-hidden">
       <div
