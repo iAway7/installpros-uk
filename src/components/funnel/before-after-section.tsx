@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import { WhatsAppIcon } from "./ui/whatsapp-icon";
-import { useIsMobile } from "@/hooks/use-mobile";
 import { FunnelButton } from "@/components/system/funnel-button";
 
 const WHATSAPP_URL = "https://wa.me/447446112343";
@@ -45,7 +44,30 @@ const VIZ = {
  * The two meters animate live (speeds fluctuate, bars fill, status flickers).
  */
 export function BeforeAfterSection() {
-  const isMobile = useIsMobile();
+  // Server-rendered default is the STACKED layout, not the slider.
+  //
+  // useIsMobile() starts false, so the server used to emit the desktop drag
+  // slider and React replaced it with the stacked cards right after hydration.
+  // On a phone that swaps a ~460px panel for two much taller cards, and it was
+  // the entire CLS of /install-quote: 0.163, attributed by DevTools to the
+  // `div.mt-6` that only exists inside the stacked branch.
+  //
+  // Defaulting to stacked means phones receive their final layout from the
+  // server and never shift. Desktop takes the swap instead, which is the right
+  // way round: the slider is the enhancement, the stack is the baseline.
+  //
+  // Deliberately not useIsMobile(): that hook is shared with
+  // property-image-upload, and flipping its default there is a separate call.
+  const [isDesktop, setIsDesktop] = useState(false);
+  useEffect(() => {
+    const mql = window.matchMedia("(min-width: 768px)");
+    const onChange = () => setIsDesktop(mql.matches);
+    mql.addEventListener("change", onChange);
+    onChange();
+    return () => mql.removeEventListener("change", onChange);
+  }, []);
+  const isMobile = !isDesktop;
+
   const [pos, setPos] = useState(55); // divider position, %
   const ref = useRef<HTMLDivElement>(null);
   const dragging = useRef(false);
