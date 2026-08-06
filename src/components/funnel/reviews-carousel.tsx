@@ -96,7 +96,11 @@ export function ReviewsCarousel({
             <ChevronLeft className="h-5 w-5" />
           </button>
 
-          <div className="flex items-center gap-1.5">
+          {/* w-8 h-8 = 32px de area tactil por punto (Chrome exige 24px
+              minimo); el punto visible sigue siendo de 8px. Sin gap: la caja
+              de 32px ya deja aire suficiente y evita desbordar en 375px
+              cuando hay muchas resenas. */}
+          <div className="flex items-center">
             {reviews.map((_, i) => (
               <button
                 key={i}
@@ -104,7 +108,7 @@ export function ReviewsCarousel({
                 aria-label={`Go to review ${i + 1}`}
                 aria-current={i === active}
                 onClick={() => scrollToIndex(i)}
-                className="flex h-8 items-center px-1"
+                className="flex h-8 w-8 items-center justify-center"
               >
                 <span
                   className={`block h-2 rounded-full transition-all duration-200 ${
