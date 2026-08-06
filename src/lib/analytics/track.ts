@@ -1,6 +1,6 @@
 "use client";
 
-import posthog from "posthog-js";
+import { withPostHog } from "./posthog-lazy";
 import { buildEventContext } from "./context";
 import {
   type AnalyticsEvent,
@@ -35,14 +35,10 @@ export function track(event: EventName, properties: EventProperties = {}): void 
   window.dataLayer = window.dataLayer || [];
   window.dataLayer.push({ ...payload });
 
-  // 2) PostHog — capture with the same name + props.
-  try {
-    if (posthog.__loaded) {
-      posthog.capture(event, payload);
-    }
-  } catch {
-    /* PostHog not ready — GA4 still recorded it */
-  }
+  // 2) PostHog — capture with the same name + props. Queued if the chunk has
+  //    not landed yet, so early clicks reach PostHog instead of being dropped
+  //    the way the old `if (posthog.__loaded)` guard silently did.
+  withPostHog((ph) => ph.capture(event, payload));
 
   // 3) Conversions get a normalized alias so Smart Bidding / PostHog goals
   //    can key off a single, unambiguous signal (fixes the audit double-count).
@@ -59,9 +55,5 @@ export function track(event: EventName, properties: EventProperties = {}): void 
 
 /** Identify a known lead in PostHog (called after lead_created). */
 export function identifyLead(leadId: string, traits: Record<string, unknown> = {}): void {
-  try {
-    if (posthog.__loaded) posthog.identify(leadId, traits);
-  } catch {
-    /* noop */
-  }
+  withPostHog((ph) => ph.identify(leadId, traits));
 }

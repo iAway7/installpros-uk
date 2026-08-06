@@ -1,37 +1,25 @@
 "use client";
 
 import { useEffect } from "react";
-import posthog from "posthog-js";
-import { PostHogProvider as PHProvider } from "posthog-js/react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { track } from "@/lib/analytics/track";
 import { EVENTS } from "@/lib/analytics/events";
+import { loadPostHog, withPostHog } from "@/lib/analytics/posthog-lazy";
 
 /**
- * Initialises PostHog once on the client and fires a standardized page_view
- * on every route change. Session recording is enabled (Phase 4 requirement).
+ * Kicks off the PostHog load once the app has hydrated. Config lives in
+ * `posthog-lazy` so the 214 KB library stays out of the entry chunk — see the
+ * note there for why. Init timing is unchanged: it was already in a useEffect.
+ *
+ * No React context provider anymore: nothing in the app used `usePostHog()`,
+ * so `posthog-js/react` was pulling in a dependency purely to wrap children.
  */
 export function PostHogProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
-    const key = process.env.NEXT_PUBLIC_POSTHOG_KEY;
-    if (!key || posthog.__loaded) return;
-
-    posthog.init(key, {
-      api_host: "/ingest", // proxied via next.config rewrites (first-party)
-      ui_host: process.env.NEXT_PUBLIC_POSTHOG_HOST || "https://eu.i.posthog.com",
-      person_profiles: "identified_only",
-      capture_pageview: false, // we fire our own standardized page_view
-      capture_pageleave: true,
-      autocapture: true,
-      session_recording: { maskAllInputs: true, maskTextSelector: "[data-ph-mask]" },
-      persistence: "localStorage+cookie",
-      loaded: (ph) => {
-        if (process.env.NODE_ENV === "development") ph.debug();
-      },
-    });
+    void loadPostHog();
   }, []);
 
-  return <PHProvider client={posthog}>{children}</PHProvider>;
+  return <>{children}</>;
 }
 
 /** Fires a standardized page_view on first paint and every client navigation. */
@@ -44,15 +32,13 @@ export function PageViewTracker() {
     track(EVENTS.PAGE_VIEW);
     // …plus PostHog's native $pageview, which powers PostHog Web Analytics and
     // clears the onboarding check. Manual capture is the App Router pattern.
-    try {
-      if (posthog.__loaded) {
-        posthog.capture("$pageview", {
-          $current_url: typeof window !== "undefined" ? window.location.href : undefined,
-        });
-      }
-    } catch {
-      /* posthog not ready */
-    }
+    // withPostHog queues this if the chunk is still in flight, so the very
+    // first pageview of a session is no longer at risk of being dropped.
+    withPostHog((ph) =>
+      ph.capture("$pageview", {
+        $current_url: typeof window !== "undefined" ? window.location.href : undefined,
+      }),
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname, searchParams]);
 

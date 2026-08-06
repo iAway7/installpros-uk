@@ -2,7 +2,7 @@
   "name": "get-installpros",
   "version": "0.1.0",
   "private": true,
-  "description": "get.installpros.co.uk — Starlink installation landing page + growth/analytics platform",
+  "description": "get.installpros.co.uk \u2014 Starlink installation landing page + growth/analytics platform",
   "scripts": {
     "dev": "next dev -p 3035",
     "build": "next build",
@@ -40,5 +40,10 @@
     "postcss": "^8.4.47",
     "tailwindcss": "^3.4.13",
     "typescript": "^5.6.3"
-  }
+  },
+  "browserslist": [
+    "supports es6-module",
+    "not dead",
+    "not op_mini all"
+  ]
 }
