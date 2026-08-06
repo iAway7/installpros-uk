@@ -49,7 +49,7 @@ export function HeroSection(
               already supplies contrast and containment — adding size and
               semibold on top of that made a 14px chip outweigh the 16px
               sentence underneath. */}
-          <div className="animate-fade-in-up mb-4 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 py-1.5 md:mb-8">
+          <div className="animate-slide-up mb-4 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 py-1.5 md:mb-8">
             <span className="text-xs font-medium tracking-wide text-white/95">Nationwide UK Coverage</span>
             {/* Decorative: the label already says UK. */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -58,12 +58,12 @@ export function HeroSection(
 
           <HeroHeadline />
 
-          <p className="animate-fade-in-up animate-delay-200 mx-auto mb-8 max-w-3xl text-balance text-lg text-white/95 md:mb-10 md:text-xl lg:mb-12 lg:text-2xl">
+          <p className="animate-slide-up animate-delay-200 mx-auto mb-8 max-w-3xl text-balance text-lg text-white/95 md:mb-10 md:text-xl lg:mb-12 lg:text-2xl">
             <span className="hidden md:inline">Professional Starlink installers. </span>All roof types: metal,
             shingle, flat. Same-week scheduling.
           </p>
 
-          <div className="animate-fade-in-up animate-delay-300 mx-auto w-full md:max-w-2xl">
+          <div className="animate-slide-up animate-delay-300 mx-auto w-full md:max-w-2xl">
             <ZipAvailabilityChecker smartCoverage={smartCoverage} addressMode={addressMode} />
           </div>
         </div>

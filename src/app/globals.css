@@ -310,6 +310,9 @@
 .theme-funnel .animate-fade-in-up {
   animation: fadeInUp 0.95s var(--ease-out) forwards;
 }
+.theme-funnel .animate-slide-up {
+  animation: slideUp 0.95s var(--ease-out) both;
+}
 .theme-funnel .animate-fade-in {
   animation: fadeIn 0.6s var(--ease-out) forwards;
 }
@@ -335,6 +338,18 @@
   animation: fadeInUp 0.8s ease-out forwards;
   opacity: 0;
 }
+
+/* Above-the-fold variant of fadeInUp: same movement, no opacity.
+   Chrome does not count an element with opacity 0 as painted. Measured on
+   /install-quote, the LCP element was the hero <h1> and its fadeInUp covered
+   exactly the 752 ms of "element render delay" — the text was laid out and the
+   main thread idle, but the fade was still holding it invisible.
+   transform does not affect LCP eligibility, so the motion is kept as-is.
+   `both`, not `forwards`: the offset has to apply during animation-delay too,
+   or a delayed element sits in place and then jumps to translateY(30px). */
+.animate-slide-up {
+  animation: slideUp 0.8s ease-out both;
+}
 .animate-fade-in {
   animation: fadeIn 0.5s ease-out forwards;
 }
@@ -345,6 +360,10 @@
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(30px); }
   to { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideUp {
+  from { transform: translateY(30px); }
+  to { transform: translateY(0); }
 }
 @keyframes fadeIn {
   from { opacity: 0; }

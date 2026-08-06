@@ -5,7 +5,7 @@ import { useExperimentConfig } from "@/components/experiments/experiment-provide
 // Hero H1: 40px → 64px, weight 600, line-height 104%, letter-spacing -3%.
 // All of that now lives in the .h1-hero token class (globals.css), so there is
 // no inline fontWeight fighting the `.theme-funnel h1 { 700 }` rule.
-const CLASS = "h1-hero animate-fade-in-up animate-delay-100 mb-4 text-white md:mb-6";
+const CLASS = "h1-hero animate-slide-up animate-delay-100 mb-4 text-white md:mb-6";
 
 /**
  * Hero H1. Renders the default responsive headline server-side (good for SEO),
