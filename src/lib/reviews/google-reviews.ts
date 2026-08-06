@@ -1,4 +1,5 @@
 import { getBusinessProfileReviews } from "./business-profile";
+import { sizedAvatar } from "./avatar";
 
 export interface Review {
   q: string;
@@ -73,7 +74,7 @@ export async function getGoogleReviews(): Promise<ReviewsData> {
           name,
           initial: name.charAt(0).toUpperCase(),
           rating: Math.round(r.rating ?? 5),
-          photo: r.authorAttribution?.photoUri,
+          photo: sizedAvatar(r.authorAttribution?.photoUri),
           when: r.relativePublishTimeDescription,
         };
       })

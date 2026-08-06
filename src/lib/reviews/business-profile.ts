@@ -1,4 +1,5 @@
 import type { Review } from "./google-reviews";
+import { sizedAvatar } from "./avatar";
 
 /**
  * Google Business Profile API — returns ALL of the business's reviews, sorted
@@ -98,7 +99,7 @@ export async function getBusinessProfileReviews(): Promise<BusinessProfileResult
           name,
           initial: name.charAt(0).toUpperCase(),
           rating: r._n,
-          photo: r.reviewer?.profilePhotoUrl,
+          photo: sizedAvatar(r.reviewer?.profilePhotoUrl),
           when: relativeTime(r.updateTime ?? r.createTime),
         };
       });
