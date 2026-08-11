@@ -232,13 +232,16 @@ export function ZipAvailabilityChecker(
   async function submit() {
     if (!checkName() || !checkPhone() || !checkEmail()) { toast.error("Please check all fields for errors"); return; }
     if (!formData.installationType) { toast.error("Please select an installation type"); return; }
-    if (!consent) { setConsentError(true); toast.error("Please accept the terms to continue"); return; }
+    // Consent is optional (conservative path): the box is kept and its value
+    // recorded, but it never blocks submission — clicking "Get My Free Quote"
+    // is itself the request. Legal sign-off pending before removing the box.
     setIsSubmitting(true);
     try {
       const leadId = await submitLead({
         zipCode: formData.postcode, state: region, fullName: formData.fullName,
         phone: formData.phone, email: formData.email, address: formData.address || undefined,
         installationType: formData.installationType, source: "hero_funnel",
+        marketingConsent: consent,
       });
       toast.success("Quote request submitted!");
       router.push(`/upload-property-images?leadId=${leadId}`);

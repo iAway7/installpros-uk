@@ -184,13 +184,14 @@ export function ServiceQuoteForm({
   async function submit() {
     if (!checkName() || !checkPhone() || !checkEmail()) { toast.error("Please check all fields for errors"); return; }
     if (!formData.installationType) { toast.error("Please select a service"); return; }
-    if (!consent) { setConsentError(true); toast.error("Please accept the terms to continue"); return; }
+    // Consent optional (conservative path) — recorded, never blocks submission.
     setIsSubmitting(true);
     try {
       const leadId = await submitLead({
         zipCode: formData.postcode, state: region, fullName: formData.fullName,
         phone: formData.phone, email: formData.email, address: formData.address || undefined,
         installationType: formData.installationType, source: "cta_section",
+        marketingConsent: consent,
       });
       toast.success("Quote request submitted!");
       router.push(`/upload-property-images?leadId=${leadId}`);

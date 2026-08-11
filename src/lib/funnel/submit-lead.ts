@@ -10,6 +10,7 @@ export interface LeadInput {
   installationType: string;
   source: string; // 'hero_funnel' | 'cta_section'
   address?: string; // full street address (address-autocomplete variant)
+  marketingConsent?: boolean; // optional consent tick — recorded, never required
 }
 
 declare global {
@@ -37,7 +38,7 @@ export async function submitLead(input: LeadInput): Promise<string> {
       postcode: input.zipCode,
       install_type: "residential", // schema enum; real selection kept in notes
       service: input.installationType,
-      notes: `Service: ${input.installationType} | State: ${input.state} | ZIP: ${input.zipCode}${input.address ? ` | Address: ${input.address}` : ""}`,
+      notes: `Service: ${input.installationType} | State: ${input.state} | ZIP: ${input.zipCode}${input.address ? ` | Address: ${input.address}` : ""} | Consent: ${input.marketingConsent ? "yes" : "no"}`,
       meta: getLeadAttribution(),
     }),
   });
