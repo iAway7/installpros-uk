@@ -52,7 +52,7 @@ export function CoverageMapSection() {
             <div className="mx-auto w-full max-w-[520px]">
               <UkCoverageMap baseColor="hsl(var(--foreground))" />
               <p className="mt-4 text-center text-xs text-muted-foreground">
-Areas we cover · hover a location
+                Areas we cover · tap a location
               </p>
             </div>
           </div>
