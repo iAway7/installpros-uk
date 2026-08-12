@@ -10,6 +10,7 @@ import { FunnelButton } from "@/components/system/funnel-button";
 import { FormOption } from "@/components/system/form-option";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ConsentCheckbox } from "./consent-checkbox";
+import { FormLegalNotice } from "./form-legal-notice";
 import { SERVICE_OPTIONS } from "@/lib/funnel/states";
 import { isValidUkPostcode, normalisePostcode } from "@/lib/utils";
 import { checkUkPostcode } from "@/lib/funnel/check-postcode";
@@ -72,8 +73,7 @@ export function ServiceQuoteForm({
   const [errors, setErrors] = useState({ fullName: "", phone: "", email: "" });
   const [showPhoneCheck, setShowPhoneCheck] = useState(false);
   const [showEmailCheck, setShowEmailCheck] = useState(false);
-  const [consent, setConsent] = useState(false);
-  const [consentError, setConsentError] = useState(false);
+  const [consent, setConsent] = useState(false); // optional marketing opt-in
 
   const nameRef = useRef<HTMLInputElement>(null);
   const phoneRef = useRef<HTMLInputElement>(null);
@@ -327,10 +327,10 @@ export function ServiceQuoteForm({
               )}
               <ConsentCheckbox
                 checked={consent}
-                onChange={(v) => { setConsent(v); if (v) setConsentError(false); }}
+                onChange={setConsent}
                 tone="light"
-                error={consentError}
-                id="cta-gdpr"
+                id="cta-marketing"
+                label={<>Keep me updated on offers and news from Install Pros <span className="text-muted-foreground/60">(optional)</span>.</>}
               />
             </div>
           )}
@@ -350,6 +350,8 @@ export function ServiceQuoteForm({
             </FunnelButton>
           </div>
         )}
+
+        {step === 4 && <FormLegalNotice tone="light" />}
       </div>
     </div>
   );

@@ -1,16 +1,16 @@
 "use client";
 
+import type { ReactNode } from "react";
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 /**
- * GDPR consent checkbox shown on the final step of each lead form. Must be
- * ticked before the quote can be submitted — it is never pre-checked.
+ * Square opt-in checkbox for the lead forms. Now used for the OPTIONAL
+ * marketing opt-in (never required — GDPR consent must be freely given). Pass a
+ * custom `label` for the wording; falls back to the legacy contact text.
  *
  * Selection uses the neutral --selection token, never brand red: red is
- * reserved for the primary button. When `error` is set (the user tried to
- * submit without consenting) the box turns --error and the message is wired to
- * the input via aria-describedby.
+ * reserved for the primary button.
  */
 export function ConsentCheckbox({
   checked,
@@ -18,6 +18,7 @@ export function ConsentCheckbox({
   tone = "light",
   error = false,
   id = "gdpr-consent",
+  label,
 }: {
   checked: boolean;
   onChange: (v: boolean) => void;
@@ -26,6 +27,8 @@ export function ConsentCheckbox({
   /** Shows the error treatment after a blocked submit. */
   error?: boolean;
   id?: string;
+  /** Custom label content. Defaults to the legacy contact-consent copy. */
+  label?: ReactNode;
 }) {
   const dark = tone === "dark";
   const textClass = dark ? "text-white/80" : "text-muted-foreground";
@@ -72,25 +75,23 @@ export function ConsentCheckbox({
           />
         </span>
         <span className={cn("text-sm leading-relaxed", textClass)}>
-          {/* First person and present tense on purpose: ticking the box IS the
-              act of consenting, so copy that says the user "has consented"
-              describes something that hasn't happened yet. UK GDPR asks for a
-              clear affirmative action. */}
-          I agree to be contacted by Install Pros about my quote. Read our{" "}
-          <a
-            href="https://installpros.co.uk/terms-and-conditions/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={cn(
-              "font-medium underline underline-offset-2 transition-colors",
-              // On the dark hero the brand red only hits 3.4:1 — use white
-              // there and keep the red for light surfaces.
-              dark ? "text-white hover:text-white/80" : "text-primary hover:text-brand-hover",
-            )}
-          >
-            terms and conditions
-          </a>
-          .
+          {label ?? (
+            <>
+              I agree to be contacted by Install Pros about my quote. Read our{" "}
+              <a
+                href="https://installpros.co.uk/terms-and-conditions/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={cn(
+                  "font-medium underline underline-offset-2 transition-colors",
+                  dark ? "text-white hover:text-white/80" : "text-primary hover:text-brand-hover",
+                )}
+              >
+                terms and conditions
+              </a>
+              .
+            </>
+          )}
         </span>
       </label>
       {error && !checked && (

@@ -9,6 +9,7 @@ import { AddressAutocomplete, type AddressSelection } from "./ui/address-autocom
 import { FunnelButton } from "@/components/system/funnel-button";
 import { FormOption } from "@/components/system/form-option";
 import { ConsentCheckbox } from "./consent-checkbox";
+import { FormLegalNotice } from "./form-legal-notice";
 import { isValidUkPostcode, normalisePostcode } from "@/lib/utils";
 import { checkUkPostcode } from "@/lib/funnel/check-postcode";
 import { validateName, validatePhone, validateEmail, formatPhone, isValidUkPhone } from "@/lib/funnel/validation";
@@ -55,8 +56,7 @@ export function ZipAvailabilityChecker(
   const [errors, setErrors] = useState({ fullName: "", phone: "", email: "" });
   const [showPhoneCheck, setShowPhoneCheck] = useState(false);
   const [showEmailCheck, setShowEmailCheck] = useState(false);
-  const [consent, setConsent] = useState(false);
-  const [consentError, setConsentError] = useState(false);
+  const [consent, setConsent] = useState(false); // optional marketing opt-in
 
   const nameRef = useRef<HTMLInputElement>(null);
   const phoneRef = useRef<HTMLInputElement>(null);
@@ -393,10 +393,10 @@ export function ZipAvailabilityChecker(
               </div>
               <ConsentCheckbox
                 checked={consent}
-                onChange={(v) => { setConsent(v); if (v) setConsentError(false); }}
+                onChange={setConsent}
                 tone="dark"
-                error={consentError}
-                id="hero-gdpr"
+                id="hero-marketing"
+                label={<>Keep me updated on offers and news from Install Pros <span className="text-white/50">(optional)</span>.</>}
               />
             </div>
           )}
@@ -416,6 +416,8 @@ export function ZipAvailabilityChecker(
             </FunnelButton>
           </div>
         )}
+
+        {step === 4 && <FormLegalNotice tone="dark" />}
       </div>
     </div>
   );
