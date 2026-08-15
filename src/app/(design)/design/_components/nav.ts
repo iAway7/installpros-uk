@@ -18,6 +18,7 @@ export const NAV: NavGroup[] = [
     // component list is something you arrive at knowing the name.
     group: "Primitives",
     items: [
+      { href: "/design/primitives/accordion", label: "Accordion" },
       { href: "/design/primitives/badge", label: "Badge & Pill" },
       { href: "/design/primitives/breadcrumbs", label: "Breadcrumbs" },
       { href: "/design/primitives/button", label: "Button" },
