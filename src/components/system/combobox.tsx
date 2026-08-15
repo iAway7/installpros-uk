@@ -78,7 +78,7 @@ export function Combobox({
     <div ref={boxRef} className={cn("relative", className)}>
       <div
         className={cn(
-          "flex h-12 items-center gap-2 rounded-md border-[1.5px] bg-white px-4 transition-colors duration-200",
+          "flex h-12 items-center gap-2 rounded-md border-[1.5px] bg-background px-4 transition-colors duration-200",
           open ? "border-selection-border ring-2 ring-[hsl(var(--selection)/0.15)]" : "border-field",
         )}
       >
@@ -94,7 +94,7 @@ export function Combobox({
           onChange={(e) => { setQuery(e.target.value); setOpen(true); setActive(0); }}
           onFocus={() => setOpen(true)}
           onKeyDown={onKeyDown}
-          className="min-w-0 flex-1 bg-transparent text-[16px] text-black outline-none placeholder:text-gray-500"
+          className="min-w-0 flex-1 bg-transparent text-[16px] text-foreground outline-none placeholder:text-muted-foreground"
         />
         {selected && !open ? (
           <button
@@ -114,7 +114,7 @@ export function Combobox({
         <ul
           id={listId}
           role="listbox"
-          className="absolute z-30 mt-2 max-h-72 w-full overflow-auto rounded-xl border border-border bg-white py-1 shadow-xl"
+          className="absolute z-30 mt-2 max-h-72 w-full overflow-auto rounded-xl border border-border bg-card py-1 shadow-xl"
         >
           {filtered.length === 0 && (
             <li className="px-4 py-3 text-[15px] text-muted-foreground">{emptyMessage}</li>

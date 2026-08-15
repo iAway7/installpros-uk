@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
  * single --error token (#DC2626, 4.83:1 on white).
  */
 const funnelInputVariants = cva(
-  "flex w-full rounded-md border bg-white text-black ring-offset-background placeholder:text-gray-500 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 transition-colors duration-200",
+  "flex w-full rounded-md border bg-background text-foreground ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 transition-colors duration-200",
   {
     variants: {
       // Explicit 16px, not text-sm/text-base: .theme-admin rewrites those

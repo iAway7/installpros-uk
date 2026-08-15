@@ -96,7 +96,7 @@ export function Feedback({
   }
 
   return (
-    <div className={cn("w-full max-w-md overflow-hidden rounded-xl border border-border bg-white", className)}>
+    <div className={cn("w-full max-w-md overflow-hidden rounded-xl border border-border bg-card", className)}>
       <label htmlFor="feedback-text" className="sr-only">Your feedback</label>
       <textarea
         id="feedback-text"
@@ -104,7 +104,7 @@ export function Feedback({
         onChange={(e) => setText(e.target.value)}
         placeholder={placeholder}
         rows={4}
-        className="w-full resize-none px-4 py-3.5 text-[15px] text-black outline-none placeholder:text-gray-500"
+        className="w-full resize-none px-4 py-3.5 text-[15px] text-foreground outline-none placeholder:text-muted-foreground"
       />
       <div className="flex items-center justify-between gap-3 border-t border-border px-3 py-2.5">
         <Faces value={emotion} onChange={setEmotion} />

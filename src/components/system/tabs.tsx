@@ -94,7 +94,7 @@ export function Tabs({
                     ? "border-selection font-medium text-foreground"
                     : "border-transparent text-muted-foreground hover:text-foreground"
                   : active
-                    ? "bg-white font-medium text-foreground shadow-sm"
+                    ? "bg-background font-medium text-foreground shadow-sm"
                     : "text-muted-foreground hover:text-foreground",
             )}
           >

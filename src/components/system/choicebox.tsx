@@ -59,9 +59,14 @@ export function Choicebox({
         className={cn(
           "mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center border-2 transition-colors",
           multi ? "rounded-md" : "rounded-full",
-          selected ? "border-selection bg-selection" : "border-field bg-white",
+          selected ? "border-selection bg-selection" : "border-field bg-background",
         )}
       >
+        {/* white, not a surface token: this mark sits ON the dark --selection
+            fill, so it is the contrasting foreground of that swatch rather than
+            a page surface. Swapping it for bg-background would only look right
+            today because --background happens to be white, and would turn the
+            mark invisible the moment it is not. */}
         {selected &&
           (multi ? (
             <Check className="h-3 w-3 text-white" strokeWidth={3.5} />
