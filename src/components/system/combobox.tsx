@@ -78,7 +78,7 @@ export function Combobox({
     <div ref={boxRef} className={cn("relative", className)}>
       <div
         className={cn(
-          "flex h-control items-center gap-2 rounded-md border-[1.5px] bg-background px-4 transition-colors duration-200",
+          "flex h-control items-center gap-2 rounded-lg border-[1.5px] bg-background px-4 transition-colors duration-200",
           open ? "border-selection-border ring-2 ring-[hsl(var(--selection)/0.15)]" : "border-field",
         )}
       >

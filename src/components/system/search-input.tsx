@@ -21,7 +21,9 @@ export const SearchInput = React.forwardRef<
     size?: "sm" | "default";
   }
 >(({ value, onValueChange, placeholder = "Search…", size = "default", className, ...props }, ref) => {
-  const h = size === "sm" ? "h-control-sm" : "h-control";
+  // Radius follows height: 36px takes 10px, 48px takes 12px. Same rule as the
+  // button, so a search field sitting next to one lines up.
+  const h = size === "sm" ? "h-control-sm rounded-md" : "h-control rounded-lg";
 
   return (
     <div className={cn("relative", className)}>
@@ -43,7 +45,7 @@ export const SearchInput = React.forwardRef<
           }
         }}
         className={cn(
-          "w-full rounded-md border-[1.5px] border-field bg-background pl-11 pr-10 text-field text-foreground",
+          "w-full border-[1.5px] border-field bg-background pl-11 pr-10 text-field text-foreground",
           "placeholder:text-muted-foreground transition-colors duration-200",
           "focus-visible:border-selection-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--selection)/0.15)]",
           // Kill the native clear affordance — we render our own, which is
