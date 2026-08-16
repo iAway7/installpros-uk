@@ -83,7 +83,7 @@ export function Tabs({
             onKeyDown={(e) => onKeyDown(e, i)}
             className={cn(
               "relative flex shrink-0 items-center gap-2 whitespace-nowrap text-body transition-colors duration-200",
-              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--selection)/0.15)]",
+              "focus-ring",
               variant === "primary"
                 ? "-mb-px border-b-2 px-4 py-3"
                 : "rounded-lg px-3.5 py-2",

@@ -80,7 +80,7 @@ export function Modal({
   const width = { sm: "sm:max-w-[400px]", default: "sm:max-w-[480px]", lg: "sm:max-w-[600px]" }[size];
 
   const btn =
-    "inline-flex h-control-aux items-center justify-center rounded-md border px-4 text-body font-medium transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--selection)/0.15)] disabled:cursor-not-allowed disabled:opacity-40";
+    "inline-flex h-control-aux items-center justify-center rounded-md border px-4 text-body font-medium transition-colors duration-200 focus-ring disabled:cursor-not-allowed disabled:opacity-40";
 
   const cancelCfg = cancel === null ? null : { label: cancel?.label ?? "Cancel", onClick: cancel?.onClick ?? onClose };
   const lone = cancelCfg && !action;

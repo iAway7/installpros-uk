@@ -44,7 +44,7 @@ export function CopyButton({
         aria-label={copied ? "Copied" : label}
         className={cn(
           "inline-flex h-control-aux w-control-aux items-center justify-center rounded-md border border-field bg-background text-foreground transition-colors duration-200",
-          "hover:border-field-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--selection)/0.15)]",
+          "hover:border-field-hover focus-ring",
           className,
         )}
       >

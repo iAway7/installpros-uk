@@ -47,7 +47,7 @@ export const SearchInput = React.forwardRef<
         className={cn(
           "w-full border-[1.5px] border-field bg-background pl-11 pr-10 text-field text-foreground",
           "placeholder:text-muted-foreground transition-colors duration-200",
-          "focus-visible:border-selection-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--selection)/0.15)]",
+          "focus-visible:border-selection-border focus-ring",
           // Kill the native clear affordance — we render our own, which is
           // keyboard-reachable and consistent across browsers.
           "[&::-webkit-search-cancel-button]:appearance-none",
@@ -60,7 +60,7 @@ export const SearchInput = React.forwardRef<
           type="button"
           aria-label="Clear search"
           onClick={() => onValueChange("")}
-          className="absolute right-3 top-1/2 -translate-y-1/2 rounded-xs p-1 text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--selection)/0.15)]"
+          className="absolute right-3 top-1/2 -translate-y-1/2 rounded-xs p-1 text-muted-foreground transition-colors hover:text-foreground focus-ring"
         >
           <X className="h-4 w-4" />
         </button>

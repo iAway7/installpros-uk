@@ -208,6 +208,25 @@
    style: near-black primary, whisper-light borders, gray active states.
    Status colors (success/amber/destructive) intentionally keep their hues.
    ════════════════════════════════════════════════════════════════════════ */
+
+/* ── Focus ───────────────────────────────────────────────────────────────────
+   Two patterns, because two situations. Both were previously written out by
+   hand in eleven files, which meant a change to the focus indicator was eleven
+   edits and a hope that none were missed. Focus is accessibility, not styling:
+   a keyboard user needs the same signal on every control.
+
+   .focus-ring        soft, no offset — controls flush on a surface that already
+                      have their own border: fields, calendar cells, tabs.
+   .focus-ring-solid  solid with an offset — controls sitting ON something,
+                      where a 15% ring vanishes: a filled button, a card.
+   ──────────────────────────────────────────────────────────────────────────── */
+.focus-ring {
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--selection)/0.15)];
+}
+.focus-ring-solid {
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-selection focus-visible:ring-offset-2;
+}
+
 .theme-admin {
   font-family: var(--font-sans);
   font-size: 14px;
