@@ -31,7 +31,7 @@ export function ProfessionalInstallationSection() {
 
         <div className="mx-auto max-w-3xl space-y-4">
           {FEATURES.map((f) => (
-            <div key={f.title} className="flex items-start gap-4 rounded-2xl border border-border bg-background p-6 shadow-sm">
+            <div key={f.title} className="flex items-start gap-4 rounded-xl border border-border bg-background p-6 shadow-sm">
               <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-foreground">
                 <Check className="h-6 w-6 text-background" />
               </div>

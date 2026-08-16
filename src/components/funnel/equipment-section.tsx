@@ -47,17 +47,17 @@ export function EquipmentSection() {
           {EQUIPMENT.map((e) => (
             <div
               key={e.t}
-              className="rounded-[26px] border border-border bg-secondary/50 p-[18px] pb-7 transition-all duration-450 ease-ds hover:-translate-y-[5px] hover:border-brand-soft/35"
+              className="rounded-xl border border-border bg-secondary/50 p-6 transition-all duration-450 ease-ds hover:-translate-y-[5px] hover:border-brand-soft/35"
             >
               <div
-                className="flex aspect-square items-center justify-center overflow-hidden rounded-[18px] border border-border"
+                className="flex aspect-square items-center justify-center overflow-hidden rounded-lg border border-border"
                 style={{ background: "var(--eq-img-grad)" }}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={e.img} alt={e.t} loading="lazy" className="h-full w-full object-contain p-[12%]" />
               </div>
 
-              <div className="px-2.5 pt-5">
+              <div className="pt-5">
                 {/* Badge above the title, not beside it. Side by side they share
                     the card width, so "Starlink Standard" wrapped to two lines
                     while "Mesh Nodes" sat on one — the row heights went ragged.

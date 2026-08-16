@@ -159,7 +159,7 @@ export function PropertyImageUpload() {
                 <p className="mt-3 text-center text-xs text-muted-foreground">Takes ~30 seconds</p>
               </div>
             ) : (
-              <div className="rounded-xl border border-white/10 bg-white/5 p-4">
+              <div className="rounded-lg border border-white/10 bg-white/5 p-4">
                 <p className="mb-3 text-sm font-medium text-primary">
                   {files.length} photo{files.length === 1 ? "" : "s"} ready to upload:
                 </p>
@@ -199,7 +199,7 @@ export function PropertyImageUpload() {
                 )}
 
                 {uploading ? (
-                  <div className="mt-4 rounded-xl border border-primary/20 bg-primary/10 p-4">
+                  <div className="mt-4 rounded-lg border border-primary/20 bg-primary/10 p-4">
                     <div className="mb-3 flex items-center gap-3">
                       <Loader2 className="h-4 w-4 animate-spin text-primary" />
                       <span className="text-sm font-medium text-white">{statusText}</span>

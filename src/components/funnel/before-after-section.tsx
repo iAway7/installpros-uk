@@ -309,7 +309,7 @@ export function BeforeAfterSection() {
         */}
         {isMobile ? (
           <div className="flex flex-col gap-4">
-            <div className="rounded-[22px] border border-border p-6" style={{ background: "var(--before-grad)" }}>
+            <div className="rounded-xl border border-border p-6" style={{ background: "var(--before-grad)" }}>
               <span className="inline-block rounded-full border border-black/15 px-[15px] py-[7px] text-[11px] font-semibold uppercase tracking-[0.18em]" style={{ color: VIZ.ink }}>
                 Before
               </span>
@@ -317,7 +317,7 @@ export function BeforeAfterSection() {
             </div>
 
             <div
-              className="rounded-[22px] p-6"
+              className="rounded-xl p-6"
               style={{ background: "radial-gradient(120% 130% at 85% 110%, hsl(var(--primary) / 0.28) 0%, rgba(20,10,10,.9) 45%, #0B0B0C 100%)" }}
             >
               <span

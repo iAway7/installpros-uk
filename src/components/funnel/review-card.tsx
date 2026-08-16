@@ -45,7 +45,7 @@ export function ReviewCard({ r, source = "google" }: { r: Review; source?: "goog
   const label = source === "trustpilot" ? "Trustpilot review" : "Google review";
 
   return (
-    <div className="flex h-full flex-col rounded-2xl border border-border bg-white p-6 shadow-sm">
+    <div className="flex h-full flex-col rounded-xl border border-border bg-card p-6 shadow-sm">
       {/* Top: avatar + name/time + Google mark */}
       <div className="flex items-center gap-3">
         {r.photo ? (

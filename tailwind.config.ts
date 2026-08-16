@@ -125,7 +125,8 @@ const config: Config = {
       borderRadius: {
         // All derived from --radius so one number moves the whole system.
         // xl is the mobile sheet, xs the small hit areas inside a field.
-        xl: "calc(var(--radius) + 4px)",
+        "2xl": "calc(var(--radius) + 12px)",  // 24px — cards with 32px padding
+        xl: "calc(var(--radius) + 4px)",       // 16px — cards with 24px padding
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
