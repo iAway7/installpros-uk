@@ -4,7 +4,10 @@ export function CtaSection({ addressMode = false }: { addressMode?: boolean } = 
   return (
     <section id="quote" className="scroll-mt-24 bg-background py-12 md:py-20">
       <div className="container mx-auto" style={{ maxWidth: "1140px" }}>
-        <div className="rounded-[32px] bg-secondary px-8 py-16 text-center">
+        {/* 64px of padding only from md up: at 375px it would leave the postcode
+            field about 250px wide, which is narrower than the placeholder it has
+            to show. Mobile keeps the 32px it had. */}
+        <div className="rounded-3xl bg-secondary px-8 py-16 text-center md:p-16">
           <h2
             className="mb-4 h2-section text-foreground"
           >
