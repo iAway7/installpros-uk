@@ -1,5 +1,6 @@
 import { AlertTriangle, Info, ShieldCheck, XOctagon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { STATUS_TINT } from "./status-tint";
 
 type Variant = "gray" | "success" | "warning" | "error";
 
@@ -7,9 +8,9 @@ const ICON = { gray: Info, success: ShieldCheck, warning: AlertTriangle, error: 
 
 const TONE: Record<Variant, string> = {
   gray:    "border-border bg-secondary text-foreground",
-  success: "border-success/25 bg-success/[0.07] text-foreground",
-  warning: "border-gold/40 bg-gold/[0.10] text-foreground",
-  error:   "border-error/25 bg-error/[0.07] text-foreground",
+  success: `${STATUS_TINT.success.border} ${STATUS_TINT.success.fill} text-foreground`,
+  warning: `${STATUS_TINT.warning.border} ${STATUS_TINT.warning.fill} text-foreground`,
+  error: `${STATUS_TINT.error.border} ${STATUS_TINT.error.fill} text-foreground`,
 };
 const ICON_TONE: Record<Variant, string> = {
   gray: "text-muted-foreground",

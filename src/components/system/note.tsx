@@ -1,5 +1,6 @@
 import { AlertOctagon, AlertTriangle, CheckCircle2, Info } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { STATUS_TINT } from "./status-tint";
 
 type Variant = "default" | "success" | "warning" | "error" | "secondary";
 
@@ -14,9 +15,9 @@ const ICON = {
 const TONE: Record<Variant, { border: string; fill: string; icon: string }> = {
   default:   { border: "border-border",       fill: "bg-secondary",      icon: "text-muted-foreground" },
   secondary: { border: "border-border",       fill: "bg-secondary",      icon: "text-muted-foreground" },
-  success:   { border: "border-success/30",   fill: "bg-success/[0.06]", icon: "text-success" },
-  warning:   { border: "border-gold/40",      fill: "bg-gold/[0.08]",    icon: "text-gold" },
-  error:     { border: "border-error/30",     fill: "bg-error/[0.06]",   icon: "text-error" },
+  success:   { border: STATUS_TINT.success.border, fill: STATUS_TINT.success.fill, icon: STATUS_TINT.success.ink },
+  warning:   { border: STATUS_TINT.warning.border, fill: STATUS_TINT.warning.fill, icon: STATUS_TINT.warning.ink },
+  error:     { border: STATUS_TINT.error.border, fill: STATUS_TINT.error.fill, icon: STATUS_TINT.error.ink },
 };
 
 /**
