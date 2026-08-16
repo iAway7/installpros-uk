@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 type Variant = "brand" | "neutral" | "success" | "warning" | "error";
 
 const TONE: Record<Variant, string> = {
-  brand:   "border-brand-soft/30 text-brand-icon",
+  brand:   "border-brand-soft/25 text-brand-icon",
   neutral: "border-border text-muted-foreground",
   success: "border-success/30 text-success",
   warning: "border-gold/40 text-gold",
