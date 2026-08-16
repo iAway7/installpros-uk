@@ -136,7 +136,9 @@
     --text-label: 12px;     /* button label, tab, calendar heading */
     --text-caption: 13px;   /* helper text, small error, progress figure */
     --text-body-sm: 14px;   /* secondary body */
-    --text-body: 15px;      /* the workhorse: labels, options, menu, modal body */
+    --text-body: 16px;      /* the workhorse: labels, options, menu, modal body.
+                               Same value as --text-field, different reason: this one
+                               is the scale step, that one is the iOS zoom floor. */
     --text-field: 16px;     /* form inputs. Does NOT scale with density —
                                below 16px iOS Safari zooms the page on focus. */
     --text-lead: 18px;      /* accordion content, modal title */
