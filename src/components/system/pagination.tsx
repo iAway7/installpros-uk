@@ -32,7 +32,7 @@ export function Pagination({
   if (totalPages <= 1) return null;
 
   const cell =
-    "flex h-10 min-w-10 items-center justify-center rounded-md px-3 text-body-sm transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--selection)/0.15)]";
+    "flex h-control-aux min-w-control-aux items-center justify-center rounded-md px-3 text-body-sm transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--selection)/0.15)]";
 
   return (
     <nav aria-label="Pagination" className={cn("flex items-center gap-1", className)}>

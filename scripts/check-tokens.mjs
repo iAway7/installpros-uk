@@ -23,6 +23,7 @@ const utils = readFileSync("src/lib/utils.ts", "utf8");
 
 /** Keys inside the fontSize block, minus Tailwind's own scale. */
 const fontSizeBlock = /fontSize:\s*\{([\s\S]*?)\n\s{6}\},/.exec(config)?.[1] ?? "";
+const heightBlock = /\n\s{6}height:\s*\{([\s\S]*?)\n\s{6}\},/.exec(config)?.[1] ?? "";
 const CORE = new Set(["xs", "sm", "base", "lg", "xl", "2xl", "3xl", "4xl", "5xl", "6xl", "7xl", "8xl", "9xl"]);
 const declared = [...fontSizeBlock.matchAll(/^\s*"?([a-z0-9-]+)"?:/gm)]
   .map((m) => m[1])
@@ -43,6 +44,17 @@ for (const key of declared) {
   if (!out.includes(`text-${key}`)) {
     fail.push(`cn() drops text-${key} next to a colour class — the element will inherit its parent's size.`);
   }
+}
+
+// Same two checks for the control ladder. h-* is the group tailwind-merge is
+// most likely to guess wrong, because its own table only knows h-{number}.
+const heights = [...heightBlock.matchAll(/^\s*"?([a-z0-9-]+)"?:/gm)].map((m) => m[1]);
+const knownH = new Set([...(/\bh:\s*\[\{\s*h:\s*\[([^\]]*)\]/.exec(utils)?.[1] ?? "")
+  .matchAll(/"([a-z0-9-]+)"/g)].map((m) => m[1]));
+for (const key of heights) {
+  if (!knownH.has(key)) fail.push(`height "${key}" is in tailwind.config but not registered in cn().`);
+  if (!cn(`h-${key}`, "h-10").includes("h-10")) fail.push(`cn() mishandles h-${key} against a core height.`);
+  if (cn(`h-10`, `h-${key}`) !== `h-${key}`) fail.push(`cn() does not let h-${key} override a core height.`);
 }
 
 // The dedup we DO want must still work, or every size becomes sticky.

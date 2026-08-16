@@ -144,6 +144,17 @@
     --text-lead: 18px;      /* accordion content, modal title */
     --text-title: 20px;     /* accordion trigger, feedback title */
 
+
+    /* ── TIER 2 · control heights ─────────────────────────────────────────
+       The four rungs the button and input already shared, finally named. aux
+       is the odd one: not a button/input size at all, but the square auxiliary
+       control — icon button, copy, pagination — which sits between sm and the
+       default. */
+    --control-sm: 36px;
+    --control-aux: 40px;
+    --control: 48px;
+    --control-lg: 56px;
+
     --radius: 0.75rem;
   }
 }
@@ -215,6 +226,15 @@
   --text-body: 14px;
   --text-lead: 16px;
   --text-title: 18px;
+
+
+  /* Product density. 44px is the floor for the default control: --text-field
+     cannot go below 16px (iOS zooms on focus), and 16px inside a 40px box is
+     tighter than it should be. */
+  --control-sm: 36px;
+  --control-aux: 40px;
+  --control: 44px;
+  --control-lg: 48px;
 
   --radius: 0.75rem;
 

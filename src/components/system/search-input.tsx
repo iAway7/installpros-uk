@@ -21,7 +21,7 @@ export const SearchInput = React.forwardRef<
     size?: "sm" | "default";
   }
 >(({ value, onValueChange, placeholder = "Search…", size = "default", className, ...props }, ref) => {
-  const h = size === "sm" ? "h-9" : "h-12";
+  const h = size === "sm" ? "h-control-sm" : "h-control";
 
   return (
     <div className={cn("relative", className)}>

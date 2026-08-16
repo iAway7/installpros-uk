@@ -104,6 +104,24 @@ const config: Config = {
         450: "450ms",
         550: "550ms",
       },
+      height: {
+        // Control ladder — resolves per theme. Register any addition in cn()
+        // too, or tailwind-merge drops it (see src/lib/utils.ts).
+        "control-sm": "var(--control-sm)",
+        "control-aux": "var(--control-aux)",
+        control: "var(--control)",
+        "control-lg": "var(--control-lg)",
+      },
+      // Square controls need the same ladder on the other axis.
+      width: {
+        "control-sm": "var(--control-sm)",
+        "control-aux": "var(--control-aux)",
+        control: "var(--control)",
+        "control-lg": "var(--control-lg)",
+      },
+      minWidth: {
+        "control-aux": "var(--control-aux)",
+      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",

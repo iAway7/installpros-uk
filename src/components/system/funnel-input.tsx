@@ -18,9 +18,9 @@ const funnelInputVariants = cva(
       // dashboard. 16px is also the threshold below which iOS Safari zooms the
       // page on focus — inputs should stay here regardless of density.
       inputSize: {
-        sm: "h-9 px-4 py-1 text-field",
-        default: "h-12 px-5 py-2 text-field",
-        lg: "h-14 px-6 py-3 text-field",
+        sm: "h-control-sm px-4 py-1 text-field",
+        default: "h-control px-5 py-2 text-field",
+        lg: "h-control-lg px-6 py-3 text-field",
       },
       state: {
         default:

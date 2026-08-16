@@ -64,7 +64,7 @@ export function Calendar({
           type="button"
           onClick={() => shift(-1)}
           aria-label="Previous month"
-          className="flex h-9 w-9 items-center justify-center rounded-md text-foreground transition-colors duration-200 hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--selection)/0.15)]"
+          className="flex h-control-sm w-control-sm items-center justify-center rounded-md text-foreground transition-colors duration-200 hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--selection)/0.15)]"
         >
           <ChevronLeft className="h-4 w-4" />
         </button>
@@ -75,7 +75,7 @@ export function Calendar({
           type="button"
           onClick={() => shift(1)}
           aria-label="Next month"
-          className="flex h-9 w-9 items-center justify-center rounded-md text-foreground transition-colors duration-200 hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--selection)/0.15)]"
+          className="flex h-control-sm w-control-sm items-center justify-center rounded-md text-foreground transition-colors duration-200 hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--selection)/0.15)]"
         >
           <ChevronRight className="h-4 w-4" />
         </button>
@@ -101,7 +101,7 @@ export function Calendar({
               aria-label={`${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`}
               onClick={() => onChange(d)}
               className={cn(
-                "flex h-10 items-center justify-center rounded-md text-body-sm transition-colors duration-200",
+                "flex h-control-aux items-center justify-center rounded-md text-body-sm transition-colors duration-200",
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--selection)/0.15)]",
                 selected && "bg-selection font-semibold text-white",
                 !selected && !disabled && "text-foreground hover:bg-secondary",
