@@ -340,7 +340,7 @@ export function BeforeAfterSection() {
             onPointerMove={(e) => dragging.current && setFromClientX(e.clientX)}
             onPointerUp={() => (dragging.current = false)}
             onPointerCancel={() => (dragging.current = false)}
-            className="relative w-full select-none overflow-hidden rounded-[30px] border border-border"
+            className="relative w-full select-none overflow-hidden rounded-3xl border border-border"
             style={{ height: "clamp(400px, 46vw, 520px)", cursor: "ew-resize", touchAction: "pan-y" }}
           >
             {/* BEFORE (light) */}
