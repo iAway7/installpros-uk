@@ -20,7 +20,7 @@ export function FormOption({ label, selected, onClick, className, icon }: FormOp
       onClick={onClick}
       aria-pressed={selected}
       className={cn(
-        "w-full rounded-lg border-2 p-4 font-semibold text-foreground transition-all duration-200 ease-ds",
+        "w-full rounded-lg border-[length:var(--border-control)] p-4 font-semibold text-foreground transition-all duration-200 ease-ds",
         "focus-ring-solid",
         icon ? "flex flex-col items-center justify-center gap-2 text-center" : "text-left",
         selected

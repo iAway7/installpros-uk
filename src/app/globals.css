@@ -164,6 +164,19 @@
     --button-weight: 700;
     --button-tracking: -0.2px;
 
+
+    /* ── TIER 2 · border widths ───────────────────────────────────────────
+       Three widths for three jobs, which was already true and just had no
+       name: 1px for cards, panels and rules, 1.5px for a text field, 2px for
+       something you select. The 1.5px was written out six times by hand, so
+       the seventh field was going to land on 2px sooner or later.
+
+       Written as border-[length:var(--x)] rather than a borderWidth key: the
+       obvious names — field, input — are already colour tokens, and Tailwind
+       would emit two rules with the same class name. */
+    --border-field: 1.5px;
+    --border-control: 2px;
+
     --radius: 0.75rem;
   }
 }

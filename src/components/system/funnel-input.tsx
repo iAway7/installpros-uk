@@ -24,9 +24,9 @@ const funnelInputVariants = cva(
       },
       state: {
         default:
-          "border-[1.5px] border-field focus-visible:border-selection-border focus-ring",
+          "border-[length:var(--border-field)] border-field focus-visible:border-selection-border focus-ring",
         error:
-          "border-[1.5px] border-error focus-visible:border-error focus-visible:ring-2 focus-visible:ring-error/20",
+          "border-[length:var(--border-field)] border-error focus-visible:border-error focus-visible:ring-2 focus-visible:ring-error/20",
       },
     },
     defaultVariants: { inputSize: "default", state: "default" },
