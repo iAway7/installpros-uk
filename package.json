@@ -2,13 +2,16 @@
   "name": "get-installpros",
   "version": "0.1.0",
   "private": true,
-  "description": "get.installpros.co.uk \u2014 Starlink installation landing page + growth/analytics platform",
+  "description": "get.installpros.co.uk — Starlink installation landing page + growth/analytics platform",
   "scripts": {
     "dev": "next dev -p 3035",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "tokens": "node scripts/extract-tokens.mjs",
+    "predev": "npm run tokens",
+    "prebuild": "npm run tokens"
   },
   "dependencies": {
     "@cloudflare/speedtest": "^1.12.1",

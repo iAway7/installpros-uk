@@ -15,60 +15,118 @@
 
 @layer base {
   :root {
+  /* ══════════════════════════════════════════════════════════════════════
+     TIER 1 · PRIMITIVES
+
+     Raw values with no meaning attached. Nothing in a component should ever
+     reference these directly — the semantic tokens below map them to a use.
+
+     Written as HSL triplets, not hex, because Tailwind composes them as
+     hsl(var(--token) / <alpha>) — that is what makes bg-primary/10 work.
+     One decimal place is deliberate: at zero decimals 22 of these 50 colours
+     do not round-trip back to their hex, which is why eight tokens used to
+     document a value their own HSL did not produce.
+     ══════════════════════════════════════════════════════════════════════ */
+
+  /* Neutrals — every step houses a live token */
+  --gray-50: 0 0% 94.9%;          /* #F2F2F2 */
+  --gray-100: 0 0% 92.2%;         /* #EBEBEB */
+  --gray-200: 0 0% 83.1%;         /* #D4D4D4 */
+  --gray-300: 0 0% 78.8%;         /* #C9C9C9 */
+  --gray-400: 0 0% 65.9%;         /* #A8A8A8 */
+  --gray-500: 0 0% 56.1%;         /* #8F8F8F */
+  --gray-600: 0 0% 49%;           /* #7D7D7D */
+  --gray-700: 0 0% 40%;           /* #666666 */
+  --gray-800: 0 0% 30.2%;         /* #4D4D4D */
+  --gray-900: 0 0% 9%;            /* #171717 */
+
+  /* Brand red — the funnel's primary. The admin theme uses none of it. */
+  --red-50: 7.5 57.1% 97.3%;      /* #FCF5F4 */
+  --red-100: 6 62.5% 93.7%;       /* #F9E7E5 */
+  --red-200: 4.7 70.4% 89.4%;     /* #F7D4D1 */
+  --red-300: 3.5 81% 83.5%;       /* #F7B7B3 */
+  --red-400: 0 100% 68%;          /* #FF5C5C */
+  --red-500: 0 87.8% 52%;         /* #F01919 */
+  --red-600: 0 95.1% 40%;         /* #C70505 */
+  --red-700: 0 89.9% 35.1%;       /* #AA0909 */
+  --red-800: 358 88.2% 26.7%;     /* #80080C */
+  --red-900: 355.7 83.1% 16.3%;   /* #4C070C */
+
+  /* Coral — error and the softer brand accent */
+  --coral-50: 0 57.1% 97.3%;      /* #FCF4F4 */
+  --coral-100: 5.7 67.7% 93.9%;   /* #FAE7E5 */
+  --coral-200: 3.1 73.6% 89.6%;   /* #F8D3D1 */
+  --coral-300: 1 75.9% 83.7%;     /* #F5B7B6 */
+  --coral-400: 359.4 76.2% 72%;   /* #EE8182 */
+  --coral-500: 358.1 75.1% 59%;   /* #E5484D */
+  --coral-600: 0 72% 51%;         /* #DC2828 */
+  --coral-700: 357.8 68.2% 39.4%; /* #A92025 */
+  --coral-800: 356.2 64% 29.4%;   /* #7B1B21 */
+  --coral-900: 354.2 57.8% 17.6%; /* #471318 */
+
+  /* Green — success */
+  --green-50: 144 45.5% 95.7%;    /* #EFF9F3 */
+  --green-100: 146 53.6% 89%;     /* #D4F2E1 */
+  --green-200: 145.3 58.2% 78.4%; /* #A8E8C3 */
+  --green-300: 145.3 64% 60.8%;   /* #5BDB91 */
+  --green-400: 142.1 71.2% 44.9%; /* #21C45D */
+  --green-500: 141.9 74.1% 36.3%; /* #18A14A */
+  --green-600: 142.1 71.6% 29%;   /* #157F3C */
+  --green-700: 145.2 70.4% 22.5%; /* #116233 */
+  --green-800: 148.9 66.7% 16.5%; /* #0E4629 */
+  --green-900: 151.9 59.3% 10.6%; /* #0B2B1C */
+
+  /* Amber — Vercel's ramp, with Google's review gold kept at 500 */
+  --amber-50: 38.4 100% 95.1%;    /* #FFF6E6 */
+  --amber-100: 43.9 100% 92%;     /* #FFF4D6 */
+  --amber-200: 42.9 96.1% 90%;    /* #FEF0CD */
+  --amber-300: 41.8 100% 78%;     /* #FFDD8F */
+  --amber-400: 38.1 100% 71%;     /* #FFC96B */
+  --amber-500: 44.9 96.9% 50%;    /* #FBBD04 */
+  --amber-600: 38.9 100% 57.1%;   /* #FFB224 */
+  --amber-700: 35 100% 52%;       /* #FF990A */
+  --amber-800: 30.2 100% 32%;     /* #A35200 */
+  --amber-900: 20 79.3% 17.1%;    /* #4E2009 */
+
+  /* Pure white and the funnel's cool off-white. The second is not a step of the
+     neutral ramp on purpose — it carries a 210 hue, which is what stops the
+     large secondary surfaces reading as dirty grey. */
+  --white: 0 0% 100%;             /* #FFFFFF */
+  --slate-50: 210 20% 98%;        /* #F9FAFB */
+
+  /* WhatsApp's own brand green. Not from a ramp and not themeable:
+     the recognition is the point of the button. */
+  --whatsapp-brand: 142.4 70.2% 48.6%;/* #25D366 */
+
     --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 
-    --background: 0 0% 100%;
-    --foreground: 222 47% 11%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
-
-    /* Brand: deep space navy + signal cyan (Starlink-adjacent, not a copy) */
-    --primary: 221 83% 53%;
-    --primary-foreground: 0 0% 100%;
-
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222 47% 11%;
-
-    --muted: 210 40% 96%;
-    --muted-foreground: 215 16% 47%;
-
-    --accent: 199 89% 48%;
-    --accent-foreground: 0 0% 100%;
-
-    --success: 142 71% 45%;
-    --success-foreground: 0 0% 100%;
-
-    --destructive: 0 72% 51%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 221 83% 53%;
+    /* ── TIER 2 · default semantics ───────────────────────────────────────
+       What an element gets when no theme class wraps it: the auth pages and
+       the docs-site chrome. Until now this block still held the retired
+       Phase-1 palette, so the login button rendered #2463EB blue instead of
+       the brand red. The default is the brand — a theme is a deviation from
+       it, not the only place it exists. */
+    --background: var(--white);
+    --foreground: var(--gray-900);
+    --card: var(--white);
+    --card-foreground: var(--gray-900);
+    --primary: var(--red-600);
+    --primary-foreground: var(--white);
+    --secondary: var(--slate-50);
+    --secondary-foreground: var(--gray-900);
+    --muted: var(--slate-50);
+    --muted-foreground: var(--gray-700);
+    --accent: var(--red-600);
+    --accent-foreground: var(--white);
+    --success: var(--green-600);
+    --success-foreground: var(--white);
+    --destructive: var(--coral-600);
+    --destructive-foreground: var(--white);
+    --border: var(--gray-100);
+    --input: var(--gray-100);
+    --ring: var(--gray-900);
 
     --radius: 0.75rem;
-  }
-
-  .dark {
-    --background: 222 47% 7%;
-    --foreground: 210 40% 98%;
-    --card: 222 47% 10%;
-    --card-foreground: 210 40% 98%;
-    --primary: 217 91% 60%;
-    --primary-foreground: 222 47% 11%;
-    --secondary: 217 33% 17%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217 33% 17%;
-    --muted-foreground: 215 20% 65%;
-    --accent: 199 89% 48%;
-    --accent-foreground: 222 47% 11%;
-    --success: 142 71% 45%;
-    --success-foreground: 0 0% 100%;
-    --destructive: 0 63% 31%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217 33% 20%;
-    --input: 217 33% 20%;
-    --ring: 224 76% 60%;
   }
 }
 
@@ -115,21 +173,23 @@
 .theme-admin {
   font-family: var(--font-sans);
   font-size: 14px;
-  --background: 0 0% 100%;
-  --foreground: 0 0% 9%;
-  --card: 0 0% 100%;
-  --card-foreground: 0 0% 9%;
-  --primary: 0 0% 9%;
-  --primary-foreground: 0 0% 100%;
-  --secondary: 0 0% 96.5%;
-  --secondary-foreground: 0 0% 9%;
-  --muted: 0 0% 96.5%;
-  --muted-foreground: 0 0% 42%;
+  --background: var(--white);
+  --foreground: var(--gray-900);
+  --card: var(--white);
+  --card-foreground: var(--gray-900);
+  --primary: var(--gray-900);
+  --primary-foreground: var(--white);
+  --secondary: var(--gray-50);
+  --secondary-foreground: var(--gray-900);
+  --muted: var(--gray-50);
+  --muted-foreground: var(--gray-700);
+  /* No ramp step: #333333 sits in the 25-point gap between gray-800 and
+     gray-900. Snapping it would move it 11.5 ΔE, which is visible. */
   --accent: 0 0% 20%;
-  --accent-foreground: 0 0% 100%;
-  --border: 0 0% 92%;
-  --input: 0 0% 92%;
-  --ring: 0 0% 9%;
+  --accent-foreground: var(--white);
+  --border: var(--gray-100);
+  --input: var(--gray-100);
+  --ring: var(--gray-900);
   --radius: 0.75rem;
 
   /* ---- Shared system tokens ------------------------------------------------
@@ -137,21 +197,21 @@
      components/system renders correctly in both themes. Values are the admin's
      own: monochrome, because there is no brand red in here. Status keeps its
      hue — an error is red wherever it appears. */
-  --field: 0 0% 85%;
-  --field-hover: 0 0% 60%;
-  --selection: 0 0% 9%;
-  --selection-border: 0 0% 25%;
+  --field: var(--gray-200);
+  --field-hover: var(--gray-500);
+  --selection: var(--gray-900);
+  --selection-border: var(--gray-800);
   --brand-hover: 0 0% 20%;
-  --brand-icon: 0 0% 42%;
-  --brand-soft: 0 0% 85%;
-  --brand-deep: 0 0% 25%;
-  --error: 0 72% 51%;
-  --error-foreground: 0 0% 100%;
-  --success: 142 72% 29%;
-  --success-foreground: 0 0% 100%;
-  --success-bright: 142 71% 45%;
-  --gold: 45 97% 50%;
-  --whatsapp: 142 70% 49%;
+  --brand-icon: var(--gray-700);
+  --brand-soft: var(--gray-200);
+  --brand-deep: var(--gray-800);
+  --error: var(--coral-600);
+  --error-foreground: var(--white);
+  --success: var(--green-600);
+  --success-foreground: var(--white);
+  --success-bright: var(--green-400);
+  --gold: var(--amber-500);
+  --whatsapp: var(--whatsapp-brand);
 }
 
 /* Webapp type scale — data-dense UI wants smaller text than marketing pages.
@@ -178,51 +238,51 @@
    ════════════════════════════════════════════════════════════════════════ */
 .theme-funnel {
   /* ---- Base surfaces + text ---- */
-  --background: 0 0% 100%;
-  --foreground: 0 0% 9%;            /* #171717 — matches the DS --primary */
-  --card: 0 0% 100%;
-  --card-foreground: 0 0% 9%;
-  --secondary: 210 20% 98%;         /* #F9FAFB — cool off-white, not a pure grey */
-  --secondary-foreground: 0 0% 9%;
-  --muted: 210 20% 98%;
-  --muted-foreground: 0 0% 40%;     /* #666666 — matches the DS --secondary */
-  --border: 0 0% 92%;               /* #EBEBEB */
-  --input: 0 0% 92%;
+  --background: var(--white);
+  --foreground: var(--gray-900);            /* #171717 — matches the DS --primary */
+  --card: var(--white);
+  --card-foreground: var(--gray-900);
+  --secondary: var(--slate-50);         /* #F9FAFB — cool off-white, not a pure grey */
+  --secondary-foreground: var(--gray-900);
+  --muted: var(--slate-50);
+  --muted-foreground: var(--gray-700);     /* #666666 — matches the DS --secondary */
+  --border: var(--gray-100);               /* #EBEBEB */
+  --input: var(--gray-100);
   --radius: 0.75rem;
 
   /* ---- Brand red. The ONLY red on the page, plus two derived tints ---- */
-  --primary: 0 95% 40%;             /* #C70505 — button fill, eyebrow labels */
-  --primary-foreground: 0 0% 100%;
-  --accent: 0 95% 40%;
-  --accent-foreground: 0 0% 100%;
-  --brand-hover: 0 95% 32%;         /* #9E0404 — darkens on hover (from the DS) */
-  --brand-icon: 358 75% 59%;        /* #E5484D — card icon glyphs */
-  --brand-soft: 0 100% 68%;         /* #FF5A5A — decorative borders/glows ONLY */
-  --brand-deep: 0 90% 35%;          /* #AB0909 — brand red dark enough for small
+  --primary: var(--red-600);             /* #C70505 — button fill, eyebrow labels */
+  --primary-foreground: var(--white);
+  --accent: var(--red-600);
+  --accent-foreground: var(--white);
+  --brand-hover: var(--red-700);         /* #9E0404 — darkens on hover (from the DS) */
+  --brand-icon: var(--coral-500);        /* #E5484D — card icon glyphs */
+  --brand-soft: var(--red-400);         /* #FF5A5A — decorative borders/glows ONLY */
+  --brand-deep: var(--red-700);          /* #AB0909 — brand red dark enough for small
                                        text: 7.6:1 on white, where --brand-icon
                                        only reaches 3.9:1 and fails AA. */
 
   /* ---- Selection + focus. Deliberately neutral, never brand red ---- */
-  --selection: 0 0% 9%;             /* #171717 — checked, selected, focus ring.
+  --selection: var(--gray-900);             /* #171717 — checked, selected, focus ring.
                                        Same value as --foreground: two near-blacks
                                        three RGB points apart were the same colour. */
-  --selection-border: 0 0% 25%;     /* #404040 — input border on focus */
-  --field: 0 0% 83%;                /* #D4D4D4 — input/option border at rest */
-  --field-hover: 0 0% 45%;          /* #737373 — border on hover */
-  --ring: 0 0% 9%;                  /* focus ring = selection, not red */
+  --selection-border: var(--gray-800);     /* #404040 — input border on focus */
+  --field: var(--gray-200);                /* #D4D4D4 — input/option border at rest */
+  --field-hover: var(--gray-600);          /* #737373 — border on hover */
+  --ring: var(--gray-900);                  /* focus ring = selection, not red */
 
   /* ---- Status. One value each (was 2 reds + 3 greens) ---- */
-  --error: 0 72% 51%;               /* #DC2626 — 4.83:1 on white ✓ AA */
-  --error-foreground: 0 0% 100%;
-  --destructive: 0 72% 51%;         /* alias so shadcn primitives inherit it */
-  --destructive-foreground: 0 0% 100%;
-  --success: 142 72% 29%;           /* #15803D — 4.86:1 on white ✓ AA */
-  --success-foreground: 0 0% 100%;
-  --success-bright: 142 71% 45%;    /* #22C55E — for the dark hero only */
+  --error: var(--coral-600);               /* #DC2626 — 4.83:1 on white ✓ AA */
+  --error-foreground: var(--white);
+  --destructive: var(--coral-600);         /* alias so shadcn primitives inherit it */
+  --destructive-foreground: var(--white);
+  --success: var(--green-600);           /* #15803D — 4.86:1 on white ✓ AA */
+  --success-foreground: var(--white);
+  --success-bright: var(--green-400);    /* #22C55E — for the dark hero only */
 
   /* ---- Third-party brand marks ---- */
-  --gold: 45 97% 50%;               /* #FBBC04 — review stars */
-  --whatsapp: 142 70% 49%;          /* #25D366 */
+  --gold: var(--amber-500);               /* #FBBC04 — review stars */
+  --whatsapp: var(--whatsapp-brand);          /* #25D366 */
 
   /* ---- Hero (dark) — the overlay that sits over vr-hero.webp ---- */
   --hero-overlay: linear-gradient(to bottom, rgba(10, 25, 41, 0.6), rgba(13, 27, 42, 0.7), rgba(0, 0, 0, 0.85));
