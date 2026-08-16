@@ -57,7 +57,7 @@ const BADGES: ReactNode[] = [
     <img
       src="/funnel/Authorised-Starlink-Installer-Getmedigital.png"
       alt="Authorized Starlink Installer"
-      className="block h-[72px] w-[72px] rounded-[9px]"
+      className="block h-[72px] w-[72px] rounded-lg"
     />
     <div className="flex flex-col leading-tight">
       <span className="text-sm text-white/70">Authorized</span>

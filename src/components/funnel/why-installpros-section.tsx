@@ -84,7 +84,7 @@ export function WhyInstallProsSection() {
               className="rounded-xl border border-border bg-secondary/40 p-6 transition-all duration-450 ease-ds hover:-translate-y-[5px] hover:border-brand-soft/35"
             >
               <div
-                className="flex h-11 w-11 items-center justify-center rounded-[13px] border border-brand-soft/25 bg-primary/10 text-brand-icon"
+                className="flex h-11 w-11 items-center justify-center rounded-lg border border-brand-soft/25 bg-primary/10 text-brand-icon"
               >
                 {f.i}
               </div>

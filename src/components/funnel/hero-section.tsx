@@ -53,7 +53,7 @@ export function HeroSection(
             <span className="text-xs font-medium tracking-wide text-white/95">Nationwide UK Coverage</span>
             {/* Decorative: the label already says UK. */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/funnel/uk-flag.svg" alt="" aria-hidden="true" className="h-4 w-4 rounded-[2px]" />
+            <img src="/funnel/uk-flag.svg" alt="" aria-hidden="true" className="h-4 w-4 rounded-xs" />
           </div>
 
           <HeroHeadline />
