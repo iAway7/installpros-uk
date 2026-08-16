@@ -11,7 +11,8 @@
     "typecheck": "tsc --noEmit",
     "tokens": "node scripts/extract-tokens.mjs",
     "predev": "npm run tokens",
-    "prebuild": "npm run tokens"
+    "prebuild": "npm run tokens && npm run check:tokens",
+    "check:tokens": "node --experimental-strip-types --no-warnings scripts/check-tokens.mjs"
   },
   "dependencies": {
     "@cloudflare/speedtest": "^1.12.1",
