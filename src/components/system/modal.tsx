@@ -80,7 +80,7 @@ export function Modal({
   const width = { sm: "sm:max-w-[400px]", default: "sm:max-w-[480px]", lg: "sm:max-w-[600px]" }[size];
 
   const btn =
-    "inline-flex h-10 items-center justify-center rounded-lg border px-4 text-[15px] font-medium transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--selection)/0.15)] disabled:cursor-not-allowed disabled:opacity-40";
+    "inline-flex h-10 items-center justify-center rounded-lg border px-4 text-body font-medium transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--selection)/0.15)] disabled:cursor-not-allowed disabled:opacity-40";
 
   const cancelCfg = cancel === null ? null : { label: cancel?.label ?? "Cancel", onClick: cancel?.onClick ?? onClose };
   const lone = cancelCfg && !action;
@@ -103,18 +103,18 @@ export function Modal({
       )}
     >
       <div className="px-6 py-5">
-        <h2 id="modal-title" className="text-[18px] font-semibold leading-tight tracking-[-0.2px]">
+        <h2 id="modal-title" className="text-lead font-semibold leading-tight tracking-[-0.2px]">
           {title}
         </h2>
         {description && (
-          <p id="modal-description" className="mt-2 text-[15px] leading-[1.55] text-muted-foreground">
+          <p id="modal-description" className="mt-2 text-body leading-[1.55] text-muted-foreground">
             {description}
           </p>
         )}
       </div>
 
       {children && (
-        <div className="border-t border-border px-6 py-5 text-[15px] leading-[1.55]">{children}</div>
+        <div className="border-t border-border px-6 py-5 text-body leading-[1.55]">{children}</div>
       )}
 
       {(cancelCfg || action || footer) && (

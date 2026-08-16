@@ -23,6 +23,16 @@ const config: Config = {
       fontSize: {
         xs: ["1rem", { lineHeight: "1.5rem" }],
         sm: ["1rem", { lineHeight: "1.5rem" }],
+        // Type scale — resolves per theme, so the same class is 15px in the
+        // funnel and 14px in the dashboard.
+        micro: "var(--text-micro)",
+        label: "var(--text-label)",
+        caption: "var(--text-caption)",
+        "body-sm": "var(--text-body-sm)",
+        body: "var(--text-body)",
+        field: "var(--text-field)",
+        lead: "var(--text-lead)",
+        title: "var(--text-title)",
       },
       colors: {
         border: "hsl(var(--border))",

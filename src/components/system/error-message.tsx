@@ -22,7 +22,7 @@ export function ErrorMessage({
   id?: string;
   className?: string;
 }) {
-  const text = { sm: "text-[13px]", default: "text-[15px]", lg: "text-[17px]" }[size];
+  const text = { sm: "text-caption", default: "text-body", lg: "text-lead" }[size];
   const icon = { sm: "h-3.5 w-3.5", default: "h-4 w-4", lg: "h-5 w-5" }[size];
 
   return (

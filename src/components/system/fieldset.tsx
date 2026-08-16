@@ -37,7 +37,7 @@ export function Fieldset({
       aria-describedby={errorId}
       className={cn("min-w-0", disabled && "opacity-50", className)}
     >
-      <legend className={cn("text-[15px] font-semibold text-foreground", !showLegend && "sr-only")}>
+      <legend className={cn("text-body font-semibold text-foreground", !showLegend && "sr-only")}>
         {legend}
         {required && showLegend && (
           <span aria-hidden className="ml-0.5 text-error">
@@ -46,11 +46,11 @@ export function Fieldset({
         )}
       </legend>
       {description && showLegend && (
-        <p className="mt-1 text-[14px] leading-[1.5] text-muted-foreground">{description}</p>
+        <p className="mt-1 text-body-sm leading-[1.5] text-muted-foreground">{description}</p>
       )}
       <div className={cn(showLegend && "mt-3")}>{children}</div>
       {error && (
-        <p id={errorId} role="alert" className="mt-2 text-[14px] text-error">
+        <p id={errorId} role="alert" className="mt-2 text-body-sm text-error">
           {error}
         </p>
       )}

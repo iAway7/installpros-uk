@@ -45,7 +45,7 @@ export function ProjectBanner({
   const Icon = ICON[variant];
 
   const cta =
-    "shrink-0 rounded-lg border border-border bg-card px-3.5 py-2 text-[14px] font-medium text-foreground transition-colors duration-200 hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--selection)/0.15)]";
+    "shrink-0 rounded-lg border border-border bg-card px-3.5 py-2 text-body-sm font-medium text-foreground transition-colors duration-200 hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--selection)/0.15)]";
 
   return (
     <div
@@ -56,7 +56,7 @@ export function ProjectBanner({
       <span className={cn("shrink-0", ICON_TONE[variant])}>
         {icon ?? <Icon className="h-[18px] w-[18px]" aria-hidden />}
       </span>
-      <p className="min-w-0 flex-1 text-[15px] leading-[1.5]">{label}</p>
+      <p className="min-w-0 flex-1 text-body leading-[1.5]">{label}</p>
       {callToAction.href ? (
         <a href={callToAction.href} className={cta}>
           {callToAction.label}

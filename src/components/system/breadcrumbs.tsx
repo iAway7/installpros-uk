@@ -13,7 +13,7 @@ export interface Crumb {
 export function Breadcrumbs({ items, className }: { items: Crumb[]; className?: string }) {
   return (
     <nav aria-label="Breadcrumb" className={className}>
-      <ol className="flex flex-wrap items-center gap-1.5 text-[15px]">
+      <ol className="flex flex-wrap items-center gap-1.5 text-body">
         {items.map((c, i) => {
           const last = i === items.length - 1;
           return (

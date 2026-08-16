@@ -68,7 +68,7 @@ export function Calendar({
         >
           <ChevronLeft className="h-4 w-4" />
         </button>
-        <div aria-live="polite" className="text-[15px] font-semibold text-foreground">
+        <div aria-live="polite" className="text-body font-semibold text-foreground">
           {MONTHS[cursor.getMonth()]} {cursor.getFullYear()}
         </div>
         <button
@@ -83,7 +83,7 @@ export function Calendar({
 
       <div className="mt-4 grid grid-cols-7 gap-1">
         {DOW.map((d) => (
-          <div key={d} className="flex h-8 items-center justify-center text-[12px] font-semibold text-muted-foreground">
+          <div key={d} className="flex h-8 items-center justify-center text-label font-semibold text-muted-foreground">
             {d}
           </div>
         ))}
@@ -101,7 +101,7 @@ export function Calendar({
               aria-label={`${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`}
               onClick={() => onChange(d)}
               className={cn(
-                "flex h-10 items-center justify-center rounded-md text-[14px] transition-colors duration-200",
+                "flex h-10 items-center justify-center rounded-md text-body-sm transition-colors duration-200",
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--selection)/0.15)]",
                 selected && "bg-selection font-semibold text-white",
                 !selected && !disabled && "text-foreground hover:bg-secondary",

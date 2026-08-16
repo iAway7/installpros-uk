@@ -101,7 +101,7 @@ export function Menu({
         >
           {items.map((item, i) => {
             const cls = cn(
-              "block w-full px-4 py-2.5 text-left text-[15px] transition-colors duration-200",
+              "block w-full px-4 py-2.5 text-left text-body transition-colors duration-200",
               "focus:bg-secondary focus:outline-none",
               item.disabled
                 ? "cursor-not-allowed text-muted-foreground/50"

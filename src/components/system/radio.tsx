@@ -49,7 +49,7 @@ export function RadioGroup({
   return (
     <RadioCtx.Provider value={{ name: name ?? auto, value, onChange, disabled }}>
       <fieldset className={cn("min-w-0", className)} aria-required={required || undefined}>
-        <legend className={cn("mb-3 text-[15px] font-semibold text-foreground", !showLabel && "sr-only")}>
+        <legend className={cn("mb-3 text-body font-semibold text-foreground", !showLabel && "sr-only")}>
           {label}
           {required && showLabel && <span className="ml-1 text-error">*</span>}
         </legend>
@@ -92,7 +92,7 @@ export function RadioGroupItem({
         />
         {checked && <span aria-hidden className="pointer-events-none absolute h-2.5 w-2.5 rounded-full bg-selection" />}
       </span>
-      <span className="text-[15px] text-foreground">{children}</span>
+      <span className="text-body text-foreground">{children}</span>
     </label>
   );
 }

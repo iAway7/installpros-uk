@@ -94,7 +94,7 @@ export function Combobox({
           onChange={(e) => { setQuery(e.target.value); setOpen(true); setActive(0); }}
           onFocus={() => setOpen(true)}
           onKeyDown={onKeyDown}
-          className="min-w-0 flex-1 bg-transparent text-[16px] text-foreground outline-none placeholder:text-muted-foreground"
+          className="min-w-0 flex-1 bg-transparent text-field text-foreground outline-none placeholder:text-muted-foreground"
         />
         {selected && !open ? (
           <button
@@ -117,7 +117,7 @@ export function Combobox({
           className="absolute z-30 mt-2 max-h-72 w-full overflow-auto rounded-xl border border-border bg-card py-1 shadow-xl"
         >
           {filtered.length === 0 && (
-            <li className="px-4 py-3 text-[15px] text-muted-foreground">{emptyMessage}</li>
+            <li className="px-4 py-3 text-body text-muted-foreground">{emptyMessage}</li>
           )}
           {filtered.map((o, i) => (
             <li
@@ -129,8 +129,8 @@ export function Combobox({
               onMouseEnter={() => setActive(i)}
               className={cn("cursor-pointer px-4 py-2.5", i === active && "bg-secondary")}
             >
-              <div className="text-[15px] font-medium text-foreground">{o.label}</div>
-              {o.description && <div className="text-[13px] text-muted-foreground">{o.description}</div>}
+              <div className="text-body font-medium text-foreground">{o.label}</div>
+              {o.description && <div className="text-caption text-muted-foreground">{o.description}</div>}
             </li>
           ))}
         </ul>

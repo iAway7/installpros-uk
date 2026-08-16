@@ -30,9 +30,9 @@ export function Progress({
     <div className={className}>
       {(showValue || label) && (
         <div className="mb-2 flex items-baseline justify-between gap-3">
-          <span className="text-[14px] text-foreground">{label}</span>
+          <span className="text-body-sm text-foreground">{label}</span>
           {showValue && (
-            <span className="text-[13px] tabular-nums text-muted-foreground">
+            <span className="text-caption tabular-nums text-muted-foreground">
               {Math.round(pct)}%
             </span>
           )}

@@ -27,7 +27,7 @@ export function Label({
     <label
       htmlFor={htmlFor}
       className={cn(
-        "mb-2 flex items-baseline gap-2 text-[15px] font-semibold text-foreground",
+        "mb-2 flex items-baseline gap-2 text-body font-semibold text-foreground",
         disabled && "opacity-50",
         className,
       )}
@@ -40,7 +40,7 @@ export function Label({
           </span>
         )}
       </span>
-      {hint && <span className="text-[13px] font-normal text-muted-foreground">{hint}</span>}
+      {hint && <span className="text-caption font-normal text-muted-foreground">{hint}</span>}
     </label>
   );
 }

@@ -51,7 +51,7 @@ export function Note({
 }) {
   const tone = TONE[variant];
   const Icon = ICON[variant];
-  const text = size === "sm" ? "text-[14px]" : "text-[15px]";
+  const text = size === "sm" ? "text-body-sm" : "text-body";
 
   return (
     <div

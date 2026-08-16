@@ -82,7 +82,7 @@ export function Tabs({
             onClick={() => onSelect(t.value)}
             onKeyDown={(e) => onKeyDown(e, i)}
             className={cn(
-              "relative flex shrink-0 items-center gap-2 whitespace-nowrap text-[15px] transition-colors duration-200",
+              "relative flex shrink-0 items-center gap-2 whitespace-nowrap text-body transition-colors duration-200",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--selection)/0.15)]",
               variant === "primary"
                 ? "-mb-px border-b-2 px-4 py-3"
@@ -101,7 +101,7 @@ export function Tabs({
             {t.icon && <span className="shrink-0 [&_svg]:h-4 [&_svg]:w-4">{t.icon}</span>}
             {t.title}
             {t.badge != null && (
-              <span className="rounded-full bg-secondary px-1.5 py-0.5 text-[12px] tabular-nums text-muted-foreground">
+              <span className="rounded-full bg-secondary px-1.5 py-0.5 text-label tabular-nums text-muted-foreground">
                 {t.badge}
               </span>
             )}

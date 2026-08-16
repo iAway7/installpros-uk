@@ -43,7 +43,7 @@ export const SearchInput = React.forwardRef<
           }
         }}
         className={cn(
-          "w-full rounded-md border-[1.5px] border-field bg-background pl-11 pr-10 text-[16px] text-foreground",
+          "w-full rounded-md border-[1.5px] border-field bg-background pl-11 pr-10 text-field text-foreground",
           "placeholder:text-muted-foreground transition-colors duration-200",
           "focus-visible:border-selection-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--selection)/0.15)]",
           // Kill the native clear affordance — we render our own, which is

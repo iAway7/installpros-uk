@@ -37,7 +37,7 @@ export function Badge({
     <span
       className={cn(
         "inline-flex shrink-0 items-center whitespace-nowrap rounded-full border px-2.5 py-1",
-        "text-[10.5px] font-semibold uppercase tracking-[1.5px]",
+        "text-micro font-semibold uppercase tracking-[1.5px]",
         fill ? FILLED[variant] : TONE[variant],
         className,
       )}
@@ -71,7 +71,7 @@ export function Pill({
     <span
       className={cn(
         "inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border border-border px-2.5 py-1",
-        "text-[13px] font-medium text-foreground",
+        "text-caption font-medium text-foreground",
         className,
       )}
     >

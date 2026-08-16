@@ -28,7 +28,7 @@ export function StatusDot({
   className?: string;
 }) {
   return (
-    <span className={cn("inline-flex items-center gap-2 text-[14px] text-foreground", className)}>
+    <span className={cn("inline-flex items-center gap-2 text-body-sm text-foreground", className)}>
       <span className="relative flex h-[7px] w-[7px] shrink-0">
         {pulse && (
           <span

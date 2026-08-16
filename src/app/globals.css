@@ -126,6 +126,22 @@
     --input: var(--gray-100);
     --ring: var(--gray-900);
 
+
+    /* ── TIER 2 · type scale ──────────────────────────────────────────────
+       Named by the job, not the size. These are the Editorial values — the
+       funnel inherits them. .theme-admin restates them denser, which is the
+       whole point: one component, two densities, no per-theme overrides of
+       Tailwind's own utilities. */
+    --text-micro: 10.5px;   /* badge */
+    --text-label: 12px;     /* button label, tab, calendar heading */
+    --text-caption: 13px;   /* helper text, small error, progress figure */
+    --text-body-sm: 14px;   /* secondary body */
+    --text-body: 15px;      /* the workhorse: labels, options, menu, modal body */
+    --text-field: 16px;     /* form inputs. Does NOT scale with density —
+                               below 16px iOS Safari zooms the page on focus. */
+    --text-lead: 18px;      /* accordion content, modal title */
+    --text-title: 20px;     /* accordion trigger, feedback title */
+
     --radius: 0.75rem;
   }
 }
@@ -188,6 +204,16 @@
   --border: var(--gray-100);
   --input: var(--gray-100);
   --ring: var(--gray-900);
+
+  /* Product density. --text-field stays at 16px on purpose. */
+  --text-micro: 10px;
+  --text-label: 11px;
+  --text-caption: 12px;
+  --text-body-sm: 13px;
+  --text-body: 14px;
+  --text-lead: 16px;
+  --text-title: 18px;
+
   --radius: 0.75rem;
 
   /* ---- Shared system tokens ------------------------------------------------

@@ -16,7 +16,7 @@ type Emotion = (typeof EMOTIONS)[number]["key"];
 function Faces({
   value, onChange, size = "default",
 }: { value: Emotion | null; onChange: (e: Emotion) => void; size?: "sm" | "default" }) {
-  const box = size === "sm" ? "h-8 w-8 text-[18px]" : "h-9 w-9 text-[20px]";
+  const box = size === "sm" ? "h-8 w-8 text-lead" : "h-9 w-9 text-title";
   return (
     <div className="flex items-center gap-1">
       {EMOTIONS.map((e) => (
@@ -51,7 +51,7 @@ export function FeedbackInline({
 
   if (picked) {
     return (
-      <div className="inline-flex items-center rounded-full border border-border px-5 py-2.5 text-[15px] text-muted-foreground">
+      <div className="inline-flex items-center rounded-full border border-border px-5 py-2.5 text-body text-muted-foreground">
         Thanks — that helps.
       </div>
     );
@@ -59,7 +59,7 @@ export function FeedbackInline({
 
   return (
     <div className="inline-flex items-center gap-3 rounded-full border border-border px-5 py-2">
-      <span className="text-[15px] text-foreground">{question}</span>
+      <span className="text-body text-foreground">{question}</span>
       <Faces
         value={null}
         size="sm"
@@ -89,8 +89,8 @@ export function Feedback({
   if (sent) {
     return (
       <div className={cn("rounded-xl border border-border bg-secondary p-6 text-center", className)}>
-        <p className="text-[15px] font-semibold text-foreground">Thanks for the feedback.</p>
-        <p className="mt-1 text-[14px] text-muted-foreground">We read every one of these.</p>
+        <p className="text-body font-semibold text-foreground">Thanks for the feedback.</p>
+        <p className="mt-1 text-body-sm text-muted-foreground">We read every one of these.</p>
       </div>
     );
   }
@@ -104,7 +104,7 @@ export function Feedback({
         onChange={(e) => setText(e.target.value)}
         placeholder={placeholder}
         rows={4}
-        className="w-full resize-none px-4 py-3.5 text-[15px] text-foreground outline-none placeholder:text-muted-foreground"
+        className="w-full resize-none px-4 py-3.5 text-body text-foreground outline-none placeholder:text-muted-foreground"
       />
       <div className="flex items-center justify-between gap-3 border-t border-border px-3 py-2.5">
         <Faces value={emotion} onChange={setEmotion} />
