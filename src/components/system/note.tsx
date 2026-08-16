@@ -57,7 +57,7 @@ export function Note({
     <div
       role="note"
       className={cn(
-        "flex items-start gap-3 rounded-xl border",
+        "flex items-start gap-3 rounded-lg border",
         size === "sm" ? "px-3.5 py-2.5" : "px-4 py-3.5",
         tone.border,
         fill ? tone.fill : "bg-transparent",

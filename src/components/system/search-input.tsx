@@ -58,7 +58,7 @@ export const SearchInput = React.forwardRef<
           type="button"
           aria-label="Clear search"
           onClick={() => onValueChange("")}
-          className="absolute right-3 top-1/2 -translate-y-1/2 rounded p-1 text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--selection)/0.15)]"
+          className="absolute right-3 top-1/2 -translate-y-1/2 rounded-xs p-1 text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--selection)/0.15)]"
         >
           <X className="h-4 w-4" />
         </button>

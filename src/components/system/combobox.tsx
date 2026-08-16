@@ -101,7 +101,7 @@ export function Combobox({
             type="button"
             aria-label="Clear selection"
             onClick={() => { onChange(null); setQuery(""); }}
-            className="shrink-0 rounded p-0.5 text-muted-foreground transition-colors hover:text-foreground"
+            className="shrink-0 rounded-xs p-0.5 text-muted-foreground transition-colors hover:text-foreground"
           >
             <X className="h-4 w-4" />
           </button>
@@ -114,7 +114,7 @@ export function Combobox({
         <ul
           id={listId}
           role="listbox"
-          className="absolute z-30 mt-2 max-h-72 w-full overflow-auto rounded-xl border border-border bg-card py-1 shadow-xl"
+          className="absolute z-30 mt-2 max-h-72 w-full overflow-auto rounded-lg border border-border bg-card py-1 shadow-xl"
         >
           {filtered.length === 0 && (
             <li className="px-4 py-3 text-body text-muted-foreground">{emptyMessage}</li>

@@ -58,7 +58,7 @@ export function Calendar({
   const shift = (n: number) => setCursor(new Date(cursor.getFullYear(), cursor.getMonth() + n, 1));
 
   return (
-    <div className={cn("w-[320px] rounded-xl border border-border bg-card p-4", className)}>
+    <div className={cn("w-[320px] rounded-lg border border-border bg-card p-4", className)}>
       <div className="flex items-center justify-between">
         <button
           type="button"

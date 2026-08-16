@@ -123,9 +123,13 @@ const config: Config = {
         "control-aux": "var(--control-aux)",
       },
       borderRadius: {
+        // All derived from --radius so one number moves the whole system.
+        // xl is the mobile sheet, xs the small hit areas inside a field.
+        xl: "calc(var(--radius) + 4px)",
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+        xs: "calc(var(--radius) - 8px)",
       },
       fontFamily: {
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],

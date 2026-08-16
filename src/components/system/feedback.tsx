@@ -88,7 +88,7 @@ export function Feedback({
 
   if (sent) {
     return (
-      <div className={cn("rounded-xl border border-border bg-secondary p-6 text-center", className)}>
+      <div className={cn("rounded-lg border border-border bg-secondary p-6 text-center", className)}>
         <p className="text-body font-semibold text-foreground">Thanks for the feedback.</p>
         <p className="mt-1 text-body-sm text-muted-foreground">We read every one of these.</p>
       </div>
@@ -96,7 +96,7 @@ export function Feedback({
   }
 
   return (
-    <div className={cn("w-full max-w-md overflow-hidden rounded-xl border border-border bg-card", className)}>
+    <div className={cn("w-full max-w-md overflow-hidden rounded-lg border border-border bg-card", className)}>
       <label htmlFor="feedback-text" className="sr-only">Your feedback</label>
       <textarea
         id="feedback-text"

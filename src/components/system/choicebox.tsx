@@ -34,7 +34,7 @@ export function Choicebox({
   return (
     <label
       className={cn(
-        "relative flex min-w-0 flex-1 cursor-pointer items-start gap-3 rounded-xl border-2 p-4 transition-all duration-200 ease-ds",
+        "relative flex min-w-0 flex-1 cursor-pointer items-start gap-3 rounded-lg border-2 p-4 transition-all duration-200 ease-ds",
         selected ? "border-selection bg-card ring-1 ring-selection" : "border-field bg-secondary hover:border-field-hover hover:bg-card",
         disabled && "cursor-not-allowed opacity-50",
         className,
@@ -75,7 +75,7 @@ export function Choicebox({
           ))}
       </span>
       {/* Focus lives on the visually-hidden input, so mirror it onto the card. */}
-      <span className="pointer-events-none absolute inset-0 rounded-xl ring-offset-2 peer-focus-visible:ring-2 peer-focus-visible:ring-selection" />
+      <span className="pointer-events-none absolute inset-0 rounded-lg ring-offset-2 peer-focus-visible:ring-2 peer-focus-visible:ring-selection" />
     </label>
   );
 }

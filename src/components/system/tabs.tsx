@@ -61,7 +61,7 @@ export function Tabs({
         "flex items-center overflow-x-auto",
         variant === "primary"
           ? "gap-1 border-b border-border"
-          : "gap-1 rounded-xl bg-secondary p-1",
+          : "gap-1 rounded-lg bg-secondary p-1",
         className,
       )}
     >

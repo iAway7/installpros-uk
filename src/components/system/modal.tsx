@@ -95,8 +95,8 @@ export function Modal({
         "w-full overflow-hidden bg-card p-0 text-foreground",
         "border border-border shadow-[0_16px_48px_rgba(0,0,0,0.16)]",
         // Bottom sheet on mobile, centred card from sm up.
-        "mb-0 mt-auto max-w-none rounded-b-none rounded-t-[16px]",
-        "sm:my-auto sm:rounded-[12px]",
+        "mb-0 mt-auto max-w-none rounded-b-none rounded-t-xl",
+        "sm:my-auto sm:rounded-lg",
         "backdrop:bg-black/40 backdrop:backdrop-blur-[2px]",
         width,
         className,
