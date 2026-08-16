@@ -85,7 +85,7 @@ export function RadioGroupItem({
           onChange={() => ctx.onChange(value)}
           className={cn(
             "peer h-5 w-5 cursor-pointer appearance-none rounded-full border-2 bg-background transition-colors",
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:ring-[hsl(var(--selection)/0.4)]",
+            "focus-ring-solid",
             checked ? "border-selection" : "border-field group-hover:border-field-hover",
             off && "cursor-not-allowed",
           )}
@@ -119,7 +119,7 @@ export function Radio({
         onChange={onChange}
         className={cn(
           "peer h-5 w-5 cursor-pointer appearance-none rounded-full border-2 bg-background transition-colors",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:ring-[hsl(var(--selection)/0.4)]",
+          "focus-ring-solid",
           checked ? "border-selection" : "border-field hover:border-field-hover",
           disabled && "cursor-not-allowed opacity-50",
         )}
