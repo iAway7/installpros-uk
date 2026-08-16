@@ -155,6 +155,15 @@
     --control: 48px;
     --control-lg: 56px;
 
+
+    /* ── TIER 3 · component tokens ────────────────────────────────────────
+       Where a component's own decision differs per theme. The button shouting
+       in uppercase is a funnel choice, not a property of "button" — a lead
+       table full of shouting buttons reads as an error. */
+    --button-case: uppercase;
+    --button-weight: 700;
+    --button-tracking: -0.2px;
+
     --radius: 0.75rem;
   }
 }
@@ -235,6 +244,12 @@
   --control-aux: 40px;
   --control: 44px;
   --control-lg: 48px;
+
+
+  /* Product speaks normally. */
+  --button-case: none;
+  --button-weight: 600;
+  --button-tracking: 0;
 
   --radius: 0.75rem;
 
