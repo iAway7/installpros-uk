@@ -367,7 +367,7 @@
   letter-spacing: -0.03em;          /* was -1px; em scales with the md: jump */
 }
 @media (min-width: 768px) {
-  .theme-funnel .h2-form { font-size: 1.875rem; }    /* 30px */
+  .theme-funnel .h2-form { font-size: 2rem; }        /* 32px */
 }
 
 .theme-funnel .eyebrow {
