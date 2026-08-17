@@ -4,9 +4,9 @@ import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Button } from "@/components/system/button";
+import { Input } from "@/components/system/input";
+import { Label } from "@/components/system/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/system/card";
 
 function LoginForm() {
@@ -48,14 +48,14 @@ function LoginForm() {
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
               <Label htmlFor="password">Password</Label>
-              <a href="/forgot-password" className="text-xs text-primary hover:underline">
+              <a href="/forgot-password" className="text-label text-primary hover:underline">
                 Forgot?
               </a>
             </div>
             <Input id="password" type="password" autoComplete="current-password" required value={password} onChange={(e) => setPassword(e.target.value)} />
           </div>
           {error && (
-            <p role="alert" className="rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">
+            <p role="alert" className="rounded-md bg-destructive/10 px-3 py-2 text-body-sm text-destructive">
               {error}
             </p>
           )}

@@ -3,9 +3,9 @@
 import { useState } from "react";
 import { Loader2, MailCheck } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Button } from "@/components/system/button";
+import { Input } from "@/components/system/input";
+import { Label } from "@/components/system/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/system/card";
 import { siteConfig } from "@/lib/site-config";
 
@@ -62,11 +62,11 @@ export default function ForgotPasswordPage() {
             <Label htmlFor="email">Email</Label>
             <Input id="email" type="email" autoComplete="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@installpros.co.uk" />
           </div>
-          {error && <p role="alert" className="rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">{error}</p>}
+          {error && <p role="alert" className="rounded-md bg-destructive/10 px-3 py-2 text-body-sm text-destructive">{error}</p>}
           <Button type="submit" className="w-full" disabled={loading}>
             {loading ? (<><Loader2 className="animate-spin" /> Sending…</>) : "Send reset link"}
           </Button>
-          <a href="/login" className="block text-center text-sm text-muted-foreground hover:text-foreground">
+          <a href="/login" className="block text-center text-body-sm text-muted-foreground hover:text-foreground">
             Back to sign in
           </a>
         </form>

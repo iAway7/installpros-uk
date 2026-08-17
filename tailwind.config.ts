@@ -33,6 +33,9 @@ const config: Config = {
         field: ["var(--text-field)", { lineHeight: "var(--leading-body)" }],
         lead: ["var(--text-lead)", { lineHeight: "var(--leading-body)" }],
         title: ["var(--text-title)", { lineHeight: "var(--leading-body)" }],
+        // Not part of the reading scale: the button's size is a voice token
+        // alongside case, weight and tracking. 12px in Editorial, 13px in Product.
+        button: ["var(--button-size)", { lineHeight: "1.3" }],
       },
       colors: {
         border: "hsl(var(--border))",

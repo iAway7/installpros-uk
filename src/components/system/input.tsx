@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
  * brand red, because red is reserved for the primary button. Error uses the
  * single --error token (#DC2626, 4.83:1 on white).
  */
-const funnelInputVariants = cva(
+const inputVariants = cva(
   "flex w-full border bg-background text-foreground ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 transition-colors duration-quick",
   {
     variants: {
@@ -35,7 +35,7 @@ const funnelInputVariants = cva(
 
 export interface InputProps
   extends Omit<React.ComponentProps<"input">, "size">,
-    VariantProps<typeof funnelInputVariants> {}
+    VariantProps<typeof inputVariants> {}
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, inputSize, state, ...props }, ref) => (
@@ -45,7 +45,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
       // Keep the visual error state and the accessibility state in sync — a
       // red border alone is invisible to a screen reader.
       aria-invalid={state === "error" ? true : undefined}
-      className={cn(funnelInputVariants({ inputSize, state }), className)}
+      className={cn(inputVariants({ inputSize, state }), className)}
       {...props}
     />
   ),

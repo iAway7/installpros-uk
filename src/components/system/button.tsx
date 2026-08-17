@@ -16,10 +16,10 @@ import { cn } from "@/lib/utils";
  * The focus ring is --ring, which in .theme-editorial is the neutral
  * --selection, not brand red — a red ring on a red button is unreadable.
  */
-const funnelButtonVariants = cva(
+const buttonVariants = cva(
   // text-label (arbitrary) NOT text-sm: this project overrides text-sm to 16px,
   // which is why the buttons kept rendering at 16 instead of the 12px spec.
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap text-label leading-[1.3] [font-weight:var(--button-weight)] [letter-spacing:var(--button-tracking)] [text-transform:var(--button-case)] transition-all duration-quick ease-ds focus-ring-solid disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap text-button [font-weight:var(--button-weight)] [letter-spacing:var(--button-tracking)] [text-transform:var(--button-case)] transition-all duration-quick ease-ds focus-ring-solid disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
@@ -41,16 +41,16 @@ const funnelButtonVariants = cva(
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof funnelButtonVariants> {
+    VariantProps<typeof buttonVariants> {
   asChild?: boolean;
 }
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : "button";
-    return <Comp ref={ref} className={cn(funnelButtonVariants({ variant, size, className }))} {...props} />;
+    return <Comp ref={ref} className={cn(buttonVariants({ variant, size, className }))} {...props} />;
   },
 );
 Button.displayName = "Button";
 
-export { funnelButtonVariants };
+export { buttonVariants };

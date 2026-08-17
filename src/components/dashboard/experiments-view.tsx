@@ -5,9 +5,9 @@ import { useRouter } from "next/navigation";
 import { Plus, Play, Pause, CheckCircle2, Trash2, Trophy, Loader2, FlaskConical, X, Rocket, Info, Layers, FileText } from "lucide-react";
 import { toast } from "sonner";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/system/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Button } from "@/components/system/button";
+import { Input } from "@/components/system/input";
+import { Label } from "@/components/system/label";
 import { TESTABLE_PAGES } from "@/lib/experiments/pages";
 import { DEFAULT_HERO_HEADLINE } from "@/lib/funnel/defaults";
 import type { Experiment, ExperimentStatus, VariantResult } from "@/lib/experiments/types";
@@ -477,11 +477,13 @@ function CreateForm({ onDone }: { onDone: () => void }) {
       <CardContent>
         <form onSubmit={submit} className="space-y-5">
           {/* 1. What kind of test */}
-          <div className="space-y-2">
-            <Label className="flex items-center gap-1.5">
+          {/* Not a <Label>: this heads a grid of cards, it does not name one
+              control. role=group with aria-labelledby is what it actually is. */}
+          <div className="space-y-2" role="group" aria-labelledby="exp-type-heading">
+            <div id="exp-type-heading" className="flex items-center gap-1.5 text-body font-semibold text-foreground">
               What do you want to test?
               <InfoHint text="Two pages: split traffic between two different landing pages and see which converts better. Same page: keep one page and swap a piece of its content." />
-            </Label>
+            </div>
             <div className="grid gap-2 sm:grid-cols-2">
               <TypeCard
                 active={isSplit}
@@ -539,8 +541,9 @@ function CreateForm({ onDone }: { onDone: () => void }) {
           </div>
 
           {/* 3. Variants */}
-          <div className="space-y-3">
-            <Label className="flex items-center gap-1.5">
+          {/* Same as above: a heading over a list, not a label for a field. */}
+          <div className="space-y-3" role="group" aria-labelledby="exp-variants-heading">
+            <div id="exp-variants-heading" className="flex items-center gap-1.5 text-body font-semibold text-foreground">
               Variants
               <InfoHint
                 text={
@@ -549,7 +552,7 @@ function CreateForm({ onDone }: { onDone: () => void }) {
                     : "The original is your current page, unchanged. Each variant tries a different headline against it."
                 }
               />
-            </Label>
+            </div>
             {variants.map((v, i) => (
               <div key={i} className="rounded-lg border border-border p-3">
                 <div className={`grid gap-2 sm:items-end ${isSplit ? "sm:grid-cols-[1fr_1.4fr_90px_auto]" : "sm:grid-cols-[1fr_1.4fr_90px_auto]"}`}>

@@ -160,6 +160,10 @@
        Where a component's own decision differs per theme. The button shouting
        in uppercase is a funnel choice, not a property of "button" — a lead
        table full of shouting buttons reads as an error. */
+    /* Size joins the other three voice tokens. It was text-label, which happens
+       to be 12px in Editorial (the Figma spec) but 11px in Product, where a
+       button then sat below the body text of its own row. */
+    --button-size: 12px;
     --button-case: uppercase;
     --button-weight: 700;
     --button-tracking: -0.2px;
@@ -308,6 +312,7 @@
   --text-body: 14px;
   --text-lead: 16px;
   --text-title: 18px;
+    --button-size: 13px;
 
     /* Product ran ~1.42 line-height, not Editorial's 1.5 — the three legacy
        .theme-product .text-* rules had it baked in at 20/14, 18/13 and 16/11.
