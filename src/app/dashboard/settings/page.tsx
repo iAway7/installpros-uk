@@ -41,14 +41,14 @@ export default async function SettingsPage() {
       </div>
 
       {/* Tabs — APIs is live; the rest arrive with their features. */}
-      <div className="flex gap-1 rounded-lg bg-secondary p-1 w-fit text-sm font-medium">
+      <div className="flex gap-1 rounded-lg bg-secondary p-1 w-fit text-body-sm font-medium">
         <span className="rounded-md bg-background px-4 py-1.5 shadow-sm">APIs</span>
         <span className="cursor-default px-4 py-1.5 text-muted-foreground/60">Alerts <Soon /></span>
         <span className="cursor-default px-4 py-1.5 text-muted-foreground/60">Team <Soon /></span>
       </div>
 
       <div className="flex items-center justify-between">
-        <p className="text-sm text-muted-foreground">
+        <p className="text-body-sm text-muted-foreground">
           {connected} of {statuses.length} integrations connected · checks run live against each service
         </p>
         <RefreshButton />
@@ -63,27 +63,27 @@ export default async function SettingsPage() {
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <div className="flex items-center gap-3">
                     <span className="font-semibold">{s.name}</span>
-                    <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-semibold ${meta.pill}`}>
+                    <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-label font-semibold ${meta.pill}`}>
                       {meta.icon} {meta.label}
                     </span>
                   </div>
                   <span className="flex items-center gap-3">
-                    {s.docsHint && <span className="text-xs text-muted-foreground">{s.docsHint}</span>}
+                    {s.docsHint && <span className="text-label text-muted-foreground">{s.docsHint}</span>}
                     {s.toggleKey && (
                       <SettingToggle settingKey={s.toggleKey} initial={Boolean(s.toggleOn)} disabled={s.toggleDisabled} />
                     )}
                   </span>
                 </div>
-                <p className="text-sm text-muted-foreground">{s.purpose}</p>
-                <p className="text-sm">{s.detail}</p>
-                {s.usage && <p className="text-xs text-muted-foreground">{s.usage}</p>}
+                <p className="text-body-sm text-muted-foreground">{s.purpose}</p>
+                <p className="text-body-sm">{s.detail}</p>
+                {s.usage && <p className="text-label text-muted-foreground">{s.usage}</p>}
               </CardContent>
             </Card>
           );
         })}
       </div>
 
-      <p className="text-xs text-muted-foreground">
+      <p className="text-label text-muted-foreground">
         Keys live in <code className="rounded bg-secondary px-1">.env.local</code> (dev) and Vercel env vars
         (production) — they&apos;re never stored in the database or shown here.
       </p>

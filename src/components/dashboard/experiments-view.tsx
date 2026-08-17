@@ -19,7 +19,7 @@ function InfoHint({ text }: { text: string }) {
       <Info className="h-3.5 w-3.5 cursor-help text-muted-foreground" aria-hidden />
       <span
         role="tooltip"
-        className="pointer-events-none absolute left-1/2 top-5 z-20 w-60 -translate-x-1/2 rounded-md bg-foreground px-3 py-2 text-xs font-normal leading-snug text-background opacity-0 shadow-popover transition-opacity duration-150 group-hover:opacity-100 group-focus:opacity-100"
+        className="pointer-events-none absolute left-1/2 top-5 z-20 w-60 -translate-x-1/2 rounded-md bg-foreground px-3 py-2 text-label font-normal leading-snug text-background opacity-0 shadow-popover transition-opacity duration-150 group-hover:opacity-100 group-focus:opacity-100"
       >
         {text}
       </span>
@@ -69,7 +69,7 @@ export function ExperimentsView({ experiments, isAdmin }: { experiments: Experim
           <CardContent className="flex flex-col items-center gap-2 p-12 text-center">
             <FlaskConical className="h-10 w-10 text-muted-foreground" />
             <h3 className="text-lg font-semibold">No experiments yet</h3>
-            <p className="max-w-sm text-sm text-muted-foreground">
+            <p className="max-w-sm text-body-sm text-muted-foreground">
               {isAdmin
                 ? "Create your first A/B test — e.g. two hero headlines — then set it running."
                 : "An admin can create A/B tests here."}
@@ -147,12 +147,12 @@ function ExperimentCard({ data, isAdmin }: { data: ExperimentWithResults; isAdmi
           <div>
             <div className="flex items-center gap-2">
               <CardTitle>{experiment.name}</CardTitle>
-              <span className={`rounded-full px-2.5 py-0.5 text-xs font-semibold capitalize ${STATUS_STYLE[experiment.status]}`}>
+              <span className={`rounded-full px-2.5 py-0.5 text-label font-semibold capitalize ${STATUS_STYLE[experiment.status]}`}>
                 {experiment.status}
               </span>
             </div>
-            {experiment.hypothesis ? <p className="mt-1 text-sm text-muted-foreground">{experiment.hypothesis}</p> : null}
-            <p className="mt-1 text-xs text-muted-foreground">
+            {experiment.hypothesis ? <p className="mt-1 text-body-sm text-muted-foreground">{experiment.hypothesis}</p> : null}
+            <p className="mt-1 text-label text-muted-foreground">
               Goal: {experiment.primary_metric} · {totalVisitors.toLocaleString("en-GB")} visitors ·{" "}
               {totalConversions.toLocaleString("en-GB")} conversions
             </p>
@@ -186,8 +186,8 @@ function ExperimentCard({ data, isAdmin }: { data: ExperimentWithResults; isAdmi
 
       <CardContent className="p-0">
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead className="border-y border-border bg-secondary/40 text-left text-xs uppercase text-muted-foreground">
+          <table className="w-full text-body-sm">
+            <thead className="border-y border-border bg-secondary/40 text-left text-label uppercase text-muted-foreground">
               <tr>
                 <th className="px-4 py-2 font-medium">Variant</th>
                 <th className="px-3 py-2 text-right font-medium">Split</th>
@@ -217,11 +217,11 @@ function ExperimentCard({ data, isAdmin }: { data: ExperimentWithResults; isAdmi
                       )}
                     </div>
                     {typeof r.variant.config?.path === "string" ? (
-                      <p className="mt-0.5 max-w-[280px] truncate font-mono text-xs text-muted-foreground" title={r.variant.config.path}>
+                      <p className="mt-0.5 max-w-[280px] truncate font-mono text-label text-muted-foreground" title={r.variant.config.path}>
                         {r.variant.config.path}
                       </p>
                     ) : typeof r.variant.config?.headline === "string" ? (
-                      <p className="mt-0.5 max-w-[280px] truncate text-xs text-muted-foreground" title={r.variant.config.headline}>
+                      <p className="mt-0.5 max-w-[280px] truncate text-label text-muted-foreground" title={r.variant.config.headline}>
                         “{r.variant.config.headline}”
                       </p>
                     ) : null}
@@ -244,7 +244,7 @@ function ExperimentCard({ data, isAdmin }: { data: ExperimentWithResults; isAdmi
 
         {totalVisitors > 0 && (
           <div className="space-y-4 border-t border-border p-4">
-            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+            <p className="text-label font-semibold uppercase tracking-wide text-muted-foreground">
               Significance vs original
             </p>
             <div className="grid gap-3 md:grid-cols-2">
@@ -262,7 +262,7 @@ function ExperimentCard({ data, isAdmin }: { data: ExperimentWithResults; isAdmi
             </div>
             {isAdmin && (experiment.status === "running" || experiment.status === "paused") && (
               <div className="flex flex-wrap items-center gap-2 pt-1">
-                <span className="text-xs text-muted-foreground">Prefer to keep the original?</span>
+                <span className="text-label text-muted-foreground">Prefer to keep the original?</span>
                 {results
                   .filter((r) => r.variant.is_control)
                   .map((r) => (
@@ -331,7 +331,7 @@ function VariantDetail({
   return (
     <div className="space-y-3 rounded-lg border border-border p-3">
       <div className="flex items-center justify-between gap-2">
-        <span className="flex items-center gap-2 text-sm font-medium">
+        <span className="flex items-center gap-2 text-body-sm font-medium">
           {r.variant.name}
           {r.isWinner && (
             <span className="inline-flex items-center gap-1 rounded bg-success/10 px-1.5 py-0.5 text-[11px] font-semibold text-success">
@@ -348,7 +348,7 @@ function VariantDetail({
 
       {/* Significance meter with a 95% threshold marker */}
       <div>
-        <div className="mb-1 flex items-center justify-between text-xs">
+        <div className="mb-1 flex items-center justify-between text-label">
           <span className="text-muted-foreground">Confidence</span>
           <span className={sig ? "font-semibold text-success" : "text-muted-foreground"}>
             {conf.toFixed(0)}%{sig ? " · significant" : ""}
@@ -362,7 +362,7 @@ function VariantDetail({
 
       <ForestPlot r={r} />
 
-      <p className="text-xs text-muted-foreground">
+      <p className="text-label text-muted-foreground">
         {r.diffPct == null
           ? "Not enough data yet."
           : `${r.diffPct >= 0 ? "+" : ""}${r.diffPct.toFixed(2)} pp vs original` +
@@ -531,7 +531,7 @@ function CreateForm({ onDone }: { onDone: () => void }) {
               id="exp-metric"
               value={metric}
               onChange={(e) => setMetric(e.target.value)}
-              className="flex h-11 w-full rounded-lg border border-input bg-background px-3 text-base"
+              className="flex h-11 w-full rounded-lg border border-input bg-background px-3 text-body"
             >
               <option value="lead_created">lead_created (form submitted)</option>
               <option value="quote_submitted">quote_submitted</option>
@@ -554,19 +554,19 @@ function CreateForm({ onDone }: { onDone: () => void }) {
               <div key={i} className="rounded-lg border border-border p-3">
                 <div className={`grid gap-2 sm:items-end ${isSplit ? "sm:grid-cols-[1fr_1.4fr_90px_auto]" : "sm:grid-cols-[1fr_1.4fr_90px_auto]"}`}>
                   <div className="space-y-1">
-                    <span className="text-xs text-muted-foreground">Name {v.is_control ? "(original)" : ""}</span>
+                    <span className="text-label text-muted-foreground">Name {v.is_control ? "(original)" : ""}</span>
                     <Input value={v.name} onChange={(e) => updateVariant(i, { name: e.target.value })} />
                   </div>
 
                   {isSplit ? (
                     <div className="space-y-1">
-                      <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                      <span className="flex items-center gap-1 text-label text-muted-foreground">
                         Page <InfoHint text="The page this variant shows. Pages come from the app's registry — add more in lib/experiments/pages.ts." />
                       </span>
                       <select
                         value={v.path}
                         onChange={(e) => updateVariant(i, { path: e.target.value })}
-                        className="flex h-11 w-full rounded-lg border border-input bg-background px-3 text-sm"
+                        className="flex h-11 w-full rounded-lg border border-input bg-background px-3 text-body-sm"
                       >
                         {TESTABLE_PAGES.map((p) => (
                           <option key={p.slug} value={p.slug}>
@@ -577,11 +577,11 @@ function CreateForm({ onDone }: { onDone: () => void }) {
                     </div>
                   ) : v.is_control ? (
                     <div className="space-y-1">
-                      <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                      <span className="flex items-center gap-1 text-label text-muted-foreground">
                         Current headline <InfoHint text="The original is what's live now — shown here for reference and left unchanged. Your variants are tested against this." />
                       </span>
                       <div
-                        className="flex h-11 w-full items-center truncate rounded-lg border border-dashed border-input bg-muted/40 px-3 text-sm text-muted-foreground"
+                        className="flex h-11 w-full items-center truncate rounded-lg border border-dashed border-input bg-muted/40 px-3 text-body-sm text-muted-foreground"
                         title={DEFAULT_HERO_HEADLINE}
                       >
                         {DEFAULT_HERO_HEADLINE}
@@ -589,7 +589,7 @@ function CreateForm({ onDone }: { onDone: () => void }) {
                     </div>
                   ) : (
                     <div className="space-y-1">
-                      <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                      <span className="flex items-center gap-1 text-label text-muted-foreground">
                         New headline to test <InfoHint text="The alternative headline shown to this variant's visitors, live, instead of the current one." />
                       </span>
                       <Input value={v.headline} onChange={(e) => updateVariant(i, { headline: e.target.value })} placeholder="Same-week Starlink, sorted." />
@@ -597,7 +597,7 @@ function CreateForm({ onDone }: { onDone: () => void }) {
                   )}
 
                   <div className="space-y-1">
-                    <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                    <span className="flex items-center gap-1 text-label text-muted-foreground">
                       Split % <InfoHint text="Share of traffic sent to this variant. All variants should add up to 100%." />
                     </span>
                     <Input
@@ -622,7 +622,7 @@ function CreateForm({ onDone }: { onDone: () => void }) {
           </div>
 
           {isSplit && (
-            <div className="rounded-lg border border-primary/20 bg-primary/5 p-3 text-xs text-muted-foreground">
+            <div className="rounded-lg border border-primary/20 bg-primary/5 p-3 text-label text-muted-foreground">
               <span className="font-semibold text-foreground">How it runs:</span> point your ads / campaign links at{" "}
               <code className="rounded bg-muted px-1 py-0.5 font-mono">/go</code>. Each visitor is randomly assigned a page
               (and always sees the same one on return). Leads are attributed back to the page they saw.
@@ -638,7 +638,7 @@ function CreateForm({ onDone }: { onDone: () => void }) {
               "Create experiment"
             )}
           </Button>
-          <p className="text-center text-xs text-muted-foreground">
+          <p className="text-center text-label text-muted-foreground">
             New experiments start as a draft — press Start to go live.
             {!isSplit && " For same-page tests, only the hero headline is wired to variants right now."}
           </p>
@@ -671,11 +671,11 @@ function TypeCard({
         active ? "border-primary bg-primary/5" : "border-border hover:border-primary/40"
       }`}
     >
-      <span className={`flex items-center gap-2 text-sm font-semibold ${active ? "text-primary" : "text-foreground"}`}>
+      <span className={`flex items-center gap-2 text-body-sm font-semibold ${active ? "text-primary" : "text-foreground"}`}>
         {icon}
         {title}
       </span>
-      <span className="text-xs text-muted-foreground">{desc}</span>
+      <span className="text-label text-muted-foreground">{desc}</span>
     </button>
   );
 }

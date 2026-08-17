@@ -51,11 +51,11 @@ export function LeadDetailPanel({ lead, location, onClose, statusPicker, onSaveV
             <div>
               <div className="flex items-center gap-2">
                 <h2 className="text-xl font-bold tracking-tight">{lead.name}</h2>
-                <span className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${STATUS_STYLE[lead.status]}`}>
+                <span className={`rounded-full px-2.5 py-0.5 text-label font-semibold ${STATUS_STYLE[lead.status]}`}>
                   {STATUS_LABEL[lead.status]}
                 </span>
               </div>
-              <p className="mt-1 text-sm text-muted-foreground">Submitted {formatDateTime(lead.created_at)}</p>
+              <p className="mt-1 text-body-sm text-muted-foreground">Submitted {formatDateTime(lead.created_at)}</p>
             </div>
             <button
               onClick={onClose}
@@ -88,7 +88,7 @@ export function LeadDetailPanel({ lead, location, onClose, statusPicker, onSaveV
                   href={mapsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-1 flex items-center gap-1.5 text-sm font-bold uppercase tracking-wide text-primary hover:underline"
+                  className="mt-1 flex items-center gap-1.5 text-body-sm font-bold uppercase tracking-wide text-primary hover:underline"
                 >
                   Open in Google Maps <ExternalLink className="h-3.5 w-3.5" />
                 </a>
@@ -115,7 +115,7 @@ export function LeadDetailPanel({ lead, location, onClose, statusPicker, onSaveV
 
           <Section title={`Property photos${photos?.length ? ` (${photos.length})` : ""}`}>
             {!photos?.length ? (
-              <p className="text-sm text-muted-foreground">No photos sent yet.</p>
+              <p className="text-body-sm text-muted-foreground">No photos sent yet.</p>
             ) : (
               <div className="grid grid-cols-3 gap-2">
                 {photos.map((url, i) => (
@@ -132,7 +132,7 @@ export function LeadDetailPanel({ lead, location, onClose, statusPicker, onSaveV
 
           {lead.notes && (
             <Section title="Notes">
-              <p className="whitespace-pre-wrap text-sm">{lead.notes}</p>
+              <p className="whitespace-pre-wrap text-body-sm">{lead.notes}</p>
             </Section>
           )}
 
@@ -185,7 +185,7 @@ function SatelliteView({ leadId, mapsQuery }: { leadId: string; mapsQuery: strin
         <p className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">Satellite view</p>
         <button
           onClick={() => setZoomOut((z) => !z)}
-          className="text-xs font-medium text-muted-foreground hover:text-primary"
+          className="text-label font-medium text-muted-foreground hover:text-primary"
         >
           {zoomOut ? "Zoom to roof" : "Zoom out"}
         </button>
@@ -250,10 +250,10 @@ function AddressResolver({ leadId, intel }: { leadId: string; intel?: LeadIntel 
 
   if (intel?.resolved_address) {
     return (
-      <div className="rounded-lg bg-secondary/50 p-3 text-sm">
+      <div className="rounded-lg bg-secondary/50 p-3 text-body-sm">
         <p className="mb-1 text-[11px] font-medium uppercase tracking-wide text-muted-foreground">Exact property</p>
         <p className="font-medium">{intel.resolved_address}</p>
-        <p className="mt-1 text-xs text-muted-foreground">
+        <p className="mt-1 text-label text-muted-foreground">
           {[
             intel.bedrooms != null ? `${intel.bedrooms} bed` : null,
             intel.tax_band ? `Tax band ${intel.tax_band}` : null,
@@ -274,7 +274,7 @@ function AddressResolver({ leadId, intel }: { leadId: string; intel?: LeadIntel 
               key={c.property_id}
               onClick={() => resolve(c.property_id)}
               disabled={busy}
-              className="block w-full rounded-md px-2 py-1.5 text-left text-sm hover:bg-secondary disabled:opacity-50"
+              className="block w-full rounded-md px-2 py-1.5 text-left text-body-sm hover:bg-secondary disabled:opacity-50"
             >
               {c.text}
             </button>
@@ -284,13 +284,13 @@ function AddressResolver({ leadId, intel }: { leadId: string; intel?: LeadIntel 
         <button
           onClick={() => resolve()}
           disabled={busy}
-          className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline disabled:opacity-50"
+          className="inline-flex items-center gap-1.5 text-body-sm font-medium text-primary hover:underline disabled:opacity-50"
         >
           {busy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <MapPinned className="h-3.5 w-3.5" />}
           Resolve exact address (Propalt)
         </button>
       )}
-      {error && <p className="text-xs text-destructive">{error}</p>}
+      {error && <p className="text-label text-destructive">{error}</p>}
     </div>
   );
 }
@@ -325,17 +325,17 @@ function IntelSection({ leadId, intel }: { leadId: string; intel?: LeadIntel }) 
       }
     >
       {!intel ? (
-        <p className="text-sm text-muted-foreground">
+        <p className="text-body-sm text-muted-foreground">
           Not enriched yet. Fetch to pull broadband speed, property type and value band for this postcode.
         </p>
       ) : (
         <div className="space-y-4">
           {intel.score != null && (
             <div className="flex items-center gap-3 rounded-lg bg-secondary/50 p-3">
-              <span className={`inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-base font-bold ${scoreStyle(intel.score)}`}>
+              <span className={`inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-body font-bold ${scoreStyle(intel.score)}`}>
                 {intel.score}
               </span>
-              <div className="min-w-0 text-xs text-muted-foreground">
+              <div className="min-w-0 text-label text-muted-foreground">
                 {(intel.score_reasons ?? []).slice(0, 4).map((r) => (
                   <p key={r.signal} className="truncate">
                     {r.points > 0 ? "+" : ""}{r.points} {r.detail}
@@ -401,7 +401,7 @@ function PitchAngles({ intel }: { intel: LeadIntel }) {
     <div className="rounded-lg border border-primary/20 bg-primary/5 p-3">
       <p className="mb-1 text-[11px] font-bold uppercase tracking-wide text-primary">Pitch angles</p>
       {angles.map((a) => (
-        <p key={a} className="text-sm">{a}</p>
+        <p key={a} className="text-body-sm">{a}</p>
       ))}
     </div>
   );
@@ -456,7 +456,7 @@ function EstimatedValue({ value, onSave }: { value: number | null; onSave?: (v: 
           if (e.key === "Enter") commit();
           if (e.key === "Escape") setEditing(false);
         }}
-        className="w-24 rounded-md border border-border bg-background px-2 py-1 text-sm"
+        className="w-24 rounded-md border border-border bg-background px-2 py-1 text-body-sm"
         placeholder="0"
       />
       <button onClick={commit} aria-label="Save value" className="rounded-md p-1 text-success hover:bg-secondary">
@@ -470,7 +470,7 @@ function Section({ title, children, action }: { title: string; children: React.R
   return (
     <section>
       <div className="mb-3 flex items-center justify-between border-b border-border pb-2">
-        <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">{title}</h3>
+        <h3 className="text-label font-bold uppercase tracking-wider text-muted-foreground">{title}</h3>
         {action}
       </div>
       {children}
@@ -479,14 +479,14 @@ function Section({ title, children, action }: { title: string; children: React.R
 }
 
 function Mono({ value }: { value: string | null }) {
-  return value ? <span className="break-all font-mono text-xs">{value}</span> : <>—</>;
+  return value ? <span className="break-all font-mono text-label">{value}</span> : <>—</>;
 }
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
       <p className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">{label}</p>
-      <div className="mt-0.5 text-sm font-medium">{children}</div>
+      <div className="mt-0.5 text-body-sm font-medium">{children}</div>
     </div>
   );
 }

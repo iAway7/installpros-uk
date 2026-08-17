@@ -110,7 +110,7 @@ export default async function MapPage({ searchParams }: { searchParams: { view?:
           <Link
             key={v.key}
             href={`/dashboard/map?view=${v.key}`}
-            className={`rounded-md px-4 py-1.5 text-sm font-medium ${
+            className={`rounded-md px-4 py-1.5 text-body-sm font-medium ${
               view === v.key ? "bg-background shadow-sm" : "text-muted-foreground hover:text-foreground"
             }`}
           >
@@ -120,7 +120,7 @@ export default async function MapPage({ searchParams }: { searchParams: { view?:
       </div>
 
       {error ? (
-        <Card><CardContent className="p-6 text-sm text-destructive">Couldn&apos;t load leads ({error.message}).</CardContent></Card>
+        <Card><CardContent className="p-6 text-body-sm text-destructive">Couldn&apos;t load leads ({error.message}).</CardContent></Card>
       ) : leads.length === 0 ? (
         <Card>
           <CardContent className="flex flex-col items-center gap-2 p-12 text-center">
@@ -149,7 +149,7 @@ export default async function MapPage({ searchParams }: { searchParams: { view?:
                   );
                 })}
               </svg>
-              <div className="mt-3 flex items-center gap-2 text-xs text-muted-foreground">
+              <div className="mt-3 flex items-center gap-2 text-label text-muted-foreground">
                 <span>0</span>
                 <div className="h-2 w-32 rounded-full bg-gradient-to-r from-secondary via-primary/40 to-primary" />
                 <span>{max}</span>
@@ -163,8 +163,8 @@ export default async function MapPage({ searchParams }: { searchParams: { view?:
               <CardHeader><CardTitle>By district</CardTitle></CardHeader>
               <CardContent className="p-0">
                 <div className="overflow-x-auto">
-                  <table className="w-full text-sm">
-                    <thead className="border-y border-border bg-secondary/40 text-left text-xs uppercase text-muted-foreground">
+                  <table className="w-full text-body-sm">
+                    <thead className="border-y border-border bg-secondary/40 text-left text-label uppercase text-muted-foreground">
                       <tr>
                         <th className="px-4 py-2 font-medium">District</th>
                         <th className="px-3 py-2 text-right font-medium">Leads</th>
@@ -202,7 +202,7 @@ export default async function MapPage({ searchParams }: { searchParams: { view?:
             </Card>
 
             {(unmatchedDistricts.length > 0 || unmatchedLeads > 0) && (
-              <p className="text-xs text-muted-foreground">
+              <p className="text-label text-muted-foreground">
                 {unmatchedLeads > 0 && `${unmatchedLeads} lead(s) had unresolvable postcodes. `}
                 {unmatchedDistricts.length > 0 && `Not drawn on the map: ${unmatchedDistricts.join(", ")}.`}
               </p>
@@ -212,8 +212,8 @@ export default async function MapPage({ searchParams }: { searchParams: { view?:
               <CardHeader><CardTitle>Broadband gaps — ad targets</CardTitle></CardHeader>
               <CardContent className="p-0">
                 <div className="overflow-x-auto">
-                  <table className="w-full text-sm">
-                    <thead className="border-y border-border bg-secondary/40 text-left text-xs uppercase text-muted-foreground">
+                  <table className="w-full text-body-sm">
+                    <thead className="border-y border-border bg-secondary/40 text-left text-label uppercase text-muted-foreground">
                       <tr>
                         <th className="px-4 py-2 font-medium">District</th>
                         <th className="px-3 py-2 text-right font-medium">Can&apos;t get 30Mbps</th>
@@ -233,7 +233,7 @@ export default async function MapPage({ searchParams }: { searchParams: { view?:
                     </tbody>
                   </table>
                 </div>
-                <p className="p-4 text-xs text-muted-foreground">
+                <p className="p-4 text-label text-muted-foreground">
                   Worst fixed-broadband districts in the UK (Ofcom Connected Nations, Jan 2025) where you have zero
                   leads — people who need Starlink but haven&apos;t heard of you. Target these postcodes with ads.
                 </p>
@@ -241,7 +241,7 @@ export default async function MapPage({ searchParams }: { searchParams: { view?:
             </Card>
 
             <Card>
-              <CardContent className="p-4 text-xs text-muted-foreground">
+              <CardContent className="p-4 text-label text-muted-foreground">
                 <span className="font-semibold text-foreground">Gap</span> badge in the district table = 3+ leads, zero
                 won — investigate pricing or follow-up in that area.
               </CardContent>

@@ -220,7 +220,7 @@ export function LeadsTable({
         <button
           onClick={exportCsv}
           disabled={filtered.length === 0}
-          className="inline-flex h-9 items-center gap-2 rounded-md border border-border bg-background px-3 text-sm font-medium hover:bg-secondary disabled:opacity-50"
+          className="inline-flex h-9 items-center gap-2 rounded-md border border-border bg-background px-3 text-body-sm font-medium hover:bg-secondary disabled:opacity-50"
         >
           <Download className="h-4 w-4" /> CSV
         </button>
@@ -229,7 +229,7 @@ export function LeadsTable({
       {dateRange === "custom" && (
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
           <div className="flex items-center gap-2">
-            <label htmlFor="date-from" className="text-sm text-muted-foreground">From</label>
+            <label htmlFor="date-from" className="text-body-sm text-muted-foreground">From</label>
             <Input
               id="date-from"
               type="date"
@@ -240,7 +240,7 @@ export function LeadsTable({
             />
           </div>
           <div className="flex items-center gap-2">
-            <label htmlFor="date-to" className="text-sm text-muted-foreground">To</label>
+            <label htmlFor="date-to" className="text-body-sm text-muted-foreground">To</label>
             <Input
               id="date-to"
               type="date"
@@ -253,7 +253,7 @@ export function LeadsTable({
           {(customFrom || customTo) && (
             <button
               onClick={() => { setCustomFrom(""); setCustomTo(""); }}
-              className="text-sm text-muted-foreground underline-offset-2 hover:text-foreground hover:underline"
+              className="text-body-sm text-muted-foreground underline-offset-2 hover:text-foreground hover:underline"
             >
               Clear
             </button>
@@ -261,7 +261,7 @@ export function LeadsTable({
         </div>
       )}
 
-      <p className="text-sm text-muted-foreground">
+      <p className="text-body-sm text-muted-foreground">
         {filtered.length} {filtered.length === 1 ? "lead" : "leads"}
         {filter !== "all" ? ` · ${STATUS_LABEL[filter as LeadStatus]}` : ""}
       </p>
@@ -271,7 +271,7 @@ export function LeadsTable({
           <CardContent className="flex flex-col items-center gap-2 p-12 text-center">
             <Inbox className="h-10 w-10 text-muted-foreground" />
             <p className="font-medium">No matching leads</p>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-body-sm text-muted-foreground">
               {leads.length === 0 ? "New quote requests will appear here." : "Try clearing your search or filter."}
             </p>
           </CardContent>
@@ -281,8 +281,8 @@ export function LeadsTable({
           {/* Desktop table */}
           <Card className="hidden overflow-hidden md:block">
             <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead className="border-b border-border bg-secondary/50 text-left text-xs uppercase tracking-wide text-muted-foreground">
+              <table className="w-full text-body-sm">
+                <thead className="border-b border-border bg-secondary/50 text-left text-label uppercase tracking-wide text-muted-foreground">
                   <tr>
                     <th className="px-4 py-3 font-medium">Score</th>
                     <th className="px-4 py-3 font-medium">Name</th>
@@ -305,14 +305,14 @@ export function LeadsTable({
                         <span className="flex items-center gap-1.5">
                           {l.name}
                           {(photos[l.id]?.length ?? 0) > 0 && (
-                            <span className="inline-flex items-center gap-0.5 text-xs text-muted-foreground" title={`${photos[l.id].length} photo(s) sent`}>
+                            <span className="inline-flex items-center gap-0.5 text-label text-muted-foreground" title={`${photos[l.id].length} photo(s) sent`}>
                               <Camera className="h-3.5 w-3.5" />{photos[l.id].length}
                             </span>
                           )}
                         </span>
                       </td>
                       <td className="px-4 py-3">
-                        <div className="flex flex-col gap-0.5 text-xs">
+                        <div className="flex flex-col gap-0.5 text-label">
                           <a href={`mailto:${l.email}`} onClick={(e) => e.stopPropagation()} className="flex items-center gap-1 text-muted-foreground hover:text-primary">
                             <Mail className="h-3 w-3" /> {l.email}
                           </a>
@@ -342,13 +342,13 @@ export function LeadsTable({
                   <div className="flex items-start justify-between gap-2">
                     <div>
                       <p className="flex items-center gap-2 font-semibold">{l.name} <ScoreBadge score={l.lead_score} /></p>
-                      <p className="text-xs text-muted-foreground">{formatDateTime(l.created_at)} · {l.traffic_source || "direct"}</p>
+                      <p className="text-label text-muted-foreground">{formatDateTime(l.created_at)} · {l.traffic_source || "direct"}</p>
                     </div>
                     <div onClick={(e) => e.stopPropagation()}>
                       <StatusPicker lead={l} saving={saving === l.id} onChange={(s) => updateStatus(l.id, s)} />
                     </div>
                   </div>
-                  <div className="grid gap-1 text-sm">
+                  <div className="grid gap-1 text-body-sm">
                     <a href={`mailto:${l.email}`} onClick={(e) => e.stopPropagation()} className="flex items-center gap-2 text-muted-foreground"><Mail className="h-3.5 w-3.5" /> {l.email}</a>
                     <a href={`tel:${l.phone}`} onClick={(e) => e.stopPropagation()} className="flex items-center gap-2 text-muted-foreground"><Phone className="h-3.5 w-3.5" /> {l.phone}</a>
                     <span className="flex items-center gap-2 text-muted-foreground"><MapPin className="h-3.5 w-3.5" /> {cityOf(l) ?? l.postcode} · {serviceOf(l)}</span>
@@ -378,9 +378,9 @@ export function LeadsTable({
 }
 
 function ScoreBadge({ score }: { score: number | null }) {
-  if (score == null) return <span className="text-xs text-muted-foreground">—</span>;
+  if (score == null) return <span className="text-label text-muted-foreground">—</span>;
   return (
-    <span className={`inline-flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold tabular-nums ${scoreStyle(score)}`}>
+    <span className={`inline-flex h-6 w-6 items-center justify-center rounded-full text-label font-bold tabular-nums ${scoreStyle(score)}`}>
       {score}
     </span>
   );
@@ -391,7 +391,7 @@ function StatusPicker({ lead, saving, onChange }: { lead: Lead; saving: boolean;
     <div className="flex items-center gap-2">
       {saving && <Loader2 className="h-3.5 w-3.5 animate-spin text-muted-foreground" />}
       <Select value={lead.status} onValueChange={(v) => onChange(v as LeadStatus)}>
-        <SelectTrigger className={`h-8 w-[130px] border-0 text-xs font-semibold ${STATUS_STYLE[lead.status]}`}>
+        <SelectTrigger className={`h-8 w-[130px] border-0 text-label font-semibold ${STATUS_STYLE[lead.status]}`}>
           <SelectValue />
         </SelectTrigger>
         <SelectContent>

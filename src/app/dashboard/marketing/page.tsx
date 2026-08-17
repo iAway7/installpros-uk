@@ -47,7 +47,7 @@ export default async function MarketingPage() {
       <section className="space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-semibold">Google Search Console</h2>
-          {sc.ok && sc.site ? <span className="text-xs text-muted-foreground">{sc.site} · last 28 days</span> : null}
+          {sc.ok && sc.site ? <span className="text-label text-muted-foreground">{sc.site} · last 28 days</span> : null}
         </div>
 
         {!sc.configured ? (
@@ -58,7 +58,7 @@ export default async function MarketingPage() {
           />
         ) : !sc.ok ? (
           <Card>
-            <CardContent className="p-6 text-sm text-destructive">
+            <CardContent className="p-6 text-body-sm text-destructive">
               Couldn&apos;t load Search Console data{sc.error ? ` — ${sc.error}` : ""}. Check the service account has
               access to <strong>{process.env.GOOGLE_SEARCH_CONSOLE_SITE}</strong>.
             </CardContent>
@@ -92,14 +92,14 @@ export default async function MarketingPage() {
         <h2 className="text-lg font-semibold">On-site behaviour &amp; funnel</h2>
         <Card>
           <CardContent className="flex flex-col items-start gap-3 p-6 sm:flex-row sm:items-center sm:justify-between">
-            <p className="text-sm text-muted-foreground">
+            <p className="text-body-sm text-muted-foreground">
               Funnels, drop-off and session replays live in PostHog — we don&apos;t duplicate them here.
             </p>
             <a
               href={process.env.NEXT_PUBLIC_POSTHOG_HOST || "https://eu.posthog.com"}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
+              className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-body-sm font-semibold text-primary-foreground"
             >
               Open PostHog <ExternalLink className="h-4 w-4" />
             </a>
@@ -117,7 +117,7 @@ function Kpi({ icon, label, value, hint }: { icon: React.ReactNode; label: strin
         <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-secondary text-foreground">{icon}</div>
         <div className="min-w-0">
           <div className="text-2xl font-bold tabular-nums">{value}</div>
-          <div className="truncate text-xs text-muted-foreground">{hint ?? label}</div>
+          <div className="truncate text-label text-muted-foreground">{hint ?? label}</div>
         </div>
       </CardContent>
     </Card>
@@ -129,16 +129,16 @@ function ConnectCard({ title, body, doc }: { title: string; body: string; doc: s
     <Card>
       <CardContent className="flex flex-col items-center gap-2 p-10 text-center">
         <Search className="h-9 w-9 text-muted-foreground" />
-        <h3 className="text-base font-semibold">{title}</h3>
-        <p className="max-w-md text-sm text-muted-foreground">{body}</p>
-        <p className="text-xs text-muted-foreground">{doc}</p>
+        <h3 className="text-body font-semibold">{title}</h3>
+        <p className="max-w-md text-body-sm text-muted-foreground">{body}</p>
+        <p className="text-label text-muted-foreground">{doc}</p>
       </CardContent>
     </Card>
   );
 }
 
 function Empty({ children }: { children: React.ReactNode }) {
-  return <p className="py-8 text-center text-sm text-muted-foreground">{children}</p>;
+  return <p className="py-8 text-center text-body-sm text-muted-foreground">{children}</p>;
 }
 
 function RowTable({ title, rows, pageStyle }: { title: string; rows: { key: string; clicks: number; impressions: number; ctr: number; position: number }[]; pageStyle?: boolean }) {
@@ -150,8 +150,8 @@ function RowTable({ title, rows, pageStyle }: { title: string; rows: { key: stri
           <Empty>No data yet.</Empty>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead className="border-y border-border bg-secondary/40 text-left text-xs uppercase text-muted-foreground">
+            <table className="w-full text-body-sm">
+              <thead className="border-y border-border bg-secondary/40 text-left text-label uppercase text-muted-foreground">
                 <tr>
                   <th className="px-4 py-2 font-medium">{pageStyle ? "Page" : "Query"}</th>
                   <th className="px-3 py-2 text-right font-medium">Clicks</th>

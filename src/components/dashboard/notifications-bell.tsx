@@ -79,11 +79,11 @@ export function NotificationsBell({ initialAlerts }: { initialAlerts: AlertItem[
       {open && (
         <div className="absolute right-0 z-50 mt-2 w-96 max-w-[calc(100vw-2rem)] overflow-hidden rounded-xl border border-border bg-background shadow-popover">
           <div className="flex items-center justify-between border-b border-border px-4 py-2.5">
-            <span className="text-sm font-semibold">Notifications</span>
+            <span className="text-body-sm font-semibold">Notifications</span>
             {unread > 0 && (
               <button
                 onClick={markAllRead}
-                className="inline-flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-primary"
+                className="inline-flex items-center gap-1 text-label font-medium text-muted-foreground hover:text-primary"
               >
                 <CheckCheck className="h-3.5 w-3.5" /> Mark all read
               </button>
@@ -91,7 +91,7 @@ export function NotificationsBell({ initialAlerts }: { initialAlerts: AlertItem[
           </div>
           <div className="max-h-96 overflow-y-auto">
             {alerts.length === 0 ? (
-              <p className="p-6 text-center text-sm text-muted-foreground">
+              <p className="p-6 text-center text-body-sm text-muted-foreground">
                 All clear. Alerts appear here when something needs attention.
               </p>
             ) : (
@@ -105,8 +105,8 @@ export function NotificationsBell({ initialAlerts }: { initialAlerts: AlertItem[
                 >
                   <span className="mt-0.5">{SEVERITY_ICON[a.severity] ?? SEVERITY_ICON.info}</span>
                   <span className="min-w-0">
-                    <span className="block text-sm font-medium leading-snug">{a.title}</span>
-                    {a.body && <span className="mt-0.5 block text-xs text-muted-foreground">{a.body}</span>}
+                    <span className="block text-body-sm font-medium leading-snug">{a.title}</span>
+                    {a.body && <span className="mt-0.5 block text-label text-muted-foreground">{a.body}</span>}
                     <span className="mt-1 block text-[11px] text-muted-foreground/70">{timeAgo(a.created_at)}</span>
                   </span>
                   {!a.read_at && <span className="ml-auto mt-1.5 h-2 w-2 shrink-0 rounded-full bg-primary" />}

@@ -24,7 +24,7 @@ export function RefreshButton({ label = "Refresh statuses" }: { label?: string }
     <button
       onClick={refresh}
       disabled={busy}
-      className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-60"
+      className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-body-sm font-semibold text-primary-foreground disabled:opacity-60"
     >
       <RefreshCw className={`h-4 w-4 ${busy ? "animate-spin" : ""}`} />
       {busy ? "Checking…" : label}

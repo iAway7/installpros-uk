@@ -62,7 +62,7 @@ export default async function ExperimentsPage() {
 
       {error ? (
         <Card>
-          <CardContent className="p-6 text-sm text-destructive">
+          <CardContent className="p-6 text-body-sm text-destructive">
             Couldn&apos;t load experiments ({error.message}). Make sure migration 0002 has been run.
           </CardContent>
         </Card>

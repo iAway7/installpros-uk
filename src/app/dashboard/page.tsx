@@ -110,7 +110,7 @@ export default async function OverviewPage() {
 
       {error ? (
         <Card>
-          <CardContent className="p-6 text-sm text-destructive">
+          <CardContent className="p-6 text-body-sm text-destructive">
             Couldn&apos;t load data ({error.message}). Check the Supabase connection.
           </CardContent>
         </Card>
@@ -119,7 +119,7 @@ export default async function OverviewPage() {
           <CardContent className="flex flex-col items-center gap-2 p-12 text-center">
             <Users className="h-10 w-10 text-muted-foreground" />
             <h3 className="text-lg font-semibold">No leads yet</h3>
-            <p className="max-w-sm text-sm text-muted-foreground">
+            <p className="max-w-sm text-body-sm text-muted-foreground">
               As soon as someone completes the form on your landing page, they&apos;ll show up here.
             </p>
           </CardContent>
@@ -130,11 +130,11 @@ export default async function OverviewPage() {
           <Card>
             <CardContent className="flex flex-col gap-6 p-6 sm:flex-row sm:items-center">
               <div className="shrink-0">
-                <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Leads this week</p>
+                <p className="text-label font-medium uppercase tracking-wide text-muted-foreground">Leads this week</p>
                 <div className="mt-1 flex items-baseline gap-3">
                   <span className="text-5xl font-bold tabular-nums">{thisWeek}</span>
                   {weekDelta !== null && (
-                    <span className={`text-sm font-semibold ${weekDelta >= 0 ? "text-success" : "text-destructive"}`}>
+                    <span className={`text-body-sm font-semibold ${weekDelta >= 0 ? "text-success" : "text-destructive"}`}>
                       {weekDelta >= 0 ? "▲" : "▼"} {Math.abs(weekDelta)}% vs last week ({lastWeek})
                     </span>
                   )}
@@ -170,13 +170,13 @@ export default async function OverviewPage() {
               <CardContent className="space-y-3">
                 {byStatus.map(({ status, count }) => (
                   <div key={status} className="flex items-center gap-3">
-                    <span className={`inline-flex w-24 justify-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${STATUS_STYLE[status as LeadStatus]}`}>
+                    <span className={`inline-flex w-24 justify-center rounded-full px-2.5 py-0.5 text-label font-semibold ${STATUS_STYLE[status as LeadStatus]}`}>
                       {STATUS_LABEL[status as LeadStatus]}
                     </span>
                     <div className="h-2 flex-1 overflow-hidden rounded-full bg-secondary">
                       <div className="h-full rounded-full bg-primary" style={{ width: `${total ? (count / total) * 100 : 0}%` }} />
                     </div>
-                    <span className="w-8 text-right text-sm font-medium tabular-nums">{count}</span>
+                    <span className="w-8 text-right text-body-sm font-medium tabular-nums">{count}</span>
                   </div>
                 ))}
               </CardContent>
@@ -187,11 +187,11 @@ export default async function OverviewPage() {
               <CardContent className="space-y-3">
                 {byService.map(([service, count]) => (
                   <div key={service} className="flex items-center gap-3">
-                    <span className="w-32 truncate text-sm" title={service}>{service}</span>
+                    <span className="w-32 truncate text-body-sm" title={service}>{service}</span>
                     <div className="h-2 flex-1 overflow-hidden rounded-full bg-secondary">
                       <div className="h-full rounded-full bg-primary" style={{ width: `${total ? (count / total) * 100 : 0}%` }} />
                     </div>
-                    <span className="w-8 text-right text-sm font-medium tabular-nums">{count}</span>
+                    <span className="w-8 text-right text-body-sm font-medium tabular-nums">{count}</span>
                   </div>
                 ))}
               </CardContent>
@@ -203,11 +203,11 @@ export default async function OverviewPage() {
             <CardContent className="space-y-3">
               {bySource.map(([source, count]) => (
                 <div key={source} className="flex items-center gap-3">
-                  <span className="w-28 truncate text-sm capitalize">{source}</span>
+                  <span className="w-28 truncate text-body-sm capitalize">{source}</span>
                   <div className="h-2 flex-1 overflow-hidden rounded-full bg-secondary">
                     <div className="h-full rounded-full bg-accent" style={{ width: `${total ? (count / total) * 100 : 0}%` }} />
                   </div>
-                  <span className="w-8 text-right text-sm font-medium tabular-nums">{count}</span>
+                  <span className="w-8 text-right text-body-sm font-medium tabular-nums">{count}</span>
                 </div>
               ))}
             </CardContent>
@@ -248,7 +248,7 @@ function Kpi({ icon, label, value, accent }: { icon: React.ReactNode; label: str
         </div>
         <div>
           <div className="text-2xl font-bold tabular-nums">{value}</div>
-          <div className="text-xs text-muted-foreground">{label}</div>
+          <div className="text-label text-muted-foreground">{label}</div>
         </div>
       </CardContent>
     </Card>

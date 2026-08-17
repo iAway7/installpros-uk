@@ -48,11 +48,11 @@ export default async function DashboardLayout({ children }: { children: React.Re
           <a
             href="/install-quote"
             target="_blank"
-            className="mb-2 flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-muted-foreground hover:bg-secondary hover:text-foreground"
+            className="mb-2 flex items-center gap-2 rounded-lg px-3 py-2 text-body-sm text-muted-foreground hover:bg-secondary hover:text-foreground"
           >
             <ExternalLink className="h-4 w-4" /> View landing page
           </a>
-          <div className="rounded-lg bg-secondary/60 p-3 text-xs">
+          <div className="rounded-lg bg-secondary/60 p-3 text-label">
             <p className="truncate font-medium text-foreground">{profile?.full_name || user.email}</p>
             <p className="capitalize text-muted-foreground">{role.replace("_", " ")}</p>
           </div>
@@ -74,7 +74,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
           <form action="/auth/signout" method="post">
             <button
               type="submit"
-              className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+              className="flex items-center gap-2 rounded-lg px-3 py-2 text-body-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
             >
               <LogOut className="h-4 w-4" /> Sign out
             </button>

@@ -57,7 +57,7 @@ export default async function LeadsPage() {
 
       {error ? (
         <Card>
-          <CardContent className="p-6 text-sm text-destructive">
+          <CardContent className="p-6 text-body-sm text-destructive">
             Couldn&apos;t load leads ({error.message}).
           </CardContent>
         </Card>

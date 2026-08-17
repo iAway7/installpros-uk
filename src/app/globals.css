@@ -309,6 +309,13 @@
   --text-lead: 16px;
   --text-title: 18px;
 
+    /* Product ran ~1.42 line-height, not Editorial's 1.5 — the three legacy
+       .theme-product .text-* rules had it baked in at 20/14, 18/13 and 16/11.
+       Deriving one ratio from those three: 1.42, worst case 0.46px off (on
+       text-sm, 18px becomes 18.46px). That is
+       the density talking, so it belongs here rather than in the rules. */
+    --leading-body: 1.42;
+
 
   /* Product density. 44px is the floor for the default control: --text-field
      cannot go below 16px (iOS zooms on focus), and 16px inside a 40px box is
@@ -350,9 +357,6 @@
 
 /* Webapp type scale — data-dense UI wants smaller text than marketing pages.
    Scoped overrides of the Tailwind size utilities inside the admin only. */
-.theme-product .text-base { font-size: 14px; line-height: 20px; }
-.theme-product .text-sm { font-size: 13px; line-height: 18px; }
-.theme-product .text-xs { font-size: 11px; line-height: 16px; }
 .theme-product table { letter-spacing: -0.1px; }
 
 /* ════════════════════════════════════════════════════════════════════════
