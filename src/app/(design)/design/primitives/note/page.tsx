@@ -1,5 +1,5 @@
 import { Note } from "@/components/system/note";
-import { FunnelButton } from "@/components/system/funnel-button";
+import { Button } from "@/components/system/button";
 import { PageHeader, Section, Preview, Code, BestPractices } from "../../_components/docs";
 
 export const metadata = { title: "Note" };
@@ -36,7 +36,7 @@ export default function NotePage() {
           <Note
             variant="warning"
             label="Obstruction"
-            action={<FunnelButton size="sm">Book a survey</FunnelButton>}
+            action={<Button size="sm">Book a survey</Button>}
           >
             Trees on the south elevation may block the line of sight.
           </Note>

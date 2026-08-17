@@ -3,7 +3,7 @@ import {
   AccordionItem,
   AccordionTrigger,
   AccordionContent,
-} from "@/components/system/funnel-accordion";
+} from "@/components/system/accordion";
 import { PageHeader, Section, Preview, Code, Table, Mono, BestPractices } from "../../_components/docs";
 
 export const metadata = { title: "Accordion" };

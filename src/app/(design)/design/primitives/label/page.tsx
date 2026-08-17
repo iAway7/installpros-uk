@@ -1,5 +1,5 @@
 import { Label } from "@/components/system/label";
-import { FunnelInput } from "@/components/system/funnel-input";
+import { Input } from "@/components/system/input";
 import { PageHeader, Section, Preview, Code, BestPractices } from "../../_components/docs";
 
 export const metadata = { title: "Label" };
@@ -16,11 +16,11 @@ export default function LabelPage() {
         <Preview className="!block">
           <div className="max-w-sm">
             <Label htmlFor="demo-postcode">Postcode</Label>
-            <FunnelInput id="demo-postcode" placeholder="e.g. SW1A 1AA" />
+            <Input id="demo-postcode" placeholder="e.g. SW1A 1AA" />
           </div>
         </Preview>
         <Code>{`<Label htmlFor="postcode">Postcode</Label>
-<FunnelInput id="postcode" placeholder="e.g. SW1A 1AA" />`}</Code>
+<Input id="postcode" placeholder="e.g. SW1A 1AA" />`}</Code>
       </Section>
 
       <Section title="Required and hint">
@@ -28,11 +28,11 @@ export default function LabelPage() {
           <div className="max-w-sm space-y-5">
             <div>
               <Label htmlFor="demo-phone" required>Phone number</Label>
-              <FunnelInput id="demo-phone" placeholder="07123 456789" />
+              <Input id="demo-phone" placeholder="07123 456789" />
             </div>
             <div>
               <Label htmlFor="demo-notes" hint="Optional">Access notes</Label>
-              <FunnelInput id="demo-notes" placeholder="Gate code, parking…" />
+              <Input id="demo-notes" placeholder="Gate code, parking…" />
             </div>
           </div>
         </Preview>

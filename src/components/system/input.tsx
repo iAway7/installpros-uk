@@ -33,11 +33,11 @@ const funnelInputVariants = cva(
   },
 );
 
-export interface FunnelInputProps
+export interface InputProps
   extends Omit<React.ComponentProps<"input">, "size">,
     VariantProps<typeof funnelInputVariants> {}
 
-export const FunnelInput = React.forwardRef<HTMLInputElement, FunnelInputProps>(
+export const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, inputSize, state, ...props }, ref) => (
     <input
       ref={ref}
@@ -50,4 +50,4 @@ export const FunnelInput = React.forwardRef<HTMLInputElement, FunnelInputProps>(
     />
   ),
 );
-FunnelInput.displayName = "FunnelInput";
+Input.displayName = "Input";

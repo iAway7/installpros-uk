@@ -44,8 +44,8 @@ Eyebrow  Button`}</Code>
         <Table
           head={["Thing", "Convention", "Example"]}
           rows={[
-            ["Component", "PascalCase", <Mono key="a">FunnelButton</Mono>],
-            ["File", "kebab-case", <Mono key="b">funnel-button.tsx</Mono>],
+            ["Component", "PascalCase", <Mono key="a">Button</Mono>],
+            ["File", "kebab-case", <Mono key="b">button.tsx</Mono>],
             ["Section component", "PascalCase + Section", <Mono key="c">CoverageSection</Mono>],
             ["Figma variant", "Property=Value", <Mono key="d">Variant=Primary, Size=Default</Mono>],
             ["Boolean prop", "no is/has prefix", <Mono key="e">selected</Mono>, ],

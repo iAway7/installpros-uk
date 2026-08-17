@@ -1,7 +1,7 @@
 "use client";
 
 import { toast } from "@/components/system/toast";
-import { FunnelButton } from "@/components/system/funnel-button";
+import { Button } from "@/components/system/button";
 import { PageHeader, Section, Preview, Code, BestPractices } from "../../_components/docs";
 
 export default function ToastPage() {
@@ -14,9 +14,9 @@ export default function ToastPage() {
 
       <Section title="Try them">
         <Preview>
-          <FunnelButton size="sm" onClick={() => toast.success("Quote request submitted")}>Success</FunnelButton>
-          <FunnelButton size="sm" variant="secondary" onClick={() => toast.error("Something went wrong", "Try again, or call 020 3397 7003.")}>Error</FunnelButton>
-          <FunnelButton size="sm" variant="outline" onClick={() => toast.info("Photos saved as a draft")}>Info</FunnelButton>
+          <Button size="sm" onClick={() => toast.success("Quote request submitted")}>Success</Button>
+          <Button size="sm" variant="secondary" onClick={() => toast.error("Something went wrong", "Try again, or call 020 3397 7003.")}>Error</Button>
+          <Button size="sm" variant="outline" onClick={() => toast.info("Photos saved as a draft")}>Info</Button>
         </Preview>
         <Code>{`import { toast } from "@/components/system/toast";
 

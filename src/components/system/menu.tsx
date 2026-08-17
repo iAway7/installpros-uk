@@ -3,7 +3,7 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { FunnelButton } from "./funnel-button";
+import { Button } from "./button";
 
 export interface MenuItem {
   label: string;
@@ -76,7 +76,7 @@ export function Menu({
 
   return (
     <div ref={boxRef} className={cn("relative inline-block", className)} onKeyDown={onKeyDown}>
-      <FunnelButton
+      <Button
         ref={triggerRef}
         aria-haspopup="menu"
         aria-expanded={open}
@@ -87,7 +87,7 @@ export function Menu({
         {chevron && (
           <ChevronDown className={cn("ml-1 h-4 w-4 transition-transform duration-quick", open && "rotate-180")} aria-hidden />
         )}
-      </FunnelButton>
+      </Button>
 
       {open && (
         <div

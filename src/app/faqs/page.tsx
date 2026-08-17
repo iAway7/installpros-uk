@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { ArrowRight } from "lucide-react";
 import { MainHeader } from "@/components/funnel/main-header";
 import { FunnelFooter } from "@/components/funnel/funnel-footer";
-import { FunnelButton } from "@/components/system/funnel-button";
+import { Button } from "@/components/system/button";
 import { FaqTabs } from "@/components/funnel/faq-tabs";
 import { ALL_FAQS, FAQ_SERVICES } from "@/lib/funnel/faqs";
 
@@ -50,9 +50,9 @@ export default function FaqsPage() {
               Everything you need to know about getting Starlink professionally installed in the UK. Can&apos;t find your
               answer? Check your coverage and we&apos;ll help.
             </p>
-            <FunnelButton asChild className="mt-6">
+            <Button asChild className="mt-6">
               <a href="/install-quote#quote">Check Availability</a>
-            </FunnelButton>
+            </Button>
           </div>
 
           <div className="mt-12">
@@ -64,11 +64,11 @@ export default function FaqsPage() {
             <p className="mx-auto mt-2 max-w-xl text-muted-foreground">
               Check availability at your postcode and our team will walk you through everything, no obligation.
             </p>
-            <FunnelButton asChild className="mt-6">
+            <Button asChild className="mt-6">
               <a href="/install-quote#quote">
                 Check Availability <ArrowRight className="ml-1 h-4 w-4" />
               </a>
-            </FunnelButton>
+            </Button>
           </div>
         </div>
       </main>

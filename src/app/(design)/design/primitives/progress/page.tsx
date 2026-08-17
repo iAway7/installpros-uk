@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Progress, StepProgress } from "@/components/system/progress";
-import { FunnelButton } from "@/components/system/funnel-button";
+import { Button } from "@/components/system/button";
 import { PageHeader, Section, Preview, Code, BestPractices } from "../../_components/docs";
 
 export default function ProgressPage() {
@@ -31,8 +31,8 @@ export default function ProgressPage() {
           <div className="max-w-md">
             <StepProgress current={step} total={4} />
             <div className="mt-5 flex items-center gap-3">
-              <FunnelButton size="sm" variant="secondary" onClick={() => setStep((s) => Math.max(1, s - 1))}>Back</FunnelButton>
-              <FunnelButton size="sm" onClick={() => setStep((s) => Math.min(4, s + 1))}>Next</FunnelButton>
+              <Button size="sm" variant="secondary" onClick={() => setStep((s) => Math.max(1, s - 1))}>Back</Button>
+              <Button size="sm" onClick={() => setStep((s) => Math.min(4, s + 1))}>Next</Button>
               <span className="text-[14px] text-neutral-500">Step {step} of 4</span>
             </div>
           </div>

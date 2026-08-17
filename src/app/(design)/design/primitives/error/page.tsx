@@ -1,5 +1,5 @@
 import { ErrorMessage } from "@/components/system/error-message";
-import { FunnelInput } from "@/components/system/funnel-input";
+import { Input } from "@/components/system/input";
 import { PageHeader, Section, Preview, Code, BestPractices } from "../../_components/docs";
 
 export const metadata = { title: "Error" };
@@ -34,10 +34,10 @@ export default function ErrorPage() {
 
       <Section title="Attached to a field" note="The only correct way to use it in a form.">
         <Preview className="!flex-col !items-stretch">
-          <FunnelInput inputSize="lg" state="error" defaultValue="gus@" aria-describedby="err-email-demo" />
+          <Input inputSize="lg" state="error" defaultValue="gus@" aria-describedby="err-email-demo" />
           <ErrorMessage id="err-email-demo">Enter a full email address, including the domain.</ErrorMessage>
         </Preview>
-        <Code>{`<FunnelInput
+        <Code>{`<Input
   state={errors.email ? "error" : "default"}
   aria-describedby={errors.email ? "err-email" : undefined}
 />

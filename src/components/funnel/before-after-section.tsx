@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { WhatsAppIcon } from "./ui/whatsapp-icon";
-import { FunnelButton } from "@/components/system/funnel-button";
+import { Button } from "@/components/system/button";
 
 const WHATSAPP_URL = "https://wa.me/447446112343";
 
@@ -394,18 +394,18 @@ export function BeforeAfterSection() {
         )}
 
         <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
-          {/* Both CTAs go through FunnelButton so there is exactly one button
+          {/* Both CTAs go through Button so there is exactly one button
               spec on the page. They used to be hand-rolled <a> tags at 14px
               while every other button rendered at 16px. */}
-          <FunnelButton asChild>
+          <Button asChild>
             <a href="#quote">Check Availability</a>
-          </FunnelButton>
-          <FunnelButton asChild variant="outline">
+          </Button>
+          <Button asChild variant="outline">
             <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
               <WhatsAppIcon className="h-5 w-5 text-whatsapp" />
               Talk on WhatsApp
             </a>
-          </FunnelButton>
+          </Button>
         </div>
       </div>
     </section>

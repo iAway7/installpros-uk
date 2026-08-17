@@ -1,4 +1,4 @@
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/system/funnel-accordion";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/system/accordion";
 import { LANDING_FAQS } from "@/lib/funnel/faqs";
 
 export function FaqSection() {

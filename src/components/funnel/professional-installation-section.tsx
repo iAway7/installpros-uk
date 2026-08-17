@@ -1,5 +1,5 @@
 import { Check } from "lucide-react";
-import { FunnelButton } from "@/components/system/funnel-button";
+import { Button } from "@/components/system/button";
 
 const FEATURES = [
   { title: "Customised Setup", description: "We customise installations for Residential, Commercial, Marine, and Mobile needs." },
@@ -46,9 +46,9 @@ export function ProfessionalInstallationSection() {
         </div>
 
         <div className="mt-10 text-center">
-          <FunnelButton asChild>
+          <Button asChild>
             <a href="#quote">Check Availability</a>
-          </FunnelButton>
+          </Button>
         </div>
       </div>
     </section>

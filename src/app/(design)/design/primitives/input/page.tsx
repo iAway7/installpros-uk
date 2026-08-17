@@ -1,4 +1,4 @@
-import { FunnelInput } from "@/components/system/funnel-input";
+import { Input } from "@/components/system/input";
 import { PageHeader, Section, Preview, Code, Table, Mono, Rule, BestPractices } from "../../_components/docs";
 
 export const metadata = { title: "Input" };
@@ -13,22 +13,22 @@ export default function InputPage() {
 
       <Section title="Sizes">
         <Preview className="!flex-col !items-stretch">
-          <FunnelInput inputSize="sm" placeholder="Small — 36px" />
-          <FunnelInput placeholder="Default — 48px" />
-          <FunnelInput inputSize="lg" placeholder="Large — 56px, used by the lead form" />
+          <Input inputSize="sm" placeholder="Small — 36px" />
+          <Input placeholder="Default — 48px" />
+          <Input inputSize="lg" placeholder="Large — 56px, used by the lead form" />
         </Preview>
       </Section>
 
       <Section title="States">
         <Preview className="!flex-col !items-stretch">
-          <FunnelInput inputSize="lg" placeholder="Default" />
-          <FunnelInput inputSize="lg" state="error" defaultValue="not-an-email" aria-describedby="err-demo" />
+          <Input inputSize="lg" placeholder="Default" />
+          <Input inputSize="lg" state="error" defaultValue="not-an-email" aria-describedby="err-demo" />
           <p id="err-demo" role="alert" className="text-[15px] text-error">
             Please enter a valid email address.
           </p>
-          <FunnelInput inputSize="lg" placeholder="Disabled" disabled />
+          <Input inputSize="lg" placeholder="Disabled" disabled />
         </Preview>
-        <Code>{`<FunnelInput
+        <Code>{`<Input
   inputSize="lg"
   state={errors.email ? "error" : "default"}
   aria-describedby={errors.email ? "err-email" : undefined}

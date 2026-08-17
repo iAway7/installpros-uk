@@ -4,9 +4,9 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Check, Loader2, ArrowRight, ArrowLeft, Home, Ship, Building2, Caravan } from "lucide-react";
 import { toast } from "sonner";
-import { FunnelInput } from "@/components/system/funnel-input";
+import { Input } from "@/components/system/input";
 import { AddressAutocomplete, type AddressSelection } from "./ui/address-autocomplete";
-import { FunnelButton } from "@/components/system/funnel-button";
+import { Button } from "@/components/system/button";
 import { FormOption } from "@/components/system/form-option";
 import { ConsentCheckbox } from "./consent-checkbox";
 import { FormLegalNotice } from "./form-legal-notice";
@@ -282,7 +282,7 @@ export function ZipAvailabilityChecker(
                   />
                 ) : (
                   <>
-                    <FunnelInput
+                    <Input
                       type="text" value={postcode} onChange={onPostcodeChange}
                       placeholder="e.g. SW1A 1AA" inputSize="lg" maxLength={8} aria-label="Postcode"
                       autoComplete="postal-code"
@@ -322,9 +322,9 @@ export function ZipAvailabilityChecker(
                         </span>
                       </p>
                     )}
-                    <FunnelButton onClick={next} className="w-full">
+                    <Button onClick={next} className="w-full">
                       Get a quote <ArrowRight className="ml-2 h-4 w-4" />
-                    </FunnelButton>
+                    </Button>
                   </div>
                 )}
               </div>
@@ -333,7 +333,7 @@ export function ZipAvailabilityChecker(
 
           {step === 1 && (
             <StepField anim={anim} stepLabel={`Step 1 of ${TOTAL_STEPS}`} title="What's your name?" error={errors.fullName} errorId="err-name">
-              <FunnelInput
+              <Input
                 ref={nameRef} type="text" value={formData.fullName}
                 onChange={(e) => setFormData((d) => ({ ...d, fullName: e.target.value }))}
                 placeholder="Full Name" inputSize="lg" aria-label="Full name"
@@ -347,7 +347,7 @@ export function ZipAvailabilityChecker(
           {step === 2 && (
             <StepField anim={anim} stepLabel={`Step 2 of ${TOTAL_STEPS}`} title="What's your phone number?" error={errors.phone} errorId="err-phone">
               <div className="relative">
-                <FunnelInput
+                <Input
                   ref={phoneRef} type="tel" value={formData.phone} onChange={onPhoneChange}
                   placeholder="07700 900123" inputSize="lg" aria-label="Phone number"
                   state={errors.phone ? "error" : "default"}
@@ -362,7 +362,7 @@ export function ZipAvailabilityChecker(
           {step === 3 && (
             <StepField anim={anim} stepLabel={`Step 3 of ${TOTAL_STEPS}`} title="What's your email?" error={errors.email} errorId="err-email">
               <div className="relative">
-                <FunnelInput
+                <Input
                   ref={emailRef} type="email" value={formData.email} onChange={onEmailChange}
                   placeholder="you@example.com" inputSize="lg" aria-label="Email"
                   state={errors.email ? "error" : "default"}
@@ -404,16 +404,16 @@ export function ZipAvailabilityChecker(
 
         {step > 0 && (
           <div className="flex gap-3">
-            <FunnelButton onClick={back} variant="secondary" disabled={isTransitioning}>
+            <Button onClick={back} variant="secondary" disabled={isTransitioning}>
               <ArrowLeft className="mr-2 h-4 w-4" /> Back
-            </FunnelButton>
-            <FunnelButton onClick={stepNext} disabled={!canProceed() || isSubmitting || isTransitioning} className="flex-1">
+            </Button>
+            <Button onClick={stepNext} disabled={!canProceed() || isSubmitting || isTransitioning} className="flex-1">
               {isSubmitting ? (
                 <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> Submitting...</>
               ) : (
                 <>{step === 4 ? "Get My Free Quote" : "Next"} <ArrowRight className="ml-2 h-5 w-5" /></>
               )}
-            </FunnelButton>
+            </Button>
           </div>
         )}
 

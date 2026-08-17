@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { Modal } from "@/components/system/modal";
-import { FunnelButton } from "@/components/system/funnel-button";
-import { FunnelInput } from "@/components/system/funnel-input";
+import { Button } from "@/components/system/button";
+import { Input } from "@/components/system/input";
 import { Label } from "@/components/system/label";
 import { PageHeader, Section, Preview, Code, Rule, BestPractices } from "../../_components/docs";
 
@@ -24,7 +24,7 @@ export default function ModalPage() {
 
       <Section title="Default">
         <Preview>
-          <FunnelButton onClick={() => setA(true)}>Reschedule install</FunnelButton>
+          <Button onClick={() => setA(true)}>Reschedule install</Button>
           <Modal
             open={a}
             onClose={() => setA(false)}
@@ -48,7 +48,7 @@ export default function ModalPage() {
 
       <Section title="Single button" note="With no action, cancel stretches full width.">
         <Preview>
-          <FunnelButton variant="secondary" onClick={() => setB(true)}>Open</FunnelButton>
+          <Button variant="secondary" onClick={() => setB(true)}>Open</Button>
           <Modal
             open={b}
             onClose={() => setB(false)}
@@ -62,7 +62,7 @@ export default function ModalPage() {
 
       <Section title="Disabled action" note="Until the form is valid.">
         <Preview>
-          <FunnelButton variant="outline" onClick={() => setC(true)}>Open</FunnelButton>
+          <Button variant="outline" onClick={() => setC(true)}>Open</Button>
           <Modal
             open={c}
             onClose={() => setC(false)}
@@ -76,7 +76,7 @@ export default function ModalPage() {
 
       <Section title="Destructive" note="Never the default focus.">
         <Preview>
-          <FunnelButton variant="outline" onClick={() => setD(true)}>Mark lead as lost</FunnelButton>
+          <Button variant="outline" onClick={() => setD(true)}>Mark lead as lost</Button>
           <Modal
             open={d}
             onClose={() => setD(false)}
@@ -91,7 +91,7 @@ export default function ModalPage() {
 
       <Section title="Focus a field on open">
         <Preview>
-          <FunnelButton onClick={() => setE(true)}>Invite engineer</FunnelButton>
+          <Button onClick={() => setE(true)}>Invite engineer</Button>
           <Modal
             open={e}
             onClose={() => setE(false)}
@@ -101,7 +101,7 @@ export default function ModalPage() {
             action={{ label: "Send invite", disabled: !name.trim(), onClick: () => setE(false) }}
           >
             <Label htmlFor="invite-name">Name</Label>
-            <FunnelInput id="invite-name" value={name} onChange={(ev) => setName(ev.target.value)} placeholder="Jane Doe" />
+            <Input id="invite-name" value={name} onChange={(ev) => setName(ev.target.value)} placeholder="Jane Doe" />
           </Modal>
         </Preview>
         <Code>{`<Modal autoFocusSelector="input" … >`}</Code>

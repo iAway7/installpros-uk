@@ -39,18 +39,18 @@ const funnelButtonVariants = cva(
   },
 );
 
-export interface FunnelButtonProps
+export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof funnelButtonVariants> {
   asChild?: boolean;
 }
 
-export const FunnelButton = React.forwardRef<HTMLButtonElement, FunnelButtonProps>(
+export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : "button";
     return <Comp ref={ref} className={cn(funnelButtonVariants({ variant, size, className }))} {...props} />;
   },
 );
-FunnelButton.displayName = "FunnelButton";
+Button.displayName = "Button";
 
 export { funnelButtonVariants };

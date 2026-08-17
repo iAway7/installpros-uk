@@ -1,5 +1,5 @@
 import { ArrowRight } from "lucide-react";
-import { FunnelButton } from "@/components/system/funnel-button";
+import { Button } from "@/components/system/button";
 import { PageHeader, Section, Preview, Code, Table, Mono, Rule, BestPractices } from "../../_components/docs";
 
 export const metadata = { title: "Button" };
@@ -9,27 +9,27 @@ export default function ButtonPage() {
     <>
       <PageHeader
         title="Button"
-        lead="Everything below is the real FunnelButton — the same import the funnel uses. Change the component and this page changes with it."
+        lead="Everything below is the real Button — the same import the funnel uses. Change the component and this page changes with it."
       />
 
       <Section title="Variants" note="Primary is the only one that should appear more than once per screen sparingly.">
         <Preview>
-          <FunnelButton>Get my free quote</FunnelButton>
-          <FunnelButton variant="secondary">Back</FunnelButton>
-          <FunnelButton variant="outline">Talk on WhatsApp</FunnelButton>
+          <Button>Get my free quote</Button>
+          <Button variant="secondary">Back</Button>
+          <Button variant="outline">Talk on WhatsApp</Button>
         </Preview>
-        <Code>{`import { FunnelButton } from "@/components/system/funnel-button";
+        <Code>{`import { Button } from "@/components/system/button";
 
-<FunnelButton>Get my free quote</FunnelButton>
-<FunnelButton variant="secondary">Back</FunnelButton>
-<FunnelButton variant="outline">Talk on WhatsApp</FunnelButton>`}</Code>
+<Button>Get my free quote</Button>
+<Button variant="secondary">Back</Button>
+<Button variant="outline">Talk on WhatsApp</Button>`}</Code>
       </Section>
 
       <Section title="Sizes">
         <Preview>
-          <FunnelButton size="sm">Small</FunnelButton>
-          <FunnelButton>Default</FunnelButton>
-          <FunnelButton size="lg">Large</FunnelButton>
+          <Button size="sm">Small</Button>
+          <Button>Default</Button>
+          <Button size="lg">Large</Button>
         </Preview>
         <div className="mt-4">
           <Table
@@ -45,11 +45,11 @@ export default function ButtonPage() {
 
       <Section title="States">
         <Preview>
-          <FunnelButton>Default</FunnelButton>
-          <FunnelButton disabled>Disabled</FunnelButton>
-          <FunnelButton>
+          <Button>Default</Button>
+          <Button disabled>Disabled</Button>
+          <Button>
             Next <ArrowRight className="ml-1 h-4 w-4" />
-          </FunnelButton>
+          </Button>
         </Preview>
         <p className="mt-4 max-w-2xl text-[15px] leading-[1.6] text-neutral-500">
           Hover darkens the fill to <Mono>--brand-hover</Mono> (#9E0404) rather than dropping opacity, so the button
@@ -60,8 +60,8 @@ export default function ButtonPage() {
 
       <Section title="On the hero">
         <Preview dark>
-          <FunnelButton>Check availability</FunnelButton>
-          <FunnelButton variant="secondary">Back</FunnelButton>
+          <Button>Check availability</Button>
+          <Button variant="secondary">Back</Button>
         </Preview>
       </Section>
 

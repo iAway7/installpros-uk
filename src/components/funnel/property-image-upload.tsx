@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Camera, ImagePlus, Loader2, X } from "lucide-react";
 import { toast } from "sonner";
-import { FunnelButton } from "@/components/system/funnel-button";
+import { Button } from "@/components/system/button";
 import { StepIndicator } from "./step-indicator";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { track, EVENTS } from "@/lib/analytics";
@@ -139,22 +139,22 @@ export function PropertyImageUpload() {
               <div>
                 {isMobile ? (
                   <div className="space-y-3">
-                    <FunnelButton onClick={() => cameraRef.current?.click()} size="lg" className="w-full normal-case">
+                    <Button onClick={() => cameraRef.current?.click()} size="lg" className="w-full normal-case">
                       <Camera className="mr-2 h-5 w-5" /> Take Photos
-                    </FunnelButton>
-                    <FunnelButton
+                    </Button>
+                    <Button
                       variant="outline"
                       onClick={() => libraryRef.current?.click()}
                       size="lg"
                       className="w-full border-white/30 normal-case text-white/70 hover:bg-white/10 hover:text-white"
                     >
                       <ImagePlus className="mr-2 h-5 w-5" /> Upload from Library
-                    </FunnelButton>
+                    </Button>
                   </div>
                 ) : (
-                  <FunnelButton onClick={() => libraryRef.current?.click()} size="lg" className="w-full normal-case">
+                  <Button onClick={() => libraryRef.current?.click()} size="lg" className="w-full normal-case">
                     <ImagePlus className="mr-2 h-5 w-5" /> Upload Photos
-                  </FunnelButton>
+                  </Button>
                 )}
                 <p className="mt-3 text-center text-xs text-muted-foreground">Takes ~30 seconds</p>
               </div>
@@ -212,9 +212,9 @@ export function PropertyImageUpload() {
                     </div>
                   </div>
                 ) : (
-                  <FunnelButton onClick={handleSubmit} size="lg" className="mt-4 w-full normal-case">
+                  <Button onClick={handleSubmit} size="lg" className="mt-4 w-full normal-case">
                     Get My Quote →
-                  </FunnelButton>
+                  </Button>
                 )}
               </div>
             )}

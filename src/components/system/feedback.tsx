@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { FunnelButton } from "./funnel-button";
+import { Button } from "./button";
 
 const EMOTIONS = [
   { key: "sad", glyph: "😢", label: "Unhappy" },
@@ -108,13 +108,13 @@ export function Feedback({
       />
       <div className="flex items-center justify-between gap-3 border-t border-border px-3 py-2.5">
         <Faces value={emotion} onChange={setEmotion} />
-        <FunnelButton
+        <Button
           size="sm"
           disabled={!text.trim() && !emotion}
           onClick={() => { onSubmit?.({ text, emotion }); setSent(true); }}
         >
           Send
-        </FunnelButton>
+        </Button>
       </div>
     </div>
   );

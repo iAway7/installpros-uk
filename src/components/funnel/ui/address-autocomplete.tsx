@@ -2,7 +2,7 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import { Loader2, MapPin } from "lucide-react";
-import { FunnelInput } from "@/components/system/funnel-input";
+import { Input } from "@/components/system/input";
 
 export interface AddressSelection {
   address: string;
@@ -152,7 +152,7 @@ export function AddressAutocomplete({
   return (
     <div ref={boxRef} className="relative">
       <MapPin className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-primary" />
-      <FunnelInput
+      <Input
         type="text"
         value={value}
         onChange={(e) => onChange(e.target.value)}
