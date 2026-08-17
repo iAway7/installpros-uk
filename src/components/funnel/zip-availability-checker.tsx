@@ -278,7 +278,7 @@ export function ZipAvailabilityChecker(
                     onChange={(v) => { setAddress(v); if (status !== "idle") { setStatus("idle"); setError(""); } }}
                     onSelect={onAddressSelect}
                     placeholder="Start typing your address…"
-                    className="text-base md:text-lg"
+                    className="text-body md:text-lg"
                   />
                 ) : (
                   <>
@@ -288,7 +288,7 @@ export function ZipAvailabilityChecker(
                       autoComplete="postal-code"
                       state={status === "invalid" ? "error" : "default"}
                       aria-describedby={error ? "err-postcode" : undefined}
-                      className="text-center text-base uppercase md:text-[22px]"
+                      className="text-center text-body uppercase md:text-[22px]"
                     />
                     {status === "checking" && (
                       <Loader2 className="absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 animate-spin text-primary" />
@@ -300,20 +300,20 @@ export function ZipAvailabilityChecker(
                 )}
               </div>
               {(status === "invalid" || error) && error && (
-                <p id="err-postcode" role="alert" className="text-center text-base text-error">{error}</p>
+                <p id="err-postcode" role="alert" className="text-center text-body text-error">{error}</p>
               )}
               <div className="min-h-[100px]">
                 {status === "checking" && <p className="text-center text-white/70">Checking availability...</p>}
                 {status === "available" && (
                   <div className="space-y-4">
                     {smartMessage ? (
-                      <p className="flex flex-wrap items-center justify-center gap-x-1.5 text-center text-base text-white">
+                      <p className="flex flex-wrap items-center justify-center gap-x-1.5 text-center text-body text-white">
                         <Check className="h-5 w-5 rounded bg-success-bright/20 p-0.5 text-success-bright" />
                         <span className="font-semibold text-success-bright">We cover {region}.</span>
                         <span>{smartMessage}</span>
                       </p>
                     ) : (
-                      <p className="flex flex-wrap items-center justify-center gap-x-1.5 text-center text-base text-white">
+                      <p className="flex flex-wrap items-center justify-center gap-x-1.5 text-center text-body text-white">
                         <Check className="h-5 w-5 rounded bg-success-bright/20 p-0.5 text-success-bright" />
                         <span className="font-semibold text-success-bright">Great!</span>
                         <span>
@@ -339,7 +339,7 @@ export function ZipAvailabilityChecker(
                 placeholder="Full Name" inputSize="lg" aria-label="Full name"
                 state={errors.fullName ? "error" : "default"}
                 aria-describedby={errors.fullName ? "err-name" : undefined}
-                className="text-center text-base md:text-[22px]"
+                className="text-center text-body md:text-[22px]"
               />
             </StepField>
           )}
@@ -352,7 +352,7 @@ export function ZipAvailabilityChecker(
                   placeholder="07700 900123" inputSize="lg" aria-label="Phone number"
                   state={errors.phone ? "error" : "default"}
                   aria-describedby={errors.phone ? "err-phone" : undefined}
-                  className="text-center text-base md:text-[22px]"
+                  className="text-center text-body md:text-[22px]"
                 />
                 {showPhoneCheck && <Check className="absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-success-bright" />}
               </div>
@@ -367,7 +367,7 @@ export function ZipAvailabilityChecker(
                   placeholder="you@example.com" inputSize="lg" aria-label="Email"
                   state={errors.email ? "error" : "default"}
                   aria-describedby={errors.email ? "err-email" : undefined}
-                  className="text-center text-base md:text-[22px]"
+                  className="text-center text-body md:text-[22px]"
                 />
                 {showEmailCheck && <Check className="absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-success-bright" />}
               </div>
@@ -443,7 +443,7 @@ function StepField({
       </div>
       {children}
       {error && (
-        <p id={errorId} role="alert" className="text-center text-base text-error">{error}</p>
+        <p id={errorId} role="alert" className="text-center text-body text-error">{error}</p>
       )}
     </div>
   );

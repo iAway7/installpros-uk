@@ -38,7 +38,7 @@ export function EquipmentSection() {
           >
             The hardware, handled.
           </h2>
-          <p className="mx-auto mt-5 max-w-xl text-base text-muted-foreground md:text-lg" style={{ lineHeight: "1.6" }}>
+          <p className="mx-auto mt-5 max-w-xl text-body text-muted-foreground md:text-lg" style={{ lineHeight: "1.6" }}>
             We supply, mount and configure the full Starlink ecosystem — nothing for you to source.
           </p>
         </div>

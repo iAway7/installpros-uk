@@ -126,7 +126,7 @@ export function PropertyImageUpload() {
           <h1 className="mb-4 text-center text-3xl font-bold text-white md:text-4xl">
             One last step to your quote
           </h1>
-          <p className="mx-auto mb-8 max-w-2xl text-center text-base text-muted-foreground">
+          <p className="mx-auto mb-8 max-w-2xl text-center text-body text-muted-foreground">
             Your details are in. Add a few exterior photos so we can price your install accurately — then your
             same-day quote is on its way.
           </p>

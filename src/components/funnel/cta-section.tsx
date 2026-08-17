@@ -13,7 +13,7 @@ export function CtaSection({ addressMode = false }: { addressMode?: boolean } = 
           >
             Ready To Get Your Starlink Installed?
           </h2>
-          <p className="mb-8 text-base text-foreground md:text-lg">
+          <p className="mb-8 text-body text-foreground md:text-lg">
             Let&apos;s make your Starlink setup stress-free, fast, and fully optimised.
           </p>
           <div className="mx-auto max-w-xl">
@@ -21,7 +21,7 @@ export function CtaSection({ addressMode = false }: { addressMode?: boolean } = 
           </div>
         </div>
 
-        <p className="mx-auto mt-8 max-w-4xl text-center text-base leading-relaxed text-muted-foreground">
+        <p className="mx-auto mt-8 max-w-4xl text-center text-body leading-relaxed text-muted-foreground">
           © {new Date().getFullYear()} Install Pros® is a registered trade mark of InstallPros Group Ltd (UK), registered in the United
           Kingdom. Company No. 14896859. VAT No. GB456635174. Registered office: Rotunda Buildings, Montpellier
           Exchange, Cheltenham, GL50 1SX. Tel: 020 3397 7003 | Email: admin@installpros.co.uk | All rights reserved

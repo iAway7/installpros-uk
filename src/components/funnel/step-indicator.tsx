@@ -30,7 +30,7 @@ export function StepIndicator({
               <div className="flex flex-col items-center">
                 <div
                   className={cn(
-                    "flex h-12 w-12 items-center justify-center rounded-full text-base font-semibold transition-all",
+                    "flex h-12 w-12 items-center justify-center rounded-full text-body font-semibold transition-all",
                     activeOrDone && (dark ? "bg-white text-black" : "bg-black text-white"),
                     !activeOrDone &&
                       (dark

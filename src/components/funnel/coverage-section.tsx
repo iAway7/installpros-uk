@@ -36,7 +36,7 @@ export function CoverageSection() {
           >
             Any property, anywhere — connected this week.
           </h2>
-          <p className="mx-auto mt-5 max-w-2xl text-base text-muted-foreground md:text-lg" style={{ lineHeight: "1.6" }}>
+          <p className="mx-auto mt-5 max-w-2xl text-body text-muted-foreground md:text-lg" style={{ lineHeight: "1.6" }}>
             One certified team for residential, commercial, marine and{" "}
             {/* Forced break only from md up: on mobile the line wraps naturally
                 and a hard break would leave a stranded second line. */}

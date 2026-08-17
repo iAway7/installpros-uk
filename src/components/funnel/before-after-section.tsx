@@ -294,7 +294,7 @@ export function BeforeAfterSection() {
           >
             Life before. Life after.
           </h2>
-          <p className="mx-auto mt-5 max-w-md text-base text-muted-foreground md:text-lg" style={{ lineHeight: "1.6" }}>
+          <p className="mx-auto mt-5 max-w-md text-body text-muted-foreground md:text-lg" style={{ lineHeight: "1.6" }}>
             {isMobile
               ? "Test your real speed — this is what a professional install changes."
               : "Drag the handle — or test your real speed. This is what a professional install changes."}

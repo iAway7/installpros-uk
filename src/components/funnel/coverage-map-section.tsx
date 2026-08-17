@@ -27,7 +27,7 @@ export function CoverageMapSection() {
               <br />
               The whole map.
             </h2>
-            <p className="mt-6 max-w-md text-base text-muted-foreground md:text-lg" style={{ lineHeight: "1.6" }}>
+            <p className="mt-6 max-w-md text-body text-muted-foreground md:text-lg" style={{ lineHeight: "1.6" }}>
               From the Highlands to Cornwall, our engineers cover all four nations — no postcode too remote.
             </p>
 

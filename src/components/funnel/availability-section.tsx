@@ -68,7 +68,7 @@ export function AvailabilitySection() {
           <h2 className="mb-4 h2-section text-foreground">
             Nationwide Starlink Installation Coverage
           </h2>
-          <p className="mx-auto max-w-2xl text-base text-muted-foreground md:text-lg">
+          <p className="mx-auto max-w-2xl text-body text-muted-foreground md:text-lg">
             Professional installation services available across the UK. Check if we service your area.
           </p>
         </div>

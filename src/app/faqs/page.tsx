@@ -46,7 +46,7 @@ export default function FaqsPage() {
             >
               Starlink installation FAQs
             </h1>
-            <p className="mx-auto mt-4 max-w-2xl text-base text-muted-foreground md:text-lg">
+            <p className="mx-auto mt-4 max-w-2xl text-body text-muted-foreground md:text-lg">
               Everything you need to know about getting Starlink professionally installed in the UK. Can&apos;t find your
               answer? Check your coverage and we&apos;ll help.
             </p>

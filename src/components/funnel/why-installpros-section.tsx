@@ -69,7 +69,7 @@ export function WhyInstallProsSection() {
               not odd jobs.
             </h2>
           </div>
-          <p className="max-w-[420px] text-base text-muted-foreground md:text-lg" style={{ lineHeight: "1.6" }}>
+          <p className="max-w-[420px] text-body text-muted-foreground md:text-lg" style={{ lineHeight: "1.6" }}>
             One certified team handles everything — from the first signal scan to the final speed test.
           </p>
         </div>

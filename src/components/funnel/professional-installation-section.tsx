@@ -25,7 +25,7 @@ export function ProfessionalInstallationSection() {
         >
           Professional Installation
         </h2>
-        <p className="mx-auto mb-12 max-w-3xl text-center text-base text-muted-foreground md:text-lg">
+        <p className="mx-auto mb-12 max-w-3xl text-center text-body text-muted-foreground md:text-lg">
           Durable, all-metal mounts for high-quality, long-lasting installations.
         </p>
 

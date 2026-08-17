@@ -13,10 +13,10 @@ const inputVariants = cva(
   "flex w-full border bg-background text-foreground ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 transition-colors duration-quick",
   {
     variants: {
-      // Explicit 16px, not text-sm/text-base: .theme-product rewrites those
-      // utilities to 13/14px, so a shared input would silently shrink in the
-      // dashboard. 16px is also the threshold below which iOS Safari zooms the
-      // page on focus — inputs should stay here regardless of density.
+      // text-field, not text-body: --text-field deliberately stays at 16px in
+      // both densities, because 16px is the threshold below which iOS Safari
+      // zooms the page when the field takes focus. Everything else in Product
+      // steps down a size; a form field must not.
       inputSize: {
         sm: "h-control-sm rounded-md px-4 py-1 text-field",
         default: "h-control rounded-lg px-5 py-2 text-field",
