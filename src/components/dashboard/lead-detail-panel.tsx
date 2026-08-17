@@ -45,7 +45,7 @@ export function LeadDetailPanel({ lead, location, onClose, statusPicker, onSaveV
       <div className="absolute inset-0 bg-black/40" onClick={onClose} />
 
       {/* Panel */}
-      <div className="absolute inset-y-0 left-0 flex w-full max-w-md animate-in slide-in-from-left flex-col overflow-y-auto bg-background shadow-2xl duration-200">
+      <div className="absolute inset-y-0 left-0 flex w-full max-w-md animate-in slide-in-from-left flex-col overflow-y-auto bg-background shadow-overlay duration-200">
         <div className="sticky top-0 z-10 border-b border-border bg-background px-6 py-4">
           <div className="flex items-start justify-between gap-3">
             <div>

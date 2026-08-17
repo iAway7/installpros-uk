@@ -93,7 +93,7 @@ export function Modal({
       onClick={(e) => { if (e.target === ref.current) onClose(); }}
       className={cn(
         "w-full overflow-hidden bg-card p-0 text-foreground",
-        "border border-border shadow-[0_16px_48px_rgba(0,0,0,0.16)]",
+        "border border-border shadow-overlay",
         // Bottom sheet on mobile, centred card from sm up.
         "mb-0 mt-auto max-w-none rounded-b-none rounded-t-xl",
         "sm:my-auto sm:rounded-lg",

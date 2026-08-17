@@ -19,7 +19,7 @@ function InfoHint({ text }: { text: string }) {
       <Info className="h-3.5 w-3.5 cursor-help text-muted-foreground" aria-hidden />
       <span
         role="tooltip"
-        className="pointer-events-none absolute left-1/2 top-5 z-20 w-60 -translate-x-1/2 rounded-md bg-foreground px-3 py-2 text-xs font-normal leading-snug text-background opacity-0 shadow-lg transition-opacity duration-150 group-hover:opacity-100 group-focus:opacity-100"
+        className="pointer-events-none absolute left-1/2 top-5 z-20 w-60 -translate-x-1/2 rounded-md bg-foreground px-3 py-2 text-xs font-normal leading-snug text-background opacity-0 shadow-popover transition-opacity duration-150 group-hover:opacity-100 group-focus:opacity-100"
       >
         {text}
       </span>

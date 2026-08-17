@@ -72,6 +72,20 @@ for (const key of durations) {
   }
 }
 
+// Elevation. Same tailwind-merge trap as the durations: a named shadow it has
+// not seen is sorted elsewhere, so shadow-sm and shadow-overlay can both
+// survive and the element gets whichever rule wins, not the last class.
+const shadowBlock = /boxShadow:\s*\{([\s\S]*?)\n\s{6}\},/.exec(config)?.[1] ?? "";
+const shadows = [...shadowBlock.matchAll(/^\s*"?([a-z0-9-]+)"?:/gm)].map((m) => m[1]);
+const knownS = new Set([...(/\bshadow":?\s*\[\{\s*shadow:\s*\[([^\]]*)\]/.exec(utils)?.[1] ?? "")
+  .matchAll(/"([a-z0-9-]+)"/g)].map((m) => m[1]));
+for (const key of shadows) {
+  if (!knownS.has(key)) fail.push(`boxShadow "${key}" is in tailwind.config but not registered in cn().`);
+  if (cn("shadow-sm", `shadow-${key}`) !== `shadow-${key}`) {
+    fail.push(`cn() does not let shadow-${key} override a core shadow — both survive.`);
+  }
+}
+
 // The type tokens carry their own line-height, and tailwind-merge lists
 // `leading` as a group that `font-size` conflicts with. So `leading-relaxed
 // text-body` silently loses the leading while `text-body leading-relaxed`
@@ -101,4 +115,4 @@ if (fail.length) {
   for (const f of fail) console.error(`  ${f}`);
   process.exit(1);
 }
-console.log(`✓ ${declared.length} type sizes, ${heights.length} heights, ${durations.length} durations OK · leading order clean in ${scanned} files`);
+console.log(`✓ ${declared.length} type sizes, ${heights.length} heights, ${durations.length} durations, ${shadows.length} shadows OK · leading order clean in ${scanned} files`);

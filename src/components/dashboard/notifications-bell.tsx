@@ -77,7 +77,7 @@ export function NotificationsBell({ initialAlerts }: { initialAlerts: AlertItem[
       </button>
 
       {open && (
-        <div className="absolute right-0 z-50 mt-2 w-96 max-w-[calc(100vw-2rem)] overflow-hidden rounded-xl border border-border bg-background shadow-xl">
+        <div className="absolute right-0 z-50 mt-2 w-96 max-w-[calc(100vw-2rem)] overflow-hidden rounded-xl border border-border bg-background shadow-popover">
           <div className="flex items-center justify-between border-b border-border px-4 py-2.5">
             <span className="text-sm font-semibold">Notifications</span>
             {unread > 0 && (

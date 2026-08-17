@@ -25,7 +25,7 @@ export function SlimHeader() {
   return (
     <header
       className={`fixed inset-x-0 top-0 z-50 border-b border-border/60 bg-white transition-shadow ${
-        scrolled ? "shadow-md" : ""
+        scrolled ? "shadow-raised" : ""
       }`}
     >
       <div className="container mx-auto flex items-center justify-between py-3" style={{ maxWidth: "1140px" }}>

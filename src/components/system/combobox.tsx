@@ -114,7 +114,7 @@ export function Combobox({
         <ul
           id={listId}
           role="listbox"
-          className="absolute z-30 mt-2 max-h-72 w-full overflow-auto rounded-lg border border-border bg-card py-1 shadow-xl"
+          className="absolute z-30 mt-2 max-h-72 w-full overflow-auto rounded-lg border border-border bg-card py-1 shadow-popover"
         >
           {filtered.length === 0 && (
             <li className="px-4 py-3 text-body text-muted-foreground">{emptyMessage}</li>

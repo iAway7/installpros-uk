@@ -197,6 +197,23 @@
        leading, and prose overrides with leading-relaxed. */
     --leading-body: 1.5;
 
+    /* ── TIER 2 · elevation ───────────────────────────────────────────────
+       Four layers existed already; none had a name, so a new dropdown got
+       whatever shadow its author reached for (which is how ui/select ended up
+       one step below combobox and menu).
+
+       raised  — sticky header, carousel arrows. Sits on the page.
+       popover — dropdowns and menus. NO backdrop behind them, so this is the
+                 only layer where the shadow does the separating.
+       overlay — modal and slide-over. Both cast onto bg-black/40, which is why
+                 the two disagreed for months without anyone noticing.
+
+       Resting cards keep Tailwind's shadow-sm: it is one hairline, not really
+       an elevation step. */
+    --shadow-raised: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-popover: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    --shadow-overlay: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+
     --motion-quick: 200ms;    /* colour and small state changes */
     --motion-card: 450ms;     /* card hover, larger surfaces */
     --motion-panel: 550ms;    /* accordion open and close */

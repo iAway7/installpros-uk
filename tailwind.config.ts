@@ -99,6 +99,11 @@ const config: Config = {
         // Design-system easing — cubic-bezier(0.16, 1, 0.3, 1)
         ds: "var(--ease-out)",
       },
+      boxShadow: {
+        raised: "var(--shadow-raised)",
+        popover: "var(--shadow-popover)",
+        overlay: "var(--shadow-overlay)",
+      },
       transitionDuration: {
         // Named by job. Register additions in cn() too — tailwind-merge only
         // knows duration-{number}.

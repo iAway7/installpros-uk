@@ -95,7 +95,7 @@ export function Menu({
           role="menu"
           aria-label={label}
           className={cn(
-            "absolute z-30 mt-2 min-w-[200px] overflow-hidden rounded-lg border border-border bg-card py-1 shadow-xl",
+            "absolute z-30 mt-2 min-w-[200px] overflow-hidden rounded-lg border border-border bg-card py-1 shadow-popover",
             align === "end" ? "right-0" : "left-0",
           )}
         >
