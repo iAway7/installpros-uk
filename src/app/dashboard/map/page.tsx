@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { MapPin } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/system/card";
 import { lookupLocations } from "@/lib/dashboard/locations";
 import { WON_STATUSES, type LeadStatus } from "@/lib/dashboard/leads";
 import { ukMap, UK_MAP_VIEWBOX } from "@/lib/funnel/uk-map";
@@ -120,7 +120,7 @@ export default async function MapPage({ searchParams }: { searchParams: { view?:
       </div>
 
       {error ? (
-        <Card><CardContent className="p-6 text-body-sm text-destructive">Couldn&apos;t load leads ({error.message}).</CardContent></Card>
+        <Card><CardContent className="text-body-sm text-destructive">Couldn&apos;t load leads ({error.message}).</CardContent></Card>
       ) : leads.length === 0 ? (
         <Card>
           <CardContent className="flex flex-col items-center gap-2 p-12 text-center">

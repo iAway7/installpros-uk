@@ -1,7 +1,7 @@
 import { MousePointerClick, Eye, Percent, TrendingUp, Users, PoundSterling, Search, ExternalLink } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { getSearchConsole } from "@/lib/google/search-console";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/system/card";
 import { SearchConsoleChart } from "@/components/dashboard/search-console-chart";
 import { WON_STATUSES, type LeadStatus } from "@/lib/dashboard/leads";
 
@@ -58,7 +58,7 @@ export default async function MarketingPage() {
           />
         ) : !sc.ok ? (
           <Card>
-            <CardContent className="p-6 text-body-sm text-destructive">
+            <CardContent className="text-body-sm text-destructive">
               Couldn&apos;t load Search Console data{sc.error ? ` — ${sc.error}` : ""}. Check the service account has
               access to <strong>{process.env.GOOGLE_SEARCH_CONSOLE_SITE}</strong>.
             </CardContent>
@@ -91,7 +91,7 @@ export default async function MarketingPage() {
       <section className="space-y-4">
         <h2 className="text-lg font-semibold">On-site behaviour &amp; funnel</h2>
         <Card>
-          <CardContent className="flex flex-col items-start gap-3 p-6 sm:flex-row sm:items-center sm:justify-between">
+          <CardContent className="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-body-sm text-muted-foreground">
               Funnels, drop-off and session replays live in PostHog — we don&apos;t duplicate them here.
             </p>

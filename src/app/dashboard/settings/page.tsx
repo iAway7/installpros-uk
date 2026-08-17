@@ -1,5 +1,5 @@
 import { CheckCircle2, XCircle, CircleDashed, Clock3 } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/system/card";
 import { RefreshButton } from "@/components/dashboard/refresh-button";
 import { SettingToggle } from "@/components/dashboard/setting-toggle";
 import { getApiStatuses, type ApiHealth } from "@/lib/settings/api-status";

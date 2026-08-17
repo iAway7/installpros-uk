@@ -2,7 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { computeResults, type ResultRow } from "@/lib/experiments/stats";
 import type { Experiment, Variant, VariantResult } from "@/lib/experiments/types";
 import { ExperimentsView, type ExperimentWithResults } from "@/components/dashboard/experiments-view";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/system/card";
 
 export const dynamic = "force-dynamic";
 
@@ -62,7 +62,7 @@ export default async function ExperimentsPage() {
 
       {error ? (
         <Card>
-          <CardContent className="p-6 text-body-sm text-destructive">
+          <CardContent className="text-body-sm text-destructive">
             Couldn&apos;t load experiments ({error.message}). Make sure migration 0002 has been run.
           </CardContent>
         </Card>

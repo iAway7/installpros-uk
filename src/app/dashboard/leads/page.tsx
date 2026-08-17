@@ -3,7 +3,7 @@ import { type Lead } from "@/lib/dashboard/leads";
 import type { LeadIntel } from "@/lib/intel/types";
 import { lookupLocations } from "@/lib/dashboard/locations";
 import { LeadsTable } from "@/components/dashboard/leads-table";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/system/card";
 
 export const dynamic = "force-dynamic";
 
@@ -57,7 +57,7 @@ export default async function LeadsPage() {
 
       {error ? (
         <Card>
-          <CardContent className="p-6 text-body-sm text-destructive">
+          <CardContent className="text-body-sm text-destructive">
             Couldn&apos;t load leads ({error.message}).
           </CardContent>
         </Card>

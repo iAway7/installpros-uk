@@ -1,6 +1,6 @@
 import { Users, Sparkles, CalendarClock, TrendingUp, PoundSterling, Timer, FileClock } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/system/card";
 import {
   type Lead,
   type LeadStatus,
@@ -110,7 +110,7 @@ export default async function OverviewPage() {
 
       {error ? (
         <Card>
-          <CardContent className="p-6 text-body-sm text-destructive">
+          <CardContent className="text-body-sm text-destructive">
             Couldn&apos;t load data ({error.message}). Check the Supabase connection.
           </CardContent>
         </Card>
@@ -128,7 +128,7 @@ export default async function OverviewPage() {
         <>
           {/* The number that matters: this week vs last week + trend */}
           <Card>
-            <CardContent className="flex flex-col gap-6 p-6 sm:flex-row sm:items-center">
+            <CardContent className="flex flex-col gap-6 sm:flex-row sm:items-center">
               <div className="shrink-0">
                 <p className="text-label font-medium uppercase tracking-wide text-muted-foreground">Leads this week</p>
                 <div className="mt-1 flex items-baseline gap-3">

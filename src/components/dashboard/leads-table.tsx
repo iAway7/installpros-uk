@@ -5,7 +5,7 @@ import { Search, Phone, Mail, MapPin, Loader2, Inbox, Download, Camera } from "l
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/system/card";
 import { LeadDetailPanel } from "@/components/dashboard/lead-detail-panel";
 import {
   type Lead,

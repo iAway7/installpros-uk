@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Filter, AlertTriangle, ExternalLink } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/system/card";
 import {
   fetchDailyRates,
   fetchFunnel,
@@ -55,7 +55,7 @@ export default async function FunnelPage({ searchParams }: { searchParams: Searc
     return (
       <Shell days={days} device={device} source={source} sources={sources}>
         <Card>
-          <CardContent className="p-6 text-body-sm text-destructive">
+          <CardContent className="text-body-sm text-destructive">
             Couldn&apos;t query PostHog{funnel.error ? ` — ${funnel.error}` : ""}. Check the API key, project id and host.
           </CardContent>
         </Card>
@@ -123,7 +123,7 @@ export default async function FunnelPage({ searchParams }: { searchParams: Searc
       </Card>
 
       <Card>
-        <CardContent className="flex flex-col items-start gap-3 p-6 sm:flex-row sm:items-center sm:justify-between">
+        <CardContent className="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-body-sm text-muted-foreground">
             Need session replays or step-level form drop-off? That still lives in PostHog.
           </p>
