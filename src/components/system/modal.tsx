@@ -107,14 +107,14 @@ export function Modal({
           {title}
         </h2>
         {description && (
-          <p id="modal-description" className="mt-2 text-body leading-[1.55] text-muted-foreground">
+          <p id="modal-description" className="mt-2 text-body text-muted-foreground">
             {description}
           </p>
         )}
       </div>
 
       {children && (
-        <div className="border-t border-border px-6 py-5 text-body leading-[1.55]">{children}</div>
+        <div className="border-t border-border px-6 py-5 text-body">{children}</div>
       )}
 
       {(cancelCfg || action || footer) && (

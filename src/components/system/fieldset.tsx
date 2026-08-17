@@ -46,7 +46,7 @@ export function Fieldset({
         )}
       </legend>
       {description && showLegend && (
-        <p className="mt-1 text-body-sm leading-[1.5] text-muted-foreground">{description}</p>
+        <p className="mt-1 text-body-sm text-muted-foreground">{description}</p>
       )}
       <div className={cn(showLegend && "mt-3")}>{children}</div>
       {error && (

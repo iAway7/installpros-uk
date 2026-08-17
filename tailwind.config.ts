@@ -25,14 +25,14 @@ const config: Config = {
         sm: ["1rem", { lineHeight: "1.5rem" }],
         // Type scale — resolves per theme, so the same class is 15px in the
         // funnel and 14px in the dashboard.
-        micro: "var(--text-micro)",
-        label: "var(--text-label)",
-        caption: "var(--text-caption)",
-        "body-sm": "var(--text-body-sm)",
-        body: "var(--text-body)",
-        field: "var(--text-field)",
-        lead: "var(--text-lead)",
-        title: "var(--text-title)",
+        micro: ["var(--text-micro)", { lineHeight: "var(--leading-body)" }],
+        label: ["var(--text-label)", { lineHeight: "var(--leading-body)" }],
+        caption: ["var(--text-caption)", { lineHeight: "var(--leading-body)" }],
+        "body-sm": ["var(--text-body-sm)", { lineHeight: "var(--leading-body)" }],
+        body: ["var(--text-body)", { lineHeight: "var(--leading-body)" }],
+        field: ["var(--text-field)", { lineHeight: "var(--leading-body)" }],
+        lead: ["var(--text-lead)", { lineHeight: "var(--leading-body)" }],
+        title: ["var(--text-title)", { lineHeight: "var(--leading-body)" }],
       },
       colors: {
         border: "hsl(var(--border))",

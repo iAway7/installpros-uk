@@ -186,6 +186,17 @@
        --ease-out is for movement. A 200ms colour fade barely shows a curve, so
        the colour transitions deliberately go without one; anything that moves
        or resizes takes ease-ds. */
+    /* ── TIER 2 · line-height ─────────────────────────────────────────────
+       Paired into the type tokens, so text-body is 16px/1.5 and nobody has to
+       remember the second half. 1.5 is what all 63 of them already inherited
+       from preflight, so this changes nothing on screen — it just stops the
+       line-height from being an accident of what the ancestor happened to say.
+
+       The scale tops out at 20px, i.e. it is all paragraph text, which is why
+       one value covers it. Headings above the scale keep their own tighter
+       leading, and prose overrides with leading-relaxed. */
+    --leading-body: 1.5;
+
     --motion-quick: 200ms;    /* colour and small state changes */
     --motion-card: 450ms;     /* card hover, larger surfaces */
     --motion-panel: 550ms;    /* accordion open and close */

@@ -67,7 +67,7 @@ export function Note({
     >
       {icon !== null &&
         (icon ?? <Icon className={cn("mt-0.5 h-[18px] w-[18px] shrink-0", tone.icon)} aria-hidden />)}
-      <div className={cn("min-w-0 flex-1 leading-[1.55] text-foreground", text)}>
+      <div className={cn("min-w-0 flex-1 text-foreground", text)}>
         {label && <strong className="font-semibold">{label}: </strong>}
         {children}
       </div>

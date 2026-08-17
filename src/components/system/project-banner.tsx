@@ -57,7 +57,7 @@ export function ProjectBanner({
       <span className={cn("shrink-0", ICON_TONE[variant])}>
         {icon ?? <Icon className="h-[18px] w-[18px]" aria-hidden />}
       </span>
-      <p className="min-w-0 flex-1 text-body leading-[1.5]">{label}</p>
+      <p className="min-w-0 flex-1 text-body">{label}</p>
       {callToAction.href ? (
         <a href={callToAction.href} className={cta}>
           {callToAction.label}

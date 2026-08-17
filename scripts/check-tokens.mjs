@@ -14,6 +14,7 @@
  *   node scripts/check-tokens.mjs
  */
 import { readFileSync } from "node:fs";
+import { readdirSync } from "node:fs";
 import { cn } from "../src/lib/utils.ts";
 
 const fail = [];
@@ -71,6 +72,25 @@ for (const key of durations) {
   }
 }
 
+// The type tokens carry their own line-height, and tailwind-merge lists
+// `leading` as a group that `font-size` conflicts with. So `leading-relaxed
+// text-body` silently loses the leading while `text-body leading-relaxed`
+// keeps it. Nothing in the CSS or the types says so — the only symptom is
+// paragraph spacing that looks wrong. Assert the order in source.
+const ORDER = /leading-(?:relaxed|tight|snug|loose|none|\[[0-9.]+\])[^"'`]{0,70}?\btext-(?:micro|label|caption|body-sm|body|field|lead|title)\b/;
+const walk = (dir) => readdirSync(dir, { withFileTypes: true }).flatMap((e) =>
+  e.isDirectory() ? walk(`${dir}/${e.name}`) : e.name.endsWith(".tsx") ? [`${dir}/${e.name}`] : []);
+let scanned = 0;
+for (const file of walk("src")) {
+  scanned++;
+  readFileSync(file, "utf8").split("\n").forEach((line, i) => {
+    if (ORDER.test(line)) {
+      fail.push(`${file}:${i + 1} puts leading-* before a type token. ` +
+                `cn() will drop the leading — put it after the text-* class.`);
+    }
+  });
+}
+
 // The dedup we DO want must still work, or every size becomes sticky.
 if (cn("text-body", "text-lead") !== "text-lead") {
   fail.push("cn() no longer lets one size override another — text-body and text-lead both survived.");
@@ -81,4 +101,4 @@ if (fail.length) {
   for (const f of fail) console.error(`  ${f}`);
   process.exit(1);
 }
-console.log(`✓ ${declared.length} type sizes, ${heights.length} heights, ${durations.length} durations registered and surviving cn()`);
+console.log(`✓ ${declared.length} type sizes, ${heights.length} heights, ${durations.length} durations OK · leading order clean in ${scanned} files`);
