@@ -35,7 +35,7 @@ export function FaqTabs({
               aria-selected={isActive}
               onClick={() => setActive(tab)}
               className={cn(
-                "rounded-full border px-4 py-2 text-sm font-semibold transition-colors",
+                "rounded-full border px-4 py-2 text-body font-semibold transition-colors",
                 isActive
                   ? "border-primary bg-primary text-primary-foreground"
                   : "border-border bg-background text-foreground hover:border-primary hover:text-primary",
@@ -61,7 +61,7 @@ export function FaqTabs({
         ) : (
           <div className="rounded-2xl border border-dashed border-border bg-secondary/40 p-10 text-center">
             <p className="font-semibold text-foreground">FAQs coming soon</p>
-            <p className="mx-auto mt-1 max-w-md text-sm text-muted-foreground">
+            <p className="mx-auto mt-1 max-w-md text-body text-muted-foreground">
               We&apos;re adding {active} questions shortly. In the meantime, check availability or get in touch and
               we&apos;ll answer anything.
             </p>

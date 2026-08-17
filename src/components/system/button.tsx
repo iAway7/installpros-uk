@@ -17,7 +17,10 @@ import { cn } from "@/lib/utils";
  * --selection, not brand red — a red ring on a red button is unreadable.
  */
 const buttonVariants = cva(
-  // text-label (arbitrary) NOT text-sm: this project overrides text-sm to 16px,
+  // text-button, not one of Tailwind's own size names: those used to be
+  // overridden to 16px project-wide, which is why buttons kept rendering at 16
+  // instead of the 12px spec. The override is gone; the token stays because the
+  // button's size is per-density, 12px Editorial and 13px Product.
   // which is why the buttons kept rendering at 16 instead of the 12px spec.
   "inline-flex items-center justify-center gap-2 whitespace-nowrap text-button [font-weight:var(--button-weight)] [letter-spacing:var(--button-tracking)] [text-transform:var(--button-case)] transition-all duration-quick ease-ds focus-ring-solid disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {

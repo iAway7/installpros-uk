@@ -377,7 +377,7 @@ export function ZipAvailabilityChecker(
           {step === 4 && (
             <div className={`space-y-6 ${anim}`}>
               <div className="space-y-2 text-center">
-                <p className="text-sm font-semibold text-white/80">Step 4 of {TOTAL_STEPS}</p>
+                <p className="text-body font-semibold text-white/80">Step 4 of {TOTAL_STEPS}</p>
                 <h2 className="h2-form text-white">What are we installing?</h2>
               </div>
               <div className="grid grid-cols-2 gap-3">
@@ -438,7 +438,7 @@ function StepField({
   return (
     <div className={`space-y-6 ${anim}`}>
       <div className="space-y-2 text-center">
-        <p className="text-sm font-semibold text-white/80">{stepLabel}</p>
+        <p className="text-body font-semibold text-white/80">{stepLabel}</p>
         <h2 className="h2-form text-white">{title}</h2>
       </div>
       {children}

@@ -24,8 +24,8 @@ const BADGES: ReactNode[] = [
     className="flex items-center gap-2 transition-opacity hover:opacity-80"
   >
     <GoogleG size={20} />
-    <span className="text-sm font-semibold">5.0</span>
-    <span className="text-sm tracking-[2px] text-gold">★★★★★</span>
+    <span className="text-body font-semibold">5.0</span>
+    <span className="text-body tracking-[2px] text-gold">★★★★★</span>
   </a>,
   <a
     key="trustpilot"
@@ -38,13 +38,13 @@ const BADGES: ReactNode[] = [
     <svg width="18" height="18" viewBox="0 0 24 24" fill="#00B67A" aria-hidden="true">
       <path d="M12 1.5l3.09 6.83 7.41.66-5.62 4.93 1.68 7.26L12 17.35l-6.56 3.83 1.68-7.26L1.5 8.99l7.41-.66L12 1.5z" />
     </svg>
-    <span className="text-sm text-white/70">
+    <span className="text-body text-white/70">
       <b className="text-white">Excellent</b> on Trustpilot
     </span>
   </a>,
   <div key="installs" className="flex items-center gap-2">
-    <span className="text-sm font-semibold">9,163+</span>
-    <span className="text-sm text-white/70">UK installations</span>
+    <span className="text-body font-semibold">9,163+</span>
+    <span className="text-body text-white/70">UK installations</span>
   </div>,
   <div key="times" className="flex flex-col items-center gap-0.5">
     <span className="text-[8.5px] font-medium uppercase tracking-[0.24em] text-white/70">As featured in</span>
@@ -60,8 +60,8 @@ const BADGES: ReactNode[] = [
       className="block h-[72px] w-[72px] rounded-lg"
     />
     <div className="flex flex-col leading-tight">
-      <span className="text-sm text-white/70">Authorized</span>
-      <span className="text-sm font-semibold text-white">Starlink Installer</span>
+      <span className="text-body text-white/70">Authorized</span>
+      <span className="text-body font-semibold text-white">Starlink Installer</span>
     </div>
   </div>,
 ];

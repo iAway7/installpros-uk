@@ -82,7 +82,7 @@ export function AvailabilitySection() {
           ].map((s) => (
             <div key={s.label} className="rounded-xl border border-border bg-secondary p-6 text-center">
               <div className={s.color}>{s.node}</div>
-              <div className="text-sm font-medium text-muted-foreground">{s.label}</div>
+              <div className="text-body font-medium text-muted-foreground">{s.label}</div>
             </div>
           ))}
         </div>

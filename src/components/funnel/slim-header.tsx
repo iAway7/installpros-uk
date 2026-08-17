@@ -48,7 +48,7 @@ export function SlimHeader() {
           <a
             href="tel:02033977003"
             onClick={() => track(EVENTS.PHONE_CLICKED, { channel: "phone", cta_location: "header_slim" })}
-            className="flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground md:bg-transparent md:px-0 md:py-0 md:text-body md:font-semibold md:text-foreground md:hover:text-primary"
+            className="flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-body font-bold text-primary-foreground md:bg-transparent md:px-0 md:py-0 md:font-semibold md:text-foreground md:hover:text-primary"
             aria-label="Call InstallPros"
           >
             <Phone className="h-4 w-4 md:h-5 md:w-5 md:text-primary" /> <span className="md:inline">020 3397 7003</span>

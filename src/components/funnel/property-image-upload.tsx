@@ -156,11 +156,11 @@ export function PropertyImageUpload() {
                     <ImagePlus className="mr-2 h-5 w-5" /> Upload Photos
                   </Button>
                 )}
-                <p className="mt-3 text-center text-xs text-muted-foreground">Takes ~30 seconds</p>
+                <p className="mt-3 text-center text-label text-muted-foreground">Takes ~30 seconds</p>
               </div>
             ) : (
               <div className="rounded-lg border border-white/10 bg-white/5 p-4">
-                <p className="mb-3 text-sm font-medium text-primary">
+                <p className="mb-3 text-body font-medium text-primary">
                   {files.length} photo{files.length === 1 ? "" : "s"} ready to upload:
                 </p>
                 <div className="flex flex-wrap gap-3">
@@ -191,7 +191,7 @@ export function PropertyImageUpload() {
                     <button
                       type="button"
                       onClick={() => libraryRef.current?.click()}
-                      className="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-white"
+                      className="inline-flex items-center gap-1.5 text-body text-muted-foreground transition-colors hover:text-white"
                     >
                       <ImagePlus className="h-4 w-4" /> Add Photos
                     </button>
@@ -202,7 +202,7 @@ export function PropertyImageUpload() {
                   <div className="mt-4 rounded-lg border border-primary/20 bg-primary/10 p-4">
                     <div className="mb-3 flex items-center gap-3">
                       <Loader2 className="h-4 w-4 animate-spin text-primary" />
-                      <span className="text-sm font-medium text-white">{statusText}</span>
+                      <span className="text-body font-medium text-white">{statusText}</span>
                     </div>
                     <div className="h-2 overflow-hidden rounded-full bg-white/10">
                       {/* 300ms is deliberate and deliberately not a token: this smooths a
@@ -223,7 +223,7 @@ export function PropertyImageUpload() {
               <h3 className="mb-3 font-semibold text-white">What to include:</h3>
               <ul className="space-y-2">
                 {["Front of the house (roof visible)", "Trees or obstacles"].map((tip) => (
-                  <li key={tip} className="flex items-start gap-2 text-sm text-white/80">
+                  <li key={tip} className="flex items-start gap-2 text-body text-white/80">
                     <span className="mt-1.5 leading-none text-primary">•</span>
                     <span>{tip}</span>
                   </li>

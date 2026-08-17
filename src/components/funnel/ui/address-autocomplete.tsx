@@ -194,8 +194,8 @@ export function AddressAutocomplete({
             >
               <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
               <span className="min-w-0">
-                <span className="block truncate text-sm font-semibold text-foreground">{p.primary}</span>
-                {p.secondary && <span className="block truncate text-xs text-muted-foreground">{p.secondary}</span>}
+                <span className="block truncate text-body font-semibold text-foreground">{p.primary}</span>
+                {p.secondary && <span className="block truncate text-label text-muted-foreground">{p.secondary}</span>}
               </span>
             </li>
           ))}

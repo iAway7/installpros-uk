@@ -14,8 +14,9 @@ import { cn } from "@/lib/utils";
  *     and a card with a header is spaced exactly as before.
  *
  *  2. Sizes come from the type tokens instead of Tailwind's core classes, so
- *     they resolve per density rather than per class name. This is what let
- *     .theme-product rewrite text-sm globally for months.
+ *     they resolve per density rather than per class name. Rewriting a class
+ *     name globally per theme is what made the same description render 13px in
+ *     the dashboard and 16px on the auth pages.
  *
  *  3. CardFooter is gone. Zero uses in 37 cards.
  *

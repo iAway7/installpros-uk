@@ -84,7 +84,7 @@ export default function GoPage() {
 
   return (
     <main className="flex min-h-dvh items-center justify-center bg-background px-6 text-center">
-      <p className="text-sm text-muted-foreground">{msg}</p>
+      <p className="text-body text-muted-foreground">{msg}</p>
     </main>
   );
 }

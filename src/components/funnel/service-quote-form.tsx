@@ -287,12 +287,12 @@ export function ServiceQuoteForm({
           {step === 4 && (
             <div className={`space-y-4 ${anim}`}>
               <div className="space-y-2 text-center">
-                <p className="text-sm font-semibold text-primary">Step 4 of {TOTAL_STEPS}</p>
+                <p className="text-body font-semibold text-primary">Step 4 of {TOTAL_STEPS}</p>
                 <h2 className="h2-form text-foreground">
                   {serviceMode === "starlink" ? "What are we installing?" : "Which service are you looking for?"}
                 </h2>
                 {serviceMode === "any" && (
-                  <p className="text-sm text-muted-foreground">Select the service you want a quote for.</p>
+                  <p className="text-body text-muted-foreground">Select the service you want a quote for.</p>
                 )}
               </div>
               {serviceMode === "starlink" ? (
@@ -361,7 +361,7 @@ function StepField({ anim, label, title, error, errorId, children }: { anim: str
   return (
     <div className={`space-y-4 ${anim}`}>
       <div className="space-y-2 text-center">
-        <p className="text-sm font-semibold text-primary">{label}</p>
+        <p className="text-body font-semibold text-primary">{label}</p>
         <h2 className="h2-form text-foreground">{title}</h2>
       </div>
       {children}

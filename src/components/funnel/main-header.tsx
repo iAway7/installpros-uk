@@ -24,7 +24,7 @@ export function MainHeader() {
   }, []);
 
   // min-h/min-w [48px] keeps every tap target at the 48×48 thumb-friendly minimum.
-  const linkBase = "flex min-h-[48px] items-center gap-2 text-sm font-semibold transition-colors md:text-body";
+  const linkBase = "flex min-h-[48px] items-center gap-2 text-body font-semibold transition-colors";
   const linkTone = scrolled ? "text-foreground" : "text-white";
 
   return (

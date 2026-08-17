@@ -21,8 +21,12 @@ const config: Config = {
       // Enforce a 16px minimum across the site: bump the sub-16 utilities so
       // text-xs / text-sm never render below 1rem.
       fontSize: {
-        xs: ["1rem", { lineHeight: "1.5rem" }],
-        sm: ["1rem", { lineHeight: "1.5rem" }],
+        // text-xs and text-sm used to be forced to 1rem here to stop the sizes
+        // that shipped with the old component library from applying. The side
+        // effect was that a class named "extra small" rendered at paragraph
+        // size, which flattened the hierarchy anywhere someone used it for
+        // secondary text. Nothing uses those names now, so they go back to
+        // meaning what Tailwind says they mean.
         // Type scale — resolves per theme, so the same class is 15px in the
         // funnel and 14px in the dashboard.
         micro: ["var(--text-micro)", { lineHeight: "var(--leading-body)" }],

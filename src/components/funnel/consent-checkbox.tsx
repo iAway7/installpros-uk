@@ -74,7 +74,7 @@ export function ConsentCheckbox({
             strokeWidth={3.5}
           />
         </span>
-        <span className={cn("text-sm leading-relaxed", textClass)}>
+        <span className={cn("text-body leading-relaxed", textClass)}>
           {label ?? (
             <>
               I agree to be contacted by Install Pros about my quote. Read our{" "}
@@ -95,7 +95,7 @@ export function ConsentCheckbox({
         </span>
       </label>
       {error && !checked && (
-        <p id={errorId} className={cn("mt-2 text-sm", dark ? "text-white" : "text-error")}>
+        <p id={errorId} className={cn("mt-2 text-body", dark ? "text-white" : "text-error")}>
           Please accept the terms to continue.
         </p>
       )}

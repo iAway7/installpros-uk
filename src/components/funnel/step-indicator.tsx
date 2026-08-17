@@ -42,7 +42,7 @@ export function StepIndicator({
                 </div>
                 <p
                   className={cn(
-                    "mt-2 max-w-[120px] text-center text-sm font-medium leading-tight",
+                    "mt-2 max-w-[120px] text-center text-body font-medium leading-tight",
                     activeOrDone ? (dark ? "text-white" : "text-black") : dark ? "text-white/50" : "text-black/40",
                   )}
                 >

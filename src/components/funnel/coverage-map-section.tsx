@@ -51,7 +51,7 @@ export function CoverageMapSection() {
           <div className="animate-fade-in-up animate-delay-100">
             <div className="mx-auto w-full max-w-[520px]">
               <UkCoverageMap baseColor="hsl(var(--foreground))" />
-              <p className="mt-4 text-center text-xs text-muted-foreground">
+              <p className="mt-4 text-center text-label text-muted-foreground">
                 Areas we cover · tap a location
               </p>
             </div>
