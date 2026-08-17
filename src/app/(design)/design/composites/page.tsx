@@ -12,7 +12,7 @@ export default function CompositesPage() {
 
       <Section title="Feature card" note="Icon chip, title, one sentence. Used in the capability and coverage grids.">
         <Preview>
-          <div className="w-[290px] rounded-[22px] border border-border bg-secondary/40 p-7 transition-all duration-450 ease-ds hover:-translate-y-[5px] hover:border-brand-soft/35">
+          <div className="w-[290px] rounded-[22px] border border-border bg-secondary/40 p-7 transition-all duration-card ease-ds hover:-translate-y-[5px] hover:border-brand-soft/35">
             <div className="flex h-11 w-11 items-center justify-center rounded-[13px] border border-brand-soft/25 bg-primary/10 text-brand-icon">
               <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
                 <circle cx="12" cy="12" r="8" /><path d="M12 2v3M12 19v3M2 12h3M19 12h3" />
@@ -67,7 +67,7 @@ hover    -5px, border --brand-soft/35, 450ms ease-ds`}</Code>
       <Section title="Accordion item">
         <Preview className="!block">
           <div className="border-b border-border">
-            <button className="group flex w-full items-center justify-between gap-6 py-6 text-left text-[18px] font-medium text-foreground transition-colors duration-200 hover:text-brand-hover">
+            <button className="group flex w-full items-center justify-between gap-6 py-6 text-left text-[18px] font-medium text-foreground transition-colors duration-quick hover:text-brand-hover">
               How long does an installation take?
               <span className="flex h-[30px] w-[30px] shrink-0 items-center justify-center rounded-full border border-border text-muted-foreground">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 5v14M5 12h14" /></svg>

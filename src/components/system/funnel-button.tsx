@@ -19,7 +19,7 @@ import { cn } from "@/lib/utils";
 const funnelButtonVariants = cva(
   // text-label (arbitrary) NOT text-sm: this project overrides text-sm to 16px,
   // which is why the buttons kept rendering at 16 instead of the 12px spec.
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap text-label leading-[1.3] [font-weight:var(--button-weight)] [letter-spacing:var(--button-tracking)] [text-transform:var(--button-case)] transition-all duration-200 ease-ds focus-ring-solid disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap text-label leading-[1.3] [font-weight:var(--button-weight)] [letter-spacing:var(--button-tracking)] [text-transform:var(--button-case)] transition-all duration-quick ease-ds focus-ring-solid disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {

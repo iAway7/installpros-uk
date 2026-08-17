@@ -106,7 +106,7 @@ export function AvailabilitySection() {
                       fill={hovered === id ? "#86efac" : "#bbf7d0"}
                       stroke="#ffffff"
                       strokeWidth="1.4"
-                      className="transition-colors duration-200"
+                      className="transition-colors duration-quick"
                       onMouseEnter={() => setHovered(id)}
                       onMouseLeave={() => setHovered(null)}
                     />

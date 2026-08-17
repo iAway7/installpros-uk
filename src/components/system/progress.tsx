@@ -47,7 +47,7 @@ export function Progress({
         className={cn("w-full overflow-hidden rounded-full bg-secondary", size === "sm" ? "h-1" : "h-2")}
       >
         <div
-          className={cn("h-full rounded-full transition-[width] duration-450 ease-ds", fill)}
+          className={cn("h-full rounded-full transition-[width] duration-card ease-ds", fill)}
           style={{ width: `${pct}%` }}
         />
       </div>
@@ -79,7 +79,7 @@ export function StepProgress({
           key={i}
           aria-hidden
           className={cn(
-            "h-1 flex-1 rounded-full transition-colors duration-450 ease-ds",
+            "h-1 flex-1 rounded-full transition-colors duration-card ease-ds",
             i < current ? "bg-primary" : "bg-secondary",
           )}
         />

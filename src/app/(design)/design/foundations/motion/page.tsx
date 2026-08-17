@@ -14,7 +14,7 @@ export default function MotionPage() {
         <Code>{`--ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 
 /* Tailwind: ease-ds */
-<div className="transition-all duration-450 ease-ds" />`}</Code>
+<div className="transition-all duration-card ease-ds" />`}</Code>
         <p className="mt-4 max-w-2xl text-[15px] leading-[1.6] text-neutral-500">
           It front-loads most of the movement and settles gently. The browser default (<Mono>ease-out</Mono>) is flatter
           and makes the same duration feel sluggish.
@@ -36,7 +36,7 @@ export default function MotionPage() {
 
       <Section title="Card hover" note="Hover the card to see the combination that every card on the site uses.">
         <div className="theme-funnel">
-          <div className="w-[300px] rounded-[22px] border border-border bg-secondary/40 p-7 transition-all duration-450 ease-ds hover:-translate-y-[5px] hover:border-brand-soft/35">
+          <div className="w-[300px] rounded-[22px] border border-border bg-secondary/40 p-7 transition-all duration-card ease-ds hover:-translate-y-[5px] hover:border-brand-soft/35">
             <div className="flex h-11 w-11 items-center justify-center rounded-[13px] border border-brand-soft/25 bg-primary/10 text-brand-icon">
               <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
                 <circle cx="12" cy="12" r="8" /><path d="M12 2v3M12 19v3M2 12h3M19 12h3" />
@@ -48,7 +48,7 @@ export default function MotionPage() {
             </p>
           </div>
         </div>
-        <Code>{`className="transition-all duration-450 ease-ds
+        <Code>{`className="transition-all duration-card ease-ds
            hover:-translate-y-[5px] hover:border-brand-soft/35"`}</Code>
       </Section>
 

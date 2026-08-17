@@ -82,7 +82,7 @@ export function Tabs({
             onClick={() => onSelect(t.value)}
             onKeyDown={(e) => onKeyDown(e, i)}
             className={cn(
-              "relative flex shrink-0 items-center gap-2 whitespace-nowrap text-body transition-colors duration-200",
+              "relative flex shrink-0 items-center gap-2 whitespace-nowrap text-body transition-colors duration-quick",
               "focus-ring",
               variant === "primary"
                 ? "-mb-px border-b-2 px-4 py-3"

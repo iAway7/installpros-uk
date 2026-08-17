@@ -177,6 +177,19 @@
     --border-field: 1.5px;
     --border-control: 2px;
 
+
+    /* ── TIER 2 · motion ──────────────────────────────────────────────────
+       quick is the one that was missing. It runs 22 of the 28 transitions in
+       the system and was only ever Tailwind's duration-200, so the design
+       system named the two durations it barely uses and not the one it does.
+
+       --ease-out is for movement. A 200ms colour fade barely shows a curve, so
+       the colour transitions deliberately go without one; anything that moves
+       or resizes takes ease-ds. */
+    --motion-quick: 200ms;    /* colour and small state changes */
+    --motion-card: 450ms;     /* card hover, larger surfaces */
+    --motion-panel: 550ms;    /* accordion open and close */
+
     --radius: 0.75rem;
   }
 }

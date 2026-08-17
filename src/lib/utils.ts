@@ -20,6 +20,7 @@ const twMerge = extendTailwindMerge({
       w: [{ w: ["control-sm", "control-aux", "control", "control-lg"] }],
       "min-w": [{ "min-w": ["control-aux"] }],
       rounded: [{ rounded: ["xs"] }],
+      duration: [{ duration: ["quick", "card", "panel"] }],
     },
   },
 });

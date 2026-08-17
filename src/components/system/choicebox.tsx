@@ -34,7 +34,7 @@ export function Choicebox({
   return (
     <label
       className={cn(
-        "relative flex min-w-0 flex-1 cursor-pointer items-start gap-3 rounded-lg border-[length:var(--border-control)] p-4 transition-all duration-200 ease-ds",
+        "relative flex min-w-0 flex-1 cursor-pointer items-start gap-3 rounded-lg border-[length:var(--border-control)] p-4 transition-all duration-quick ease-ds",
         selected ? "border-selection bg-card ring-1 ring-selection" : "border-field bg-secondary hover:border-field-hover hover:bg-card",
         disabled && "cursor-not-allowed opacity-50",
         className,

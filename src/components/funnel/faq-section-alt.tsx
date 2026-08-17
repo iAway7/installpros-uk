@@ -24,9 +24,9 @@ export function FaqSectionAlt() {
           {LANDING_FAQS.map((f, i) => (
             <AccordionPrimitive.Item key={i} value={`faq-${i}`} className="border-b border-border">
               <AccordionPrimitive.Header className="flex">
-                <AccordionPrimitive.Trigger className="group flex flex-1 items-center justify-between gap-6 py-6 text-left text-[18px] font-medium text-foreground transition-colors duration-200 hover:text-brand-hover">
+                <AccordionPrimitive.Trigger className="group flex flex-1 items-center justify-between gap-6 py-6 text-left text-[18px] font-medium text-foreground transition-colors duration-quick hover:text-brand-hover">
                   {f.q}
-                  <span className="flex h-[30px] w-[30px] shrink-0 items-center justify-center rounded-full border border-border text-muted-foreground transition-transform duration-550 ease-ds group-data-[state=open]:rotate-45">
+                  <span className="flex h-[30px] w-[30px] shrink-0 items-center justify-center rounded-full border border-border text-muted-foreground transition-transform duration-panel ease-ds group-data-[state=open]:rotate-45">
                     <Plus className="h-4 w-4" />
                   </span>
                 </AccordionPrimitive.Trigger>

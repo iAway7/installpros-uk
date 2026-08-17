@@ -100,9 +100,11 @@ const config: Config = {
         ds: "var(--ease-out)",
       },
       transitionDuration: {
-        // DS durations: card hover 450ms, accordion 550ms, nav 400ms
-        450: "450ms",
-        550: "550ms",
+        // Named by job. Register additions in cn() too — tailwind-merge only
+        // knows duration-{number}.
+        quick: "var(--motion-quick)",
+        card: "var(--motion-card)",
+        panel: "var(--motion-panel)",
       },
       height: {
         // Control ladder — resolves per theme. Register any addition in cn()

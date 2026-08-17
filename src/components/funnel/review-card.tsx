@@ -77,7 +77,7 @@ export function ReviewCard({ r, source = "google" }: { r: Review; source?: "goog
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
-          className="-mb-2 mt-1 flex min-h-[48px] items-center self-start pr-6 text-[14px] font-medium text-muted-foreground transition-colors duration-200 hover:text-foreground"
+          className="-mb-2 mt-1 flex min-h-[48px] items-center self-start pr-6 text-[14px] font-medium text-muted-foreground transition-colors duration-quick hover:text-foreground"
         >
           {open ? "Show less" : "Read more"}
         </button>

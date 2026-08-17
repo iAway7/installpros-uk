@@ -205,7 +205,10 @@ export function PropertyImageUpload() {
                       <span className="text-sm font-medium text-white">{statusText}</span>
                     </div>
                     <div className="h-2 overflow-hidden rounded-full bg-white/10">
-                      <div className="h-full rounded-full bg-primary transition-all duration-300" style={{ width: `${progress}%` }} />
+                      {/* 300ms is deliberate and deliberately not a token: this smooths a
+                            data-driven width, not a UI state change, so none of the three
+                            motion tokens (quick / card / panel) describes what it does. */}
+                        <div className="h-full rounded-full bg-primary transition-all duration-300" style={{ width: `${progress}%` }} />
                     </div>
                   </div>
                 ) : (

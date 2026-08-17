@@ -57,6 +57,20 @@ for (const key of heights) {
   if (cn(`h-10`, `h-${key}`) !== `h-${key}`) fail.push(`cn() does not let h-${key} override a core height.`);
 }
 
+// Motion durations. tailwind-merge only knows duration-{number}, so a named
+// one is guessed as a different group and two durations can survive together —
+// the element then gets whichever CSS rule happens to win, not the last class.
+const durBlock = /transitionDuration:\s*\{([\s\S]*?)\n\s{6}\},/.exec(config)?.[1] ?? "";
+const durations = [...durBlock.matchAll(/^\s*"?([a-z0-9-]+)"?:/gm)].map((m) => m[1]);
+const knownD = new Set([...(/\bduration:\s*\[\{\s*duration:\s*\[([^\]]*)\]/.exec(utils)?.[1] ?? "")
+  .matchAll(/"([a-z0-9-]+)"/g)].map((m) => m[1]));
+for (const key of durations) {
+  if (!knownD.has(key)) fail.push(`transitionDuration "${key}" is in tailwind.config but not registered in cn().`);
+  if (cn("duration-200", `duration-${key}`) !== `duration-${key}`) {
+    fail.push(`cn() does not let duration-${key} override a core duration — both survive.`);
+  }
+}
+
 // The dedup we DO want must still work, or every size becomes sticky.
 if (cn("text-body", "text-lead") !== "text-lead") {
   fail.push("cn() no longer lets one size override another — text-body and text-lead both survived.");
@@ -67,4 +81,4 @@ if (fail.length) {
   for (const f of fail) console.error(`  ${f}`);
   process.exit(1);
 }
-console.log(`✓ ${declared.length} type-scale keys registered and surviving cn()`);
+console.log(`✓ ${declared.length} type sizes, ${heights.length} heights, ${durations.length} durations registered and surviving cn()`);

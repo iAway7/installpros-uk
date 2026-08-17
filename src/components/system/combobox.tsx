@@ -78,7 +78,7 @@ export function Combobox({
     <div ref={boxRef} className={cn("relative", className)}>
       <div
         className={cn(
-          "flex h-control items-center gap-2 rounded-lg border-[length:var(--border-field)] bg-background px-4 transition-colors duration-200",
+          "flex h-control items-center gap-2 rounded-lg border-[length:var(--border-field)] bg-background px-4 transition-colors duration-quick",
           open ? "border-selection-border ring-2 ring-[hsl(var(--selection)/0.15)]" : "border-field",
         )}
       >
@@ -106,7 +106,7 @@ export function Combobox({
             <X className="h-4 w-4" />
           </button>
         ) : (
-          <ChevronDown className={cn("h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200", open && "rotate-180")} aria-hidden />
+          <ChevronDown className={cn("h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-quick", open && "rotate-180")} aria-hidden />
         )}
       </div>
 

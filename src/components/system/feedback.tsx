@@ -27,7 +27,7 @@ function Faces({
           aria-pressed={value === e.key}
           onClick={() => onChange(e.key)}
           className={cn(
-            "flex items-center justify-center rounded-md transition-all duration-200",
+            "flex items-center justify-center rounded-md transition-all duration-quick",
             box,
             value === e.key ? "bg-secondary ring-1 ring-selection" : "opacity-60 hover:opacity-100",
           )}

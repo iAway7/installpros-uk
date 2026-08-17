@@ -29,7 +29,7 @@ export function MainHeader() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-450 ease-ds ${
+      className={`fixed inset-x-0 top-0 z-50 transition-all duration-card ease-ds ${
         scrolled ? "border-b border-border/60 bg-white" : "bg-transparent"
       }`}
     >
@@ -43,7 +43,7 @@ export function MainHeader() {
               a text-* class also removes the second download that used to happen
               the moment the user scrolled and the header went white. */}
           <InstallProsLogo
-            className={`h-8 w-auto transition-colors duration-450 ease-ds md:h-10 ${
+            className={`h-8 w-auto transition-colors duration-card ease-ds md:h-10 ${
               scrolled ? "text-black" : "text-white"
             }`}
           />

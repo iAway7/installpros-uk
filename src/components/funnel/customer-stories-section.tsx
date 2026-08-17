@@ -53,7 +53,7 @@ export async function CustomerStoriesSection() {
             href="https://maps.app.goo.gl/UvqYwqVrAV6R9T5m6"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-3 transition-opacity duration-200 ease-ds hover:opacity-80"
+            className="flex items-center gap-3 transition-opacity duration-quick ease-ds hover:opacity-80"
           >
             <GoogleG size={22} />
             <div>

@@ -237,7 +237,7 @@ export function BeforeAfterSection() {
         onPointerDown={(e) => e.stopPropagation()}
         onClick={runSpeedTest}
         disabled={phase === "testing"}
-        className={`mt-6 inline-flex items-center justify-center gap-2 rounded-full border border-black/15 bg-white/70 px-4 text-[13px] font-semibold text-foreground transition-colors duration-200 hover:bg-white disabled:cursor-default disabled:opacity-60 ${
+        className={`mt-6 inline-flex items-center justify-center gap-2 rounded-full border border-black/15 bg-white/70 px-4 text-[13px] font-semibold text-foreground transition-colors duration-quick hover:bg-white disabled:cursor-default disabled:opacity-60 ${
           stacked ? "h-12 w-full" : "py-2"
         }`}
         style={{ cursor: phase === "testing" ? "default" : "pointer" }}

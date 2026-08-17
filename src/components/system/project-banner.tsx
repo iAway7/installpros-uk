@@ -46,7 +46,7 @@ export function ProjectBanner({
   const Icon = ICON[variant];
 
   const cta =
-    "shrink-0 rounded-lg border border-border bg-card px-3.5 py-2 text-body-sm font-medium text-foreground transition-colors duration-200 hover:bg-secondary focus-ring";
+    "shrink-0 rounded-lg border border-border bg-card px-3.5 py-2 text-body-sm font-medium text-foreground transition-colors duration-quick hover:bg-secondary focus-ring";
 
   return (
     <div
