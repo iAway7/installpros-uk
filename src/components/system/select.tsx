@@ -5,6 +5,22 @@ import * as SelectPrimitive from "@radix-ui/react-select";
 import { Check, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+/**
+ * Picks one value from a short list.
+ *
+ * Deliberately not Combobox: that one filters as you type, which earns its
+ * keep on a long list and gets in the way on four options. This is the plain
+ * picker — the lists it serves here are two to six items.
+ *
+ * Moved from components/ui and put on the same tokens as every other control,
+ * so it stops being the one dropdown that disagreed with the rest:
+ *
+ *   height   h-control       48px Editorial, 44px Product (was a fixed 44)
+ *   border   field, 1.5px    same as the text fields (was 1px, a lighter grey)
+ *   focus    .focus-ring     keyboard only, like the other 16 controls
+ *   shadow   shadow-popover  the layer for dropdowns with no backdrop behind
+ *                            them (was shadow-md, one step light)
+ */
 const Select = SelectPrimitive.Root;
 const SelectGroup = SelectPrimitive.Group;
 const SelectValue = SelectPrimitive.Value;
@@ -16,7 +32,10 @@ const SelectTrigger = React.forwardRef<
   <SelectPrimitive.Trigger
     ref={ref}
     className={cn(
-      "flex h-11 w-full items-center justify-between rounded-lg border border-input bg-background px-3 py-2 text-body ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
+      "flex h-control w-full items-center justify-between rounded-lg px-3 py-2 text-field",
+      "border-[length:var(--border-field)] border-field bg-background",
+      "focus-ring focus-visible:border-selection-border",
+      "placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
       className,
     )}
     {...props}
@@ -37,7 +56,8 @@ const SelectContent = React.forwardRef<
     <SelectPrimitive.Content
       ref={ref}
       className={cn(
-        "relative z-50 max-h-96 min-w-[8rem] overflow-hidden rounded-lg border bg-background text-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+        "relative z-50 max-h-96 min-w-[8rem] overflow-hidden rounded-lg border border-border bg-background text-foreground shadow-popover",
+        "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
         position === "popper" && "data-[side=bottom]:translate-y-1",
         className,
       )}
@@ -61,11 +81,14 @@ const SelectItem = React.forwardRef<
   <SelectPrimitive.Item
     ref={ref}
     className={cn(
-      "relative flex w-full cursor-pointer select-none items-center rounded-md py-2 pl-8 pr-2 text-body outline-none focus:bg-secondary data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      "relative flex w-full cursor-pointer select-none items-center rounded-md py-2 pl-8 pr-2 text-body outline-none",
+      "focus:bg-secondary data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
       className,
     )}
     {...props}
   >
+    {/* The tick sits in reserved space rather than being inserted on select, so
+        the label does not shift sideways when the value changes. */}
     <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
       <SelectPrimitive.ItemIndicator>
         <Check className="h-4 w-4" />

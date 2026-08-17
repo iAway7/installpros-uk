@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { Search, Phone, Mail, MapPin, Loader2, Inbox, Download, Camera } from "lucide-react";
 import { toast } from "sonner";
 import { Input } from "@/components/system/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/system/select";
 import { Card, CardContent } from "@/components/system/card";
 import { LeadDetailPanel } from "@/components/dashboard/lead-detail-panel";
 import {

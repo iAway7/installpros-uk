@@ -8,7 +8,7 @@ import { Input } from "@/components/system/input";
 import { AddressAutocomplete, type AddressSelection } from "./ui/address-autocomplete";
 import { Button } from "@/components/system/button";
 import { FormOption } from "@/components/system/form-option";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/system/select";
 import { ConsentCheckbox } from "./consent-checkbox";
 import { FormLegalNotice } from "./form-legal-notice";
 import { SERVICE_OPTIONS } from "@/lib/funnel/states";
