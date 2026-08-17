@@ -15,10 +15,10 @@ export default function StructurePage() {
   app/
     globals.css              ← every theme lives here, nowhere else
     (design)/design/         ← this site. Not part of the product.
-    install-quote/           ← the funnel (theme-funnel)
+    install-quote/           ← the funnel (theme-editorial)
     starlink-installation/   ← A/B twin of the above
     starlink-installations/  ← the .ipx landing, its own CSS file
-    dashboard/               ← admin app (theme-admin)
+    dashboard/               ← admin app (theme-product)
     api/
 
   components/
@@ -41,8 +41,8 @@ scripts/
         <Table
           head={["Theme", "Applied by", "Covers"]}
           rows={[
-            [<Mono key="a">.theme-funnel</Mono>, "wrapper div on the page", "install-quote, starlink-installation, faqs, same-day-quote, upload-property-images"],
-            [<Mono key="b">.theme-admin</Mono>, "dashboard layout", "the internal app"],
+            [<Mono key="a">.theme-editorial</Mono>, "wrapper div on the page", "install-quote, starlink-installation, faqs, same-day-quote, upload-property-images"],
+            [<Mono key="b">.theme-product</Mono>, "dashboard layout", "the internal app"],
             [<Mono key="c">:root</Mono>, "default", "retired Phase-1 styling"],
           ]}
         />

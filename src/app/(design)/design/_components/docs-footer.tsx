@@ -18,7 +18,7 @@ export function DocsFooter() {
 
   return (
     <footer className="mt-20 border-t border-neutral-200 pt-10">
-      <div className="theme-funnel flex justify-center">
+      <div className="theme-editorial flex justify-center">
         <FeedbackInline question="Was this page useful?" />
       </div>
 

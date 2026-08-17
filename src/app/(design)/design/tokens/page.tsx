@@ -16,7 +16,7 @@ export default function TokensPage() {
           head={["Layer", "Lives in", "Example", "Who may use it"]}
           rows={[
             ["Primitive", "Figma only", "red/700 = #C70505", "Semantic tokens. Never a component."],
-            ["Semantic", <Mono key="a">.theme-funnel</Mono>, "--primary → brand red", "Components, via Tailwind classes."],
+            ["Semantic", <Mono key="a">.theme-editorial</Mono>, "--primary → brand red", "Components, via Tailwind classes."],
           ]}
         />
         <p className="mt-4 max-w-2xl text-[15px] leading-[1.6] text-neutral-500">
@@ -27,7 +27,7 @@ export default function TokensPage() {
 
       <Section title="Format" note="HSL triplets without the wrapper, so Tailwind can apply opacity modifiers.">
         <Code>{`/* globals.css */
-.theme-funnel {
+.theme-editorial {
   --primary: 0 95% 40%;     /* NOT hsl(0 95% 40%) */
 }
 
@@ -53,7 +53,7 @@ className="bg-primary/10"   /* the /10 only works because of the format */`}</Co
       <Section title="Generated, not typed" note="This site reads the theme rather than describing it.">
         <Code>{`node scripts/extract-tokens.mjs`}</Code>
         <p className="mt-4 max-w-2xl text-[15px] leading-[1.6] text-neutral-500">
-          Parses the <Mono>.theme-funnel</Mono> block, converts HSL to hex and writes{" "}
+          Parses the <Mono>.theme-editorial</Mono> block, converts HSL to hex and writes{" "}
           <Mono>_data/tokens.ts</Mono>. Run it after touching the theme. There are currently{" "}
           <strong>{THEME_TOKENS.length} tokens</strong>, of which {THEME_TOKENS.filter((t) => t.hex).length} are colours.
         </p>
@@ -61,7 +61,7 @@ className="bg-primary/10"   /* the /10 only works because of the format */`}</Co
 
       <Section title="Adding a token">
         <ol className="list-decimal space-y-2 pl-5 text-[15px] leading-[1.7] text-neutral-600">
-          <li>Add the CSS variable to <Mono>.theme-funnel</Mono> in globals.css, with a comment saying what it is for.</li>
+          <li>Add the CSS variable to <Mono>.theme-editorial</Mono> in globals.css, with a comment saying what it is for.</li>
           <li>Register it in <Mono>tailwind.config.ts</Mono> under <Mono>colors</Mono> so a utility class exists.</li>
           <li>Run the extractor so this site picks it up.</li>
           <li>Add the matching variable in Figma with the same name and set its code syntax to <Mono>var(--your-token)</Mono>.</li>

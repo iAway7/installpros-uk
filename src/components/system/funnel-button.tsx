@@ -13,7 +13,7 @@ import { cn } from "@/lib/utils";
  *  · Hover darkens (--brand-hover, #9E0404) instead of going translucent, so
  *    the button keeps its weight over any background.
  *
- * The focus ring is --ring, which in .theme-funnel is the neutral
+ * The focus ring is --ring, which in .theme-editorial is the neutral
  * --selection, not brand red — a red ring on a red button is unreadable.
  */
 const funnelButtonVariants = cva(

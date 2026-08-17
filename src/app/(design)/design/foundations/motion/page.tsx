@@ -35,7 +35,7 @@ export default function MotionPage() {
       </Section>
 
       <Section title="Card hover" note="Hover the card to see the combination that every card on the site uses.">
-        <div className="theme-funnel">
+        <div className="theme-editorial">
           <div className="w-[300px] rounded-[22px] border border-border bg-secondary/40 p-7 transition-all duration-card ease-ds hover:-translate-y-[5px] hover:border-brand-soft/35">
             <div className="flex h-11 w-11 items-center justify-center rounded-[13px] border border-brand-soft/25 bg-primary/10 text-brand-icon">
               <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">

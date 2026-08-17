@@ -47,7 +47,7 @@ const faqStructuredData = {
  */
 export default function InstallQuotePage() {
   return (
-    <div className="theme-funnel min-h-screen bg-background text-foreground">
+    <div className="theme-editorial min-h-screen bg-background text-foreground">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqStructuredData) }}

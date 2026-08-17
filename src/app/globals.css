@@ -129,7 +129,7 @@
 
     /* ── TIER 2 · type scale ──────────────────────────────────────────────
        Named by the job, not the size. These are the Editorial values — the
-       funnel inherits them. .theme-admin restates them denser, which is the
+       funnel inherits them. .theme-product restates them denser, which is the
        whole point: one component, two densities, no per-theme overrides of
        Tailwind's own utilities. */
     --text-micro: 10.5px;   /* badge */
@@ -264,7 +264,7 @@
   @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-selection focus-visible:ring-offset-2;
 }
 
-.theme-admin {
+.theme-product {
   font-family: var(--font-sans);
   font-size: 14px;
   --background: var(--white);
@@ -333,10 +333,10 @@
 
 /* Webapp type scale — data-dense UI wants smaller text than marketing pages.
    Scoped overrides of the Tailwind size utilities inside the admin only. */
-.theme-admin .text-base { font-size: 14px; line-height: 20px; }
-.theme-admin .text-sm { font-size: 13px; line-height: 18px; }
-.theme-admin .text-xs { font-size: 11px; line-height: 16px; }
-.theme-admin table { letter-spacing: -0.1px; }
+.theme-product .text-base { font-size: 14px; line-height: 20px; }
+.theme-product .text-sm { font-size: 13px; line-height: 18px; }
+.theme-product .text-xs { font-size: 11px; line-height: 16px; }
+.theme-product table { letter-spacing: -0.1px; }
 
 /* ════════════════════════════════════════════════════════════════════════
    FUNNEL THEME — scoped tokens for /install-quote, /starlink-installation,
@@ -353,7 +353,25 @@
      button. The selection neutral is --selection.
    · Hero stays the dark photo.
    ════════════════════════════════════════════════════════════════════════ */
-.theme-funnel {
+/* ════════════════════════════════════════════════════════════════════════
+   VOCABULARY — two words, used everywhere, meaning only these two things.
+
+   Editorial (.theme-editorial) — the marketing funnel. Roomier: 48px controls,
+   16px body. Read once, on a phone, by someone who has never seen the site.
+
+   Product (.theme-product) — the dashboard. Denser: 44px controls, 14px body.
+   Used daily by someone who knows where everything is.
+
+   They are DENSITIES, not component libraries. components/system holds one set
+   of pieces; the same <FunnelButton> is 48px inside .theme-editorial and 44px
+   inside .theme-product because the token underneath it resolves differently.
+   Adding a second copy of a component for a theme is the thing this prevents.
+
+   The folders (components/funnel, components/dashboard) are screens, not
+   themes. A screen in components/funnel happens to sit under .theme-editorial
+   today; nothing enforces that and nothing should.
+   ════════════════════════════════════════════════════════════════════════ */
+.theme-editorial {
   /* ---- Base surfaces + text ---- */
   --background: var(--white);
   --foreground: var(--gray-900);            /* #171717 — matches the DS --primary */
@@ -417,29 +435,29 @@
 
 /* Headings default to 700; the type-scale classes below (.h1-hero, .h2-section)
    override to 600 where needed, so there is no inline fontWeight anywhere. */
-.theme-funnel h1,
-.theme-funnel h2,
-.theme-funnel h3,
-.theme-funnel h4,
-.theme-funnel h5,
-.theme-funnel h6 {
+.theme-editorial h1,
+.theme-editorial h2,
+.theme-editorial h3,
+.theme-editorial h4,
+.theme-editorial h5,
+.theme-editorial h6 {
   font-weight: 700;
 }
 
 /* ---- Type scale, lifted verbatim from /install-quote ----------------------
    These replace the 10 inline `style={{ fontWeight: 600, lineHeight: … }}`
    objects. Same rendered values, now in one place. */
-.theme-funnel .h1-hero {
+.theme-editorial .h1-hero {
   font-size: 2.5rem;                /* 40px */
   font-weight: 600;
   line-height: 1.04;
   letter-spacing: -0.03em;
 }
 @media (min-width: 768px) {
-  .theme-funnel .h1-hero { font-size: 4rem; }   /* 64px */
+  .theme-editorial .h1-hero { font-size: 4rem; }   /* 64px */
 }
 
-.theme-funnel .h2-section {
+.theme-editorial .h2-section {
   /* 32px on mobile, not 40: at 40 the section headings matched the hero H1
      exactly and the page lost its top-level hierarchy below 768px. */
   font-size: 2rem;                  /* 32px */
@@ -448,20 +466,20 @@
   letter-spacing: -0.035em;
 }
 @media (min-width: 768px) {
-  .theme-funnel .h2-section { font-size: 3.25rem; }  /* 52px */
+  .theme-editorial .h2-section { font-size: 3.25rem; }  /* 52px */
 }
 
-.theme-funnel .h2-form {
+.theme-editorial .h2-form {
   font-size: 1.5rem;                /* 24px */
   font-weight: 700;
   line-height: 1.1;
   letter-spacing: -0.03em;          /* was -1px; em scales with the md: jump */
 }
 @media (min-width: 768px) {
-  .theme-funnel .h2-form { font-size: 2rem; }        /* 32px */
+  .theme-editorial .h2-form { font-size: 2rem; }        /* 32px */
 }
 
-.theme-funnel .eyebrow {
+.theme-editorial .eyebrow {
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.24em;
@@ -469,7 +487,7 @@
   color: hsl(var(--primary));
 }
 
-.theme-funnel .stat-xl {
+.theme-editorial .stat-xl {
   font-size: clamp(44px, 4.2vw, 60px);
   font-weight: 200;
   letter-spacing: -0.04em;
@@ -478,28 +496,28 @@
 
 /* Hero overlay — swaps to the lighter md: ramp at the same breakpoint the
    rest of the type scale uses. */
-.theme-funnel .hero-overlay { background: var(--hero-overlay); }
+.theme-editorial .hero-overlay { background: var(--hero-overlay); }
 @media (min-width: 768px) {
-  .theme-funnel .hero-overlay { background: var(--hero-overlay-md); }
+  .theme-editorial .hero-overlay { background: var(--hero-overlay-md); }
 }
 
 /* ---- Motion overrides — DS durations + easing, scoped to v2 ---- */
-.theme-funnel .animate-fade-in-up {
+.theme-editorial .animate-fade-in-up {
   animation: fadeInUp 0.95s var(--ease-out) forwards;
 }
-.theme-funnel .animate-slide-up {
+.theme-editorial .animate-slide-up {
   animation: slideUp 0.95s var(--ease-out) both;
 }
-.theme-funnel .animate-fade-in {
+.theme-editorial .animate-fade-in {
   animation: fadeIn 0.6s var(--ease-out) forwards;
 }
-.theme-funnel .animate-accordion-down {
+.theme-editorial .animate-accordion-down {
   animation: accordion-down 0.55s var(--ease-out);
 }
-.theme-funnel .animate-accordion-up {
+.theme-editorial .animate-accordion-up {
   animation: accordion-up 0.55s var(--ease-out);
 }
-.theme-funnel ::selection {
+.theme-editorial ::selection {
   background: hsl(var(--primary) / 0.65);
   color: #fff;
 }
@@ -507,7 +525,7 @@
 /* Parallax only where it works. iOS Safari ignores background-attachment:fixed
    and rescales the image, so the hero image jumps while scrolling. */
 @media (min-width: 768px) {
-  .theme-funnel [data-parallax] { background-attachment: fixed; }
+  .theme-editorial [data-parallax] { background-attachment: fixed; }
 }
 
 /* Entrance + step-transition animations used across the funnel */

@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function UploadPropertyImagesPage() {
   return (
-    <div className="theme-funnel">
+    <div className="theme-editorial">
       <PropertyImageUpload />
       <FunnelFooter />
     </div>

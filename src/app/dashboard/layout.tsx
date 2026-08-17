@@ -26,7 +26,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
   const alerts = (alertRows as AlertItem[] | null) ?? [];
 
   return (
-    <div className="theme-admin flex min-h-dvh bg-secondary/30">
+    <div className="theme-product flex min-h-dvh bg-secondary/30">
       {/* Sidebar (desktop) */}
       <aside className="hidden w-60 shrink-0 flex-col border-r border-border bg-background md:flex">
         <div className="flex h-16 items-center gap-2 border-b border-border px-5 font-bold">

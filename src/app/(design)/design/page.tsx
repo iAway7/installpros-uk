@@ -16,7 +16,7 @@ export default function DesignHome() {
         {[
           { n: String(colorTokens), l: "colour tokens" },
           { n: "12", l: "type styles" },
-          { n: "1", l: "theme — .theme-funnel" },
+          { n: "1", l: "theme — .theme-editorial" },
         ].map((s) => (
           <div key={s.l} className="rounded-xl border border-neutral-200 p-6">
             <div className="text-[34px] font-normal leading-none tracking-[-0.03em]">{s.n}</div>

@@ -14,7 +14,7 @@ export const metadata: Metadata = {
  */
 export default function SameDayQuotePage() {
   return (
-    <div className="theme-funnel flex min-h-screen flex-col">
+    <div className="theme-editorial flex min-h-screen flex-col">
       <header className="flex h-16 items-center justify-center border-b border-border bg-white md:h-20">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/funnel/installpros-logo-colored-new.svg" alt="InstallPros" className="h-8 md:h-10" />

@@ -5,7 +5,7 @@
  *
  * Two layers come out:
  *   PRIMITIVES  — the raw ramps in :root (--gray-500, --red-600, …)
- *   THEME_TOKENS — the semantic layer in .theme-funnel, which now mostly points
+ *   THEME_TOKENS — the semantic layer in .theme-editorial, which now mostly points
  *                  at a primitive rather than carrying a value of its own.
  *
  * Semantic tokens are resolved through their var() chain so the docs still show
@@ -49,7 +49,7 @@ function declarations(body) {
 }
 
 const primDecls = declarations(blockOf(":root {"));
-const themeDecls = declarations(blockOf(".theme-funnel {"));
+const themeDecls = declarations(blockOf(".theme-editorial {"));
 
 const lookup = Object.fromEntries(primDecls.map((d) => [d.name, d.value]));
 
@@ -84,7 +84,7 @@ export interface Token { name: string; value: string; ref: string | null; hex: s
 /** Tier 1 — the raw ramps in :root. No meaning attached. */
 export const PRIMITIVES: Primitive[] = ${JSON.stringify(PRIMITIVES, null, 2)};
 
-/** Tier 2 — the semantic layer in .theme-funnel. \`ref\` names the primitive it borrows. */
+/** Tier 2 — the semantic layer in .theme-editorial. \`ref\` names the primitive it borrows. */
 export const THEME_TOKENS: Token[] = ${JSON.stringify(THEME_TOKENS, null, 2)};
 `;
 writeFileSync("src/app/(design)/design/_data/tokens.ts", out);

@@ -29,7 +29,7 @@ export function Section({ title, note, children }: { title: string; note?: strin
 }
 
 /**
- * Live component preview. Children render inside `.theme-funnel`, so what you
+ * Live component preview. Children render inside `.theme-editorial`, so what you
  * see is the production component with the production tokens — not a copy.
  */
 export function Preview({
@@ -44,7 +44,7 @@ export function Preview({
 }) {
   return (
     <div
-      className={`theme-funnel flex min-w-0 max-w-full flex-wrap items-center gap-4 rounded-xl border p-8 ${
+      className={`theme-editorial flex min-w-0 max-w-full flex-wrap items-center gap-4 rounded-xl border p-8 ${
         dark ? "border-neutral-800 bg-[#0B1220]" : "border-neutral-200 bg-white"
       } ${className}`}
     >

@@ -33,7 +33,7 @@ export default function ColorPage() {
     <>
       <PageHeader
         title="Color"
-        lead="Extracted straight from .theme-funnel in globals.css. If a value changes there, re-running scripts/extract-tokens.mjs updates this page — the numbers below are never typed by hand."
+        lead="Extracted straight from .theme-editorial in globals.css. If a value changes there, re-running scripts/extract-tokens.mjs updates this page — the numbers below are never typed by hand."
       />
 
       <Section title="The rule that matters">

@@ -13,7 +13,7 @@ const funnelInputVariants = cva(
   "flex w-full border bg-background text-foreground ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 transition-colors duration-quick",
   {
     variants: {
-      // Explicit 16px, not text-sm/text-base: .theme-admin rewrites those
+      // Explicit 16px, not text-sm/text-base: .theme-product rewrites those
       // utilities to 13/14px, so a shared input would silently shrink in the
       // dashboard. 16px is also the threshold below which iOS Safari zooms the
       // page on focus — inputs should stay here regardless of density.

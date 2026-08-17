@@ -60,7 +60,7 @@ export default function TypographyPage() {
         </Rule>
       </Section>
 
-      <div className="theme-funnel space-y-14">
+      <div className="theme-editorial space-y-14">
         {RAMP.map((s) => (
           <div key={s.name}>
             <div className="text-[13px] text-neutral-500">

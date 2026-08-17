@@ -325,7 +325,7 @@ export const PRIMITIVES: Primitive[] = [
   }
 ];
 
-/** Tier 2 — the semantic layer in .theme-funnel. `ref` names the primitive it borrows. */
+/** Tier 2 — the semantic layer in .theme-editorial. `ref` names the primitive it borrows. */
 export const THEME_TOKENS: Token[] = [
   {
     "name": "--background",

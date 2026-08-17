@@ -67,10 +67,10 @@ const config: Config = {
         success: {
           DEFAULT: "hsl(var(--success))",
           foreground: "hsl(var(--success-foreground))",
-          // Lighter green for dark surfaces (the hero). .theme-funnel-v2 only.
+          // Lighter green for dark surfaces (the hero). .theme-editorial-v2 only.
           bright: "hsl(var(--success-bright))",
         },
-        // ── Tokens introduced by .theme-funnel-v2 ───────────────────────────
+        // ── Tokens introduced by .theme-editorial-v2 ───────────────────────────
         // Additive: these resolve to nothing outside that scope, so the
         // Phase-1 (`:root`), admin and v1 funnel themes are untouched.
         brand: {
