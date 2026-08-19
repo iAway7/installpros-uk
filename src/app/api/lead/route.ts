@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createServiceClient } from "@/lib/supabase/server";
+import { internalSignature } from "@/lib/webhooks/internal";
 
 export const runtime = "nodejs";
 
@@ -28,6 +29,34 @@ interface LeadBody {
     variant_id?: string | null;
     experiment_id?: string | null;
   };
+}
+
+function selfOrigin(req: Request): string {
+  // Behind Vercel's proxy the forwarded headers are the public origin;
+  // req.url can be the internal one. Fall back to it when they're absent.
+  const host = req.headers.get("x-forwarded-host") ?? req.headers.get("host");
+  const proto = req.headers.get("x-forwarded-proto") ?? "https";
+  if (host) return `${proto}://${host}`;
+  return new URL(req.url).origin;
+}
+
+/**
+ * Kick off the outbound webhooks without making the visitor wait. The fan-out
+ * runs in its own request so a slow receiver can never delay the form's
+ * response — same pattern as enrichment. The browser fires
+ * /api/leads/{id}/notify as a backstop; dispatch is idempotent, so at most one
+ * delivery reaches each destination.
+ */
+function fireLeadCreated(origin: string, leadId: string): void {
+  void fetch(`${origin}/api/webhooks/dispatch`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-internal-signature": internalSignature("lead.created", leadId),
+    },
+    body: JSON.stringify({ event: "lead.created", leadId }),
+    keepalive: true,
+  }).catch(() => {});
 }
 
 /** Trim + cap attribution strings so hostile query params can't bloat rows. */
@@ -105,6 +134,9 @@ export async function POST(req: Request) {
       .single();
 
     if (error) throw error;
+
+    fireLeadCreated(selfOrigin(req), data.id);
+
     return NextResponse.json({ lead_id: data.id, persisted: true });
   } catch {
     return NextResponse.json({ error: "persist_failed" }, { status: 500 });

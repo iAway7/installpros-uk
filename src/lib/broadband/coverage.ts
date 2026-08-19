@@ -32,7 +32,7 @@ export interface CoverageResult {
   avgMbps: number | null;
 }
 
-interface HomedataBroadband {
+export interface HomedataBroadband {
   postcode: string;
   avg_download_speed: number;
   max_download_speed: number;
@@ -62,7 +62,13 @@ async function lookupArea(postcode: string): Promise<{ valid: boolean; area: str
   }
 }
 
-async function fetchHomedata(pcCompact: string): Promise<HomedataBroadband | null | "miss"> {
+/**
+ * Also used by lead enrichment (lib/intel/enrich.ts) as the "max download"
+ * source while the Ofcom subscription is pending. Returns "miss" when
+ * homedata explicitly has no data for the postcode, so callers can cache the
+ * negative instead of asking again next week.
+ */
+export async function fetchHomedata(pcCompact: string): Promise<HomedataBroadband | null | "miss"> {
   const key = process.env.HOMEDATA_API_KEY;
   if (!key) return null;
   try {
@@ -145,8 +151,8 @@ export async function getCoverage(rawPostcode: string): Promise<CoverageResult> 
   }
 
   // 2. Propalt first (when toggled on): better data (actual line speeds),
-  //    1,000 credits vs homedata's 100/month, and homedata 404s on many
-  //    postcodes anyway — trying it first often wasted a call.
+  //    500 free credits/month vs homedata's trial quota, and homedata 404s on
+  //    many postcodes anyway — trying it first often wasted a call.
   if (propaltConfigured() && (await getSetting("propalt_enabled", false))) {
     const pa = await fetchPropaltBroadband(pcCompact);
     if (pa && (pa.avgDownloadMbps !== null || pa.maxDownloadMbps !== null)) {

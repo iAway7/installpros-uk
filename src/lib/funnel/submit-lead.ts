@@ -50,6 +50,10 @@ export async function submitLead(input: LeadInput): Promise<string> {
     // Kick off property-intelligence enrichment — fire and forget.
     if (json.persisted) {
       fetch(`/api/leads/${json.lead_id}/enrich`, { method: "POST", keepalive: true }).catch(() => {});
+      // Safety net for the lead.created webhook — /api/lead fires it too, and
+      // the dispatch is idempotent, so at most one delivery reaches each
+      // destination however many times this runs.
+      fetch(`/api/leads/${json.lead_id}/notify`, { method: "POST", keepalive: true }).catch(() => {});
     }
   }
 

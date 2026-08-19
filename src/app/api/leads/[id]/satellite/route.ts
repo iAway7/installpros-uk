@@ -6,7 +6,11 @@ export const runtime = "nodejs";
  * Satellite view of the lead's location. Two sources:
  *   1. Google Static Maps — only if GOOGLE_MAPS_API_KEY is set (sharper).
  *   2. Esri World Imagery tiles — default: free, no account, no card.
- * Coordinates come from postcodes.io (postcode centroid). Cached a day.
+ *
+ * Coordinates come from the resolved property when the team has run the
+ * exact-address lookup — Propalt returns the building's own lat/lng, so the
+ * frame sits on the actual roof rather than the middle of the street — and
+ * from the postcode centroid otherwise. Cached a day.
  */
 
 /** Web-Mercator tile coordinates for lat/lng at zoom z. */
@@ -27,14 +31,28 @@ export async function GET(request: Request, { params }: { params: { id: string }
   if (!lead) return new Response("not_found", { status: 404 });
 
   try {
-    const pcRes = await fetch(
-      `https://api.postcodes.io/postcodes/${encodeURIComponent(String(lead.postcode).trim())}`,
-      { next: { revalidate: 86400 } },
-    );
-    if (!pcRes.ok) return new Response("postcode_unresolved", { status: 404 });
-    const pc = (await pcRes.json()) as { result?: { latitude?: number; longitude?: number } };
-    const lat = pc.result?.latitude;
-    const lng = pc.result?.longitude;
+    // Exact property coordinates first — only present once someone has
+    // resolved the address.
+    const { data: intel } = await supabase
+      .from("lead_intel")
+      .select("property_lat, property_lng")
+      .eq("lead_id", params.id)
+      .maybeSingle();
+
+    let lat: number | null | undefined = intel?.property_lat;
+    let lng: number | null | undefined = intel?.property_lng;
+    const exact = lat != null && lng != null;
+
+    if (!exact) {
+      const pcRes = await fetch(
+        `https://api.postcodes.io/postcodes/${encodeURIComponent(String(lead.postcode).trim())}`,
+        { next: { revalidate: 86400 } },
+      );
+      if (!pcRes.ok) return new Response("postcode_unresolved", { status: 404 });
+      const pc = (await pcRes.json()) as { result?: { latitude?: number; longitude?: number } };
+      lat = pc.result?.latitude;
+      lng = pc.result?.longitude;
+    }
     if (lat == null || lng == null) return new Response("postcode_unresolved", { status: 404 });
 
     const zoomOut = new URL(request.url).searchParams.get("zoom") === "out";
@@ -51,6 +69,7 @@ export async function GET(request: Request, { params }: { params: { id: string }
           headers: {
             "Content-Type": img.headers.get("Content-Type") ?? "image/png",
             "Cache-Control": "private, max-age=86400",
+            "X-Centred-On": exact ? "property" : "postcode",
           },
         });
       }
@@ -69,6 +88,7 @@ export async function GET(request: Request, { params }: { params: { id: string }
         "Content-Type": tile.headers.get("Content-Type") ?? "image/jpeg",
         "Cache-Control": "private, max-age=86400",
         "X-Imagery-Source": "esri",
+        "X-Centred-On": exact ? "property" : "postcode",
       },
     });
   } catch {

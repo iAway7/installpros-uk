@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient, createServiceClient } from "@/lib/supabase/server";
-import { lookupAddresses, fetchPropertyDetail, propaltConfigured } from "@/lib/broadband/propalt";
+import { lookupAddresses, fetchPropertyDetail, fetchPlanningConstraints, propaltConfigured } from "@/lib/broadband/propalt";
 import { getSetting } from "@/lib/settings/app-settings";
 
 export const runtime = "nodejs";
@@ -50,7 +50,12 @@ export async function POST(request: Request, { params }: { params: { id: string 
     propertyId = candidates[0].property_id;
   }
 
-  const prop = await fetchPropertyDetail(propertyId);
+  // The property record and its planning constraints are two separate calls;
+  // run them together so resolving still feels like one action.
+  const [prop, constraints] = await Promise.all([
+    fetchPropertyDetail(propertyId),
+    fetchPlanningConstraints(propertyId),
+  ]);
   if (!prop) return NextResponse.json({ error: "property_fetch_failed" }, { status: 502 });
 
   // Merge property-level facts into lead_intel (upsert in case not enriched yet).
@@ -64,6 +69,18 @@ export async function POST(request: Request, { params }: { params: { id: string 
       avm_value: prop.avm,
       bedrooms: prop.bedrooms,
       tax_band: prop.taxBand,
+      bathrooms: prop.bathrooms,
+      reception_rooms: prop.receptionRooms,
+      plot_size: prop.plotSize,
+      property_built_form: prop.builtForm,
+      tenure: prop.tenure,
+      title_number: prop.titleNumber,
+      is_hmo: prop.isHmo,
+      property_lat: prop.lat,
+      property_lng: prop.lng,
+      // null when the constraints call failed — don't overwrite a previous
+      // successful check with "we don't know".
+      ...(constraints ? { planning_constraints: constraints } : {}),
       // Property-level values beat street-level aggregates where present:
       ...(prop.propertyType ? { property_type: prop.propertyType } : {}),
       ...(prop.floorAreaSqm != null ? { floor_area_sqm: prop.floorAreaSqm } : {}),
@@ -74,5 +91,10 @@ export async function POST(request: Request, { params }: { params: { id: string 
   );
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
 
-  return NextResponse.json({ resolved: true, address: prop.address, avm: prop.avm });
+  return NextResponse.json({
+    resolved: true,
+    address: prop.address,
+    avm: prop.avm,
+    constraints: constraints?.length ?? 0,
+  });
 }

@@ -3,7 +3,9 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { X, ExternalLink, Check, Pencil, RefreshCw, Wifi, Home, MapPinned, Loader2 } from "lucide-react";
-import type { LeadIntel } from "@/lib/intel/types";
+import type { LeadIntel, PlanningConstraint } from "@/lib/intel/types";
+import { pitchAngles } from "@/lib/intel/pitch-angles";
+import { InfoTip } from "@/components/system/info-tip";
 import { scoreStyle } from "@/lib/dashboard/leads";
 import {
   type Lead,
@@ -94,11 +96,23 @@ export function LeadDetailPanel({ lead, location, onClose, statusPicker, onSaveV
                 </a>
               </Field>
               <div className="grid grid-cols-2 gap-x-4 gap-y-5">
-                <Field label="Postcode"><span className="uppercase">{lead.postcode}</span></Field>
-                <Field label="Region">{location?.region ?? "—"}</Field>
+                <Field
+                  label="Postcode"
+                  tip="Entered on the quote form. This is the key every data source below is looked up with."
+                  source="Quote form"
+                >
+                  <span className="uppercase">{lead.postcode}</span>
+                </Field>
+                <Field label="Region" align="end" tip="Region resolved from the postcode." source="postcodes.io">
+                  {location?.region ?? "—"}
+                </Field>
               </div>
               <AddressResolver leadId={lead.id} intel={intel} />
-              <SatelliteView leadId={lead.id} mapsQuery={intel?.resolved_address ?? fullAddress} />
+              <SatelliteView
+                leadId={lead.id}
+                mapsQuery={intel?.resolved_address ?? fullAddress}
+                exact={intel?.property_lat != null && intel?.property_lng != null}
+              />
             </div>
           </Section>
 
@@ -106,10 +120,21 @@ export function LeadDetailPanel({ lead, location, onClose, statusPicker, onSaveV
             <div className="grid grid-cols-2 gap-x-4 gap-y-5">
               <Field label="Installation type"><span className="capitalize">{lead.install_type}</span></Field>
               <Field label="Service">{serviceOf(lead)}</Field>
-              <Field label="Est. value">
+              <Field
+                label="Est. value"
+                tip="What you expect this job to be worth. Entered by the team — it is what turns the leads list into a pipeline figure."
+                source="Entered manually"
+              >
                 <EstimatedValue value={lead.estimated_value} onSave={onSaveValue} />
               </Field>
-              <Field label="Status">{statusPicker}</Field>
+              <Field
+                label="Status"
+                align="end"
+                tip="Keeping this current is what makes campaign-to-installation reporting possible. Booked and Installed count as won."
+                source="Set by the team"
+              >
+                {statusPicker}
+              </Field>
             </div>
           </Section>
 
@@ -174,15 +199,26 @@ export function LeadDetailPanel({ lead, location, onClose, statusPicker, onSaveV
   );
 }
 
-/** Satellite view — free Esri imagery by default, Google when a key is set. */
-function SatelliteView({ leadId, mapsQuery }: { leadId: string; mapsQuery: string }) {
+/**
+ * Satellite view — free Esri imagery by default, Google when a key is set.
+ * `exact` is true once the address has been resolved, which both changes the
+ * caption and busts the browser cache: the endpoint then centres on the
+ * building instead of the postcode, at the same URL.
+ */
+function SatelliteView({ leadId, mapsQuery, exact }: { leadId: string; mapsQuery: string; exact?: boolean }) {
   const [zoomOut, setZoomOut] = useState(false);
   const [failed, setFailed] = useState(false);
   if (failed) return null;
   return (
     <div className="space-y-1.5">
       <div className="flex items-center justify-between">
-        <p className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">Satellite view</p>
+        <p className="flex items-center gap-1 text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+          Satellite view
+          <InfoTip
+            text="Aerial imagery centred on the postcode — check the roof, outbuildings and tree line before quoting, even when the customer sent no photos."
+            source="Esri World Imagery, or Google Static Maps when a key is set"
+          />
+        </p>
         <button
           onClick={() => setZoomOut((z) => !z)}
           className="text-label font-medium text-muted-foreground hover:text-primary"
@@ -192,13 +228,13 @@ function SatelliteView({ leadId, mapsQuery }: { leadId: string; mapsQuery: strin
       </div>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src={`/api/leads/${leadId}/satellite${zoomOut ? "?zoom=out" : ""}`}
+        src={`/api/leads/${leadId}/satellite?at=${exact ? "property" : "postcode"}${zoomOut ? "&zoom=out" : ""}`}
         alt="Satellite view of the property area"
         onError={() => setFailed(true)}
         className="w-full rounded-lg border border-border"
       />
       <div className="flex items-center justify-between text-[11px] text-muted-foreground">
-        <span>Postcode-centre view · imagery © Esri/Maxar</span>
+        <span>{exact ? "Centred on the property" : "Postcode-centre view"} · imagery © Esri/Maxar</span>
         <a
           href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapsQuery)}&basemap=satellite`}
           target="_blank"
@@ -249,17 +285,44 @@ function AddressResolver({ leadId, intel }: { leadId: string; intel?: LeadIntel 
   }
 
   if (intel?.resolved_address) {
+    const rooms = [
+      intel.bedrooms != null ? `${intel.bedrooms} bed` : null,
+      intel.bathrooms != null ? `${intel.bathrooms} bath` : null,
+      intel.reception_rooms != null ? `${intel.reception_rooms} reception` : null,
+    ].filter(Boolean).join(" · ");
+    const build = [
+      intel.property_built_form,
+      intel.floor_area_sqm != null
+        ? `${intel.floor_area_sqm} m² (${Math.round(intel.floor_area_sqm * 10.764).toLocaleString("en-GB")} sq ft)`
+        : null,
+      intel.plot_size != null ? `${Number(intel.plot_size).toLocaleString("en-GB")} sq ft plot` : null,
+    ].filter(Boolean).join(" · ");
+    const legal = [
+      intel.tax_band ? `Tax band ${intel.tax_band}` : null,
+      intel.tenure,
+      intel.avm_value != null ? `Est. value £${Number(intel.avm_value).toLocaleString("en-GB")}` : null,
+      intel.is_hmo ? "HMO" : null,
+    ].filter(Boolean).join(" · ");
+
     return (
-      <div className="rounded-lg bg-secondary/50 p-3 text-body-sm">
-        <p className="mb-1 text-[11px] font-medium uppercase tracking-wide text-muted-foreground">Exact property</p>
-        <p className="font-medium">{intel.resolved_address}</p>
-        <p className="mt-1 text-label text-muted-foreground">
-          {[
-            intel.bedrooms != null ? `${intel.bedrooms} bed` : null,
-            intel.tax_band ? `Tax band ${intel.tax_band}` : null,
-            intel.avm_value != null ? `Est. property value £${Number(intel.avm_value).toLocaleString("en-GB")}` : null,
-          ].filter(Boolean).join(" · ") || "Resolved"}
-        </p>
+      <div className="space-y-2">
+        <div className="rounded-lg bg-secondary/50 p-3 text-body-sm">
+          <p className="mb-1 flex items-center gap-1 text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+            Exact property
+            <InfoTip
+              text="The specific building, not the postcode. Room counts are modelled estimates; floor area, tax band and plot come from records."
+              source="Propalt"
+            />
+          </p>
+          <p className="font-medium">{intel.resolved_address}</p>
+          <div className="mt-1 space-y-0.5 text-label text-muted-foreground">
+            {rooms && <p>{rooms}</p>}
+            {build && <p>{build}</p>}
+            {legal && <p>{legal}</p>}
+            {intel.title_number && <p>Title {intel.title_number}</p>}
+          </div>
+        </div>
+        <PlanningConstraints constraints={intel.planning_constraints} />
       </div>
     );
   }
@@ -342,39 +405,106 @@ function IntelSection({ leadId, intel }: { leadId: string; intel?: LeadIntel }) 
                   </p>
                 ))}
               </div>
+              <InfoTip
+                align="end"
+                className="ml-auto self-start"
+                text="Priority score from 1 to 10. Every lead starts at 5; the lines here are the signals that moved it. Capped at 7 when no broadband data exists for the postcode."
+                source="Derived from the fields below"
+              />
             </div>
           )}
           <div className="grid grid-cols-2 gap-x-4 gap-y-5">
-            <Field label="Broadband (max down)">
+            <Field
+              label="Broadband (max down)"
+              tip="Fastest download speed available at this postcode. Under 30 Mbps is the strongest Starlink signal there is."
+              source="Ofcom Connected Nations, homedata while Ofcom is pending"
+            >
               <span className="inline-flex items-center gap-1.5">
                 <Wifi className="h-3.5 w-3.5 text-muted-foreground" />
                 {intel.max_download_mbps != null ? `${intel.max_download_mbps} Mbps` : "—"}
               </span>
             </Field>
-            <Field label="Property">
+            <Field
+              label="Property"
+              align="end"
+              tip="Property type and built form from the energy certificates registered at this postcode. Detached is an easy mount; a flat usually is not."
+              source="EPC register (MHCLG)"
+            >
               <span className="inline-flex items-center gap-1.5">
                 <Home className="h-3.5 w-3.5 text-muted-foreground" />
                 {[intel.built_form, intel.property_type].filter(Boolean).join(" ") || "—"}
               </span>
             </Field>
-            <Field label="Actual speed in use">
+            <Field
+              label="Actual speed in use"
+              tip="What residents on these lines actually get, as opposed to what is advertised as available. A gap between the two is a strong lead."
+              source="Propalt"
+            >
               {intel.actual_avg_download_mbps != null ? `~${intel.actual_avg_download_mbps} Mbps avg` : "—"}
             </Field>
-            <Field label="Construction age">{intel.construction_age?.replace(/England and Wales:\s*/i, "") ?? "—"}</Field>
-            <Field label="Floor area">{intel.floor_area_sqm != null ? `${intel.floor_area_sqm} m²` : "—"}</Field>
-            <Field label="EPC rating">{intel.energy_rating ?? "—"}</Field>
-            <Field label="Value band">{intel.value_band ?? "—"}</Field>
-            <Field label="Classification">{intel.rural == null ? "—" : intel.rural ? "Rural" : "Urban"}</Field>
-            <Field label="Region">{intel.region ?? "—"}</Field>
-            <Field label="Crime (month, ~1mi)">
+            <Field
+              label="Construction age"
+              align="end"
+              tip="Band the property was built in. Older builds sit in areas with older infrastructure."
+              source="EPC register (MHCLG)"
+            >
+              {intel.construction_age?.replace(/England and Wales:\s*/i, "") ?? "—"}
+            </Field>
+            <Field
+              label="Floor area"
+              tip="Total floor area recorded on the energy certificate — a rough read on job size."
+              source="EPC register (MHCLG)"
+            >
+              {intel.floor_area_sqm != null ? `${intel.floor_area_sqm} m²` : "—"}
+            </Field>
+            <Field
+              label="EPC rating"
+              align="end"
+              tip="Most common energy rating among the certificates at this postcode, A to G."
+              source="EPC register (MHCLG)"
+            >
+              {intel.energy_rating ?? "—"}
+            </Field>
+            <Field
+              label="Value band"
+              tip="Median sale price for this postcode over the last 10 years. A read on budget, not a valuation of this house."
+              source="HM Land Registry Price Paid"
+            >
+              {intel.value_band ?? "—"}
+            </Field>
+            <Field
+              label="Classification"
+              align="end"
+              tip="Rural or urban, inferred from whether the postcode sits in a named civil parish. Rural is where Starlink wins."
+              source="postcodes.io"
+            >
+              {intel.rural == null ? "—" : intel.rural ? "Rural" : "Urban"}
+            </Field>
+            <Field label="Region" tip="UK region this postcode falls in." source="postcodes.io">
+              {intel.region ?? "—"}
+            </Field>
+            <Field
+              label="Crime (month, ~1mi)"
+              align="end"
+              tip="Crimes reported within about a mile in the latest full month. A high burglary count is a CCTV and security pitch, not a Starlink one."
+              source="police.uk"
+            >
               {intel.crime_total != null
                 ? `${intel.crime_total} total · ${intel.crime_burglary ?? 0} burglary · ${intel.crime_vehicle ?? 0} vehicle`
                 : "—"}
             </Field>
-            <Field label="Energy cost (EPC)">
+            <Field
+              label="Energy cost (EPC)"
+              tip="Estimated yearly heating, lighting and hot water cost from the certificate. An expensive house is a smart-home prospect."
+              source="EPC register (MHCLG)"
+            >
               {intel.energy_cost_annual != null ? `~£${Number(intel.energy_cost_annual).toLocaleString("en-GB")}/yr` : "—"}
             </Field>
           </div>
+          <p className="text-[11px] leading-snug text-muted-foreground">
+            Broadband, property, value and crime figures describe the postcode, not the exact house. Resolve the address
+            above for property-level data.
+          </p>
           <PitchAngles intel={intel} />
         </div>
       )}
@@ -382,20 +512,57 @@ function IntelSection({ leadId, intel }: { leadId: string; intel?: LeadIntel }) 
   );
 }
 
+/**
+ * Planning constraints on the resolved property. These decide whether a dish
+ * can go on a visible elevation, so they belong next to the address rather
+ * than buried in the intelligence grid.
+ *
+ * null = never checked (nothing to say). [] = checked and clear, which is
+ * worth stating explicitly — "we looked" is different from "we didn't".
+ */
+function PlanningConstraints({ constraints }: { constraints?: PlanningConstraint[] | null }) {
+  if (constraints == null) return null;
+
+  const COPY: Record<string, string> = {
+    article_4: "Article 4 direction — permitted development rights are restricted here. External fixtures may need planning permission; check before quoting.",
+    conservation_area: "Conservation area — expect restrictions on anything visible from the street. Favour a rear or side elevation.",
+    listed_building: "Listed building — external fixtures need listed building consent. Do not quote a front-elevation mount.",
+    flood_zone: "Flood zone — relevant for ground-mounted equipment and cable entry points.",
+    green_belt: "Green belt — restrictions apply to new structures rather than dishes, but worth knowing.",
+  };
+  const label = (t: string) => t.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+
+  if (!constraints.length) {
+    return (
+      <p className="text-label text-muted-foreground">
+        No planning constraints found on this property (checked with Propalt).
+      </p>
+    );
+  }
+
+  return (
+    <div className="rounded-lg border border-amber-500/30 bg-amber-500/5 p-3">
+      <p className="mb-1 flex items-center gap-1 text-[11px] font-bold uppercase tracking-wide text-amber-600">
+        Install constraints
+        <InfoTip
+          align="end"
+          text="Active planning designations on this exact property. They govern what can be attached to the building and where."
+          source="Propalt planning constraints"
+        />
+      </p>
+      {constraints.map((c) => (
+        <p key={`${c.type}-${c.name ?? ""}`} className="text-body-sm">
+          <strong>{label(c.type)}</strong>
+          {c.start_date ? ` (since ${c.start_date.slice(0, 4)})` : ""} — {COPY[c.type] ?? "Check with the local planning authority before quoting."}
+        </p>
+      ))}
+    </div>
+  );
+}
+
 /** Cross-sell hints derived from the intel — which service to lead with. */
 function PitchAngles({ intel }: { intel: LeadIntel }) {
-  const angles: string[] = [];
-  if (intel.max_download_mbps != null && intel.max_download_mbps < 30) {
-    angles.push("Slow broadband — lead with Starlink");
-  } else if (intel.actual_avg_download_mbps != null && intel.actual_avg_download_mbps < 25) {
-    angles.push(`Residents actually get ~${intel.actual_avg_download_mbps} Mbps — lead with Starlink`);
-  }
-  if ((intel.crime_burglary ?? 0) >= 5 || (intel.crime_total ?? 0) >= 80) {
-    angles.push(`${intel.crime_burglary ?? 0} burglaries nearby last month — pitch CCTV / security`);
-  }
-  if (intel.energy_cost_annual != null && intel.energy_cost_annual >= 1500) {
-    angles.push(`~£${Math.round(Number(intel.energy_cost_annual))}/yr energy costs — pitch smart-home / automation`);
-  }
+  const angles = pitchAngles(intel);
   if (!angles.length) return null;
   return (
     <div className="rounded-lg border border-primary/20 bg-primary/5 p-3">
@@ -482,10 +649,30 @@ function Mono({ value }: { value: string | null }) {
   return value ? <span className="break-all font-mono text-label">{value}</span> : <>—</>;
 }
 
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
+/**
+ * One labelled value. `tip` adds the info affordance next to the label —
+ * pass `align="end"` in the right-hand column so the bubble opens inwards
+ * instead of off the edge of the panel.
+ */
+function Field({
+  label,
+  children,
+  tip,
+  source,
+  align = "start",
+}: {
+  label: string;
+  children: React.ReactNode;
+  tip?: string;
+  source?: string;
+  align?: "start" | "end";
+}) {
   return (
     <div>
-      <p className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">{label}</p>
+      <p className="flex items-center gap-1 text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+        {label}
+        {tip && <InfoTip text={tip} source={source} align={align} />}
+      </p>
       <div className="mt-0.5 text-body-sm font-medium">{children}</div>
     </div>
   );

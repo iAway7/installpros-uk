@@ -8,9 +8,10 @@ export const runtime = "edge";
  * for the postcode so the UI can echo it back ("Starlink is live in Penrith"),
  * instead of a generic always-available message.
  *
- * Production: swap the lookup for postcodes.io (free UK API) + your real
- * Starlink cell-capacity table. The shape returned here is the contract the
- * frontend already consumes, so only this function changes.
+ * InstallPros installs across the whole UK, so any valid postcode is
+ * "available" — the only negative answer is an invalid postcode. The response
+ * shape still carries "waitlist", which the frontend handles, in case a real
+ * capacity constraint ever needs to be expressed.
  */
 export async function POST(req: Request) {
   let body: { postcode?: string; install_type?: string };
@@ -42,20 +43,6 @@ export async function POST(req: Request) {
     const r = json.result;
     const locationName = r.admin_district || r.parish || r.region || "your area";
     const region = r.region && r.region !== locationName ? r.region : r.country;
-
-    // Demo capacity rule: a small slice of postcodes are "waitlist" to exercise
-    // that UI path. Replace with your real cell-capacity check.
-    const hash = postcode.split("").reduce((a, c) => a + c.charCodeAt(0), 0);
-    const isWaitlist = hash % 11 === 0;
-
-    if (isWaitlist) {
-      return NextResponse.json({
-        result: "waitlist",
-        location_name: locationName,
-        region,
-        eta_days: 14,
-      });
-    }
 
     return NextResponse.json({
       result: "available",

@@ -2,6 +2,7 @@ import { createServiceClient } from "@/lib/supabase/server";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { fetchBroadband, fetchCrime, fetchEpc, fetchPostcodeInfo, fetchPricePaid } from "./fetchers";
 import { fetchPropaltBroadband, propaltConfigured } from "@/lib/broadband/propalt";
+import { fetchHomedata } from "@/lib/broadband/coverage";
 import { getOutcodeBroadband } from "@/lib/broadband/outcodes";
 import { getSetting } from "@/lib/settings/app-settings";
 import { scoreLead } from "./score";
@@ -27,11 +28,17 @@ async function propaltActualSpeed(
     .maybeSingle();
   if (cached && Date.now() - +new Date(cached.fetched_at) < 90 * 864e5) {
     const d = cached.data as { avgDownloadMbps?: number | null; maxDownloadMbps?: number | null } | null;
-    return { avg: d?.avgDownloadMbps ?? null, max: d?.maxDownloadMbps ?? null };
+    const hit = { avg: d?.avgDownloadMbps ?? null, max: d?.maxDownloadMbps ?? null };
+    // An all-null cached row is a failed lookup, not an answer — retry rather
+    // than serving the blank for the next 90 days.
+    if (hit.avg !== null || hit.max !== null) return hit;
   }
 
   const pa = await fetchPropaltBroadband(pcCompact);
   if (!pa) return none;
+  // Propalt answers 200 with an empty payload for postcodes it doesn't hold.
+  // Caching that would freeze the blank in place, so only store real numbers.
+  if (pa.avgDownloadMbps === null && pa.maxDownloadMbps === null) return none;
   await supabase.from("postcode_broadband_cache").upsert({
     postcode: pcCompact,
     data: { avgDownloadMbps: pa.avgDownloadMbps, maxDownloadMbps: pa.maxDownloadMbps, raw: pa.raw },
@@ -40,6 +47,42 @@ async function propaltActualSpeed(
     fetched_at: new Date().toISOString(),
   });
   return { avg: pa.avgDownloadMbps, max: pa.maxDownloadMbps };
+}
+
+/**
+ * homedata.co.uk fallback for "max download" while the Ofcom subscription is
+ * still awaiting approval (without OFCOM_API_KEY, fetchBroadband is a no-op,
+ * so the field can never fill). Cache-first on the same table the coverage
+ * message uses — hits last 90 days, misses 30 — so homedata is called at most
+ * once per postcode per month across the whole app.
+ */
+async function homedataMaxDown(supabase: SupabaseClient, pcCompact: string): Promise<number | null> {
+  const { data: cached } = await supabase
+    .from("postcode_broadband_cache")
+    .select("data, found, fetched_at")
+    .eq("postcode", pcCompact)
+    .eq("source", "homedata")
+    .maybeSingle();
+  if (cached) {
+    const age = Date.now() - +new Date(cached.fetched_at);
+    if (cached.found ? age < 90 * 864e5 : age < 30 * 864e5) {
+      const d = cached.data as { max_download_speed?: number } | null;
+      return d?.max_download_speed != null ? Math.round(d.max_download_speed) : null;
+    }
+  }
+
+  const hd = await fetchHomedata(pcCompact);
+  if (hd === null) return null; // no key or network failure — nothing to cache
+  if (hd === "miss") {
+    await supabase.from("postcode_broadband_cache").upsert({
+      postcode: pcCompact, data: null, source: "homedata", found: false, fetched_at: new Date().toISOString(),
+    });
+    return null;
+  }
+  await supabase.from("postcode_broadband_cache").upsert({
+    postcode: pcCompact, data: hd, source: "homedata", found: true, fetched_at: new Date().toISOString(),
+  });
+  return hd.max_download_speed != null ? Math.round(hd.max_download_speed) : null;
 }
 
 /**
@@ -78,6 +121,9 @@ export async function enrichLead(leadId: string, opts: { force?: boolean } = {})
   const pcCompact = postcode.replace(/\s+/g, "");
   const actual = await propaltActualSpeed(supabase, pcCompact);
 
+  // Max available download: Ofcom when the key is live, homedata meanwhile.
+  const maxDown = bb?.maxDownloadMbps ?? (await homedataMaxDown(supabase, pcCompact));
+
   // Rural heuristic: England/Wales postcodes in a named civil parish sit
   // overwhelmingly outside the big urban cores (cities are unparished).
   // Approximate — swap for the ONS rural/urban lookup when we ingest NSPL.
@@ -86,7 +132,7 @@ export async function enrichLead(leadId: string, opts: { force?: boolean } = {})
 
   const signals: IntelSignals = {
     postcode,
-    maxDownloadMbps: bb?.maxDownloadMbps ?? null,
+    maxDownloadMbps: maxDown,
     maxUploadMbps: bb?.maxUploadMbps ?? null,
     actualDownloadMbps: actual.avg,
     outcodeUnable30Pct: getOutcodeBroadband(postcode.split(/\s+/)[0])?.unable30Pct ?? null,
@@ -103,7 +149,13 @@ export async function enrichLead(leadId: string, opts: { force?: boolean } = {})
     trafficSource: lead.traffic_source ?? null,
     gclid: lead.gclid ?? null,
     submittedAt: lead.created_at,
-    raw: { postcodes_io: pc?.raw ?? null, ofcom: bb?.raw ?? null, epc: epc?.raw ?? null, land_registry: price?.raw ?? null },
+    raw: {
+      postcodes_io: pc?.raw ?? null,
+      ofcom: bb?.raw ?? null,
+      epc: epc?.raw ?? null,
+      land_registry: price?.raw ?? null,
+      broadband_source: bb?.maxDownloadMbps != null ? "ofcom" : maxDown != null ? "homedata" : null,
+    },
   };
 
   const { score, reasons } = scoreLead(signals);

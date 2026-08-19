@@ -2,6 +2,7 @@ import { CheckCircle2, XCircle, CircleDashed, Clock3 } from "lucide-react";
 import { Card, CardContent } from "@/components/system/card";
 import { RefreshButton } from "@/components/dashboard/refresh-button";
 import { SettingToggle } from "@/components/dashboard/setting-toggle";
+import { SettingsTabs } from "@/components/dashboard/settings-tabs";
 import { getApiStatuses, type ApiHealth } from "@/lib/settings/api-status";
 
 export const dynamic = "force-dynamic";
@@ -40,12 +41,7 @@ export default async function SettingsPage() {
         <p className="text-muted-foreground">Integrations, connections and configuration.</p>
       </div>
 
-      {/* Tabs — APIs is live; the rest arrive with their features. */}
-      <div className="flex gap-1 rounded-lg bg-secondary p-1 w-fit text-body-sm font-medium">
-        <span className="rounded-md bg-background px-4 py-1.5 shadow-sm">APIs</span>
-        <span className="cursor-default px-4 py-1.5 text-muted-foreground/60">Alerts <Soon /></span>
-        <span className="cursor-default px-4 py-1.5 text-muted-foreground/60">Team <Soon /></span>
-      </div>
+      <SettingsTabs active="apis" />
 
       <div className="flex items-center justify-between">
         <p className="text-body-sm text-muted-foreground">
@@ -91,6 +87,3 @@ export default async function SettingsPage() {
   );
 }
 
-function Soon() {
-  return <span className="ml-1 rounded bg-muted px-1.5 py-0.5 text-[10px] uppercase">soon</span>;
-}

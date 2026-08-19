@@ -50,7 +50,7 @@ export function HeroSection(
               semibold on top of that made a 14px chip outweigh the 16px
               sentence underneath. */}
           <div className="animate-slide-up mb-4 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 py-1.5 md:mb-8">
-            <span className="text-label font-medium tracking-wide text-white/95">Nationwide UK Coverage</span>
+            <span className="text-body-sm font-medium tracking-wide text-white/95">Nationwide UK Coverage</span>
             {/* Decorative: the label already says UK. */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/funnel/uk-flag.svg" alt="" aria-hidden="true" className="h-4 w-4 rounded-xs" />

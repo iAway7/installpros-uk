@@ -67,9 +67,12 @@ export async function lookupAddresses(
 ): Promise<{ addresses: PropaltAddress[] } | { fail: string }> {
   if (!propaltConfigured()) return { fail: "no_key" };
   const attempts: string[] = [];
+  // A bare postcode has to carry its space (see spacePostcode); anything else
+  // is free text and goes through untouched.
+  const term = /^[A-Z]{1,2}\d[A-Z\d]?\s*\d[A-Z]{2}$/i.test(keyword.trim()) ? spacePostcode(keyword) : keyword;
   for (const path of ["/location-search/address-lookup"]) {
     try {
-      const res = await fetch(`${BASE}${path}?keyword=${encodeURIComponent(keyword)}&limit=10`, {
+      const res = await fetch(`${BASE}${path}?keyword=${encodeURIComponent(term)}&limit=10`, {
         headers: headers(),
         signal: AbortSignal.timeout(TIMEOUT_MS),
         cache: "no-store",
@@ -102,6 +105,21 @@ export interface PropaltProperty {
   constructionAge: string | null;
   taxBand: string | null;
   avm: number | null;
+  // Everything below arrives in the same 6-credit response as the fields above
+  // — not capturing it was free data thrown away.
+  bathrooms: number | null;
+  receptionRooms: number | null;
+  /** Plot area. Propalt doesn't document the unit; values fit square feet. */
+  plotSize: number | null;
+  builtForm: string | null;
+  tenure: string | null;
+  titleNumber: string | null;
+  isHmo: boolean | null;
+  /** Exact property coordinates — better than the postcode centroid. */
+  lat: number | null;
+  lng: number | null;
+  /** True when Propalt modelled the room counts rather than observing them. */
+  modelledFeatures: boolean;
   raw: unknown;
 }
 
@@ -120,6 +138,7 @@ export async function fetchPropertyDetail(propertyId: number): Promise<PropaltPr
     if (!d) return null;
     const num = (v: unknown) => (typeof v === "number" && Number.isFinite(v) ? v : null);
     const str = (v: unknown) => (typeof v === "string" && v.trim() ? v.trim() : null);
+    const title = (s: string | null) => (s ? s.charAt(0).toUpperCase() + s.slice(1) : null);
     return {
       address: str(d["address_text"]),
       uprn: d["uprn"] != null ? String(d["uprn"]) : null,
@@ -130,6 +149,16 @@ export async function fetchPropertyDetail(propertyId: number): Promise<PropaltPr
       constructionAge: str(d["construction_age_band_std"]),
       taxBand: str(d["tax_band"]),
       avm: num(d["avm"]),
+      bathrooms: num(d["number_of_bathrooms"]),
+      receptionRooms: num(d["number_of_reception_rooms"]),
+      plotSize: num(d["plot_size"]),
+      builtForm: title(str(d["built_from"])),
+      tenure: str(d["tenure"]),
+      titleNumber: str(d["title_number_list"]),
+      isHmo: d["HMO"] == null ? null : Boolean(num(d["HMO"])),
+      lat: num(d["lat"]),
+      lng: num(d["lng"]),
+      modelledFeatures: Boolean(num(d["modelled_features"])),
       raw: d,
     };
   } catch {
@@ -137,10 +166,70 @@ export async function fetchPropertyDetail(propertyId: number): Promise<PropaltPr
   }
 }
 
+// ── Planning constraints — what you're allowed to bolt to the building ────
+
+export interface PropaltConstraint {
+  /** article_4 | conservation_area | listed_building | flood_zone | green_belt */
+  type: string;
+  name: string | null;
+  start_date: string | null;
+}
+
+/**
+ * Active planning constraints for one property. The install-relevant ones are
+ * article_4 (permitted development rights withdrawn), conservation_area and
+ * listed_building — all three can mean a dish on a visible elevation needs
+ * consent, which is far cheaper to know before quoting than on the day.
+ *
+ * Returns [] when Propalt has checked and found nothing, and null when the
+ * call failed — the two must stay distinguishable in the UI.
+ */
+export async function fetchPlanningConstraints(propertyId: number): Promise<PropaltConstraint[] | null> {
+  if (!propaltConfigured()) return null;
+  // Path variants, same defensive approach as lookupAddresses: a 404 means
+  // "wrong path", anything else means we found the endpoint.
+  for (const path of ["/planning-constraints", "/planning_constraints", "/property/planning-constraints"]) {
+    try {
+      const res = await fetch(`${BASE}${path}?property_id=${propertyId}&limit=100`, {
+        headers: headers(),
+        signal: AbortSignal.timeout(TIMEOUT_MS),
+        cache: "no-store",
+      });
+      if (res.status === 404) continue;
+      if (!res.ok) return null;
+      const json = (await res.json()) as {
+        data?: Array<{ constraint_type?: string; name?: string; start_date?: string; end_date?: string | null }>;
+      };
+      return (json.data ?? [])
+        .filter((c) => c.constraint_type && !c.end_date) // end_date set = no longer in force
+        .map((c) => ({
+          type: c.constraint_type as string,
+          name: c.name ?? null,
+          start_date: c.start_date ?? null,
+        }));
+    } catch {
+      return null;
+    }
+  }
+  return null;
+}
+
+/**
+ * Propalt matches on the OUTCODE-space-INCODE form ("LS18 5QB"). A compact
+ * postcode ("LS185QB") passes their validator but comes back as an empty
+ * result set — HTTP 200, `{"data":[],"count":0}`, no error. Callers hold
+ * postcodes in whichever shape suits them (the broadband cache keys on the
+ * compact one), so normalise here rather than at every call site.
+ */
+export function spacePostcode(postcode: string): string {
+  const pc = postcode.replace(/\s+/g, "").toUpperCase();
+  return pc.length > 3 ? `${pc.slice(0, -3)} ${pc.slice(-3)}` : pc;
+}
+
 export async function fetchPropaltBroadband(postcode: string): Promise<PropaltBroadband | null> {
   if (!propaltConfigured()) return null;
   try {
-    const res = await fetch(`${BASE}/place-area/get-brandboard?postcode=${encodeURIComponent(postcode)}`, {
+    const res = await fetch(`${BASE}/place-area/get-brandboard?postcode=${encodeURIComponent(spacePostcode(postcode))}`, {
       headers: headers(),
       signal: AbortSignal.timeout(TIMEOUT_MS),
       cache: "no-store",

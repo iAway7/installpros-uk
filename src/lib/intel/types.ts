@@ -28,7 +28,26 @@ export interface LeadIntel {
   avm_value: number | null;
   bedrooms: number | null;
   tax_band: string | null;
+  bathrooms: number | null;
+  reception_rooms: number | null;
+  /** Propalt plot area — unit undocumented, values consistent with sq ft. */
+  plot_size: number | null;
+  property_built_form: string | null;
+  tenure: string | null;
+  title_number: string | null;
+  is_hmo: boolean | null;
+  property_lat: number | null;
+  property_lng: number | null;
+  /** [] = checked and nothing found. null = never checked. */
+  planning_constraints: PlanningConstraint[] | null;
   created_at: string;
+}
+
+/** Active planning constraint on the resolved property (Propalt). */
+export interface PlanningConstraint {
+  type: string;
+  name: string | null;
+  start_date: string | null;
 }
 
 export interface ScoreReason {

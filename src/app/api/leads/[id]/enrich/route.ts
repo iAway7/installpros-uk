@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { enrichLead } from "@/lib/intel/enrich";
+import { dispatchLeadEvent } from "@/lib/webhooks/dispatch";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
@@ -33,5 +34,12 @@ export async function POST(request: Request, { params }: { params: { id: string 
   }
 
   const result = await enrichLead(params.id, { force });
+
+  // Forward the enriched lead (score + property intel) to any configured
+  // destination. Awaited on purpose: this route already runs long, and it
+  // guarantees the send happens before the serverless function is frozen.
+  // dispatchLeadEvent never throws, so it cannot break enrichment.
+  if (result.ok) await dispatchLeadEvent("lead.enriched", params.id);
+
   return NextResponse.json(result);
 }
