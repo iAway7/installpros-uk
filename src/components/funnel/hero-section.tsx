@@ -12,7 +12,7 @@ export function HeroSection(
   // discover the URL. That round trip — not the 19.5 KB — is what pushed LCP to
   // 4.4s on mobile. Emitting the preload here keeps it scoped to the pages that
   // actually render a hero, unlike a link in the root layout.
-  ReactDOM.preload("/funnel/vr-hero.webp", {
+  ReactDOM.preload("/funnel/hero-uk-residential.webp", {
     as: "image",
     fetchPriority: "high",
     type: "image/webp",
@@ -23,7 +23,7 @@ export function HeroSection(
       <div
         className="absolute inset-0"
         style={{
-          backgroundImage: "url(/funnel/vr-hero.webp)",
+          backgroundImage: "url(/funnel/hero-uk-residential.webp)",
           backgroundSize: "cover",
           backgroundPosition: "center top",
         }}

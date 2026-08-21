@@ -14,7 +14,7 @@ export default function SearchInputPage() {
     <>
       <PageHeader
         title="Search input"
-        lead="Filters what is already on screen. It does not navigate — if pressing Enter takes you somewhere, that is a form, not this."
+        lead="Filters what is already on screen. It does not navigate, if pressing Enter takes you somewhere, that is a form, not this."
       />
 
       <Section title="Default" note="Type to filter. Escape clears.">
@@ -35,19 +35,19 @@ export default function SearchInputPage() {
 
       <BestPractices
         when={[
-          "Filtering a list already on the page — the leads table, the FAQ hub.",
+          "Filtering a list already on the page, the leads table, the FAQ hub.",
           "When the value must come from a known list and be selected, use <code>Combobox</code>. Search filters; a combobox picks.",
           "Below about ten items, skip it. A search box over a list you can already see is furniture.",
         ]}
         behavior={[
           "Escape clears the field. It is the shortcut people already expect, and the reason this exists rather than an Input with an icon glued on.",
-          "Filter as you type, debounced if the source is a network call. Do not require Enter — this is a filter, not a submit.",
+          "Filter as you type, debounced if the source is a network call. Do not require Enter, this is a filter, not a submit.",
           "The clear button appears only when there is something to clear.",
           "The native WebKit clear affordance is suppressed, because it is not keyboard-reachable and looks different in every browser.",
         ]}
         content={[
           "The placeholder names the scope: <em>Search leads</em>, <em>Search FAQs</em>. A bare <em>Search</em> makes people guess what they are searching.",
-          "The empty state repeats the query back — <em>No leads match &ldquo;marine&rdquo;</em> — so it is clear the typing registered.",
+          "The empty state repeats the query back, <em>No leads match &ldquo;marine&rdquo;</em>, so it is clear the typing registered.",
         ]}
         accessibility={[
           "<code>type=\"search\"</code> with <code>role=\"searchbox\"</code>. The placeholder doubles as the accessible name when there is no visible label, which is why the scope has to be in it.",

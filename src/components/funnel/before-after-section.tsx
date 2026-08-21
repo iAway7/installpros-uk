@@ -129,7 +129,7 @@ export function BeforeAfterSection() {
       };
       engine.onError = () => {
         setPhase("error");
-        if (bStatus.current) bStatus.current.textContent = "Test failed — try again";
+        if (bStatus.current) bStatus.current.textContent = "Test failed. Try again";
       };
       engine.onFinish = (results) => {
         const s = results.getSummary();
@@ -144,7 +144,7 @@ export function BeforeAfterSection() {
       engine.play();
     } catch {
       setPhase("error");
-      if (bStatus.current) bStatus.current.textContent = "Test failed — try again";
+      if (bStatus.current) bStatus.current.textContent = "Test failed. Try again";
     }
   };
 
@@ -296,8 +296,8 @@ export function BeforeAfterSection() {
           </h2>
           <p className="mx-auto mt-5 max-w-md text-body text-muted-foreground md:text-lg" style={{ lineHeight: "1.6" }}>
             {isMobile
-              ? "Test your real speed — this is what a professional install changes."
-              : "Drag the handle — or test your real speed. This is what a professional install changes."}
+              ? "Test your real speed. This is what a professional install changes."
+              : "Drag the handle, or test your real speed. This is what a professional install changes."}
           </p>
         </div>
 

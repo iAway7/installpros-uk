@@ -2,8 +2,8 @@ const EQUIPMENT = [
   {
     t: "Starlink Standard",
     badge: "Supply & Fit",
-    d: "The dish — supplied, mounted and aligned for a clear view of the sky.",
-    img: "/funnel/starlink-standard.png",
+    d: "The dish: supplied, mounted and aligned for a clear view of the sky.",
+    img: "/funnel/starlink-gen-3.webp",
   },
   {
     t: "Gen 3 Router",
@@ -39,7 +39,7 @@ export function EquipmentSection() {
             The hardware, handled.
           </h2>
           <p className="mx-auto mt-5 max-w-xl text-body text-muted-foreground md:text-lg" style={{ lineHeight: "1.6" }}>
-            We supply, mount and configure the full Starlink ecosystem — nothing for you to source.
+            We supply, mount and configure the full Starlink ecosystem. Nothing for you to source.
           </p>
         </div>
 
@@ -73,6 +73,18 @@ export function EquipmentSection() {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Warranty strip. Not a fifth card: same rounded-xl and hairline as
+            its neighbours, but one quiet row instead of a tile, so it reads as
+            a statement covering all four. Tokens only: border, secondary,
+            brand-icon for the single spot of red the DS allows on a glyph. */}
+        <div className="mt-5 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 rounded-xl border border-border bg-secondary p-4 text-center">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-brand-icon" aria-hidden="true"><path d="M12 3 5 6v5.5c0 4.3 2.9 8.2 7 9.5 4.1-1.3 7-5.2 7-9.5V6l-7-3z" /><path d="m9 12 2 2 4-4" /></svg>
+          <p className="text-body text-muted-foreground">
+            <span className="font-semibold text-foreground">2-year warranty on everything we install.</span>{" "}
+            Option to extend to 5 years.
+          </p>
         </div>
       </div>
     </section>

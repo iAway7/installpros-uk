@@ -9,7 +9,7 @@ export default function LabelPage() {
     <>
       <PageHeader
         title="Label"
-        lead="Names a form control. The funnel gets away without visible labels because each step asks one question in a heading — everywhere else, a field needs one."
+        lead="Names a form control. The funnel gets away without visible labels because each step asks one question in a heading, everywhere else, a field needs one."
       />
 
       <Section title="Default">
@@ -41,7 +41,7 @@ export default function LabelPage() {
       <BestPractices
         when={[
           "Every input, select, textarea and radio group outside the funnel wizard.",
-          "Inside the funnel, the step heading is the label — that is why the fields carry <code>aria-label</code> instead. Do not add a second visible label there.",
+          "Inside the funnel, the step heading is the label, that is why the fields carry <code>aria-label</code> instead. Do not add a second visible label there.",
           "Mark the exception, not the rule: if most fields are required, label the optional ones with <code>hint=\"Optional\"</code> rather than starring everything.",
         ]}
         behavior={[
@@ -51,12 +51,12 @@ export default function LabelPage() {
         ]}
         content={[
           "Short Title Case nouns: <code>Postcode</code>, <code>Phone Number</code>, <code>Access Notes</code>. No trailing colon.",
-          "Never phrase it as a question — that is the heading&rsquo;s job. <em>Phone number</em>, not <em>What is your phone number?</em>",
+          "Never phrase it as a question, that is the heading&rsquo;s job. <em>Phone number</em>, not <em>What is your phone number?</em>",
           "Helper text goes in a sibling element wired through <code>aria-describedby</code>, not inside the label.",
         ]}
         accessibility={[
           "A placeholder is not a label. It vanishes exactly when the user needs it, and screen readers treat it inconsistently.",
-          "The asterisk is <code>aria-hidden</code> — <code>aria-required</code> on the input is what actually announces it.",
+          "The asterisk is <code>aria-hidden</code>, <code>aria-required</code> on the input is what actually announces it.",
           "A disabled label drops to 50% opacity, which fails contrast. That is acceptable only because the field is not operable; never use that opacity on live text.",
         ]}
       />

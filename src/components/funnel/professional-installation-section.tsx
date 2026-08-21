@@ -3,7 +3,7 @@ import { Button } from "@/components/system/button";
 
 const FEATURES = [
   { title: "Customised Setup", description: "We customise installations for Residential, Commercial, Marine, and Mobile needs." },
-  { title: "Complete Installation", description: "We take care of everything—mounting, cabling, and router setup. Prices start at £899." },
+  { title: "Complete Installation", description: "We take care of everything: mounting, cabling, and router setup. Prices start at £899." },
   {
     title: "Quick Install: Within 7 Days",
     description:

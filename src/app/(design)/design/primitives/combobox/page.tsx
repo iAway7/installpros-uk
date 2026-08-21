@@ -20,7 +20,7 @@ export default function ComboboxPage() {
     <>
       <PageHeader
         title="Combobox"
-        lead="Filters a long list down to what matches. The address autocomplete in the lead form is this pattern wired to Google Places — this is the same keyboard model with no data source baked in."
+        lead="Filters a long list down to what matches. The address autocomplete in the lead form is this pattern wired to Google Places, this is the same keyboard model with no data source baked in."
       />
 
       <Section title="Empty">
@@ -45,7 +45,7 @@ export default function ComboboxPage() {
         when={[
           "Use past roughly ten options, or whenever the list is fetched rather than fixed.",
           "Below ten fixed options, a Select is less machinery and does not make people type.",
-          "For two to six options that need explaining, use a Choicebox instead — no typing at all.",
+          "For two to six options that need explaining, use a Choicebox instead, no typing at all.",
         ]}
         behavior={[
           "↑ and ↓ move the active option, Enter picks it, Escape closes. Clicking outside closes without changing the value.",
@@ -55,13 +55,13 @@ export default function ComboboxPage() {
         ]}
         content={[
           "The placeholder is an inline hint naming the scope: <code>Search services…</code>, <code>Start typing your address…</code>. Never a bare <code>Search…</code>, and never the label restated.",
-          "Option text matches canonical naming — <em>Starlink</em>, <em>Wi-Fi 6</em> — and keeps one register across the list.",
+          "Option text matches canonical naming, <em>Starlink</em>, <em>Wi-Fi 6</em>, and keeps one register across the list.",
           "The empty state names the query: <em>No services match &ldquo;marine&rdquo;</em> reads better than <em>No results</em> and tells the user their typing was received.",
         ]}
         accessibility={[
           "<code>role=\"combobox\"</code> with <code>aria-expanded</code> and <code>aria-controls</code> on the input, <code>role=\"listbox\"</code> on the list.",
           "The active option is reported with <code>aria-activedescendant</code> rather than by moving focus, so focus stays in the input and typing never breaks.",
-          "Options are chosen on <code>mousedown</code> with the default prevented — on <code>click</code> the input blurs first and the list closes before the selection lands.",
+          "Options are chosen on <code>mousedown</code> with the default prevented, on <code>click</code> the input blurs first and the list closes before the selection lands.",
           "The empty state is a real message, not an empty box: an invisible dropdown reads as a broken control.",
         ]}
       />

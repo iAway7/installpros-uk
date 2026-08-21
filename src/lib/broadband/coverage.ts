@@ -91,7 +91,7 @@ function messageFor(state: CoverageState, area: string | null, avg: number | nul
     case "poor":
       return `Your postcode: ${place}. Current typical speed: ~${avg} Mbps. No fibre upgrade currently scheduled for this area. Starlink typically delivers 100–250 Mbps here, installed within days.`;
     case "fibre_coming":
-      return `Your postcode: ${place}. Current typical speed: ~${avg} Mbps. Fibre is rolling out in this area, but dates often slip and full coverage isn't confirmed. Get connected now — switch later if you want to.`;
+      return `Your postcode: ${place}. Current typical speed: ~${avg} Mbps. Fibre is rolling out in this area, but dates often slip and full coverage isn't confirmed. Get connected now, and switch later if you want to.`;
     case "well_covered":
       return `Your postcode: ${place}. This area already has strong fixed broadband. Starlink can still make sense as backup, or for a boat, van, or second property nearby.`;
     case "invalid":

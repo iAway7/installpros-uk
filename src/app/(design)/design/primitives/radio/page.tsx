@@ -19,13 +19,13 @@ export default function RadioPage() {
       <Section title="Default">
         <Preview className="!block">
           <RadioGroup label="Preferred install slot" showLabel value={a} onChange={setA}>
-            <RadioGroupItem value="morning">Morning — 8am to 12pm</RadioGroupItem>
-            <RadioGroupItem value="afternoon">Afternoon — 12pm to 5pm</RadioGroupItem>
+            <RadioGroupItem value="morning">Morning, 8am to 12pm</RadioGroupItem>
+            <RadioGroupItem value="afternoon">Afternoon, 12pm to 5pm</RadioGroupItem>
           </RadioGroup>
         </Preview>
         <Code>{`<RadioGroup label="Preferred install slot" showLabel value={slot} onChange={setSlot}>
-  <RadioGroupItem value="morning">Morning — 8am to 12pm</RadioGroupItem>
-  <RadioGroupItem value="afternoon">Afternoon — 12pm to 5pm</RadioGroupItem>
+  <RadioGroupItem value="morning">Morning, 8am to 12pm</RadioGroupItem>
+  <RadioGroupItem value="afternoon">Afternoon, 12pm to 5pm</RadioGroupItem>
 </RadioGroup>`}</Code>
       </Section>
 
@@ -46,7 +46,7 @@ export default function RadioPage() {
           </RadioGroup>
           <RadioGroup label="One option unavailable" showLabel value={b} onChange={setB}>
             <RadioGroupItem value="one">Available this week</RadioGroupItem>
-            <RadioGroupItem value="two" disabled>Same-day — fully booked</RadioGroupItem>
+            <RadioGroupItem value="two" disabled>Same-day, fully booked</RadioGroupItem>
           </RadioGroup>
         </Preview>
       </Section>
@@ -67,26 +67,26 @@ export default function RadioPage() {
 
       <BestPractices
         when={[
-          "A single choice from 2–6 mutually exclusive options where seeing all of them matters — an install slot, a property type, a billing cycle.",
+          "A single choice from 2–6 mutually exclusive options where seeing all of them matters, an install slot, a property type, a billing cycle.",
           "Past six options, switch to <code>Combobox</code> so the list stops dominating the form.",
-          "For richer per-option content — an icon, a description, a price — use <code>Choicebox</code>. For a binary on/off, a checkbox is clearer than two radios.",
+          "For richer per-option content, an icon, a description, a price, use <code>Choicebox</code>. For a binary on/off, a checkbox is clearer than two radios.",
         ]}
         behavior={[
           "Pre-select the safest default so the field reads as configured rather than required-but-empty. Skip the default only when the choice has real consequences and you want a deliberate pick.",
           "<code>required</code> goes on the group, not on an option. Required-against-a-single-radio means nothing.",
-          "Arrow keys move within the group and skip disabled options; Tab leaves the group entirely. That is native behaviour and comes free from using real inputs — do not reimplement it.",
+          "Arrow keys move within the group and skip disabled options; Tab leaves the group entirely. That is native behaviour and comes free from using real inputs, do not reimplement it.",
           "A disabled option needs a reason next to it (&ldquo;fully booked&rdquo;). A greyed radio with no explanation reads as a bug.",
         ]}
         content={[
           "The group label is a Title Case noun: <code>Install Slot</code>, <code>Property Type</code>. No trailing colon.",
-          "Option labels are parallel — same part of speech, same length, same register. <em>Morning / Afternoon</em>, not <em>Morning / I&rsquo;d prefer the afternoon</em>.",
+          "Option labels are parallel, same part of speech, same length, same register. <em>Morning / Afternoon</em>, not <em>Morning / I&rsquo;d prefer the afternoon</em>.",
           "Keep <code>showLabel</code> on unless the surrounding heading already names the choice. Hiding the legend is an accessibility affordance, not a layout shortcut.",
         ]}
         accessibility={[
-          "Rendered as <code>&lt;fieldset&gt;</code> + <code>&lt;legend&gt;</code>, so a screen reader announces the group name before each option. With <code>showLabel</code> off the legend becomes <code>sr-only</code> — present, just not painted.",
+          "Rendered as <code>&lt;fieldset&gt;</code> + <code>&lt;legend&gt;</code>, so a screen reader announces the group name before each option. With <code>showLabel</code> off the legend becomes <code>sr-only</code>, present, just not painted.",
           "The standalone <code>Radio</code> requires an <code>aria-label</code>. A radio with no accessible name is unusable without sight.",
           "The click target extends across the label. Do not wrap the input in something that breaks the <code>&lt;label&gt;</code> association.",
-          "Focus is a 2px ring in <code>--selection</code> with an offset. Do not swap it for a border change — a keyboard user loses track of which option is focused.",
+          "Focus is a 2px ring in <code>--selection</code> with an offset. Do not swap it for a border change, a keyboard user loses track of which option is focused.",
         ]}
       />
     </>

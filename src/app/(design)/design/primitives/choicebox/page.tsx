@@ -54,13 +54,13 @@ export default function ChoiceboxPage() {
           "Between two and six options. Past six, a Combobox with search beats a wall of cards.",
         ]}
         behavior={[
-          "The whole card is clickable, not just the indicator — it is a <code>&lt;label&gt;</code> wrapping a visually-hidden input.",
+          "The whole card is clickable, not just the indicator, it is a <code>&lt;label&gt;</code> wrapping a visually-hidden input.",
           "Single-select needs a shared <code>name</code>, which is what makes arrow keys move between options natively.",
           "Selection uses <code>--selection</code>, never brand red. Red is reserved for the primary button, so the CTA stays the only red thing on screen.",
           "Cards flex to fill the row. Keep descriptions to one line or the row heights go ragged.",
         ]}
         content={[
-          "One Title Case title plus one sentence-case description per tile. Keep them parallel — same length range, same register.",
+          "One Title Case title plus one sentence-case description per tile. Keep them parallel, same length range, same register.",
           "The description adds the differentiator, never a synonym of the title. <em>Houses, flats, outbuildings</em>, not <em>For residential properties</em>.",
           "A disabled tile needs its reason in the description (&ldquo;Not available in your area&rdquo;). A faded tile with no explanation reads as broken.",
         ]}
@@ -68,7 +68,7 @@ export default function ChoiceboxPage() {
           "Real <code>&lt;input type=\"radio\"&gt;</code> and <code>type=\"checkbox\"</code> underneath, so keyboard and screen-reader behaviour is the browser's, not ours.",
           "Wrap a set in <code>ChoiceboxGroup</code>, which supplies the <code>&lt;fieldset&gt;</code> and legend that names what is being chosen.",
           "Focus is mirrored from the hidden input onto the card, so the ring is visible where the eye is.",
-          "The indicator alone would be a 20px target — the card gives you 60px+ in both directions.",
+          "The indicator alone would be a 20px target, the card gives you 60px+ in both directions.",
         ]}
       />
     </>

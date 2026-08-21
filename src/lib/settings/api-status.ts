@@ -153,7 +153,7 @@ export async function getApiStatuses(): Promise<ApiStatus[]> {
         : posthogQueryCheck.ok ? "connected" : "error",
       detail: !posthogQueryCheck.configured
         ? "POSTHOG_PERSONAL_API_KEY / POSTHOG_PROJECT_ID missing"
-        : posthogQueryCheck.ok ? "HogQL queries working" : `Query failed${posthogQueryCheck.error ? ` — ${posthogQueryCheck.error.slice(0, 80)}` : ""}`,
+        : posthogQueryCheck.ok ? "HogQL queries working" : `Query failed${posthogQueryCheck.error ? `: ${posthogQueryCheck.error.slice(0, 80)}` : ""}`,
       usage: null,
       docsHint: "PostHog → Settings → Personal API keys",
     },
@@ -164,7 +164,7 @@ export async function getApiStatuses(): Promise<ApiStatus[]> {
       health: !searchConsole.configured ? "not_configured" : searchConsole.ok ? "connected" : "error",
       detail: !searchConsole.configured
         ? "Service account not configured"
-        : searchConsole.ok ? "Reporting live" : "Configured but query failed — check property access",
+        : searchConsole.ok ? "Reporting live" : "Configured but query failed. Check property access",
       usage: null,
       docsHint: "GOOGLE-SETUP.md",
     },
@@ -182,7 +182,7 @@ export async function getApiStatuses(): Promise<ApiStatus[]> {
     {
       id: "ofcom",
       name: "Ofcom Connected Nations API",
-      purpose: "Broadband speed per postcode — top lead-scoring signal",
+      purpose: "Broadband speed per postcode: top lead-scoring signal",
       health: !ofcomCheck.configured
         ? "not_configured"
         : ofcomCheck.ok ? "connected" : ofcomCheck.status === 401 || ofcomCheck.status === 403 ? "pending" : "error",
@@ -191,9 +191,9 @@ export async function getApiStatuses(): Promise<ApiStatus[]> {
         : ofcomCheck.ok
           ? "Live lookups working"
           : ofcomCheck.status === 401 || ofcomCheck.status === 403
-            ? "Key set but rejected — subscription likely still awaiting Ofcom approval"
+            ? "Key set but rejected. Subscription likely still awaiting Ofcom approval"
             : `Check failed (HTTP ${ofcomCheck.status || "timeout"})`,
-      usage: ofcomCheck.configured ? "Plan: Broadband Basic — 50,000 requests/month, 100/min (no remaining-quota endpoint)" : null,
+      usage: ofcomCheck.configured ? "Plan: Broadband Basic, 50,000 requests/month, 100/min (no remaining-quota endpoint)" : null,
       docsHint: "INTEL-SETUP.md",
     },
     {
@@ -204,8 +204,8 @@ export async function getApiStatuses(): Promise<ApiStatus[]> {
       detail: !epcCheck.configured
         ? "EPC_BEARER_TOKEN missing"
         : epcCheck.ok
-          ? epcCheck.mode === "bearer" ? "New EPB API (bearer) working" : "Legacy API (Basic) working — migrate to bearer"
-          : `Auth failed (HTTP ${epcCheck.status || "timeout"}) — check the token`,
+          ? epcCheck.mode === "bearer" ? "New EPB API (bearer) working" : "Legacy API (Basic) working. Migrate to bearer"
+          : `Auth failed (HTTP ${epcCheck.status || "timeout"}). Check the token`,
       usage: epcCheck.configured ? "Rate limit: 6,000 requests / 5 min per IP" : null,
       docsHint: "INTEL-SETUP.md",
     },
@@ -215,8 +215,8 @@ export async function getApiStatuses(): Promise<ApiStatus[]> {
       purpose: "Broadband coverage message on /starlink-installation",
       health: envSet("HOMEDATA_API_KEY") ? "connected" : "not_configured",
       detail: envSet("HOMEDATA_API_KEY")
-        ? "Key set (not live-tested — each test burns trial quota). Falls back to Ofcom + bundled data."
-        : "HOMEDATA_API_KEY missing — coverage message uses Ofcom + bundled dataset instead",
+        ? "Key set (not live-tested, each test burns trial quota). Falls back to Ofcom + bundled data."
+        : "HOMEDATA_API_KEY missing. Coverage message uses Ofcom + bundled dataset instead",
       usage: cacheStats ? `${cacheStats.homedata} postcodes fetched from homedata · ${cacheStats.total} total cached lookups` : null,
       docsHint: "homedata.co.uk → dashboard",
     },
@@ -227,24 +227,24 @@ export async function getApiStatuses(): Promise<ApiStatus[]> {
       health: postcodesIoCheck.ok ? "connected" : "error",
       detail: postcodesIoCheck.ok
         ? "Keyless public APIs reachable · bundled Ofcom dataset: 2,853 districts (Jan 2025 release)"
-        : "postcodes.io unreachable — postcode validation degraded",
+        : "postcodes.io unreachable. Postcode validation degraded",
       usage: null,
       docsHint: null,
     },
     {
       id: "propalt",
       name: "Propalt AI",
-      purpose: "Reserve property-data source (1,000 free credits) — off by default",
+      purpose: "Reserve property-data source (1,000 free credits), off by default",
       health: !propaltConfigured()
         ? "not_configured"
         : !propaltEnabled ? "pending" : propaltPing.ok ? "connected" : "error",
       detail: !propaltConfigured()
         ? "PROPALT_API_KEY missing"
         : !propaltEnabled
-          ? "Key set but integration deactivated — flip the switch to use it in the coverage chain"
+          ? "Key set but integration deactivated. Flip the switch to use it in the coverage chain"
           : propaltPing.ok
-            ? "Active — first paid source in the coverage chain (before homedata and Ofcom)"
-            : `Active but health check failed (HTTP ${propaltPing.status || "timeout"}) — check key / PROPALT_API_BASE`,
+            ? "Active: first paid source in the coverage chain (before homedata and Ofcom)"
+            : `Active but health check failed (HTTP ${propaltPing.status || "timeout"}). Check key / PROPALT_API_BASE`,
       usage: propaltConfigured()
         ? `Free tier: 1,000 credits · used lookups appear in the broadband cache${cacheStats ? ` (${cacheStats.total} cached total)` : ""}`
         : null,
@@ -258,7 +258,7 @@ export async function getApiStatuses(): Promise<ApiStatus[]> {
       name: "WhatsApp Business API",
       purpose: "Auto-message leads within seconds of form submit",
       health: "not_configured",
-      detail: "Awaiting Meta Business verification — start at business.facebook.com",
+      detail: "Awaiting Meta Business verification. Start at business.facebook.com",
       usage: null,
       docsHint: "BUILD-PLAN.md Phase 4",
     },
@@ -267,7 +267,7 @@ export async function getApiStatuses(): Promise<ApiStatus[]> {
       name: "Google Ads API",
       purpose: "Cost per lead/quote/won by campaign",
       health: "not_configured",
-      detail: "Needs a developer token (Google Ads → API Center) — GCLID capture is already live",
+      detail: "Needs a developer token (Google Ads → API Center). GCLID capture is already live",
       usage: null,
       docsHint: "BUILD-PLAN.md Phase 7",
     },

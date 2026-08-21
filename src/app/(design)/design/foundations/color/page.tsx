@@ -7,7 +7,7 @@ const GROUPS: { title: string; note: string; match: (n: string) => boolean }[] =
   { title: "Surfaces", note: "Page, cards and the off-white used for section blocks.", match: (n) => ["--background", "--card", "--secondary", "--muted", "--border"].includes(n) },
   { title: "Text", note: "Two values carry every piece of copy on the site.", match: (n) => ["--foreground", "--muted-foreground"].includes(n) },
   { title: "Brand", note: "One red, plus two tints that are never used for body text.", match: (n) => n.startsWith("--primary") || n.startsWith("--brand") || n === "--accent" },
-  { title: "Selection & fields", note: "Deliberately neutral — see the rule below.", match: (n) => n.startsWith("--selection") || n.startsWith("--field") || n === "--ring" || n === "--input" },
+  { title: "Selection & fields", note: "Deliberately neutral, see the rule below.", match: (n) => n.startsWith("--selection") || n.startsWith("--field") || n === "--ring" || n === "--input" },
   { title: "Status", note: "One value per meaning.", match: (n) => n.startsWith("--error") || n.startsWith("--success") || n.startsWith("--destructive") },
   { title: "Third-party", note: "Brand marks we do not own and must not restyle.", match: (n) => ["--gold", "--whatsapp"].includes(n) },
 ];
@@ -33,7 +33,7 @@ export default function ColorPage() {
     <>
       <PageHeader
         title="Color"
-        lead="Extracted straight from .theme-editorial in globals.css. If a value changes there, re-running scripts/extract-tokens.mjs updates this page — the numbers below are never typed by hand."
+        lead="Extracted straight from .theme-editorial in globals.css. If a value changes there, re-running scripts/extract-tokens.mjs updates this page, the numbers below are never typed by hand."
       />
 
       <Section title="The rule that matters">

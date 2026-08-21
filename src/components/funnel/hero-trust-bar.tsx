@@ -43,7 +43,7 @@ const BADGES: ReactNode[] = [
     </span>
   </a>,
   <div key="installs" className="flex items-center gap-2">
-    <span className="text-body font-semibold">9,163+</span>
+    <span className="text-body font-semibold">3,500+</span>
     <span className="text-body text-white/70">UK installations</span>
   </div>,
   <div key="times" className="flex flex-col items-center gap-0.5">

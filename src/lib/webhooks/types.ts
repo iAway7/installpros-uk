@@ -4,8 +4,8 @@ export type WebhookEvent = "lead.created" | "lead.enriched";
 export const WEBHOOK_EVENTS: WebhookEvent[] = ["lead.created", "lead.enriched"];
 
 export const EVENT_LABEL: Record<WebhookEvent, string> = {
-  "lead.created": "Lead created — instantly at submit (contact + attribution)",
-  "lead.enriched": "Lead enriched — ~4s later, adds score + property intel",
+  "lead.created": "Lead created: instantly at submit (contact + attribution)",
+  "lead.enriched": "Lead enriched: ~4s later, adds score + property intel",
 };
 
 export interface WebhookEndpoint {

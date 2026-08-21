@@ -17,8 +17,8 @@ function GoogleG({ size = 22 }: { size?: number }) {
  *  filter, so the section is never empty or thin. */
 const CURATED: Review[] = [
   { q: "I was so impressed with the service, knowledge and competence of Summer. She was like a complete breath of fresh air.", name: "Mike H N Fisher", initial: "M", rating: 5 },
-  { q: "Great service. Super fast and incredibly helpful — very good prices too.", name: "Andreas Kolezi", initial: "A", rating: 5 },
-  { q: "I'd like to highly commend Ben at InstallPros. My broadband speed was very low — he was able to identify and fix it quickly.", name: "Mohsin Zahid", initial: "M", rating: 5 },
+  { q: "Great service. Super fast and incredibly helpful, very good prices too.", name: "Andreas Kolezi", initial: "A", rating: 5 },
+  { q: "I'd like to highly commend Ben at InstallPros. My broadband speed was very low. He was able to identify and fix it quickly.", name: "Mohsin Zahid", initial: "M", rating: 5 },
 ];
 
 export async function CustomerStoriesSection() {

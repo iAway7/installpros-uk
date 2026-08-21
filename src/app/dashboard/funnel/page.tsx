@@ -56,7 +56,7 @@ export default async function FunnelPage({ searchParams }: { searchParams: Searc
       <Shell days={days} device={device} source={source} sources={sources}>
         <Card>
           <CardContent className="text-body-sm text-destructive">
-            Couldn&apos;t query PostHog{funnel.error ? ` — ${funnel.error}` : ""}. Check the API key, project id and host.
+            Couldn&apos;t query PostHog{funnel.error ? `: ${funnel.error}` : ""}. Check the API key, project id and host.
           </CardContent>
         </Card>
       </Shell>
@@ -69,7 +69,7 @@ export default async function FunnelPage({ searchParams }: { searchParams: Searc
     <Shell days={days} device={device} source={source} sources={sources}>
       {/* Funnel bars */}
       <Card>
-        <CardHeader><CardTitle>Funnel — last {days} days{device ? ` · ${device}` : ""}{source ? ` · ${source}` : ""}</CardTitle></CardHeader>
+        <CardHeader><CardTitle>Funnel: last {days} days{device ? ` · ${device}` : ""}{source ? ` · ${source}` : ""}</CardTitle></CardHeader>
         <CardContent className="space-y-3">
           {funnel.steps.every((s) => s.users === 0) ? (
             <p className="py-6 text-center text-body-sm text-muted-foreground">
@@ -112,7 +112,7 @@ export default async function FunnelPage({ searchParams }: { searchParams: Searc
 
       {/* Submit-rate trend */}
       <Card>
-        <CardHeader><CardTitle>Visitors vs form submits — daily</CardTitle></CardHeader>
+        <CardHeader><CardTitle>Visitors vs form submits (daily)</CardTitle></CardHeader>
         <CardContent>
           {daily.length === 0 ? (
             <p className="py-6 text-center text-body-sm text-muted-foreground">No data in this period.</p>

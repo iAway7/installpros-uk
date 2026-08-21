@@ -5,7 +5,7 @@ import { ImageResponse } from "next/og";
 // Node runtime (not edge): the logo is read straight off disk at build time.
 // The previous edge + fetch(new URL(...)) approach resolved to a relative
 // /_next/static/media URL, which fetch can't parse — it broke `next build`.
-export const alt = "InstallPros — Professional Starlink Installation UK";
+export const alt = "InstallPros: Professional Starlink Installation UK";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -39,7 +39,7 @@ export default async function OgImage() {
           Professional Starlink
         </div>
         <div style={{ fontSize: 64, fontWeight: 700, lineHeight: 1.1, letterSpacing: -2, display: "flex" }}>
-          Installation — UK Wide
+          Installation Across the UK
         </div>
         <div style={{ marginTop: 32, fontSize: 30, color: "#cbd5e1", display: "flex" }}>
           Same-week fitting · All roof types · 4.9★ rated installers

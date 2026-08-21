@@ -77,7 +77,7 @@ export function AvailabilitySection() {
           {[
             { node: <AnimatedCounter target={12} />, label: "Regions Covered", color: "text-foreground" },
             { node: <AnimatedCounter target={310} suffix="+" />, label: "Towns & Cities Served", color: "text-primary" },
-            { node: <AnimatedCounter target={9163} suffix="+" />, label: "Installations Completed", color: "text-foreground" },
+            { node: <AnimatedCounter target={3500} suffix="+" />, label: "Installations Completed", color: "text-foreground" },
             { node: <AnimatedCounter target={99} suffix="%" />, label: "UK Coverage", color: "text-foreground" },
           ].map((s) => (
             <div key={s.label} className="rounded-xl border border-border bg-secondary p-6 text-center">

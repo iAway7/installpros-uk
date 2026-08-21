@@ -8,7 +8,7 @@ export default function SkeletonPage() {
     <>
       <PageHeader
         title="Skeleton"
-        lead="Placeholder for content that is loading. It should match the shape of what is coming — a skeleton that does not resemble the result causes a reflow that feels worse than a spinner."
+        lead="Placeholder for content that is loading. It should match the shape of what is coming, a skeleton that does not resemble the result causes a reflow that feels worse than a spinner."
       />
 
       <Section title="Shapes">
@@ -39,17 +39,17 @@ export default function SkeletonPage() {
       <BestPractices
         when={[
           "Content whose shape you know before it arrives: a leads table, a review card, a stat block.",
-          "For an action in flight — a form submitting — use a spinner in the button. The page is not reloading, one control is busy.",
+          "For an action in flight, a form submitting, use a spinner in the button. The page is not reloading, one control is busy.",
           "Under roughly 300ms, show nothing. A skeleton that flashes is worse than a brief pause.",
         ]}
         behavior={[
           "Match the real layout: same sizes, same gaps, same radii. The whole point is that nothing moves when content replaces it.",
           "Show a realistic number of rows, not twenty. Over-promising the amount of content is its own small lie.",
-          "The pulse respects <code>prefers-reduced-motion</code> through the global rule — animations collapse to 0.01ms.",
+          "The pulse respects <code>prefers-reduced-motion</code> through the global rule, animations collapse to 0.01ms.",
         ]}
         accessibility={[
           "The skeletons are <code>aria-hidden</code>. On their own they announce nothing, which is why <code>SkeletonRegion</code> exists.",
-          "Wrap the loading area in <code>SkeletonRegion</code> so it carries <code>aria-busy</code> and a polite live region — otherwise a screen-reader user hears silence and assumes the page is empty.",
+          "Wrap the loading area in <code>SkeletonRegion</code> so it carries <code>aria-busy</code> and a polite live region, otherwise a screen-reader user hears silence and assumes the page is empty.",
           "Never put text inside a skeleton. A grey box that says &ldquo;Loading…&rdquo; is two loading indicators.",
         ]}
       />

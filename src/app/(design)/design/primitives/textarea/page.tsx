@@ -39,11 +39,11 @@ export default function TextareaPage() {
       <BestPractices
         when={[
           "Anything that can run past one line: access notes, obstruction descriptions, internal comments on a lead.",
-          "For one line of structured text — a name, a postcode — use <code>Input</code>. A textarea invites more than you want.",
+          "For one line of structured text, a name, a postcode, use <code>Input</code>. A textarea invites more than you want.",
           "Size <code>rows</code> to the expected answer. A four-row box asks for a paragraph; a two-row box asks for a sentence.",
         ]}
         behavior={[
-          "Resizes vertically by default. Taking that away forces people to write in a keyhole — do it only when the layout genuinely cannot absorb it.",
+          "Resizes vertically by default. Taking that away forces people to write in a keyhole, do it only when the layout genuinely cannot absorb it.",
           "Horizontal resize is never allowed. It breaks everything around it and nobody wants it.",
           "Validate on blur, and never truncate silently. If there is a limit, show the count before it is hit.",
         ]}
@@ -54,7 +54,7 @@ export default function TextareaPage() {
         accessibility={[
           "<code>state=\"error\"</code> sets <code>aria-invalid</code>; pair it with <code>aria-describedby</code> pointing at the message.",
           "Always pair with a <code>Label</code> and <code>htmlFor</code>. A textarea with only a placeholder is unlabelled the moment someone types.",
-          "16px text, like every other field — below that iOS Safari zooms the page on focus.",
+          "16px text, like every other field, below that iOS Safari zooms the page on focus.",
         ]}
       />
     </>

@@ -26,21 +26,21 @@ toast.error("Something went wrong", "Try again, or call 020 3397 7003.");
 toast.promise(submitLead(data), {
   loading: "Submitting…",
   success: "Quote request submitted",
-  error: "Could not submit — try again",
+  error: "Could not submit. Try again",
 });`}</Code>
       </Section>
 
       <BestPractices
         when={[
           "Something completed and needs no follow-up: a lead submitted, photos uploaded, a change saved.",
-          "Never for validation. A field error must sit next to the field — a toast that disappears cannot be re-read while fixing the input.",
+          "Never for validation. A field error must sit next to the field, a toast that disappears cannot be re-read while fixing the input.",
           "Never for anything the user must act on. It vanishes, and so does the action.",
         ]}
         behavior={[
           "Success runs 4s, errors 6s. Failure copy takes longer to process than success copy.",
           "One toast per action. Two firing together means one of them is redundant.",
           "<code>toast.promise</code> ties the lifecycle to the request, so there is no window where the UI looks idle but work is in flight.",
-          "Position is <code>top-center</code>, set once in the root layout. Do not override it per call — inconsistent placement is how people miss them.",
+          "Position is <code>top-center</code>, set once in the root layout. Do not override it per call, inconsistent placement is how people miss them.",
         ]}
         content={[
           "The title states what happened in the past tense: <em>Quote request submitted</em>. No exclamation marks.",

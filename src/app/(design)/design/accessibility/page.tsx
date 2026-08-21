@@ -7,7 +7,7 @@ export default function AccessibilityPage() {
     <>
       <PageHeader
         title="Accessibility"
-        lead="Target is WCAG 2.1 AA. This page records what the system guarantees, and — just as usefully — what it currently does not."
+        lead="Target is WCAG 2.1 AA. This page records what the system guarantees, and, just as usefully, what it currently does not."
       />
 
       <Section title="Contrast" note="Measured against the surface each colour actually sits on.">
@@ -20,13 +20,13 @@ export default function AccessibilityPage() {
             ["White on --primary", "6.1:1", "✅ AA"],
             ["--error #DC2626 on white", "4.8:1", "✅ AA"],
             ["--success #15803D on white", "4.9:1", "✅ AA"],
-            ["--brand-soft #FF5A5A on white", "2.9:1", "❌ decorative only — never text"],
+            ["--brand-soft #FF5A5A on white", "2.9:1", "❌ decorative only, never text"],
           ]}
         />
         <div className="mt-6">
           <Rule>
             <Mono>--brand-soft</Mono> exists for borders and glows. It fails badly as text on light, which is exactly
-            why it is named &quot;soft&quot; and not &quot;light&quot; — a name should make the wrong use feel wrong.
+            why it is named &quot;soft&quot; and not &quot;light&quot;, a name should make the wrong use feel wrong.
           </Rule>
         </div>
       </Section>
@@ -63,10 +63,10 @@ focus-visible:ring-offset-2`}</Code>
         <Table
           head={["Control", "Height", "Verdict"]}
           rows={[
-            ["Button — default", "48px", "✅"],
-            ["Input — lg", "56px", "✅"],
+            ["Button (default)", "48px", "✅"],
+            ["Input (lg)", "56px", "✅"],
             ["Consent checkbox", "20px box, 44px+ label row", "✅ via the label"],
-            ["Button — sm", "36px", "⚠️ desktop only"],
+            ["Button (sm)", "36px", "⚠️ desktop only"],
           ]}
         />
       </Section>
@@ -82,7 +82,7 @@ focus-visible:ring-offset-2`}</Code>
       <Section title="Known gaps" note="Recorded rather than quietly ignored.">
         <ul className="space-y-3 text-[15px] leading-[1.7] text-neutral-600">
           <li>
-            The FAQ accordion trigger has no <Mono>focus-visible</Mono> treatment of its own — it falls back to the
+            The FAQ accordion trigger has no <Mono>focus-visible</Mono> treatment of its own, it falls back to the
             browser outline.
           </li>
           <li>

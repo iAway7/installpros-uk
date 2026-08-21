@@ -71,7 +71,7 @@ export function ExperimentsView({ experiments, isAdmin }: { experiments: Experim
             <h3 className="text-lg font-semibold">No experiments yet</h3>
             <p className="max-w-sm text-body-sm text-muted-foreground">
               {isAdmin
-                ? "Create your first A/B test — e.g. two hero headlines — then set it running."
+                ? "Create your first A/B test, for example two hero headlines, then set it running."
                 : "An admin can create A/B tests here."}
             </p>
           </CardContent>
@@ -564,7 +564,7 @@ function CreateForm({ onDone }: { onDone: () => void }) {
                   {isSplit ? (
                     <div className="space-y-1">
                       <span className="flex items-center gap-1 text-label text-muted-foreground">
-                        Page <InfoHint text="The page this variant shows. Pages come from the app's registry — add more in lib/experiments/pages.ts." />
+                        Page <InfoHint text="The page this variant shows. Pages come from the app's registry. Add more in lib/experiments/pages.ts." />
                       </span>
                       <select
                         value={v.path}
@@ -573,7 +573,7 @@ function CreateForm({ onDone }: { onDone: () => void }) {
                       >
                         {TESTABLE_PAGES.map((p) => (
                           <option key={p.slug} value={p.slug}>
-                            {p.label} — {p.slug}
+                            {p.label} ({p.slug})
                           </option>
                         ))}
                       </select>
@@ -581,7 +581,7 @@ function CreateForm({ onDone }: { onDone: () => void }) {
                   ) : v.is_control ? (
                     <div className="space-y-1">
                       <span className="flex items-center gap-1 text-label text-muted-foreground">
-                        Current headline <InfoHint text="The original is what's live now — shown here for reference and left unchanged. Your variants are tested against this." />
+                        Current headline <InfoHint text="The original is what's live now, shown here for reference and left unchanged. Your variants are tested against this." />
                       </span>
                       <div
                         className="flex h-11 w-full items-center truncate rounded-lg border border-dashed border-input bg-muted/40 px-3 text-body-sm text-muted-foreground"
@@ -642,7 +642,7 @@ function CreateForm({ onDone }: { onDone: () => void }) {
             )}
           </Button>
           <p className="text-center text-label text-muted-foreground">
-            New experiments start as a draft — press Start to go live.
+            New experiments start as a draft. Press Start to go live.
             {!isSplit && " For same-page tests, only the hero headline is wired to variants right now."}
           </p>
         </form>

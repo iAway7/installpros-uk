@@ -37,7 +37,7 @@ export function InfoTip({
     <span className={cn("relative inline-flex align-middle", className)}>
       <button
         type="button"
-        aria-label={source ? `About this field — source: ${source}` : "About this field"}
+        aria-label={source ? `About this field. Source: ${source}` : "About this field"}
         aria-expanded={open}
         aria-describedby={open ? id : undefined}
         onMouseEnter={() => setOpen(true)}

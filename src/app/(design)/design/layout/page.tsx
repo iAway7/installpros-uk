@@ -7,7 +7,7 @@ export default function LayoutPage() {
     <>
       <PageHeader
         title="Layout system"
-        lead="One container width, one vertical rhythm, one grid pattern. The page was built by different hands at different times and had five container widths — this is the one that won."
+        lead="One container width, one vertical rhythm, one grid pattern. The page was built by different hands at different times and had five container widths, this is the one that won."
       />
 
       <Section title="The container">
@@ -29,8 +29,8 @@ export default function LayoutPage() {
         <div className="mt-6">
           <Rule>
             The header and footer still hardcode <Mono>maxWidth: 1140px</Mono> and the hero trust bar uses 1160px. That
-            leaves the logo six pixels off from the content edge above 1200px. It is on the migration plan, not fixed —
-            do not copy those values into anything new.
+            leaves the logo six pixels off from the content edge above 1200px. It is on the migration plan, not fixed.
+            Do not copy those values into anything new.
           </Rule>
         </div>
       </Section>
@@ -46,7 +46,7 @@ export default function LayoutPage() {
         />
         <p className="mt-4 max-w-2xl text-[15px] leading-[1.6] text-neutral-500">
           Gap is <Mono>14px</Mono> for card grids and <Mono>40px</Mono> where the items are text blocks rather than
-          bordered cards. Prefer auto-fit — it degrades on its own without a breakpoint for every count.
+          bordered cards. Prefer auto-fit, it degrades on its own without a breakpoint for every count.
         </p>
       </Section>
 

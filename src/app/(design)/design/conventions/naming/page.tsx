@@ -36,7 +36,7 @@ Body-L  Body  Body-S  Caption  Input
 Eyebrow  Button`}</Code>
         <p className="mt-4 max-w-2xl text-[15px] leading-[1.6] text-neutral-500">
           There is exactly one H2. Names like <Mono>Heading/H2 Section</Mono> and <Mono>Heading/H2 Form</Mono> are what
-          a system looks like when nobody decided — they differed by a weight and half a pixel.
+          a system looks like when nobody decided, they differed by a weight and half a pixel.
         </p>
       </Section>
 
@@ -60,7 +60,7 @@ Eyebrow  Button`}</Code>
             ["Variant", "Primary · Secondary · Outline · Ghost"],
             ["Size", "Small · Default · Large"],
             ["State", "Default · Hover · Focus · Disabled · Error"],
-            ["Tone", "light · dark — which surface it sits on"],
+            ["Tone", "light · dark, which surface it sits on"],
           ]}
         />
         <p className="mt-4 max-w-2xl text-[15px] leading-[1.6] text-neutral-500">

@@ -19,7 +19,7 @@ export default function ModalPage() {
     <>
       <PageHeader
         title="Modal"
-        lead="Interrupts everything until the user deals with it. Three bands — header, body, footer — separated by hairlines, with the actions in a tinted footer so they read as a distinct region."
+        lead="Interrupts everything until the user deals with it. Three bands, header, body, footer, separated by hairlines, with the actions in a tinted footer so they read as a distinct region."
       />
 
       <Section title="Default">
@@ -110,7 +110,7 @@ export default function ModalPage() {
       <Section title="Why native dialog">
         <Rule>
           <code>showModal()</code> supplies the focus trap, Escape, the inert background and top-layer stacking. Every
-          one is a thing hand-rolled modals get wrong — and the focus trap is invisible until someone tries the page
+          one is a thing hand-rolled modals get wrong, and the focus trap is invisible until someone tries the page
           with a keyboard. The cost is that the backdrop is styled through <code>::backdrop</code> rather than a child
           element, which is a fair trade.
         </Rule>
@@ -126,7 +126,7 @@ export default function ModalPage() {
           "Escape closes, backdrop click closes, focus returns to whatever opened it.",
           "Below 640px it becomes a bottom sheet. A centred dialog on a phone puts the actions mid-screen, out of thumb reach.",
           "Never nest modals. A second over the first means the first asked the wrong question.",
-          "Do not autofocus the destructive action — muscle memory plus Enter equals a deleted lead. Use <code>autoFocusSelector</code> for the first input instead.",
+          "Do not autofocus the destructive action, muscle memory plus Enter equals a deleted lead. Use <code>autoFocusSelector</code> for the first input instead.",
         ]}
         content={[
           "The title is the question, ending in a question mark: <em>Mark this lead as lost?</em> Not <em>Confirm action</em>.",

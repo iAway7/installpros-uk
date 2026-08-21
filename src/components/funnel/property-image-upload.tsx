@@ -127,7 +127,7 @@ export function PropertyImageUpload() {
             One last step to your quote
           </h1>
           <p className="mx-auto mb-8 max-w-2xl text-center text-body text-muted-foreground">
-            Your details are in. Add a few exterior photos so we can price your install accurately — then your
+            Your details are in. Add a few exterior photos so we can price your install accurately, and then your
             same-day quote is on its way.
           </p>
 

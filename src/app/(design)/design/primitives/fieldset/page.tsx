@@ -15,7 +15,7 @@ export default function FieldsetPage() {
     <>
       <PageHeader
         title="Fieldset"
-        lead="Groups related controls under one name. The name is not decoration — without it a screen reader reads each option with no idea what is being chosen."
+        lead="Groups related controls under one name. The name is not decoration, without it a screen reader reads each option with no idea what is being chosen."
       />
 
       <Section title="Default">
@@ -55,7 +55,7 @@ export default function FieldsetPage() {
           A <code>&lt;fieldset&gt;</code> defaults to <code>min-width: min-content</code> and, unlike every other
           element, <strong>refuses to shrink inside a flex row</strong> even when its children can. It is one of the
           most common causes of phantom horizontal scroll. This component ships with <code>min-w-0</code> for that
-          reason — do not remove it.
+          reason, do not remove it.
         </Rule>
       </Section>
 
@@ -67,7 +67,7 @@ export default function FieldsetPage() {
         ]}
         behavior={[
           "<code>required</code> and <code>disabled</code> apply to the group. A single required radio means nothing on its own.",
-          "<code>disabled</code> on the fieldset disables every control inside it natively — no need to thread the prop through each child.",
+          "<code>disabled</code> on the fieldset disables every control inside it natively, no need to thread the prop through each child.",
           "The error sits under the group, not under one control, because the constraint belongs to the whole set.",
         ]}
         content={[
@@ -76,7 +76,7 @@ export default function FieldsetPage() {
         ]}
         accessibility={[
           "Real <code>&lt;fieldset&gt;</code> and <code>&lt;legend&gt;</code>, so the group name is announced before each option rather than once at the top.",
-          "<code>showLegend={false}</code> keeps the legend in the accessibility tree as <code>sr-only</code> — hidden visually, never removed.",
+          "<code>showLegend={false}</code> keeps the legend in the accessibility tree as <code>sr-only</code>, hidden visually, never removed.",
           "The error carries <code>role=\"alert\"</code> and is wired to the fieldset through <code>aria-describedby</code>.",
         ]}
       />

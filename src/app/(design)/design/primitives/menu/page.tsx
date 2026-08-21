@@ -15,7 +15,7 @@ export default function MenuPage() {
     <>
       <PageHeader
         title="Menu"
-        lead="Dropdown opened by a button. Built for the dashboard — row actions on the leads table are the reason it exists."
+        lead="Dropdown opened by a button. Built for the dashboard, row actions on the leads table are the reason it exists."
       />
 
       <Section title="Default">
@@ -60,9 +60,9 @@ export default function MenuPage() {
         ]}
         behavior={[
           "↑/↓ move, Enter picks, Escape closes and returns focus to the trigger, Tab closes without acting.",
-          "Focus moves into the list rather than being tracked with <code>aria-activedescendant</code> — there is no text input to keep focus in, so the simpler model is also the correct one.",
+          "Focus moves into the list rather than being tracked with <code>aria-activedescendant</code>, there is no text input to keep focus in, so the simpler model is also the correct one.",
           "Destructive items render in <code>--error</code> and go last, separated from what came before by position. Never make one the first item.",
-          "Selecting closes the menu. It never stays open for a second action — that is a toolbar, not a menu.",
+          "Selecting closes the menu. It never stays open for a second action, that is a toolbar, not a menu.",
         ]}
         content={[
           "Items are verb-first: <em>View lead</em>, <em>Resolve address</em>, <em>Mark as lost</em>. Not nouns, not sentences.",

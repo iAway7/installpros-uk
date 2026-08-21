@@ -9,7 +9,7 @@ export default function ErrorPage() {
     <>
       <PageHeader
         title="Error"
-        lead="Good error design is clear, useful and friendly. It says what happened and what to do next — never just that something went wrong."
+        lead="Good error design is clear, useful and friendly. It says what happened and what to do next, never just that something went wrong."
       />
 
       <Section title="Default">
@@ -46,8 +46,8 @@ export default function ErrorPage() {
 
       <BestPractices
         when={[
-          "Use for validation that the user can fix — a malformed postcode, a missing consent tick.",
-          "For a failure the user cannot act on (the coverage API is down), say so plainly and offer the alternative: <em>&ldquo;We couldn&rsquo;t check just now — call 020 3397 7003 and we&rsquo;ll check for you.&rdquo;</em>",
+          "Use for validation that the user can fix, a malformed postcode, a missing consent tick.",
+          "For a failure the user cannot act on (the coverage API is down), say so plainly and offer the alternative: <em>&ldquo;We couldn&rsquo;t check just now, call 020 3397 7003 and we&rsquo;ll check for you.&rdquo;</em>",
           "Do not use it for warnings or for anything the user has not done yet. An empty field is not an error until they try to submit.",
         ]}
         behavior={[
@@ -57,7 +57,7 @@ export default function ErrorPage() {
         ]}
         accessibility={[
           "The message carries <code>role=\"alert\"</code>, so a screen reader announces it when it appears.",
-          "Give it an <code>id</code> and point the field at it with <code>aria-describedby</code> — otherwise the message exists but is never connected to the thing it describes.",
+          "Give it an <code>id</code> and point the field at it with <code>aria-describedby</code>, otherwise the message exists but is never connected to the thing it describes.",
           "<code>state=\"error\"</code> on the input sets <code>aria-invalid</code> automatically. Colour and an icon alone are not a state.",
           "<code>--error</code> is #DC2626, which clears 4.8:1 on white. On the dark hero it resolves lighter, because the same red only reaches 3.1:1 there.",
         ]}

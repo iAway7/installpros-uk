@@ -93,7 +93,7 @@ export function WebhooksView() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <p className="max-w-2xl text-body-sm text-muted-foreground">
-          Every lead is POSTed as JSON to each active endpoint — paste a Zapier or Make catch-hook URL
+          Every lead is POSTed as JSON to each active endpoint. Paste a Zapier or Make catch-hook URL
           and leads reach your CRM, WhatsApp or a spreadsheet without anyone opening this dashboard.
           Delivery never blocks the form: a failing endpoint is retried and logged, never surfaced to the visitor.
         </p>
@@ -112,7 +112,7 @@ export function WebhooksView() {
           <CardContent className="flex items-center gap-3 p-4">
             <CheckCircle2 className="h-4 w-4 shrink-0 text-success" />
             <p className="text-body-sm">
-              <span className="font-semibold">LEAD_WEBHOOK_URL</span> is set in the environment — that
+              <span className="font-semibold">LEAD_WEBHOOK_URL</span> is set in the environment, so that
               destination receives leads too, and isn&apos;t listed below. Its deliveries do appear in the log.
             </p>
           </CardContent>

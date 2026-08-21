@@ -7,7 +7,7 @@ export default function ResponsivePage() {
     <>
       <PageHeader
         title="Responsive rules"
-        lead="The site has two layouts, not five. Everything meaningful happens at 768px — sm and lg only make small adjustments, and xl is never used."
+        lead="The site has two layouts, not five. Everything meaningful happens at 768px, sm and lg only make small adjustments, and xl is never used."
       />
 
       <Section title="Breakpoints in real use">
@@ -47,7 +47,7 @@ export default function ResponsivePage() {
         <ul className="space-y-4 text-[15px] leading-[1.7] text-neutral-600">
           <li>
             <strong className="text-neutral-900">Before/after stacks.</strong> At 375px the drag comparison gives each
-            side ~165px and the text clips against the divider. Below md it becomes two cards — before on top, which is
+            side ~165px and the text clips against the divider. Below md it becomes two cards, before on top, which is
             also the order the story reads in.
           </li>
           <li>
@@ -65,7 +65,7 @@ export default function ResponsivePage() {
         <Code>{`min-h-[100svh]   /* not min-h-screen */`}</Code>
         <p className="mt-4 max-w-2xl text-[15px] leading-[1.6] text-neutral-500">
           <Mono>100vh</Mono> on mobile includes the browser chrome, so a full-height hero measures taller than the
-          screen and pushes its own trust bar out of view on load. <Mono>svh</Mono> measures the small viewport — what is
+          screen and pushes its own trust bar out of view on load. <Mono>svh</Mono> measures the small viewport, what is
           actually visible.
         </p>
       </Section>

@@ -22,12 +22,36 @@ export function CtaSection({ addressMode = false }: { addressMode?: boolean } = 
         </div>
 
         <p className="mx-auto mt-8 max-w-4xl text-center text-body leading-relaxed text-muted-foreground">
-          © {new Date().getFullYear()} Install Pros® is a registered trade mark of InstallPros Group Ltd (UK), registered in the United
-          Kingdom. Company No. 14896859. VAT No. GB456635174. Registered office: Rotunda Buildings, Montpellier
-          Exchange, Cheltenham, GL50 1SX. Tel: 020 3397 7003 | Email: admin@installpros.co.uk | All rights reserved
+          © 2024 Install Pros® is a registered trade mark of Install Pros Group Ltd (UK). registered in the United
+          Kingdom. Company No. 14896859. VAT No. GB456635174. Registered office: 4 Imperial Square, Cheltenham,
+          GL50 1QB Tel: 020 3397 7003 | Email: admin@installpros.co.uk | All rights reserved
+        </p>
+        <p className="mx-auto mt-3 max-w-4xl text-center text-body-sm leading-relaxed text-muted-foreground">
+          We are independent installers of Starlink™ and Amazon LEO™ &amp; have no affiliation to Starlink™,
+          SpaceX™ or Amazon™
         </p>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/funnel/payment-methods.svg" alt="Accepted payment methods" className="mx-auto mt-6 h-5" />
+        <div className="mt-7 flex flex-wrap items-center justify-center gap-x-8 gap-y-5">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/funnel/digital-approved-installer.webp"
+            alt="Digital Approved Installer"
+            loading="lazy"
+            width={1562}
+            height={745}
+            className="h-14 w-auto"
+          />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/funnel/authorised-starlink-installer.webp"
+            alt="Authorised Starlink Installer"
+            loading="lazy"
+            width={144}
+            height={144}
+            className="h-14 w-auto rounded-lg"
+          />
+        </div>
       </div>
     </section>
   );

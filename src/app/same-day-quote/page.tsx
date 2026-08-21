@@ -22,7 +22,7 @@ export default function SameDayQuotePage() {
       <main className="flex flex-1 items-center justify-center px-6 py-20">
         <div className="mx-auto max-w-lg text-center">
           <CheckCircle2 className="mx-auto h-14 w-14 text-green-500" />
-          <h1 className="mt-6 text-3xl font-bold text-foreground md:text-4xl">Thanks — your photos are in!</h1>
+          <h1 className="mt-6 text-3xl font-bold text-foreground md:text-4xl">Thanks, your photos are in!</h1>
           <p className="mt-3 text-muted-foreground">
             Our team is preparing your same-day Starlink installation quote. We&apos;ll text you shortly at the number
             you provided. Need anything sooner? Call{" "}

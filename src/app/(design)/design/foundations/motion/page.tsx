@@ -7,7 +7,7 @@ export default function MotionPage() {
     <>
       <PageHeader
         title="Motion"
-        lead="One easing curve and four durations. Motion here is meant to be felt rather than watched — every value errs slow enough to read as deliberate and short enough to stay out of the way."
+        lead="One easing curve and four durations. Motion here is meant to be felt rather than watched, every value errs slow enough to read as deliberate and short enough to stay out of the way."
       />
 
       <Section title="The curve" note="There is only one, and everything uses it.">
@@ -25,7 +25,7 @@ export default function MotionPage() {
         <Table
           head={["Token", "Value", "Applies to"]}
           rows={[
-            [<Mono key="a">duration/fast</Mono>, "200ms", "Colour and opacity — hovers, links, focus"],
+            [<Mono key="a">duration/fast</Mono>, "200ms", "Colour and opacity, hovers, links, focus"],
             [<Mono key="b">duration/nav</Mono>, "400ms", "Header solidifying on scroll"],
             [<Mono key="c">duration/card-hover</Mono>, "450ms", "Card lift"],
             [<Mono key="d">duration/accordion</Mono>, "550ms", "FAQ open and close"],
@@ -54,7 +54,7 @@ export default function MotionPage() {
 
       <Section title="Reduced motion">
         <p className="max-w-2xl text-[15px] leading-[1.6] text-neutral-500">
-          <Mono>prefers-reduced-motion: reduce</Mono> is honoured globally — animations and transitions collapse to
+          <Mono>prefers-reduced-motion: reduce</Mono> is honoured globally, animations and transitions collapse to
           0.01ms, and smooth scrolling turns off. The counting stat numbers and the before/after meters check it
           individually too, and render their final value immediately.
         </p>

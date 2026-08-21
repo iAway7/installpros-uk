@@ -30,7 +30,7 @@ export default function PaginationPage() {
 
       <BestPractices
         when={[
-          "Long lists where the total is known and someone might return to a specific page — the leads table, install history.",
+          "Long lists where the total is known and someone might return to a specific page, the leads table, install history.",
           "For a feed nobody comes back to, infinite scroll is less machinery and reads better.",
           "Below one page it renders nothing at all, rather than a disabled control that suggests there is more.",
         ]}
@@ -47,7 +47,7 @@ export default function PaginationPage() {
           "Wrapped in <code>&lt;nav aria-label=\"Pagination\"&gt;</code> so it is reachable as a landmark.",
           "The current page carries <code>aria-current=\"page\"</code>; every cell has an <code>aria-label</code> like <em>Page 7</em>, because a bare number announces nothing useful.",
           "The ellipsis is <code>aria-hidden</code>.",
-          "Cells are 40px tall — below the 44px touch guideline. On mobile prefer a Load more button over a row of small targets.",
+          "Cells are 40px tall, below the 44px touch guideline. On mobile prefer a Load more button over a row of small targets.",
         ]}
       />
     </>

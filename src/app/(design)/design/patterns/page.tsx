@@ -7,7 +7,7 @@ export default function PatternsPage() {
     <>
       <PageHeader
         title="Patterns"
-        lead="Decisions about how something works, not what it looks like. A pattern survives a redesign — these are the parts of the funnel that would be rebuilt the same way even if every colour changed."
+        lead="Decisions about how something works, not what it looks like. A pattern survives a redesign, these are the parts of the funnel that would be rebuilt the same way even if every colour changed."
       />
 
       <Section title="Progressive lead capture" note="The most important pattern on the site. One question per screen.">
@@ -38,7 +38,7 @@ export default function PatternsPage() {
         </ul>
         <div className="mt-6">
           <Rule>
-            The consent checkbox lives on the last step and is never pre-ticked. Submission is blocked twice — once in{" "}
+            The consent checkbox lives on the last step and is never pre-ticked. Submission is blocked twice, once in{" "}
             <Mono>canProceed()</Mono> and again in <Mono>submit()</Mono>.
           </Rule>
         </div>
@@ -48,7 +48,7 @@ export default function PatternsPage() {
         <Table
           head={["Placement", "Component", "Surface"]}
           rows={[
-            ["Hero", <Mono key="a">ZipAvailabilityChecker</Mono>, "Dark — tone=\"dark\""],
+            ["Hero", <Mono key="a">ZipAvailabilityChecker</Mono>, "Dark, tone=\"dark\""],
             ["CTA section", <Mono key="b">ServiceQuoteForm</Mono>, "Light card"],
           ]}
         />
@@ -73,7 +73,7 @@ Track record     four numbers, counted up on scroll`}</Code>
         <p className="max-w-2xl text-[15px] leading-[1.6] text-neutral-500">
           Instead of claiming Starlink is faster, the section runs a real Cloudflare speed test against the visitor&apos;s
           own line and puts the result next to a typical installed figure. It is the one place on the page where the
-          proof is generated live rather than asserted — and on mobile it becomes two stacked cards, because the drag
+          proof is generated live rather than asserted, and on mobile it becomes two stacked cards, because the drag
           comparison cannot survive a 375px viewport.
         </p>
       </Section>

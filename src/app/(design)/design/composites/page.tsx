@@ -7,7 +7,7 @@ export default function CompositesPage() {
     <>
       <PageHeader
         title="Composite components"
-        lead="Assemblies of primitives plus tokens. They carry no business logic — the difference between a composite and a pattern is that a composite is a shape you fill, and a pattern is a decision about how something works."
+        lead="Assemblies of primitives plus tokens. They carry no business logic, the difference between a composite and a pattern is that a composite is a shape you fill, and a pattern is a decision about how something works."
       />
 
       <Section title="Feature card" note="Icon chip, title, one sentence. Used in the capability and coverage grids.">
@@ -49,7 +49,7 @@ hover    -5px, border --brand-soft/35, 450ms ease-ds`}</Code>
         </Preview>
         <p className="mt-4 max-w-2xl text-[15px] leading-[1.6] text-neutral-500">
           The large one uses <Mono>Display-XL</Mono> at weight 200. The thin stroke is what stops a 72px number reading
-          as a shout — do not bold it.
+          as a shout, do not bold it.
         </p>
       </Section>
 
@@ -96,7 +96,7 @@ hover    -5px, border --brand-soft/35, 450ms ease-ds`}</Code>
         />
         <div className="mt-6">
           <Rule>
-            Every composite exists in code and none of them exist in Figma yet — only the Button component set has been
+            Every composite exists in code and none of them exist in Figma yet, only the Button component set has been
             built. That gap is Phase 3 of the migration plan, and it is the honest state of things today.
           </Rule>
         </div>

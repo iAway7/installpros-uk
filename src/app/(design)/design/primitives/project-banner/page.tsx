@@ -8,7 +8,7 @@ export default function ProjectBannerPage() {
     <>
       <PageHeader
         title="Project banner"
-        lead="Site-wide state that needs resolving. Not an announcement bar — if it can be dismissed without the state changing, it was never banner-worthy."
+        lead="Site-wide state that needs resolving. Not an announcement bar, if it can be dismissed without the state changing, it was never banner-worthy."
       />
 
       <Section title="Variants" note="Match the variant to severity, not to mood.">
@@ -19,7 +19,7 @@ export default function ProjectBannerPage() {
             variant="warning"
           />
           <ProjectBanner
-            label="Payment failed — installs are on hold until the card is updated."
+            label="Payment failed. Installs are on hold until the card is updated."
             callToAction={{ label: "Update Payment Method", href: "#" }}
             variant="error"
           />
@@ -56,7 +56,7 @@ export default function ProjectBannerPage() {
           "<code>error</code> for something blocking, <code>warning</code> for an exceptional state with non-immediate action, <code>success</code> for a positive temporary state, <code>gray</code> for routine notices.",
         ]}
         behavior={[
-          "Non-dismissible by design, and the CTA is required — a banner with no route out is a dead end.",
+          "Non-dismissible by design, and the CTA is required, a banner with no route out is a dead end.",
           "One at a time. Stacking banners drowns the most urgent one.",
           "It pushes content down rather than overlaying. A banner covering the nav is a modal in disguise.",
         ]}
@@ -64,7 +64,7 @@ export default function ProjectBannerPage() {
           "<code>label</code> is one sentence in sentence case naming the impact: <em>Bookings for the Highlands are paused while Storm Fiona passes.</em> No &ldquo;Heads up&rdquo;, no apologies.",
           "The CTA is Title Case <em>Verb + Noun</em> pointing at the resolver: <em>Update Payment Method</em>, <em>See Affected Areas</em>.",
           "Name the affected thing when the context is not obvious from the surrounding chrome.",
-          "No emoji and no interjections — the variant already carries the severity.",
+          "No emoji and no interjections, the variant already carries the severity.",
         ]}
         accessibility={[
           "<code>role=\"region\"</code> with an accessible name, so it is a landmark rather than stray text above the page.",

@@ -18,7 +18,7 @@ export default function TabsPage() {
     <>
       <PageHeader
         title="Tabs"
-        lead="Switches between sibling views inside one page. Tabs imply the views share a scope, a URL parent and a data model — for unrelated pages this is the wrong control."
+        lead="Switches between sibling views inside one page. Tabs imply the views share a scope, a URL parent and a data model, for unrelated pages this is the wrong control."
       />
 
       <Section title="Primary" note="Underline. The default for a page's main sections.">
@@ -65,13 +65,13 @@ export default function TabsPage() {
           "Cap at 5–7 on desktop and 3–4 on mobile. Past that, consolidate or move the secondary views behind a <code>Menu</code>.",
         ]}
         behavior={[
-          "Switching is instant. No network confirmation, no toast — a tab change that needs acknowledging was a navigation.",
+          "Switching is instant. No network confirmation, no toast, a tab change that needs acknowledging was a navigation.",
           "Reflect the active tab in the URL as a query param, so a refresh or a shared link lands on the right view.",
           "Disable a tab only for permission or empty-state reasons, and always pair it with a tooltip naming why.",
           "The row scrolls horizontally rather than wrapping. Wrapped tabs read as two rows of unrelated things.",
         ]}
         content={[
-          "Titles are Title Case, 1–2 words, and name the destination noun: <em>Overview</em>, <em>Logs</em>. Verbs belong on buttons — <em>View Logs</em> is wrong on a tab.",
+          "Titles are Title Case, 1–2 words, and name the destination noun: <em>Overview</em>, <em>Logs</em>. Verbs belong on buttons, <em>View Logs</em> is wrong on a tab.",
           "Do not append counts to the title. Use the <code>badge</code> slot, and drop it entirely at zero rather than showing a 0.",
           "The tooltip explains the constraint, not the tab: <em>Only visible to account owners.</em>",
         ]}

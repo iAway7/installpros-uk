@@ -339,7 +339,7 @@ export const THEME_TOKENS: Token[] = [
     "value": "var(--gray-900)",
     "ref": "--gray-900",
     "hex": "#171717",
-    "note": "#171717 — matches the DS --primary"
+    "note": "#171717, matches the DS --primary"
   },
   {
     "name": "--card",
@@ -360,7 +360,7 @@ export const THEME_TOKENS: Token[] = [
     "value": "var(--slate-50)",
     "ref": "--slate-50",
     "hex": "#F9FAFB",
-    "note": "#F9FAFB — cool off-white, not a pure grey"
+    "note": "#F9FAFB, cool off-white, not a pure grey"
   },
   {
     "name": "--secondary-foreground",
@@ -381,7 +381,7 @@ export const THEME_TOKENS: Token[] = [
     "value": "var(--gray-700)",
     "ref": "--gray-700",
     "hex": "#666666",
-    "note": "#666666 — matches the DS --secondary"
+    "note": "#666666, matches the DS --secondary"
   },
   {
     "name": "--border",
@@ -409,7 +409,7 @@ export const THEME_TOKENS: Token[] = [
     "value": "var(--red-600)",
     "ref": "--red-600",
     "hex": "#C70505",
-    "note": "#C70505 — button fill, eyebrow labels"
+    "note": "#C70505, button fill, eyebrow labels"
   },
   {
     "name": "--primary-foreground",
@@ -437,21 +437,21 @@ export const THEME_TOKENS: Token[] = [
     "value": "var(--red-700)",
     "ref": "--red-700",
     "hex": "#AA0909",
-    "note": "#9E0404 — darkens on hover (from the DS)"
+    "note": "#9E0404, darkens on hover (from the DS)"
   },
   {
     "name": "--brand-icon",
     "value": "var(--coral-500)",
     "ref": "--coral-500",
     "hex": "#E5484D",
-    "note": "#E5484D — card icon glyphs"
+    "note": "#E5484D, card icon glyphs"
   },
   {
     "name": "--brand-soft",
     "value": "var(--red-400)",
     "ref": "--red-400",
     "hex": "#FF5C5C",
-    "note": "#FF5A5A — decorative borders/glows ONLY"
+    "note": "#FF5A5A, decorative borders/glows ONLY"
   },
   {
     "name": "--brand-deep",
@@ -472,21 +472,21 @@ export const THEME_TOKENS: Token[] = [
     "value": "var(--gray-800)",
     "ref": "--gray-800",
     "hex": "#4D4D4D",
-    "note": "#404040 — input border on focus"
+    "note": "#404040, input border on focus"
   },
   {
     "name": "--field",
     "value": "var(--gray-200)",
     "ref": "--gray-200",
     "hex": "#D4D4D4",
-    "note": "#D4D4D4 — input/option border at rest"
+    "note": "#D4D4D4, input/option border at rest"
   },
   {
     "name": "--field-hover",
     "value": "var(--gray-600)",
     "ref": "--gray-600",
     "hex": "#7D7D7D",
-    "note": "#737373 — border on hover"
+    "note": "#737373, border on hover"
   },
   {
     "name": "--ring",
@@ -500,7 +500,7 @@ export const THEME_TOKENS: Token[] = [
     "value": "var(--coral-600)",
     "ref": "--coral-600",
     "hex": "#DC2828",
-    "note": "#DC2626 — 4.83:1 on white ✓ AA"
+    "note": "#DC2626, 4.83:1 on white ✓ AA"
   },
   {
     "name": "--error-foreground",
@@ -528,7 +528,7 @@ export const THEME_TOKENS: Token[] = [
     "value": "var(--green-600)",
     "ref": "--green-600",
     "hex": "#157F3C",
-    "note": "#15803D — 4.86:1 on white ✓ AA"
+    "note": "#15803D, 4.86:1 on white ✓ AA"
   },
   {
     "name": "--success-foreground",
@@ -542,14 +542,14 @@ export const THEME_TOKENS: Token[] = [
     "value": "var(--green-400)",
     "ref": "--green-400",
     "hex": "#21C45D",
-    "note": "#22C55E — for the dark hero only"
+    "note": "#22C55E, for the dark hero only"
   },
   {
     "name": "--gold",
     "value": "var(--amber-500)",
     "ref": "--amber-500",
     "hex": "#FBBD04",
-    "note": "#FBBC04 — review stars"
+    "note": "#FBBC04, review stars"
   },
   {
     "name": "--whatsapp",
@@ -567,7 +567,7 @@ export const THEME_TOKENS: Token[] = [
   },
   {
     "name": "--hero-overlay-md",
-    "value": "linear-gradient(to bottom, rgba(10, 25, 41, 0.4), rgba(13, 27, 42, 0.5), rgba(0, 0, 0, 0.7))",
+    "value": "linear-gradient(to bottom, rgba(10, 25, 41, 0.55), rgba(13, 27, 42, 0.65), rgba(0, 0, 0, 0.82))",
     "ref": null,
     "hex": null,
     "note": null

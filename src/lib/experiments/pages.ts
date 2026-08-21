@@ -15,12 +15,12 @@ export const TESTABLE_PAGES: TestablePage[] = [
   {
     slug: "/install-quote",
     label: "Install Quote",
-    description: "Original funnel — postcode hero, full nav-free header.",
+    description: "Original funnel: postcode hero, full nav-free header.",
   },
   {
     slug: "/starlink-installation",
     label: "Starlink Installation",
-    description: "Variant funnel — address autocomplete hero, slim header.",
+    description: "Variant funnel: address autocomplete hero, slim header.",
   },
 ];
 

@@ -122,7 +122,7 @@ export function LeadDetailPanel({ lead, location, onClose, statusPicker, onSaveV
               <Field label="Service">{serviceOf(lead)}</Field>
               <Field
                 label="Est. value"
-                tip="What you expect this job to be worth. Entered by the team — it is what turns the leads list into a pipeline figure."
+                tip="What you expect this job to be worth. Entered by the team. It is what turns the leads list into a pipeline figure."
                 source="Entered manually"
               >
                 <EstimatedValue value={lead.estimated_value} onSave={onSaveValue} />
@@ -215,7 +215,7 @@ function SatelliteView({ leadId, mapsQuery, exact }: { leadId: string; mapsQuery
         <p className="flex items-center gap-1 text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
           Satellite view
           <InfoTip
-            text="Aerial imagery centred on the postcode — check the roof, outbuildings and tree line before quoting, even when the customer sent no photos."
+            text="Aerial imagery centred on the postcode. Check the roof, outbuildings and tree line before quoting, even when the customer sent no photos."
             source="Esri World Imagery, or Google Static Maps when a key is set"
           />
         </p>
@@ -269,7 +269,7 @@ function AddressResolver({ leadId, intel }: { leadId: string; intel?: LeadIntel 
       });
       const json = (await res.json()) as { resolved?: boolean; candidates?: Array<{ text: string; property_id: number }>; error?: string; detail?: string };
       if (json.error === "propalt_disabled") setError("Activate Propalt in Settings → APIs first.");
-      else if (json.error) setError(`Lookup failed${json.detail ? ` (${json.detail})` : ""} — try again.`);
+      else if (json.error) setError(`Lookup failed${json.detail ? ` (${json.detail})` : ""}. Try again.`);
       else if (json.resolved) {
         setCandidates(null);
         router.refresh();
@@ -278,7 +278,7 @@ function AddressResolver({ leadId, intel }: { leadId: string; intel?: LeadIntel 
         if (json.candidates.length === 0) setError("No addresses found for this postcode.");
       }
     } catch {
-      setError("Lookup failed — try again.");
+      setError("Lookup failed. Try again.");
     } finally {
       setBusy(false);
     }
@@ -452,7 +452,7 @@ function IntelSection({ leadId, intel }: { leadId: string; intel?: LeadIntel }) 
             </Field>
             <Field
               label="Floor area"
-              tip="Total floor area recorded on the energy certificate — a rough read on job size."
+              tip="Total floor area recorded on the energy certificate, a rough read on job size."
               source="EPC register (MHCLG)"
             >
               {intel.floor_area_sqm != null ? `${intel.floor_area_sqm} m²` : "—"}
@@ -524,11 +524,11 @@ function PlanningConstraints({ constraints }: { constraints?: PlanningConstraint
   if (constraints == null) return null;
 
   const COPY: Record<string, string> = {
-    article_4: "Article 4 direction — permitted development rights are restricted here. External fixtures may need planning permission; check before quoting.",
-    conservation_area: "Conservation area — expect restrictions on anything visible from the street. Favour a rear or side elevation.",
-    listed_building: "Listed building — external fixtures need listed building consent. Do not quote a front-elevation mount.",
-    flood_zone: "Flood zone — relevant for ground-mounted equipment and cable entry points.",
-    green_belt: "Green belt — restrictions apply to new structures rather than dishes, but worth knowing.",
+    article_4: "Article 4 direction: permitted development rights are restricted here. External fixtures may need planning permission; check before quoting.",
+    conservation_area: "Conservation area: expect restrictions on anything visible from the street. Favour a rear or side elevation.",
+    listed_building: "Listed building: external fixtures need listed building consent. Do not quote a front-elevation mount.",
+    flood_zone: "Flood zone: relevant for ground-mounted equipment and cable entry points.",
+    green_belt: "Green belt: restrictions apply to new structures rather than dishes, but worth knowing.",
   };
   const label = (t: string) => t.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 
@@ -553,7 +553,7 @@ function PlanningConstraints({ constraints }: { constraints?: PlanningConstraint
       {constraints.map((c) => (
         <p key={`${c.type}-${c.name ?? ""}`} className="text-body-sm">
           <strong>{label(c.type)}</strong>
-          {c.start_date ? ` (since ${c.start_date.slice(0, 4)})` : ""} — {COPY[c.type] ?? "Check with the local planning authority before quoting."}
+          {c.start_date ? ` (since ${c.start_date.slice(0, 4)})` : ""}. {COPY[c.type] ?? "Check with the local planning authority before quoting."}
         </p>
       ))}
     </div>

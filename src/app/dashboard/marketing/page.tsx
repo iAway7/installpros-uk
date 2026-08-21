@@ -59,7 +59,7 @@ export default async function MarketingPage() {
         ) : !sc.ok ? (
           <Card>
             <CardContent className="text-body-sm text-destructive">
-              Couldn&apos;t load Search Console data{sc.error ? ` — ${sc.error}` : ""}. Check the service account has
+              Couldn&apos;t load Search Console data{sc.error ? `: ${sc.error}` : ""}. Check the service account has
               access to <strong>{process.env.GOOGLE_SEARCH_CONSOLE_SITE}</strong>.
             </CardContent>
           </Card>
@@ -93,7 +93,7 @@ export default async function MarketingPage() {
         <Card>
           <CardContent className="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-body-sm text-muted-foreground">
-              Funnels, drop-off and session replays live in PostHog — we don&apos;t duplicate them here.
+              Funnels, drop-off and session replays live in PostHog. We don&apos;t duplicate them here.
             </p>
             <a
               href={process.env.NEXT_PUBLIC_POSTHOG_HOST || "https://eu.posthog.com"}

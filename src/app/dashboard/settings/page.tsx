@@ -81,7 +81,7 @@ export default async function SettingsPage() {
 
       <p className="text-label text-muted-foreground">
         Keys live in <code className="rounded bg-secondary px-1">.env.local</code> (dev) and Vercel env vars
-        (production) — they&apos;re never stored in the database or shown here.
+        (production). They&apos;re never stored in the database or shown here.
       </p>
     </div>
   );

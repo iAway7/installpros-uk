@@ -21,7 +21,7 @@ import { AnalyticsScripts, GtmNoScript } from "@/components/analytics/analytics-
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
-    default: "Starlink Installation UK | Professional Satellite Internet — InstallPros",
+    default: "Starlink Installation UK | Professional Satellite Internet | InstallPros",
     template: "%s | InstallPros",
   },
   description: siteConfig.description,

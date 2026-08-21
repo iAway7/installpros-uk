@@ -22,7 +22,7 @@ export function HeroHeadline() {
     <h1 className={CLASS}>
       <span className="md:hidden">Professional Starlink Installers</span>
       <span className="hidden md:inline">
-        Get Fast, Reliable Internet — <br className="hidden lg:block" />
+        Get Fast, Reliable Internet <br className="hidden lg:block" />
         Without the Installation Headache
       </span>
     </h1>

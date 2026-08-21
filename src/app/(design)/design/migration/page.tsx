@@ -75,7 +75,7 @@ export default function MigrationPage() {
           />
           <Phase
             n="4" title="Type scale" status="next"
-            goal="Apply the documented ramp to the code. This one moves pixels — ship it on its own."
+            goal="Apply the documented ramp to the code. This one moves pixels, ship it on its own."
             items={[
               "Card titles and FAQ questions 17–18px → 24px",
               "H2 on mobile 40px → 32px, so it stops matching H1",
@@ -87,7 +87,7 @@ export default function MigrationPage() {
             n="5" title="Layout debt" status="next"
             goal="Close the gaps the audit found but that were not worth risking mid-flight."
             items={[
-              "One container width — retire the 1140px and 1160px hardcodes",
+              "One container width, retire the 1140px and 1160px hardcodes",
               "Radius scale from ten values down to four or five",
               "themeColor is still #1d4ed8, a leftover blue from Phase 1",
               "Delete the orphan tokens: --red-accent and friends",

@@ -400,54 +400,54 @@
 .theme-editorial {
   /* ---- Base surfaces + text ---- */
   --background: var(--white);
-  --foreground: var(--gray-900);            /* #171717 — matches the DS --primary */
+  --foreground: var(--gray-900);            /* #171717, matches the DS --primary */
   --card: var(--white);
   --card-foreground: var(--gray-900);
-  --secondary: var(--slate-50);         /* #F9FAFB — cool off-white, not a pure grey */
+  --secondary: var(--slate-50);         /* #F9FAFB, cool off-white, not a pure grey */
   --secondary-foreground: var(--gray-900);
   --muted: var(--slate-50);
-  --muted-foreground: var(--gray-700);     /* #666666 — matches the DS --secondary */
+  --muted-foreground: var(--gray-700);     /* #666666, matches the DS --secondary */
   --border: var(--gray-100);               /* #EBEBEB */
   --input: var(--gray-100);
   --radius: 0.75rem;
 
   /* ---- Brand red. The ONLY red on the page, plus two derived tints ---- */
-  --primary: var(--red-600);             /* #C70505 — button fill, eyebrow labels */
+  --primary: var(--red-600);             /* #C70505, button fill, eyebrow labels */
   --primary-foreground: var(--white);
   --accent: var(--red-600);
   --accent-foreground: var(--white);
-  --brand-hover: var(--red-700);         /* #9E0404 — darkens on hover (from the DS) */
-  --brand-icon: var(--coral-500);        /* #E5484D — card icon glyphs */
-  --brand-soft: var(--red-400);         /* #FF5A5A — decorative borders/glows ONLY */
-  --brand-deep: var(--red-700);          /* #AB0909 — brand red dark enough for small
+  --brand-hover: var(--red-700);         /* #9E0404, darkens on hover (from the DS) */
+  --brand-icon: var(--coral-500);        /* #E5484D, card icon glyphs */
+  --brand-soft: var(--red-400);         /* #FF5A5A, decorative borders/glows ONLY */
+  --brand-deep: var(--red-700);          /* #AB0909, brand red dark enough for small
                                        text: 7.6:1 on white, where --brand-icon
                                        only reaches 3.9:1 and fails AA. */
 
   /* ---- Selection + focus. Deliberately neutral, never brand red ---- */
-  --selection: var(--gray-900);             /* #171717 — checked, selected, focus ring.
+  --selection: var(--gray-900);             /* #171717, checked, selected, focus ring.
                                        Same value as --foreground: two near-blacks
                                        three RGB points apart were the same colour. */
-  --selection-border: var(--gray-800);     /* #404040 — input border on focus */
-  --field: var(--gray-200);                /* #D4D4D4 — input/option border at rest */
-  --field-hover: var(--gray-600);          /* #737373 — border on hover */
+  --selection-border: var(--gray-800);     /* #404040, input border on focus */
+  --field: var(--gray-200);                /* #D4D4D4, input/option border at rest */
+  --field-hover: var(--gray-600);          /* #737373, border on hover */
   --ring: var(--gray-900);                  /* focus ring = selection, not red */
 
   /* ---- Status. One value each (was 2 reds + 3 greens) ---- */
-  --error: var(--coral-600);               /* #DC2626 — 4.83:1 on white ✓ AA */
+  --error: var(--coral-600);               /* #DC2626, 4.83:1 on white ✓ AA */
   --error-foreground: var(--white);
   --destructive: var(--coral-600);         /* alias so shadcn primitives inherit it */
   --destructive-foreground: var(--white);
-  --success: var(--green-600);           /* #15803D — 4.86:1 on white ✓ AA */
+  --success: var(--green-600);           /* #15803D, 4.86:1 on white ✓ AA */
   --success-foreground: var(--white);
-  --success-bright: var(--green-400);    /* #22C55E — for the dark hero only */
+  --success-bright: var(--green-400);    /* #22C55E, for the dark hero only */
 
   /* ---- Third-party brand marks ---- */
-  --gold: var(--amber-500);               /* #FBBC04 — review stars */
+  --gold: var(--amber-500);               /* #FBBC04, review stars */
   --whatsapp: var(--whatsapp-brand);          /* #25D366 */
 
   /* ---- Hero (dark) — the overlay that sits over vr-hero.webp ---- */
   --hero-overlay: linear-gradient(to bottom, rgba(10, 25, 41, 0.6), rgba(13, 27, 42, 0.7), rgba(0, 0, 0, 0.85));
-  --hero-overlay-md: linear-gradient(to bottom, rgba(10, 25, 41, 0.4), rgba(13, 27, 42, 0.5), rgba(0, 0, 0, 0.7));
+  --hero-overlay-md: linear-gradient(to bottom, rgba(10, 25, 41, 0.55), rgba(13, 27, 42, 0.65), rgba(0, 0, 0, 0.82));
 
   /* ---- Surface gradients (values shared with the design system) ---- */
   --eq-img-grad: radial-gradient(90% 90% at 50% 20%, #f2f3f6, #e7e9ef);

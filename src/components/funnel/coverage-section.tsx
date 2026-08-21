@@ -9,7 +9,7 @@ const FEATURES = [
     icon: MapPin,
     title: "Nationwide Coverage",
     description:
-      "Certified engineers right across the UK — mainland, islands and the rural sites others won't reach.",
+      "Certified engineers right across the UK: mainland, islands and the rural sites others won't reach.",
   },
   {
     icon: CalendarCheck,
@@ -21,7 +21,7 @@ const FEATURES = [
     icon: Boxes,
     title: "Every Install Type",
     description:
-      "Residential, commercial, marine and mobile installations — one team handles them all.",
+      "Residential, commercial, marine and mobile installations. One team handles them all.",
   },
 ];
 
@@ -34,7 +34,7 @@ export function CoverageSection() {
           <h2
             className="mx-auto mt-4 max-w-[760px] h2-section text-foreground"
           >
-            Any property, anywhere — connected this week.
+            Any property, anywhere. Connected this week.
           </h2>
           <p className="mx-auto mt-5 max-w-2xl text-body text-muted-foreground md:text-lg" style={{ lineHeight: "1.6" }}>
             One certified team for residential, commercial, marine and{" "}

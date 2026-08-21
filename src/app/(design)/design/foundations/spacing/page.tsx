@@ -5,7 +5,7 @@ export const metadata = { title: "Spacing & radius" };
 const RADII = [
   { token: "radius/sm", px: 8, use: "—" },
   { token: "radius/md", px: 10, use: "Input, checkbox" },
-  { token: "radius/lg", px: 12, use: "Button, FormOption — the base radius" },
+  { token: "radius/lg", px: 12, use: "Button, FormOption, the base radius" },
   { token: "radius/xl", px: 16, use: "Review card" },
   { token: "radius/icon", px: 13, use: "Card icon chip" },
   { token: "radius/card", px: 22, use: "Feature card" },
@@ -20,7 +20,7 @@ export default function SpacingPage() {
     <>
       <PageHeader
         title="Spacing & radius"
-        lead="The vertical rhythm is one pair of values repeated down the page. The radius scale is longer than it should be — that is documented honestly below rather than tidied away."
+        lead="The vertical rhythm is one pair of values repeated down the page. The radius scale is longer than it should be, that is documented honestly below rather than tidied away."
       />
 
       <Section
@@ -44,9 +44,9 @@ export default function SpacingPage() {
         <Table
           head={["Control", "Height", "Notes"]}
           rows={[
-            [<Mono key="a">h-12</Mono>, "48px", "Button — comfortably above the 44px touch-target minimum"],
+            [<Mono key="a">h-12</Mono>, "48px", "Button, comfortably above the 44px touch-target minimum"],
             [<Mono key="b">h-14</Mono>, "56px", "Lead form input, so the field is the biggest thing on the step"],
-            [<Mono key="c">h-9</Mono>, "36px", "Small button. Below the touch minimum — desktop only"],
+            [<Mono key="c">h-9</Mono>, "36px", "Small button. Below the touch minimum, desktop only"],
           ]}
         />
       </Section>
@@ -71,7 +71,7 @@ export default function SpacingPage() {
         <div className="mt-6">
           <Rule>
             <strong>Ten radii is too many.</strong> Only three derive from <Mono>--radius</Mono>; the rest were chosen
-            per card, one section at a time. They are documented because they are real, not because they are right — new
+            per card, one section at a time. They are documented because they are real, not because they are right, new
             surfaces should reach for <Mono>radius/card</Mono> (22px) before inventing an eleventh.
           </Rule>
         </div>

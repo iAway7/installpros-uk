@@ -48,7 +48,7 @@ scripts/
         />
         <div className="mt-6">
           <Rule>
-            <Mono>/starlink-installations</Mono> is a fourth language — it has its own{" "}
+            <Mono>/starlink-installations</Mono> is a fourth language, it has its own{" "}
             <Mono>landing.css</Mono> scoped under <Mono>.ipx</Mono>, with a dark and a light mode. It is not part of this
             system yet. Do not copy values between the two: <Mono>#f5f5f5</Mono> is a surface in one and a text colour in
             the other.

@@ -79,16 +79,16 @@ export default function MiddleTruncatePage() {
         ]}
         behavior={[
           "Measures with canvas against the element's own computed font, so it stays correct at any size without hardcoded character widths.",
-          "Re-measures on container resize via <code>ResizeObserver</code>. Layouts that change width on hover will make the truncation point jitter — lock the width during the interaction.",
+          "Re-measures on container resize via <code>ResizeObserver</code>. Layouts that change width on hover will make the truncation point jitter, lock the width during the interaction.",
           "Never nest it inside another <code>text-overflow: ellipsis</code> container. The two strategies fight and the outer one wins unpredictably.",
           "The parent needs <code>min-w-0</code> inside a flex row, or the span will refuse to shrink and nothing truncates.",
           "Copying the rendered text copies the ellipsis form. Pair it with <code>CopyButton</code>, which copies from the value prop instead.",
         ]}
         accessibility={[
           "The full string is the element's <code>aria-label</code>, so assistive tech gets the whole value while the eye gets the short one.",
-          "The visible text is <code>aria-hidden</code> — otherwise a screen reader announces the string twice, once whole and once mangled.",
+          "The visible text is <code>aria-hidden</code>, otherwise a screen reader announces the string twice, once whole and once mangled.",
           "<code>title</code> carries the full value too, giving mouse users a hover tooltip. That does nothing on touch, which is the other reason to pair it with copy.",
-          "On narrow viewports keep enough head visible to identify the resource — a path truncated to <code>a…x</code> is worse than a wrap.",
+          "On narrow viewports keep enough head visible to identify the resource, a path truncated to <code>a…x</code> is worse than a wrap.",
         ]}
       />
     </>

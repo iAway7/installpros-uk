@@ -35,7 +35,7 @@ export default async function LandingsPage({
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Landing pages</h1>
           <p className="text-muted-foreground">
-            Leads by the page they arrived on — the number to hold against Google Ads.
+            Leads by the page they arrived on. This is the number to hold against Google Ads.
           </p>
         </div>
         <div className="flex gap-1 rounded-lg bg-secondary p-1 text-body-sm font-medium">
@@ -113,7 +113,7 @@ export default async function LandingsPage({
             <span className="font-medium text-foreground">Google Ads</span> counts a lead per{" "}
             <span className="font-mono text-label">gclid</span>, so that column is the one to compare with the
             conversions Google reports for the same date range and the same landing page. A gap of a few
-            percent is normal — attribution windows differ. A gap of 30%+ means one of the two is broken.
+            percent is normal, because attribution windows differ. A gap of 30%+ means one of the two is broken.
           </p>
           <p>
             These are lead <em>counts</em>, not conversion rates: we don&apos;t count visitors server-side, so a

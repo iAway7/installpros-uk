@@ -89,7 +89,7 @@ export async function evaluateAlerts(): Promise<void> {
           type: "cluster",
           severity: "info",
           title: `${count} leads from ${outcode} this week`,
-          body: `Unusual volume from one postcode district — consider targeting ${outcode} with ads.`,
+          body: `Unusual volume from one postcode district. Consider targeting ${outcode} with ads.`,
           dedupe_key: `cluster:${outcode}:${isoWeek}`,
         });
       }

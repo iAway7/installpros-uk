@@ -102,7 +102,7 @@ export default async function MapPage({ searchParams }: { searchParams: { view?:
     <div className="mx-auto max-w-6xl space-y-6">
       <div>
         <h1 className="text-2xl font-bold tracking-tight">Map</h1>
-        <p className="text-muted-foreground">Where your leads come from — and where you close.</p>
+        <p className="text-muted-foreground">Where your leads come from, and where you close.</p>
       </div>
 
       <div className="flex gap-1 rounded-lg bg-secondary p-1 w-fit">
@@ -209,7 +209,7 @@ export default async function MapPage({ searchParams }: { searchParams: { view?:
             )}
 
             <Card>
-              <CardHeader><CardTitle>Broadband gaps — ad targets</CardTitle></CardHeader>
+              <CardHeader><CardTitle>Broadband gaps: ad targets</CardTitle></CardHeader>
               <CardContent className="p-0">
                 <div className="overflow-x-auto">
                   <table className="w-full text-body-sm">
@@ -235,7 +235,7 @@ export default async function MapPage({ searchParams }: { searchParams: { view?:
                 </div>
                 <p className="p-4 text-label text-muted-foreground">
                   Worst fixed-broadband districts in the UK (Ofcom Connected Nations, Jan 2025) where you have zero
-                  leads — people who need Starlink but haven&apos;t heard of you. Target these postcodes with ads.
+                  leads: people who need Starlink but haven&apos;t heard of you. Target these postcodes with ads.
                 </p>
               </CardContent>
             </Card>
@@ -243,7 +243,7 @@ export default async function MapPage({ searchParams }: { searchParams: { view?:
             <Card>
               <CardContent className="p-4 text-label text-muted-foreground">
                 <span className="font-semibold text-foreground">Gap</span> badge in the district table = 3+ leads, zero
-                won — investigate pricing or follow-up in that area.
+                won. Investigate pricing or follow-up in that area.
               </CardContent>
             </Card>
           </div>

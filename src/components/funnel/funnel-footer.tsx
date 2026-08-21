@@ -1,3 +1,6 @@
+const TERMS_URL = "https://installpros.co.uk/terms-and-conditions/";
+const PRIVACY_URL = "https://installpros.co.uk/privacy-policy/";
+
 /** Funnel footer — a single slim bar: copyright + accepted payment methods. */
 export function FunnelFooter() {
   return (
@@ -6,8 +9,8 @@ export function FunnelFooter() {
         <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
           <p className="text-body text-muted-foreground">© {new Date().getFullYear()} Install Pros®</p>
           <nav className="flex items-center gap-2 text-body text-muted-foreground">
-            <a href="/terms" className="flex min-h-[48px] items-center px-2 transition-colors duration-quick hover:text-brand-hover">Terms and Conditions</a>
-            <a href="/privacy" className="flex min-h-[48px] items-center px-2 transition-colors duration-quick hover:text-brand-hover">Privacy Policy</a>
+            <a href={TERMS_URL} target="_blank" rel="noopener noreferrer" className="flex min-h-[48px] items-center px-2 transition-colors duration-quick hover:text-brand-hover">Terms and Conditions</a>
+            <a href={PRIVACY_URL} target="_blank" rel="noopener noreferrer" className="flex min-h-[48px] items-center px-2 transition-colors duration-quick hover:text-brand-hover">Privacy Policy</a>
           </nav>
         </div>
       </div>

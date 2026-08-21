@@ -8,7 +8,7 @@ export default function TokensPage() {
     <>
       <PageHeader
         title="Design tokens"
-        lead="Foundations are the decisions. Tokens are how those decisions reach a component. This page is about the plumbing — where a token lives, what it is allowed to be named, and how a value gets from globals.css into a button."
+        lead="Foundations are the decisions. Tokens are how those decisions reach a component. This page is about the plumbing, where a token lives, what it is allowed to be named, and how a value gets from globals.css into a button."
       />
 
       <Section title="Two layers, not three" note="Most systems over-engineer this. Ours has a primitive layer and a semantic layer, and that is it.">
@@ -21,7 +21,7 @@ export default function TokensPage() {
         />
         <p className="mt-4 max-w-2xl text-[15px] leading-[1.6] text-neutral-500">
           The primitive layer exists in Figma because designers need a palette to alias from. In code it would be dead
-          weight — nothing should ever reference a raw ramp value, so it is not shipped.
+          weight, nothing should ever reference a raw ramp value, so it is not shipped.
         </p>
       </Section>
 
@@ -69,7 +69,7 @@ className="bg-primary/10"   /* the /10 only works because of the format */`}</Co
         <div className="mt-6">
           <Rule>
             If you find yourself adding a token for one component, you probably want a hardcoded value in that component
-            instead — and if you want a hardcoded value, you probably want a token. The test: would a second component
+            instead, and if you want a hardcoded value, you probably want a token. The test: would a second component
             ever reasonably use it?
           </Rule>
         </div>

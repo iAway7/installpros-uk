@@ -8,7 +8,7 @@ export default function StatusDotPage() {
     <>
       <PageHeader
         title="Status dot"
-        lead="A coloured dot with a label. The dot is decoration — the label carries the meaning, because a dot alone is unreadable to anyone who cannot see the hue."
+        lead="A coloured dot with a label. The dot is decoration, the label carries the meaning, because a dot alone is unreadable to anyone who cannot see the hue."
       />
 
       <Section title="States">
@@ -30,7 +30,7 @@ export default function StatusDotPage() {
 
       <BestPractices
         when={[
-          "Inline status next to a name or a row — a lead in a list, an engineer on a schedule.",
+          "Inline status next to a name or a row, a lead in a list, an engineer on a schedule.",
           "For a status that needs to stand out as a chip, use <code>Pill</code>. Same idea with a border and more presence.",
           "Never as the only column in a table. A grid of dots is a puzzle.",
         ]}
@@ -44,7 +44,7 @@ export default function StatusDotPage() {
         ]}
         accessibility={[
           "The dot is <code>aria-hidden</code>. Colour is reinforcement, never the message.",
-          "Omitting the label needs a very good reason and an <code>aria-label</code> in its place — a bare dot announces nothing.",
+          "Omitting the label needs a very good reason and an <code>aria-label</code> in its place, a bare dot announces nothing.",
           "Warning uses <code>--gold</code>, which fails contrast as text. It is fine on a 7px dot next to a dark label; it is not fine as the label colour.",
         ]}
       />

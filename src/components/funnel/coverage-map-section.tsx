@@ -3,7 +3,7 @@ import { UkCoverageMap } from "./uk-coverage-map";
 const STATS = [
   { value: "4", label: "Nations covered" },
   { value: "175+", label: "Towns & cities served" },
-  { value: "7 days", label: "Typical lead time" },
+  { value: "3 days", label: "Typical lead time" },
   { value: "100%", label: "Fixed-price quotes" },
 ];
 
@@ -28,7 +28,7 @@ export function CoverageMapSection() {
               The whole map.
             </h2>
             <p className="mt-6 max-w-md text-body text-muted-foreground md:text-lg" style={{ lineHeight: "1.6" }}>
-              From the Highlands to Cornwall, our engineers cover all four nations — no postcode too remote.
+              From the Highlands to Cornwall, our engineers cover all four nations. No postcode too remote.
             </p>
 
             {/* 2×2 stat grid with hairline dividers */}

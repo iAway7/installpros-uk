@@ -54,12 +54,12 @@ export default function BadgePage() {
           "Keep the variant set small. Six pill colours in a table means people read the legend instead of the data.",
         ]}
         content={[
-          "Badges are 1–3 words, Title Case, rendered uppercase by the style — write them in normal case in the JSX.",
+          "Badges are 1–3 words, Title Case, rendered uppercase by the style, write them in normal case in the JSX.",
           "Pills are sentence case, because they read as state rather than as a label: <em>Awaiting survey</em>, not <em>AWAITING SURVEY</em>.",
           "Name the state from the reader&rsquo;s point of view. <em>Awaiting survey</em> tells you what is blocked; <em>Status 3</em> does not.",
         ]}
         accessibility={[
-          "The Pill dot is <code>aria-hidden</code> — colour and a dot are decoration, the word is the information.",
+          "The Pill dot is <code>aria-hidden</code>, colour and a dot are decoration, the word is the information.",
           "Never encode meaning in colour alone. A red pill that just says the item&rsquo;s name is unreadable to anyone who cannot see the red.",
           "<code>--gold</code> on white fails contrast as text. The warning variants use it for the dot and the border; the label stays <code>--foreground</code>.",
         ]}

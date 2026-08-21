@@ -179,7 +179,7 @@ export function testPayload(): WebhookPayload {
       energy_rating: "E",
       rural: true,
     },
-    pitch_angles: ["Slow broadband — lead with Starlink"],
+    pitch_angles: ["Slow broadband: lead with Starlink"],
     links: { dashboard: `${siteConfig.url}/dashboard/leads` },
   };
 }

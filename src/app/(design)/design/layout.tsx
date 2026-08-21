@@ -6,7 +6,7 @@ import { DocsFooter } from "./_components/docs-footer";
 export const metadata: Metadata = {
   title: { default: "InstallPros Design System", template: "%s | InstallPros Design" },
   description:
-    "The design system behind installpros.co.uk — tokens, typography and components, rendered from the same code that ships.",
+    "The design system behind installpros.co.uk, tokens, typography and components, rendered from the same code that ships.",
   robots: { index: false, follow: false },
 };
 

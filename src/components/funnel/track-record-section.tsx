@@ -2,20 +2,20 @@ import type { ReactNode } from "react";
 import { CountUp } from "./count-up";
 
 const STATS: { value: ReactNode; label: string }[] = [
-  { value: <CountUp to={9163} suffix="+" />, label: "Installations completed across the UK" },
+  { value: <CountUp to={3500} suffix="+" />, label: "Installations completed across the UK" },
   {
     value: (
       <>
         5.0<span className="text-gold" style={{ fontSize: "0.55em", verticalAlign: "0.28em" }}>★</span>
       </>
     ),
-    label: "Google rating — every review counted",
+    label: "Google rating, every review counted",
   },
   { value: "175+", label: "Towns and cities served, and counting" },
   {
     value: (
       <>
-        1–3<span className="text-muted-foreground" style={{ fontSize: "0.45em", fontWeight: 400 }}>&nbsp;hrs</span>
+        3<span className="text-muted-foreground" style={{ fontSize: "0.45em", fontWeight: 400 }}>&nbsp;hrs</span>
       </>
     ),
     label: "Average time on site, start to speed test",

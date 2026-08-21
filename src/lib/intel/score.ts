@@ -18,11 +18,11 @@ export function scoreLead(s: IntelSignals): { score: number; reasons: ScoreReaso
   // ── Broadband (dominant, -3 … +4) ──
   const down = s.maxDownloadMbps;
   if (down !== null) {
-    if (down < 10) add("broadband", 4, `${down} Mbps — below USO, desperate for Starlink`);
-    else if (down < 30) add("broadband", 3, `${down} Mbps — below superfast threshold`);
-    else if (down < 80) add("broadband", 1.5, `${down} Mbps — mediocre`);
-    else if (down < 300) add("broadband", 0, `${down} Mbps — decent`);
-    else add("broadband", -3, `${down} Mbps — fast fibre already available`);
+    if (down < 10) add("broadband", 4, `${down} Mbps, below USO, desperate for Starlink`);
+    else if (down < 30) add("broadband", 3, `${down} Mbps, below superfast threshold`);
+    else if (down < 80) add("broadband", 1.5, `${down} Mbps, mediocre`);
+    else if (down < 300) add("broadband", 0, `${down} Mbps, decent`);
+    else add("broadband", -3, `${down} Mbps, fast fibre already available`);
   }
 
   // ── Actual line performance (Propalt take-up data, -1.5 … +3) ──
@@ -50,7 +50,7 @@ export function scoreLead(s: IntelSignals): { score: number; reasons: ScoreReaso
   const form = (s.builtForm || "").toLowerCase();
   if (form.includes("detached") && !form.includes("semi")) add("property", 2, "Detached property");
   else if (type.includes("bungalow") || form.includes("semi")) add("property", 1, s.builtForm || s.propertyType || "");
-  else if (type.includes("flat") || type.includes("maisonette")) add("property", -2, "Flat/maisonette — install harder, fibre likelier");
+  else if (type.includes("flat") || type.includes("maisonette")) add("property", -2, "Flat/maisonette: install harder, fibre likelier");
 
   // ── Rural (+1.5) ──
   if (s.rural === true) add("rural", 1.5, "Rural classification");
@@ -62,9 +62,9 @@ export function scoreLead(s: IntelSignals): { score: number; reasons: ScoreReaso
 
   // ── Behavioural signals (small nudges) ──
   const hour = new Date(s.submittedAt).getUTCHours();
-  if (hour >= 18 || hour < 8) add("timing", 0.5, "Submitted outside work hours — home-owner behaviour");
-  if (s.gclid || s.trafficSource === "google") add("source", 0.25, "Arrived via paid/Google — active intent");
-  if (s.deviceType === "desktop") add("device", 0.25, "Desktop — often rural (mobile signal poor too)");
+  if (hour >= 18 || hour < 8) add("timing", 0.5, "Submitted outside work hours, home-owner behaviour");
+  if (s.gclid || s.trafficSource === "google") add("source", 0.25, "Arrived via paid/Google, active intent");
+  if (s.deviceType === "desktop") add("device", 0.25, "Desktop, often rural (mobile signal poor too)");
 
   const total = 5 + reasons.reduce((sum, r) => sum + r.points, 0);
   let score = Math.max(1, Math.min(10, Math.round(total)));
@@ -74,7 +74,7 @@ export function scoreLead(s: IntelSignals): { score: number; reasons: ScoreReaso
   // property shape alone.
   if (down === null && actual === null && unable30 === null && score > 7) {
     score = 7;
-    reasons.push({ signal: "cap", points: 0, detail: "Capped at 7 — no broadband data for this postcode" });
+    reasons.push({ signal: "cap", points: 0, detail: "Capped at 7, no broadband data for this postcode" });
   }
 
   return { score, reasons };

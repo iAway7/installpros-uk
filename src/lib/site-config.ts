@@ -6,7 +6,7 @@ export const siteConfig = {
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://get.installpros.co.uk",
   tagline: "Accredited Starlink installation across the UK",
   description:
-    "Professional Starlink installation across the UK. Fast, fully-fitted satellite internet for homes, businesses and rural properties. Free quote in 60 seconds — check your coverage now.",
+    "Professional Starlink installation across the UK. Fast, fully-fitted satellite internet for homes, businesses and rural properties. Free quote in 60 seconds. Check your coverage now.",
   whatsappNumber: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "447000000000",
   phone: process.env.NEXT_PUBLIC_CONTACT_PHONE || "+441234567890",
   email: process.env.NEXT_PUBLIC_CONTACT_EMAIL || "hello@installpros.co.uk",
@@ -35,7 +35,7 @@ export const benefits = [
   {
     icon: "Gauge",
     title: "Speeds up to 250 Mbps",
-    body: "Stream, video-call and work from anywhere with low-latency satellite broadband that rivals fibre — no cabinet or phone line required.",
+    body: "Stream, video-call and work from anywhere with low-latency satellite broadband that rivals fibre, with no cabinet or phone line required.",
   },
   {
     icon: "ShieldCheck",
@@ -58,12 +58,12 @@ export const processSteps = [
   {
     step: 1,
     title: "Check your coverage",
-    body: "Enter your postcode for an instant, real availability check — we confirm your exact location, not a generic 'available' message.",
+    body: "Enter your postcode for an instant, real availability check. We confirm your exact location, not a generic 'available' message.",
   },
   {
     step: 2,
     title: "Get your fixed quote",
-    body: "Tell us your property type and we send a transparent, all-in price — hardware, mounting and labour. No surprises on the day.",
+    body: "Tell us your property type and we send a transparent, all-in price covering hardware, mounting and labour. No surprises on the day.",
   },
   {
     step: 3,
@@ -72,7 +72,7 @@ export const processSteps = [
   },
   {
     step: 4,
-    title: "Get online — same day",
+    title: "Get online the same day",
     body: "We align the dish, test your speeds and walk you through the app before we leave. You're connected before we pack up.",
   },
 ];
@@ -80,7 +80,7 @@ export const processSteps = [
 export const faqs = [
   {
     q: "How much does Starlink installation cost in the UK?",
-    a: "Hardware starts around £299 with a monthly plan from £75. Our professional installation is quoted per property based on mount type and cable run — you get a fixed, all-in price before you book, with no hidden extras.",
+    a: "Hardware starts around £299 with a monthly plan from £75. Our professional installation is quoted per property based on mount type and cable run. You get a fixed, all-in price before you book, with no hidden extras.",
   },
   {
     q: "Will Starlink work at my address?",
@@ -88,11 +88,11 @@ export const faqs = [
   },
   {
     q: "How fast is Starlink?",
-    a: "Most UK customers see 100–250 Mbps download and 10–25 Mbps upload, with latency of 25–50 ms — fast enough for 4K streaming, video calls and online gaming.",
+    a: "Most UK customers see 100–250 Mbps download and 10–25 Mbps upload, with latency of 25–50 ms, fast enough for 4K streaming, video calls and online gaming.",
   },
   {
     q: "How long does installation take?",
-    a: "A standard residential install takes 2–3 hours. Complex mounts, long cable runs or commercial sites may take longer — we confirm timing when we quote.",
+    a: "A standard residential install takes 2–3 hours. Complex mounts, long cable runs or commercial sites may take longer. We confirm timing when we quote.",
   },
   {
     q: "Do you install for businesses and rural sites?",

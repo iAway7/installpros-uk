@@ -52,7 +52,7 @@ export function FeedbackInline({
   if (picked) {
     return (
       <div className="inline-flex items-center rounded-full border border-border px-5 py-2.5 text-body text-muted-foreground">
-        Thanks — that helps.
+        Thanks, that helps.
       </div>
     );
   }
