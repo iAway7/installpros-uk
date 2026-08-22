@@ -1,4 +1,4 @@
-import ReactDOM from "react-dom";
+import Image from "next/image";
 import { ZipAvailabilityChecker } from "./zip-availability-checker";
 import { HeroTrustBar } from "./hero-trust-bar";
 import { HeroHeadline } from "./hero-headline";
@@ -7,30 +7,33 @@ import { HeroHeadline } from "./hero-headline";
 export function HeroSection(
   { smartCoverage = false, addressMode = false }: { smartCoverage?: boolean; addressMode?: boolean } = {},
 ) {
-  // The hero photo is a CSS background, so the browser's preload scanner never
-  // sees it: it has to fetch the HTML, parse it, build the CSSOM and only then
-  // discover the URL. That round trip — not the 19.5 KB — is what pushed LCP to
-  // 4.4s on mobile. Emitting the preload here keeps it scoped to the pages that
-  // actually render a hero, unlike a link in the root layout.
-  ReactDOM.preload("/funnel/hero-uk-residential.webp", {
-    as: "image",
-    fetchPriority: "high",
-    type: "image/webp",
-  });
+  // The hero photo used to be a CSS background, which the preload scanner
+  // cannot see — it had to fetch the HTML, build the CSSOM and only then
+  // discover the URL. A manual ReactDOM.preload fixed that round trip, but a
+  // background image can never be responsive: every phone downloaded the full
+  // 1440x966 source. When that source grew from 19.5 KB to 147 KB, mobile LCP
+  // went to 6.1s. next/image with `priority` emits the preload itself AND
+  // serves AVIF at the width the device actually needs, so a 390px phone now
+  // pulls a fraction of the bytes.
 
   return (
     <section className="relative flex min-h-[100svh] flex-col overflow-hidden">
       <div
         className="absolute inset-0"
-        style={{
-          backgroundImage: "url(/funnel/hero-uk-residential.webp)",
-          backgroundSize: "cover",
-          backgroundPosition: "center top",
-        }}
         // `fixed` is broken on iOS Safari (the image rescales and jumps), so the
         // parallax only kicks in from md up, where it actually works.
         data-parallax
       >
+        <Image
+          src="/funnel/hero-uk-residential.webp"
+          alt=""
+          aria-hidden="true"
+          fill
+          priority
+          sizes="100vw"
+          quality={70}
+          className="object-cover object-top"
+        />
         <div className="hero-overlay absolute inset-0" />
       </div>
 

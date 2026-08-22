@@ -44,6 +44,16 @@ export function loadPostHog(): Promise<PostHog | null> {
           capture_pageview: false, // we fire our own standardized page_view
           capture_pageleave: true,
           autocapture: true,
+          // surveys.js is 33 KB of extension for a feature we do not use, and
+          // on a slow connection it competes with the LCP image. Off.
+          //
+          // Dead-click capture stays ON deliberately. It costs 8 KB, which is
+          // nothing next to the hero, and it is the one signal that tells us
+          // where people tap and get no response — exactly what we need while
+          // the funnel is being optimised and two landing pages are being
+          // compared. Session replay shows the same thing one user at a time;
+          // this aggregates it.
+          disable_surveys: true,
           session_recording: { maskAllInputs: true, maskTextSelector: "[data-ph-mask]" },
           persistence: "localStorage+cookie",
           loaded: (ph) => {
