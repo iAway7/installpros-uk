@@ -1,4 +1,4 @@
-import Image from "next/image";
+import ReactDOM from "react-dom";
 import { ZipAvailabilityChecker } from "./zip-availability-checker";
 import { HeroTrustBar } from "./hero-trust-bar";
 import { HeroHeadline } from "./hero-headline";
@@ -7,14 +7,20 @@ import { HeroHeadline } from "./hero-headline";
 export function HeroSection(
   { smartCoverage = false, addressMode = false }: { smartCoverage?: boolean; addressMode?: boolean } = {},
 ) {
-  // The hero photo used to be a CSS background, which the preload scanner
-  // cannot see — it had to fetch the HTML, build the CSSOM and only then
-  // discover the URL. A manual ReactDOM.preload fixed that round trip, but a
-  // background image can never be responsive: every phone downloaded the full
-  // 1440x966 source. When that source grew from 19.5 KB to 147 KB, mobile LCP
-  // went to 6.1s. next/image with `priority` emits the preload itself AND
-  // serves AVIF at the width the device actually needs, so a 390px phone now
-  // pulls a fraction of the bytes.
+  // The hero photo is a CSS background, which the preload scanner cannot see:
+  // it has to fetch the HTML, build the CSSOM and only then discover the URL.
+  // This preload removes that round trip.
+  //
+  // We tried next/image with `priority` instead, for responsive sizing. It cost
+  // 1.7s of FCP (1.1s -> 2.8s), measured twice with a warm optimiser cache: the
+  // high-priority image preload competes with the 15 KB of render-blocking CSS
+  // on a slow connection, so first paint lands later. Reverted. The real fault
+  // was never the delivery mechanism — it was the source growing from 19.5 KB
+  // to 147 KB. It is now 58 KB, which is what actually needed fixing.
+  ReactDOM.preload("/funnel/hero-uk-residential.webp", {
+    as: "image",
+    fetchPriority: "high",
+  });
 
   return (
     <section className="relative flex min-h-[100svh] flex-col overflow-hidden">
@@ -24,15 +30,13 @@ export function HeroSection(
         // parallax only kicks in from md up, where it actually works.
         data-parallax
       >
-        <Image
-          src="/funnel/hero-uk-residential.webp"
-          alt=""
-          aria-hidden="true"
-          fill
-          priority
-          sizes="100vw"
-          quality={70}
-          className="object-cover object-top"
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: "url(/funnel/hero-uk-residential.webp)",
+            backgroundSize: "cover",
+            backgroundPosition: "center top",
+          }}
         />
         <div className="hero-overlay absolute inset-0" />
       </div>

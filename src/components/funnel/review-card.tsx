@@ -50,7 +50,19 @@ export function ReviewCard({ r, source = "google" }: { r: Review; source?: "goog
       <div className="flex items-center gap-3">
         {r.photo ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={r.photo} alt={r.name} className="h-12 w-12 rounded-full object-cover" referrerPolicy="no-referrer" />
+          <img
+            src={r.photo}
+            alt={r.name}
+            width={48}
+            height={48}
+            // The reviews sit well below the fold, but these five avatars were
+            // being fetched during the initial load — 52 KB from Google's CDN
+            // competing with the LCP image for bandwidth on a slow connection.
+            loading="lazy"
+            decoding="async"
+            className="h-12 w-12 rounded-full object-cover"
+            referrerPolicy="no-referrer"
+          />
         ) : (
           <div className="flex h-12 w-12 items-center justify-center rounded-full bg-secondary text-[17px] font-medium text-foreground">
             {r.initial}
