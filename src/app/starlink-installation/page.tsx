@@ -7,6 +7,7 @@ import { TrustpilotSection } from "@/components/funnel/trustpilot-section";
 import { WhyInstallProsSection } from "@/components/funnel/why-installpros-section";
 import { CoverageMapSection } from "@/components/funnel/coverage-map-section";
 import { EquipmentSection } from "@/components/funnel/equipment-section";
+import { InstallVideoSection } from "@/components/funnel/install-video-section";
 import { TrackRecordSection } from "@/components/funnel/track-record-section";
 import { BeforeAfterSection } from "@/components/funnel/before-after-section";
 import { FaqSectionAlt } from "@/components/funnel/faq-section-alt";
@@ -63,6 +64,7 @@ export default function StarlinkInstallationPage() {
           <CustomerStoriesSection />
           <TrustpilotSection />
           <EquipmentSection />
+          <InstallVideoSection />
           <BeforeAfterSection />
           <CoverageMapSection />
           <TrackRecordSection />

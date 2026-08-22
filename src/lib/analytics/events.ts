@@ -23,6 +23,7 @@ export const EVENTS = {
   LEAD_CREATED: "lead_created",
   COVERAGE_CHECKED: "coverage_checked",
   SCROLL_DEPTH: "scroll_depth",
+  VIDEO_PLAYED: "video_played",
   EXPERIMENT_VIEWED: "experiment_viewed",
   EXPERIMENT_CONVERTED: "experiment_converted",
 } as const;
@@ -79,6 +80,9 @@ export interface EventProperties {
   percent?: 25 | 50 | 75 | 90 | 100;
   // experiment_*
   flag_key?: string;
+  // video_played
+  video_id?: string;
+  video_location?: string;
 }
 
 export type InstallType = "residential" | "business" | "rural" | "marine" | "events";

@@ -6,6 +6,7 @@ import { CoverageSection } from "@/components/funnel/coverage-section";
 import { CustomerStoriesSection } from "@/components/funnel/customer-stories-section";
 import { TrustpilotSection } from "@/components/funnel/trustpilot-section";
 import { EquipmentSection } from "@/components/funnel/equipment-section";
+import { InstallVideoSection } from "@/components/funnel/install-video-section";
 import { BeforeAfterSection } from "@/components/funnel/before-after-section";
 import { CoverageMapSection } from "@/components/funnel/coverage-map-section";
 import { TrackRecordSection } from "@/components/funnel/track-record-section";
@@ -61,6 +62,7 @@ export default function InstallQuotePage() {
           <CustomerStoriesSection />
           <TrustpilotSection />
           <EquipmentSection />
+          <InstallVideoSection />
           <BeforeAfterSection />
           <CoverageMapSection />
           <TrackRecordSection />
