@@ -80,6 +80,7 @@ export async function submitLead(input: LeadInput): Promise<string> {
         name: input.fullName,
         email: input.email,
         phone: input.phone,
+        postcode: input.zipCode,
         state: input.state,
         installationType: input.installationType,
         leadId,

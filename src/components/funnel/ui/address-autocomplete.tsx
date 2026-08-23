@@ -149,6 +149,8 @@ export function AddressAutocomplete({
     }
   }
 
+  const listOpen = open && predictions.length > 0;
+
   return (
     <div ref={boxRef} className="relative">
       <MapPin className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-primary" />
@@ -161,10 +163,19 @@ export function AddressAutocomplete({
         placeholder={placeholder}
         disabled={disabled || resolving}
         inputSize="lg"
+        // role="combobox" is required, not decoration: aria-expanded and
+        // aria-controls are not permitted on a plain textbox, so without it axe
+        // reports two serious violations. aria-controls is set only while the
+        // list is actually rendered — pointing at an id that does not exist is
+        // the second one.
+        role="combobox"
         aria-label="Address"
         aria-autocomplete="list"
-        aria-expanded={open}
-        aria-controls={listId}
+        aria-expanded={listOpen}
+        aria-controls={listOpen ? listId : undefined}
+        // Without this the highlighted option changes visually as you arrow
+        // through, and a screen reader announces nothing at all.
+        aria-activedescendant={listOpen && active >= 0 ? `${listId}-opt-${active}` : undefined}
         autoComplete="off"
         className={`pl-12 ${className ?? ""}`}
       />
@@ -172,7 +183,7 @@ export function AddressAutocomplete({
         <Loader2 className="absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 animate-spin text-primary" />
       )}
 
-      {open && predictions.length > 0 && (
+      {listOpen && (
         <ul
           id={listId}
           role="listbox"
@@ -181,6 +192,7 @@ export function AddressAutocomplete({
           {predictions.map((p, i) => (
             <li
               key={p.placeId}
+              id={`${listId}-opt-${i}`}
               role="option"
               aria-selected={i === active}
               onMouseDown={(e) => {
