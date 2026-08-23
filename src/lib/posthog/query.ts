@@ -75,13 +75,21 @@ export interface FunnelStepResult {
 export interface SegmentFilter {
   device?: string; // mobile | tablet | desktop
   source?: string; // traffic_source
+  /** Landing page path, e.g. "/install-quote". Required to read the A/B pair
+   *  apart: without it the two variants are summed into one funnel and the
+   *  experiment cannot be measured at all. */
+  page?: string;
   days: number;
 }
+
+/** Landing pages worth funnelling separately — the A/B pair. */
+export const FUNNEL_PAGES = ["/install-quote", "/starlink-installation"] as const;
 
 function segmentWhere(f: SegmentFilter): string {
   const parts = [`timestamp >= now() - interval ${Math.max(1, Math.min(365, f.days))} day`];
   if (f.device) parts.push(`properties.device_type = '${f.device.replace(/'/g, "")}'`);
   if (f.source) parts.push(`properties.traffic_source = '${f.source.replace(/'/g, "")}'`);
+  if (f.page) parts.push(`properties.page_path = '${f.page.replace(/'/g, "")}'`);
   return parts.join(" AND ");
 }
 
@@ -118,6 +126,7 @@ export async function fetchFunnelPrevious(f: SegmentFilter): Promise<number[]> {
   ];
   if (f.device) parts.push(`properties.device_type = '${f.device.replace(/'/g, "")}'`);
   if (f.source) parts.push(`properties.traffic_source = '${f.source.replace(/'/g, "")}'`);
+  if (f.page) parts.push(`properties.page_path = '${f.page.replace(/'/g, "")}'`);
   const selects = FUNNEL_STEPS.map(
     (s, i) => `count(DISTINCT if(event = '${s.event}', distinct_id, NULL)) AS step_${i}`,
   ).join(", ");

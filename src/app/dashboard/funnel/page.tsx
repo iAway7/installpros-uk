@@ -7,6 +7,7 @@ import {
   fetchFunnelPrevious,
   fetchSources,
   posthogConfigured,
+  FUNNEL_PAGES,
 } from "@/lib/posthog/query";
 
 export const dynamic = "force-dynamic";
@@ -18,17 +19,23 @@ interface SearchParams {
   days?: string;
   device?: string;
   source?: string;
+  page?: string;
 }
 
 export default async function FunnelPage({ searchParams }: { searchParams: SearchParams }) {
   const days = DAY_OPTIONS.includes(Number(searchParams.days)) ? Number(searchParams.days) : 28;
   const device = DEVICES.includes(searchParams.device ?? "") ? searchParams.device : undefined;
   const source = searchParams.source?.slice(0, 60) || undefined;
-  const filter = { days, device, source };
+  // Without this the A/B pair is summed into one funnel and the experiment
+  // cannot be read at all.
+  const page = (FUNNEL_PAGES as readonly string[]).includes(searchParams.page ?? "")
+    ? searchParams.page
+    : undefined;
+  const filter = { days, device, source, page };
 
   if (!posthogConfigured()) {
     return (
-      <Shell days={days} device={device} source={source} sources={[]}>
+      <Shell days={days} device={device} source={source} page={page} sources={[]}>
         <Card>
           <CardContent className="flex flex-col items-center gap-3 p-10 text-center">
             <Filter className="h-9 w-9 text-muted-foreground" />
@@ -53,7 +60,7 @@ export default async function FunnelPage({ searchParams }: { searchParams: Searc
 
   if (!funnel.ok) {
     return (
-      <Shell days={days} device={device} source={source} sources={sources}>
+      <Shell days={days} device={device} source={source} page={page} sources={sources}>
         <Card>
           <CardContent className="text-body-sm text-destructive">
             Couldn&apos;t query PostHog{funnel.error ? `: ${funnel.error}` : ""}. Check the API key, project id and host.
@@ -66,10 +73,10 @@ export default async function FunnelPage({ searchParams }: { searchParams: Searc
   const maxUsers = Math.max(...funnel.steps.map((s) => s.users), 1);
 
   return (
-    <Shell days={days} device={device} source={source} sources={sources}>
+    <Shell days={days} device={device} source={source} page={page} sources={sources}>
       {/* Funnel bars */}
       <Card>
-        <CardHeader><CardTitle>Funnel: last {days} days{device ? ` · ${device}` : ""}{source ? ` · ${source}` : ""}</CardTitle></CardHeader>
+        <CardHeader><CardTitle>Funnel: last {days} days{page ? ` · ${page}` : ""}{device ? ` · ${device}` : ""}{source ? ` · ${source}` : ""}</CardTitle></CardHeader>
         <CardContent className="space-y-3">
           {funnel.steps.every((s) => s.users === 0) ? (
             <p className="py-6 text-center text-body-sm text-muted-foreground">
@@ -143,9 +150,9 @@ export default async function FunnelPage({ searchParams }: { searchParams: Searc
 
 /** Page chrome + filter bar (GET form → server component refetch). */
 function Shell({
-  days, device, source, sources, children,
+  days, device, source, page, sources, children,
 }: {
-  days: number; device?: string; source?: string; sources: string[]; children: React.ReactNode;
+  days: number; device?: string; source?: string; page?: string; sources: string[]; children: React.ReactNode;
 }) {
   return (
     <div className="mx-auto max-w-6xl space-y-6">
@@ -166,10 +173,15 @@ function Shell({
           value={source ?? ""}
           options={[["", "All sources"], ...sources.map((s): [string, string] => [s, s])]}
         />
+        <FilterSelect
+          name="page"
+          value={page ?? ""}
+          options={[["", "Both landing pages"], ...FUNNEL_PAGES.map((p): [string, string] => [p, p])]}
+        />
         <button type="submit" className="rounded-md bg-primary px-4 py-2 text-body-sm font-semibold text-primary-foreground">
           Apply
         </button>
-        {(device || source) && (
+        {(device || source || page) && (
           <Link href="/dashboard/funnel" className="text-body-sm text-muted-foreground hover:text-foreground hover:underline">
             Clear
           </Link>
