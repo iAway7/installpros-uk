@@ -194,7 +194,7 @@ export function ServiceQuoteForm({
         marketingConsent: consent,
       });
       toast.success("Quote request submitted!");
-      router.push(`/upload-property-images?leadId=${leadId}`);
+      router.push(`/thank-you?leadId=${leadId}`);
     } catch {
       toast.error("Something went wrong. Please try again."); setIsSubmitting(false);
     }

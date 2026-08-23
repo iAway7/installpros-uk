@@ -8,6 +8,7 @@ import { Button } from "@/components/system/button";
 import { StepIndicator } from "./step-indicator";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { track, EVENTS } from "@/lib/analytics";
+import { fireGoogleAdsConversion } from "@/lib/funnel/google-ads-conversion";
 
 interface QuoteData {
   name?: string;
@@ -51,23 +52,9 @@ export function PropertyImageUpload() {
 
     track(EVENTS.PAGE_VIEW, { cta_location: "upload_property_images" });
 
-    // Fire Google Ads conversion once per session, retry until gtag is ready.
-    // Conversion target is env-driven ("AW-XXXXXXXXX/label"); skip if unset.
-    const sendTo = process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_LABEL;
-    if (!sendTo || sessionStorage.getItem("googleAdsConversionTracked") === "1") return;
-    let attempts = 0;
-    const interval = setInterval(() => {
-      attempts += 1;
-      const w = window as unknown as { gtag?: (...a: unknown[]) => void };
-      if (typeof w.gtag === "function") {
-        w.gtag("event", "conversion", { send_to: sendTo, value: 1.0, currency: "GBP" });
-        sessionStorage.setItem("googleAdsConversionTracked", "1");
-        clearInterval(interval);
-      } else if (attempts >= 10) {
-        clearInterval(interval);
-      }
-    }, 500);
-    return () => clearInterval(interval);
+    // Shared with the thank-you page: whichever a converted lead lands on
+    // records the conversion, and only the first one does.
+    return fireGoogleAdsConversion();
   }, []);
 
   function onPick(e: React.ChangeEvent<HTMLInputElement>) {

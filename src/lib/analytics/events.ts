@@ -70,6 +70,11 @@ export interface EventProperties {
   install_type?: InstallType;
   lead_id?: string;
   value?: number;
+  /** lead_created only. True when /api/lead actually stored the lead.
+   *  False means the submit reached us but nothing was saved, so the id is a
+   *  throwaway local_ uuid. Google Ads triggers on this: without it a backend
+   *  outage would report conversions for leads that do not exist. */
+  lead_persisted?: boolean;
   // form_step_viewed (per-step funnel drop-off)
   step_number?: number;
   step_name?: string;
@@ -83,6 +88,8 @@ export interface EventProperties {
   // video_played
   video_id?: string;
   video_location?: string;
+  // quote_started — which of the two A/B first fields the visitor touched
+  first_field?: "postcode" | "address";
 }
 
 export type InstallType = "residential" | "business" | "rural" | "marine" | "events";

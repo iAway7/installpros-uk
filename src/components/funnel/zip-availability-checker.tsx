@@ -64,6 +64,20 @@ export function ZipAvailabilityChecker(
 
   // Last postcode actually sent to the API, in canonical form.
   const lastChecked = useRef("");
+  /*
+   * quote_started used to fire from next(), i.e. only once the visitor had
+   * typed a postcode AND pressed Continue. The baseline it is compared against
+   * counts anyone who *touches* the first field, so measuring it that way read
+   * systematically low and would have made a working page look like a failure.
+   * It now fires on the first keystroke in the first field, once per mount.
+   */
+  const startedFired = useRef(false);
+
+  function markStarted(firstField: "postcode" | "address") {
+    if (startedFired.current) return;
+    startedFired.current = true;
+    track(EVENTS.QUOTE_STARTED, { first_field: firstField });
+  }
 
   // Live check once the input forms a valid UK postcode (step 0, postcode mode)
   useEffect(() => {
@@ -159,7 +173,10 @@ export function ZipAvailabilityChecker(
     }
   }
 
-  const onPostcodeChange = (e: React.ChangeEvent<HTMLInputElement>) => setPostcode(cleanPostcode(e.target.value));
+  const onPostcodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    markStarted("postcode");
+    setPostcode(cleanPostcode(e.target.value));
+  };
   /*
    * NOTE — do not reformat this field on blur.
    *
@@ -181,7 +198,6 @@ export function ZipAvailabilityChecker(
     setTimeout(() => {
       setStep((s) => s + 1);
       setIsTransitioning(false);
-      if (step === 0) track(EVENTS.QUOTE_STARTED, { postcode: formData.postcode });
     }, 300);
   }
   function back() {
@@ -244,7 +260,7 @@ export function ZipAvailabilityChecker(
         marketingConsent: consent,
       });
       toast.success("Quote request submitted!");
-      router.push(`/upload-property-images?leadId=${leadId}`);
+      router.push(`/thank-you?leadId=${leadId}`);
     } catch {
       toast.error("Something went wrong. Please try again.");
       setIsSubmitting(false);
@@ -275,7 +291,11 @@ export function ZipAvailabilityChecker(
                 {addressMode ? (
                   <AddressAutocomplete
                     value={address}
-                    onChange={(v) => { setAddress(v); if (status !== "idle") { setStatus("idle"); setError(""); } }}
+                    onChange={(v) => {
+                      markStarted("address");
+                      setAddress(v);
+                      if (status !== "idle") { setStatus("idle"); setError(""); }
+                    }}
                     onSelect={onAddressSelect}
                     placeholder="Start typing your address…"
                     className="text-body md:text-lg"

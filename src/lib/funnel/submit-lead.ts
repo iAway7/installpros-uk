@@ -44,9 +44,14 @@ export async function submitLead(input: LeadInput): Promise<string> {
   });
 
   let leadId = `local_${crypto.randomUUID()}`;
+  // Whether the lead actually landed in the database. The fallback id above
+  // keeps the UI moving when it did not, but nothing downstream should treat
+  // that as a real lead.
+  let leadPersisted = false;
   if (res.ok) {
     const json = (await res.json()) as { lead_id?: string; persisted?: boolean };
     if (json.lead_id) leadId = json.lead_id;
+    leadPersisted = json.persisted === true;
     // Kick off property-intelligence enrichment — fire and forget.
     if (json.persisted) {
       fetch(`/api/leads/${json.lead_id}/enrich`, { method: "POST", keepalive: true }).catch(() => {});
@@ -67,7 +72,11 @@ export async function submitLead(input: LeadInput): Promise<string> {
   }
 
   identifyLead(leadId, { email: input.email, service: input.installationType });
-  track(EVENTS.LEAD_CREATED, { install_type: input.installationType as never, lead_id: leadId });
+  track(EVENTS.LEAD_CREATED, {
+    install_type: input.installationType as never,
+    lead_id: leadId,
+    lead_persisted: leadPersisted,
+  });
 
   // Count this lead as a conversion for any active A/B experiment.
   recordExperimentConversions();

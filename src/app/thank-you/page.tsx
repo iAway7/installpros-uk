@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { PhotoRequestCard } from "@/components/funnel/photo-request-card";
+import { FunnelHeaderLight } from "@/components/funnel/funnel-header-light";
 import { FunnelFooter } from "@/components/funnel/funnel-footer";
 
 export const metadata: Metadata = {
@@ -8,18 +9,16 @@ export const metadata: Metadata = {
 };
 
 /**
- * Post-submit thank-you. Same shell as /upload-property-images and
- * /same-day-quote: theme class on the wrapper, logo bar, FunnelFooter. No nav,
- * because there is exactly one thing to do here.
+ * Post-submit thank-you. The funnel header in its light state rather than a
+ * centred logo, so the page still looks like the site the visitor was just on
+ * and the two contact routes stay one tap away. Off-white surface from md up,
+ * where the card becomes a panel; plain white on mobile, where it does not.
  */
 export default function ThankYouPage() {
   return (
-    <div className="theme-editorial flex min-h-screen flex-col bg-background">
-      <header className="flex h-16 items-center justify-center border-b border-border bg-white md:h-20">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/funnel/installpros-logo-colored-new.svg" alt="InstallPros" className="h-8 md:h-10" />
-      </header>
-      <main id="main" className="flex flex-1 items-center justify-center px-5 py-12 md:py-16">
+    <div className="theme-editorial flex min-h-screen flex-col bg-background md:bg-secondary">
+      <FunnelHeaderLight />
+      <main id="main" tabIndex={-1} className="flex flex-1 items-center justify-center px-5 py-10 outline-none md:py-14">
         <PhotoRequestCard />
       </main>
       <FunnelFooter />
