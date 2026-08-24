@@ -9,7 +9,7 @@ const EQUIPMENT = [
     t: "Gen 3 Router",
     badge: "Setup Included",
     d: "Wi-Fi 6, configured and positioned for whole-home coverage.",
-    img: "/funnel/gen-3-router.webp",
+    img: "/funnel/starlink-gen-3-router.webp",
   },
   {
     t: "Mounts & Masts",
