@@ -54,7 +54,7 @@ export function EquipmentSection() {
                 style={{ background: "var(--eq-img-grad)" }}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={e.img} alt={e.t} loading="lazy" className="h-full w-full object-contain p-[12%]" />
+                <img src={e.img} alt={e.t} loading="lazy" className="h-full w-full object-contain p-[8%]" />
               </div>
 
               <div className="pt-5">
