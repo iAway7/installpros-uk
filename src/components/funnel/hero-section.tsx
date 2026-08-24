@@ -66,8 +66,8 @@ export function HeroSection(
           <HeroHeadline />
 
           <p className="animate-slide-up animate-delay-200 mx-auto mb-8 max-w-3xl text-balance text-lg text-white/95 md:mb-10 md:text-xl lg:mb-12 lg:text-2xl">
-            <span className="hidden md:inline">Professional Starlink installers. </span>All roof types: metal,
-            shingle, flat. Same-week scheduling.
+            <span className="hidden md:inline">Professional Starlink installers. </span>Fitted where the signal
+            is strongest. Same-week scheduling.
           </p>
 
           <div className="animate-slide-up animate-delay-300 mx-auto w-full md:max-w-2xl">

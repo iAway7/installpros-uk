@@ -41,7 +41,7 @@ export const LANDING_FAQS: { q: string; a: string }[] = [
   },
   {
     q: "What's included in a standard installation?",
-    a: "Everything: a site survey and obstruction scan, all-metal mounting on any roof type, discreet weatherproofed cable routing, router setup, mesh configuration where needed, and a full speed test before we leave.",
+    a: "Everything: a site survey and obstruction scan, all-metal mounting to wall, roof or pole, discreet weatherproofed cable routing, router setup, mesh configuration where needed, and a full speed test before we leave.",
   },
   {
     q: "Do I need to buy mounts or accessories from Starlink first?",

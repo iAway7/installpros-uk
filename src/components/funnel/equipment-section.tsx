@@ -18,10 +18,10 @@ const EQUIPMENT = [
     img: "/funnel/mounts-masts.webp",
   },
   {
-    t: "Mesh Nodes",
+    t: "Indoor/Outdoor Wi-Fi",
     badge: "Add-on",
     d: "Seamless coverage across every floor and outbuilding.",
-    img: "/funnel/mesh-nodes.webp",
+    img: "/funnel/wifi-access-point.webp",
   },
 ];
 
@@ -60,7 +60,8 @@ export function EquipmentSection() {
               <div className="pt-5">
                 {/* Badge above the title, not beside it. Side by side they share
                     the card width, so "Starlink Standard" wrapped to two lines
-                    while "Mesh Nodes" sat on one — the row heights went ragged.
+                    while "Mounts & Masts" sat on one, and the row heights went
+                    ragged.
                     Stacked, the title gets the full width and a longer product
                     name later cannot squeeze the badge. */}
                 <span className="inline-flex whitespace-nowrap rounded-full border border-brand-deep px-2.5 py-1 text-[10.5px] font-semibold uppercase tracking-[0.14em] text-brand-deep">

@@ -42,7 +42,7 @@ export default async function OgImage() {
           Installation Across the UK
         </div>
         <div style={{ marginTop: 32, fontSize: 30, color: "#cbd5e1", display: "flex" }}>
-          Same-week fitting · All roof types · 4.9★ rated installers
+          Same-week fitting · Nationwide UK coverage · 4.9★ rated installers
         </div>
         <div
           style={{
