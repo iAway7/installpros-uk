@@ -8,6 +8,7 @@ export const NAV: NavGroup[] = [
     items: [
       { href: "/design/foundations/color", label: "Color" },
       { href: "/design/foundations/typography", label: "Typography" },
+      { href: "/design/foundations/density", label: "Density" },
       { href: "/design/foundations/spacing", label: "Spacing & radius" },
       { href: "/design/foundations/motion", label: "Motion" },
     ],

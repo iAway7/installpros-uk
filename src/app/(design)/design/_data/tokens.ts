@@ -594,3 +594,183 @@ export const THEME_TOKENS: Token[] = [
     "note": null
   }
 ];
+
+export interface ScaleRow { name: string; editorial: string; product: string; differs: boolean }
+export interface Scale { family: string; rows: ScaleRow[] }
+
+/** Tier 2 — the scalar tokens, side by side in both densities. */
+export const SCALES: Scale[] = [
+  {
+    "family": "Type scale",
+    "rows": [
+      {
+        "name": "--text-micro",
+        "editorial": "10.5px",
+        "product": "10px",
+        "differs": true
+      },
+      {
+        "name": "--text-label",
+        "editorial": "12px",
+        "product": "11px",
+        "differs": true
+      },
+      {
+        "name": "--text-caption",
+        "editorial": "13px",
+        "product": "12px",
+        "differs": true
+      },
+      {
+        "name": "--text-body-sm",
+        "editorial": "14px",
+        "product": "13px",
+        "differs": true
+      },
+      {
+        "name": "--text-body",
+        "editorial": "16px",
+        "product": "14px",
+        "differs": true
+      },
+      {
+        "name": "--text-field",
+        "editorial": "16px",
+        "product": "16px",
+        "differs": false
+      },
+      {
+        "name": "--text-lead",
+        "editorial": "18px",
+        "product": "16px",
+        "differs": true
+      },
+      {
+        "name": "--text-title",
+        "editorial": "20px",
+        "product": "18px",
+        "differs": true
+      }
+    ]
+  },
+  {
+    "family": "Button voice",
+    "rows": [
+      {
+        "name": "--button-size",
+        "editorial": "12px",
+        "product": "13px",
+        "differs": true
+      },
+      {
+        "name": "--button-weight",
+        "editorial": "700",
+        "product": "600",
+        "differs": true
+      },
+      {
+        "name": "--button-case",
+        "editorial": "uppercase",
+        "product": "none",
+        "differs": true
+      },
+      {
+        "name": "--button-tracking",
+        "editorial": "-0.2px",
+        "product": "0",
+        "differs": true
+      }
+    ]
+  },
+  {
+    "family": "Line height",
+    "rows": [
+      {
+        "name": "--leading-body",
+        "editorial": "1.5",
+        "product": "1.42",
+        "differs": true
+      }
+    ]
+  },
+  {
+    "family": "Control height",
+    "rows": [
+      {
+        "name": "--control-sm",
+        "editorial": "36px",
+        "product": "36px",
+        "differs": false
+      },
+      {
+        "name": "--control-aux",
+        "editorial": "40px",
+        "product": "40px",
+        "differs": false
+      },
+      {
+        "name": "--control",
+        "editorial": "48px",
+        "product": "44px",
+        "differs": true
+      },
+      {
+        "name": "--control-lg",
+        "editorial": "56px",
+        "product": "48px",
+        "differs": true
+      }
+    ]
+  },
+  {
+    "family": "Border width",
+    "rows": [
+      {
+        "name": "--border-field",
+        "editorial": "1.5px",
+        "product": "1.5px",
+        "differs": false
+      },
+      {
+        "name": "--border-control",
+        "editorial": "2px",
+        "product": "2px",
+        "differs": false
+      }
+    ]
+  },
+  {
+    "family": "Motion",
+    "rows": [
+      {
+        "name": "--motion-quick",
+        "editorial": "200ms",
+        "product": "200ms",
+        "differs": false
+      },
+      {
+        "name": "--motion-card",
+        "editorial": "450ms",
+        "product": "450ms",
+        "differs": false
+      },
+      {
+        "name": "--motion-panel",
+        "editorial": "550ms",
+        "product": "550ms",
+        "differs": false
+      }
+    ]
+  },
+  {
+    "family": "Radius",
+    "rows": [
+      {
+        "name": "--radius",
+        "editorial": "0.75rem",
+        "product": "0.75rem",
+        "differs": false
+      }
+    ]
+  }
+];

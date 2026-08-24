@@ -52,6 +52,20 @@ export default function TypographyPage() {
         lead="Be Vietnam Pro, weights 200–700. These are the sizes the funnel actually renders, the scale documents the site, not an idealised ramp. Where two numbers are shown the first is mobile and the second is what it becomes at 768px."
       />
 
+      <Section title="This page is Editorial only">
+        <Rule>
+          Every number below is the funnel. The dashboard runs the same components a rung tighter,
+          and the Button row in particular is 13px at weight 600 with no uppercase there rather than
+          12px Bold. The two columns live on <a className="underline" href="/design/foundations/density">Density</a>,
+          generated from the theme so they cannot drift.
+        </Rule>
+        <Rule>
+          These are also display sizes, written as arbitrary values rather than tokens. The token
+          scale stops at 20px because it covers reading text; a 64px hero headline is a layout
+          decision for one element, not a rung anyone else should reach for.
+        </Rule>
+      </Section>
+
       <Section title="Why there is only one H2">
         <Rule>
           The site used to carry three different heading styles that all called themselves a section heading, plus two
