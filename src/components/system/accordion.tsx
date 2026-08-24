@@ -25,6 +25,11 @@ export const AccordionTrigger = React.forwardRef<
       ref={ref}
       className={cn(
         "flex flex-1 items-center justify-between py-5 text-left text-title font-semibold text-foreground transition-all hover:no-underline [&[data-state=open]>svg]:rotate-45",
+        // Was falling back to the browser's default outline, which is the one
+        // control in the system that did. rounded-md gives the ring something
+        // to follow: this trigger is a full-width row, and a square ring across
+        // the whole width reads as a border rather than as focus.
+        "rounded-md focus-ring",
         className,
       )}
       {...props}

@@ -106,7 +106,7 @@ export function Menu({
               item.disabled
                 ? "cursor-not-allowed text-muted-foreground/50"
                 : item.destructive
-                  ? "text-error hover:bg-error/[0.06]"
+                  ? "text-error hover:bg-error/5"
                   : "text-foreground hover:bg-secondary",
             );
             const commit = () => { item.onSelect?.(); close(); };

@@ -79,7 +79,7 @@ export function Combobox({
       <div
         className={cn(
           "flex h-control items-center gap-2 rounded-lg border-[length:var(--border-field)] bg-background px-4 transition-colors duration-quick",
-          open ? "border-selection-border ring-2 ring-[hsl(var(--selection)/0.15)]" : "border-field",
+          open ? "border-selection-border ring-2 ring-selection/15" : "border-field",
         )}
       >
         <Search className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden />

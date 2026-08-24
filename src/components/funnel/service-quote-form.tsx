@@ -309,7 +309,7 @@ export function ServiceQuoteForm({
                 </div>
               ) : (
                 <Select value={formData.installationType} onValueChange={(v) => setFormData((d) => ({ ...d, installationType: v }))}>
-                  <SelectTrigger className="h-14 border-field bg-white text-body text-black focus:border-selection-border focus:ring-2 focus:ring-[hsl(var(--selection)/0.15)]">
+                  <SelectTrigger className="h-14 border-field bg-white text-body text-black focus-visible:border-selection-border">
                     <SelectValue placeholder="Select a service..." />
                   </SelectTrigger>
                   <SelectContent className="bg-white">

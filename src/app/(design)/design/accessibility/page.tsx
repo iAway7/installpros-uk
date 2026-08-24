@@ -31,10 +31,22 @@ export default function AccessibilityPage() {
         </div>
       </Section>
 
-      <Section title="Focus" note="One treatment, everywhere.">
-        <Code>{`focus-visible:outline-none
-focus-visible:ring-2 focus-visible:ring-ring
-focus-visible:ring-offset-2`}</Code>
+      <Section title="Focus" note="Two utilities, 25 controls, nothing hand-written.">
+        <Code>{`.focus-ring        /* 20 uses — the default */
+.focus-ring-solid  /* 5 uses — small controls on a plain background */`}</Code>
+        <p className="mt-4 max-w-2xl text-[15px] leading-[1.6] text-neutral-500">
+          These used to be written out by hand in eleven files, and not identically: some rings were
+          2px and some 1px, some at 15% opacity and some at 40%, with the offset varying too. That
+          matters more than it sounds. A keyboard user needs the indicator to be the same shape on
+          every control, or the pattern stops being recognisable — and copied by hand it meant
+          changing focus was an eleven-file job that could miss one.
+        </p>
+        <p className="mt-3 max-w-2xl text-[15px] leading-[1.6] text-neutral-500">
+          <Mono>.focus-ring</Mono> is the default: a soft ring at 15% that sits on the control&apos;s
+          own border. <Mono>.focus-ring-solid</Mono> is for small controls — a radio, a checkbox —
+          where a soft ring on a 20px circle is too faint to find; it uses the full colour and steps
+          the ring off the control so it stays visible.
+        </p>
         <p className="mt-4 max-w-2xl text-[15px] leading-[1.6] text-neutral-500">
           <Mono>--ring</Mono> resolves to <Mono>--selection</Mono> (#171717), not brand red. A red ring on a red button
           is invisible. <Mono>focus-visible</Mono> rather than <Mono>focus</Mono>, so mouse users do not see a ring they
@@ -81,10 +93,6 @@ focus-visible:ring-offset-2`}</Code>
 
       <Section title="Known gaps" note="Recorded rather than quietly ignored.">
         <ul className="space-y-3 text-[15px] leading-[1.7] text-neutral-600">
-          <li>
-            The FAQ accordion trigger has no <Mono>focus-visible</Mono> treatment of its own, it falls back to the
-            browser outline.
-          </li>
           <li>
             The before/after comparison is drag-only on desktop. There is no keyboard equivalent for moving the divider.
           </li>

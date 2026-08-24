@@ -58,7 +58,7 @@ export function ConsentCheckbox({
               // 10px — exactly half of this 20px box, which renders a circle and
               // reads as a radio button. Consent needs a square box.
               "peer h-5 w-5 cursor-pointer appearance-none rounded-xs border-[length:var(--border-control)] bg-white transition-colors",
-              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:ring-[hsl(var(--selection)/0.4)]",
+              "focus-ring-solid",
               dark
                 ? "border-white/50 bg-transparent checked:border-white checked:bg-white"
                 : "border-field hover:border-field-hover checked:border-selection checked:bg-selection",
