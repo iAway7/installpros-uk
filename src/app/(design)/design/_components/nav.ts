@@ -11,6 +11,7 @@ export const NAV: NavGroup[] = [
       { href: "/design/foundations/density", label: "Density" },
       { href: "/design/foundations/spacing", label: "Spacing & radius" },
       { href: "/design/foundations/motion", label: "Motion" },
+      { href: "/design/foundations/elevation", label: "Elevation & borders" },
     ],
   },
   { group: "Design tokens", items: [{ href: "/design/tokens", label: "Token architecture" }] },
