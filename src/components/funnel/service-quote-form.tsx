@@ -271,7 +271,7 @@ export function ServiceQuoteForm({
           {step === 2 && (
             <StepField anim={anim} label={`Step 2 of ${TOTAL_STEPS}`} title="What's your phone number?" error={errors.phone} errorId="cta-err-phone">
               <div className="relative">
-                <Input ref={phoneRef} type="tel" value={formData.phone} onChange={onPhoneChange} placeholder="07123 456789" inputSize="lg" aria-label="Phone number" state={errors.phone ? "error" : "default"} aria-describedby={errors.phone ? "cta-err-phone" : undefined} className="text-center text-body md:text-[22px]" />
+                <Input ref={phoneRef} type="tel" value={formData.phone} onChange={onPhoneChange} placeholder="Enter phone number" inputSize="lg" aria-label="Phone number" state={errors.phone ? "error" : "default"} aria-describedby={errors.phone ? "cta-err-phone" : undefined} className="text-center text-body md:text-[22px]" />
                 {showPhoneCheck && <Check className="absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-success" />}
               </div>
             </StepField>

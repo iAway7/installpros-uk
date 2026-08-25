@@ -369,7 +369,7 @@ export function ZipAvailabilityChecker(
               <div className="relative">
                 <Input
                   ref={phoneRef} type="tel" value={formData.phone} onChange={onPhoneChange}
-                  placeholder="07700 900123" inputSize="lg" aria-label="Phone number"
+                  placeholder="Enter phone number" inputSize="lg" aria-label="Phone number"
                   state={errors.phone ? "error" : "default"}
                   aria-describedby={errors.phone ? "err-phone" : undefined}
                   className="text-center text-body md:text-[22px]"

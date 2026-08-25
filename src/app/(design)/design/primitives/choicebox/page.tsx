@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Choicebox, ChoiceboxGroup } from "@/components/system/choicebox";
-import { PageHeader, Section, Preview, Code, BestPractices } from "../../_components/docs";
+import { PageHeader, Section, Preview, Code, BestPractices, Rule } from "../../_components/docs";
 
 export default function ChoiceboxPage() {
   const [single, setSingle] = useState("residential");
@@ -15,6 +15,25 @@ export default function ChoiceboxPage() {
         title="Choicebox"
         lead="A larger form of radio or checkbox, with room for a description and a tap target you can hit on a moving train. This is the generalised form of the install-type cards in the lead form."
       />
+
+      <Section title="Choicebox or FormOption">
+        <Rule>
+          They overlap, and knowing which to reach for is the whole difference. FormOption is a
+          picture card: an icon above a short label, centred, laid out two across. Choicebox is a
+          row with a visible radio or checkbox, a title and room for a line of description.
+        </Rule>
+        <Rule>
+          So: FormOption when the icon carries the meaning and the labels are one or two words —
+          the install-type step on a phone is read at a glance, not read. Choicebox when an option
+          needs explaining, or when more than one can be picked, which FormOption cannot do.
+        </Rule>
+        <Rule>
+          Worth saying plainly: Choicebox ships nowhere today. All of its uses are on these
+          documentation pages, while FormOption runs the quote form and the coverage checker. Both
+          are kept on purpose — Choicebox has the description and multi-select that FormOption will
+          never grow — but if a year from now it is still unused, that is the answer.
+        </Rule>
+      </Section>
 
       <Section title="Single-select" note="Radio semantics. One wins.">
         <Preview>
