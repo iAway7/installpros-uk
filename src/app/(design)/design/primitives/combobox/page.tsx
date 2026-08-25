@@ -6,7 +6,7 @@ import { PageHeader, Section, Preview, Code, BestPractices } from "../../_compon
 
 const SERVICES = [
   { value: "starlink", label: "Starlink installation", description: "Dish, router and mounting" },
-  { value: "mesh", label: "Mesh Wi-Fi", description: "Whole-property coverage" },
+  { value: "mesh", label: "Mesh WiFi", description: "Whole-property coverage" },
   { value: "marine", label: "Marine install", description: "Boats and pontoons" },
   { value: "commercial", label: "Commercial", description: "Offices, farms and sites" },
   { value: "survey", label: "Site survey", description: "Obstruction scan before booking" },
@@ -55,7 +55,7 @@ export default function ComboboxPage() {
         ]}
         content={[
           "The placeholder is an inline hint naming the scope: <code>Search services…</code>, <code>Start typing your address…</code>. Never a bare <code>Search…</code>, and never the label restated.",
-          "Option text matches canonical naming, <em>Starlink</em>, <em>Wi-Fi 6</em>, and keeps one register across the list.",
+          "Option text matches canonical naming, <em>Starlink</em>, <em>WiFi 6</em>, and keeps one register across the list.",
           "The empty state names the query: <em>No services match &ldquo;marine&rdquo;</em> reads better than <em>No results</em> and tells the user their typing was received.",
         ]}
         accessibility={[

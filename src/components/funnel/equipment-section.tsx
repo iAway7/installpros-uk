@@ -6,9 +6,9 @@ const EQUIPMENT = [
     img: "/funnel/starlink-gen-3.webp",
   },
   {
-    t: "Gen 3 Router",
-    badge: "Setup Included",
-    d: "Wi-Fi 6, configured and positioned for whole-home coverage.",
+    t: "Router 3",
+    badge: "Premium Upgrade",
+    d: "Premium upgrade over the standard Router Mini. WiFi 6, whole-home coverage.",
     img: "/funnel/starlink-gen-3-router.webp",
   },
   {
@@ -18,7 +18,7 @@ const EQUIPMENT = [
     img: "/funnel/mounts-masts.webp",
   },
   {
-    t: "Indoor/Outdoor Wi-Fi",
+    t: "Indoor/Outdoor WiFi",
     badge: "Add-on",
     d: "Seamless coverage across every floor and outbuilding.",
     img: "/funnel/wifi-access-point.webp",

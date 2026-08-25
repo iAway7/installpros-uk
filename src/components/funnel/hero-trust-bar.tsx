@@ -56,11 +56,11 @@ const BADGES: ReactNode[] = [
     {/* eslint-disable-next-line @next/next/no-img-element */}
     <img
       src="/funnel/Authorised-Starlink-Installer-Getmedigital.png"
-      alt="Authorized Starlink Installer"
+      alt="Authorised Starlink Installer"
       className="block h-[72px] w-[72px] rounded-lg"
     />
     <div className="flex flex-col leading-tight">
-      <span className="text-body text-white/70">Authorized</span>
+      <span className="text-body text-white/70">Authorised</span>
       <span className="text-body font-semibold text-white">Starlink Installer</span>
     </div>
   </div>,

@@ -1,12 +1,12 @@
 /**
  * Master FAQ list. Compiled from AnswerThePublic + competitor research + the
- * live InstallPros FAQ, answered for the UK (installation from £899).
+ * live InstallPros FAQ, answered for the UK.
  *
  * Each FAQ is tagged with a `category` (used for the tabs on the landing FAQ
  * section) and a `service` (used for the tabs on the standalone /faqs hub).
  * Right now every FAQ is for Starlink; other services can be added over time.
  */
-export const FAQ_CATEGORIES = ["Pricing", "Installation", "Coverage & Wi-Fi", "Support"] as const;
+export const FAQ_CATEGORIES = ["Pricing", "Installation", "Coverage & WiFi", "Support"] as const;
 export type FaqCategory = (typeof FAQ_CATEGORIES)[number];
 
 /** Services offered — the /faqs hub shows one tab per service. */
@@ -37,11 +37,11 @@ export interface Faq {
 export const LANDING_FAQS: { q: string; a: string }[] = [
   {
     q: "How much does Starlink installation cost in the UK?",
-    a: "Every job is quoted upfront and fixed before we arrive. No hidden fees, no surprises on the day. Complete supply-and-install packages start at £899, and installation-only options are available if you already own your kit.",
+    a: "Every job is quoted upfront and fixed before we arrive. No hidden fees, no surprises on the day. Complete supply-and-install and installation-only packages available.",
   },
   {
     q: "What's included in a standard installation?",
-    a: "Everything: a site survey and obstruction scan, all-metal mounting to wall, roof or pole, discreet weatherproofed cable routing, router setup, mesh configuration where needed, and a full speed test before we leave.",
+    a: "Everything: a site survey and obstruction scan, all-metal mounting to wall, roof or pole, discreet weatherproofed cable routing, router setup, mesh configuration where needed, and a full speed test before we leave. We also make sure every device in your home is connected before we go. We don't just turn up, install and run away.",
   },
   {
     q: "Do I need to buy mounts or accessories from Starlink first?",
@@ -49,7 +49,7 @@ export const LANDING_FAQS: { q: string; a: string }[] = [
   },
   {
     q: "How quickly can you install?",
-    a: "Typically within 7 days of your quote, same-week in most areas. Installation takes 1–3 hours on site, and your system reaches optimal performance within about 12 hours.",
+    a: "Typically within 7 days of your quote, same-week in most areas. We're usually on site for a minimum of 3 hours, and your system reaches optimal performance within about 12 hours.",
   },
   {
     q: "Do you cover my area?",
@@ -68,13 +68,13 @@ export const ALL_FAQS: Faq[] = [
     category: "Installation",
     service: "Starlink Installation",
     q: "How long does the installation take?",
-    a: "Most residential installs take 1–3 hours, depending on the mount and cable run. After setup it can take up to 12 hours for Starlink to fully optimise with the satellites, which is completely normal, and we'll explain everything before we go.",
+    a: "We're usually on site for a minimum of 3 hours, depending on the mount and cable run. After setup it can take up to 12 hours for Starlink to fully optimise with the satellites, which is completely normal, and we'll explain everything before we go.",
   },
   {
     category: "Pricing",
     service: "Starlink Installation",
     q: "How much does Starlink installation cost in the UK?",
-    a: "Our professional installation starts from £899, covering secure mounting, weatherproof cabling and full router setup by an accredited UK engineer. The Starlink kit and monthly plan are purchased separately from Starlink. You'll get a fixed, all-in price for your property before you book, with no surprises on the day.",
+    a: "Our professional installation covers secure mounting, weatherproof cabling and full router setup by an accredited UK engineer. Complete supply-and-install and installation-only packages are available. The Starlink kit and monthly plan are purchased separately from Starlink. You'll get a fixed, all-in price for your property before you book, with no surprises on the day.",
   },
   {
     category: "Pricing",
@@ -119,19 +119,19 @@ export const ALL_FAQS: Faq[] = [
     a: "The current Standard Starlink dish is white and rectangular, roughly 30 × 50 cm, about the size of a large baking tray, on a slim stand or a wall/roof mount. Installed professionally, it sits discreetly and out of the way.",
   },
   {
-    category: "Coverage & Wi-Fi",
+    category: "Coverage & WiFi",
     service: "Starlink Installation",
-    q: "Does Starlink come with a router, and will the Wi-Fi reach the whole house?",
-    a: "Yes, the Starlink kit includes a Wi-Fi router and everything needed to get online. For larger or multi-storey homes where the signal won't reach every room, we offer mesh Wi-Fi and can calibrate coverage so it works throughout the property.",
+    q: "Does Starlink come with a router, and will the WiFi reach the whole house?",
+    a: "Yes, the Starlink kit includes a WiFi router and everything needed to get online. For larger or multi-storey homes where the signal won't reach every room, we offer mesh WiFi and can calibrate coverage so it works throughout the property.",
   },
   {
-    category: "Coverage & Wi-Fi",
+    category: "Coverage & WiFi",
     service: "Starlink Installation",
     q: "Will my Starlink be up and running before the engineer leaves?",
     a: "In most cases, yes. We align the dish, connect the router and test your speeds before we leave, so you're online the same visit. Occasionally Starlink needs a few hours to fully optimise with the satellites after setup. If so, we'll confirm it's working and explain exactly what to expect.",
   },
   {
-    category: "Coverage & Wi-Fi",
+    category: "Coverage & WiFi",
     service: "Starlink Installation",
     q: "What happens if there's no clear line of sight at my property?",
     a: "Starlink needs a clear view of the sky to perform well. Before you book, our postcode checker confirms you're in a serviced area, and on the day our engineer finds the position that best clears trees, chimneys and other obstructions. If a standard mount can't get a clear view, we'll recommend a taller pole or alternative location so you still get a reliable signal.",

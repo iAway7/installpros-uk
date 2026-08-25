@@ -49,7 +49,15 @@ export function CoverageMapSection() {
 
           {/* Right — real UK map */}
           <div className="animate-fade-in-up animate-delay-100">
-            <div className="mx-auto w-full max-w-[520px]">
+            <div className="relative mx-auto w-full max-w-[520px]">
+              {/* LIVE badge — real-time feel over the pulsing install pins */}
+              <div className="pointer-events-none absolute left-3 top-3 z-10 inline-flex items-center gap-2 rounded-full border border-brand/25 bg-background/70 px-2.5 py-1 backdrop-blur">
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand opacity-75" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-brand" />
+                </span>
+                <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-foreground">Live</span>
+              </div>
               <UkCoverageMap baseColor="hsl(var(--foreground))" />
               <p className="mt-4 text-center text-label text-muted-foreground">
                 Areas we cover · tap a location

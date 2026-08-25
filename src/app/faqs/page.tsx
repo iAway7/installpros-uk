@@ -9,7 +9,7 @@ import { ALL_FAQS, FAQ_SERVICES } from "@/lib/funnel/faqs";
 export const metadata: Metadata = {
   title: "Starlink Installation FAQs | InstallPros UK",
   description:
-    "Answers to common questions about professional Starlink installation in the UK: cost, timings, roof mounting, Wi-Fi, and more. Installation from £899.",
+    "Answers to common questions about professional Starlink installation in the UK: cost, timings, roof mounting, WiFi, and more.",
   alternates: { canonical: "/faqs" },
   openGraph: {
     title: "Starlink Installation FAQs | InstallPros UK",
