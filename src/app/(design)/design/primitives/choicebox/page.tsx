@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Choicebox, ChoiceboxGroup } from "@/components/system/choicebox";
-import { PageHeader, Section, Preview, Code, BestPractices, Rule } from "../../_components/docs";
+import { PageHeader, Section, Preview, Code, BestPractices, Rule, Mono } from "../../_components/docs";
 
 export default function ChoiceboxPage() {
   const [single, setSingle] = useState("residential");
@@ -15,6 +15,19 @@ export default function ChoiceboxPage() {
         title="Choicebox"
         lead="A larger form of radio or checkbox, with room for a description and a tap target you can hit on a moving train. This is the generalised form of the install-type cards in the lead form."
       />
+
+      <Section title="How the indicator reads">
+        <Rule>
+          Round means pick one. Square means pick several. The tick only says which one is chosen,
+          and it is the same tick in all three places — FormOption, this component&apos;s radio, and
+          this component&apos;s checkbox.
+        </Rule>
+        <Rule>
+          The square used to be <Mono>rounded-md</Mono>, which is 10px on a 20px box: a perfect
+          circle. So the checkbox and the radio were the same shape and nothing on screen told
+          anyone whether they could pick one option or several. It is <Mono>rounded-xs</Mono> now.
+        </Rule>
+      </Section>
 
       <Section title="Choicebox or FormOption">
         <Rule>

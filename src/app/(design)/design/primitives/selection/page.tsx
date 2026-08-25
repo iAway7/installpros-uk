@@ -31,24 +31,38 @@ export default function SelectionPage() {
           <div className="grid w-full grid-cols-2 gap-3 sm:max-w-md">
             {OPTIONS.map((o) => (
               <FormOption
+                name="demo-install-type"
                 key={o.value}
                 label={o.label}
                 icon={o.icon}
                 selected={picked === o.value}
-                onClick={() => setPicked(o.value)}
+                onSelect={() => setPicked(o.value)}
               />
             ))}
           </div>
         </Preview>
         <Code>{`<FormOption
+  name="install-type"
   label="Residential"
   icon={<Home className="h-6 w-6" />}
   selected={value === "residential"}
-  onClick={() => setValue("residential")}
+  onSelect={() => setValue("residential")}
 />`}</Code>
         <p className="mt-4 max-w-2xl text-[15px] leading-[1.6] text-neutral-500">
-          It is a <Mono>&lt;button&gt;</Mono> with <Mono>aria-pressed</Mono>, not a radio, there is no group semantic,
-          because each card commits the step on its own.
+          It is a real radio group. It used to be a <Mono>&lt;button&gt;</Mono> with{" "}
+          <Mono>aria-pressed</Mono>, which is toggle semantics — this thing is on or off,
+          independently of its neighbours. Every use is a pick-one question, so a screen reader was
+          announcing four unrelated switches where only one can be on. Arrow keys now move between
+          options and the set is announced as a set.
+        </p>
+        <p className="mt-3 max-w-2xl text-[15px] leading-[1.6] text-neutral-500">
+          <Mono>name</Mono> is required and options in the same question must share it. Two groups
+          on one page that share a name become one group, and choosing in either clears the other.
+        </p>
+        <p className="mt-3 max-w-2xl text-[15px] leading-[1.6] text-neutral-500">
+          The indicator is round with a tick. The shape is what tells someone whether they can pick
+          one or several — round here and on Choicebox&apos;s radio, square on Choicebox&apos;s
+          checkbox — so the tick is free to mean nothing more than &ldquo;this is the one&rdquo;.
         </p>
       </Section>
 
@@ -106,7 +120,8 @@ export default function SelectionPage() {
           "The terms link says <em>terms and conditions</em>, not <em>here</em> or <em>this link</em>.",
         ]}
         accessibility={[
-          "<code>FormOption</code> is a <code>&lt;button&gt;</code> with <code>aria-pressed</code>, not a radio, there is no group semantic because each card commits the step.",
+          "<code>FormOption</code> is a real radio group and <code>name</code> is required. It used to be a <code>&lt;button&gt;</code> with <code>aria-pressed</code>, which announced four unrelated on/off switches for a question where only one can be on.",
+          "Two radio groups on one page must not share a <code>name</code> — choosing in either would clear the other.",
           "The consent checkbox sets <code>aria-invalid</code> and <code>aria-describedby</code> when it errors, and the message carries <code>role=\"alert\"</code>.",
           "The whole label row is the click target, so the real target is 44px+ even though the box itself is 20px.",
           "Selected state is a border plus a ring plus a filled indicator, never colour alone.",

@@ -58,7 +58,11 @@ export function Choicebox({
         aria-hidden
         className={cn(
           "mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center border-[length:var(--border-control)] transition-colors",
-          multi ? "rounded-md" : "rounded-full",
+          // rounded-xs, not rounded-md: md is 10px and this box is 20px, so the
+          // "square" checkbox was rendering as a perfect circle and looked
+          // identical to the radio. The shape is what tells someone whether they
+          // can pick one or several, so it has to actually differ.
+          multi ? "rounded-xs" : "rounded-full",
           selected ? "border-selection bg-selection" : "border-field bg-background",
         )}
       >
@@ -67,12 +71,14 @@ export function Choicebox({
             a page surface. Swapping it for bg-background would only look right
             today because --background happens to be white, and would turn the
             mark invisible the moment it is not. */}
-        {selected &&
-          (multi ? (
-            <Check className="h-3 w-3 text-white" strokeWidth={3.5} />
-          ) : (
-            <span className="h-2 w-2 rounded-full bg-white" />
-          ))}
+        {/* A tick in both, rather than a tick for multi and a dot for single.
+            The shape already answers "one or several?", so the mark only has to
+            say "this one is chosen" — and saying it two different ways for the
+            same meaning is what made FormOption and this component look like
+            unrelated patterns. The dot is the more canonical radio affordance,
+            but these are large selectable cards rather than bare radios, and
+            the border and fill carry the state as much as the mark does. */}
+        {selected && <Check className="h-3 w-3 text-white" strokeWidth={3.5} />}
       </span>
       {/* Focus lives on the visually-hidden input, so mirror it onto the card. */}
       <span className="pointer-events-none absolute inset-0 rounded-lg ring-offset-2 peer-focus-visible:ring-2 peer-focus-visible:ring-selection" />

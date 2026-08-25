@@ -403,10 +403,11 @@ export function ZipAvailabilityChecker(
               <div className="grid grid-cols-2 gap-3">
                 {INSTALL_OPTIONS.map((o) => (
                   <FormOption
+                    name="install-type-zip"
                     key={o.value}
                     label={o.label}
                     selected={formData.installationType === o.value}
-                    onClick={() => setFormData((d) => ({ ...d, installationType: o.value }))}
+                    onSelect={() => setFormData((d) => ({ ...d, installationType: o.value }))}
                     icon={o.icon}
                   />
                 ))}
