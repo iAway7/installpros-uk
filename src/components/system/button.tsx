@@ -32,9 +32,14 @@ const buttonVariants = cva(
         ghost: "hover:bg-accent hover:text-accent-foreground",
       },
       size: {
-        default: "h-control rounded-lg px-[18px] py-[14px]",
-        sm: "h-control-sm rounded-md px-4 py-2",
-        lg: "h-control-lg rounded-lg px-6 py-4",
+        // No vertical padding on any of these. The height is fixed, the content
+        // is centred and whitespace-nowrap stops it wrapping, so py cannot move
+        // anything — it only looked like a decision. Height is the token that
+        // controls the box; padding here was a second, silent answer to the
+        // same question.
+        default: "h-control rounded-lg px-[18px]",
+        sm: "h-control-sm rounded-md px-4",
+        lg: "h-control-lg rounded-lg px-6",
         icon: "h-control-aux w-control-aux rounded-md",
       },
     },
