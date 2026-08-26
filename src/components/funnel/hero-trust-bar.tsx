@@ -48,7 +48,7 @@ const BADGES: ReactNode[] = [
   </div>,
   <div key="times" className="flex flex-col items-center gap-0.5">
     <span className="text-[8.5px] font-medium uppercase tracking-[0.24em] text-white/70">As featured in</span>
-    <span className="text-[15px] font-semibold text-white" style={{ fontFamily: "Georgia, serif", letterSpacing: "0.03em" }}>
+    <span className="text-body-sm font-semibold text-white" style={{ fontFamily: "Georgia, serif", letterSpacing: "0.03em" }}>
       THE TIMES
     </span>
   </div>,

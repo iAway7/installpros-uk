@@ -310,7 +310,7 @@ export function BeforeAfterSection() {
         {isMobile ? (
           <div className="flex flex-col gap-4">
             <div className="rounded-xl border border-border p-6" style={{ background: "var(--before-grad)" }}>
-              <span className="inline-block rounded-full border border-black/15 px-[15px] py-[7px] text-[11px] font-semibold uppercase tracking-[0.18em]" style={{ color: VIZ.ink }}>
+              <span className="inline-block rounded-full border border-black/15 px-[15px] py-[7px] text-micro font-semibold uppercase tracking-[0.18em]" style={{ color: VIZ.ink }}>
                 Before
               </span>
               <div className="mt-6">{beforeBody(true)}</div>
@@ -321,7 +321,7 @@ export function BeforeAfterSection() {
               style={{ background: "radial-gradient(120% 130% at 85% 110%, hsl(var(--primary) / 0.28) 0%, rgba(20,10,10,.9) 45%, #0B0B0C 100%)" }}
             >
               <span
-                className="inline-block rounded-full px-[15px] py-[7px] text-[11px] font-semibold uppercase tracking-[0.18em]"
+                className="inline-block rounded-full px-[15px] py-[7px] text-micro font-semibold uppercase tracking-[0.18em]"
                 style={{ border: "1px solid hsl(var(--brand-soft) / 0.4)", color: VIZ.rose4, background: "rgba(60,5,5,.35)" }}
               >
                 After · Starlink
@@ -345,7 +345,7 @@ export function BeforeAfterSection() {
           >
             {/* BEFORE (light) */}
             <div className="absolute inset-0" style={{ background: "var(--before-grad)" }}>
-              <span className="absolute left-[30px] top-[26px] rounded-full border border-black/15 px-[15px] py-[7px] text-[11px] font-semibold uppercase tracking-[0.18em]" style={{ color: VIZ.ink }}>
+              <span className="absolute left-[30px] top-[26px] rounded-full border border-black/15 px-[15px] py-[7px] text-micro font-semibold uppercase tracking-[0.18em]" style={{ color: VIZ.ink }}>
                 Before
               </span>
               <div className="absolute top-1/2 -translate-y-1/2" style={{ left: "clamp(24px,6vw,80px)", maxWidth: "44%" }}>
@@ -363,7 +363,7 @@ export function BeforeAfterSection() {
               }}
             >
               <span
-                className="absolute right-[30px] top-[26px] rounded-full px-[15px] py-[7px] text-[11px] font-semibold uppercase tracking-[0.18em]"
+                className="absolute right-[30px] top-[26px] rounded-full px-[15px] py-[7px] text-micro font-semibold uppercase tracking-[0.18em]"
                 style={{ border: "1px solid hsl(var(--brand-soft) / 0.4)", color: VIZ.rose4, background: "rgba(60,5,5,.35)" }}
               >
                 After · Starlink

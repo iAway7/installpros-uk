@@ -77,12 +77,12 @@ export function ReviewCard({ r, source = "google" }: { r: Review; source?: "goog
 
       {/* Stars + verified */}
       <div className="mt-4 flex items-center gap-2">
-        <span className="text-[15px] tracking-[2px] text-gold">{"★".repeat(Math.min(5, Math.max(4, r.rating)))}</span>
+        <span className="text-body-sm tracking-[2px] text-gold">{"★".repeat(Math.min(5, Math.max(4, r.rating)))}</span>
         <VerifiedBadge />
       </div>
 
       {/* Text + read more */}
-      <p className="mt-3 text-[15px] text-foreground" style={{ lineHeight: "1.6", textWrap: "pretty" }}>
+      <p className="mt-3 text-body-sm text-foreground" style={{ lineHeight: "1.6", textWrap: "pretty" }}>
         {text}
       </p>
       {long && (

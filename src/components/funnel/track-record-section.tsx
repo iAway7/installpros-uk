@@ -44,7 +44,7 @@ export function TrackRecordSection() {
           {STATS.map((s) => (
             <div key={s.label} className="border-t border-border pt-7">
               <div className="stat-xl text-foreground">{s.value}</div>
-              <div className="mt-3.5 text-[15px] text-muted-foreground" style={{ lineHeight: "1.55" }}>
+              <div className="mt-3.5 text-body-sm text-muted-foreground" style={{ lineHeight: "1.55" }}>
                 {s.label}
               </div>
             </div>

@@ -57,8 +57,8 @@ export async function CustomerStoriesSection() {
           >
             <GoogleG size={22} />
             <div>
-              <div className="text-[15px] font-semibold text-foreground">{ratingLabel} on Google</div>
-              <div className="text-[12.5px] text-muted-foreground">{subline}</div>
+              <div className="text-body-sm font-semibold text-foreground">{ratingLabel} on Google</div>
+              <div className="text-caption text-muted-foreground">{subline}</div>
             </div>
           </a>
         </div>

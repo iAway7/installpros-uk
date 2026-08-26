@@ -56,7 +56,7 @@ export function CoverageMapSection() {
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand opacity-75" />
                   <span className="relative inline-flex h-2 w-2 rounded-full bg-brand" />
                 </span>
-                <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-foreground">Live</span>
+                <span className="text-micro font-semibold uppercase tracking-[0.16em] text-foreground">Live</span>
               </div>
               <UkCoverageMap baseColor="hsl(var(--foreground))" />
               <p className="mt-4 text-center text-label text-muted-foreground">

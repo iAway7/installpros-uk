@@ -105,8 +105,8 @@ export function PhotoRequestCard() {
             <div className="w-0.5 flex-grow bg-border" />
           </div>
           <div className="pb-[18px] md:pb-5">
-            <p className="text-[15px] md:text-body font-semibold text-muted-foreground">Details received</p>
-            <p className="mt-[3px] text-body-sm md:text-[15px] text-muted-foreground">Postcode and contact saved.</p>
+            <p className="text-body-sm md:text-body font-semibold text-muted-foreground">Details received</p>
+            <p className="mt-[3px] text-body-sm text-muted-foreground">Postcode and contact saved.</p>
           </div>
         </div>
 
@@ -122,7 +122,7 @@ export function PhotoRequestCard() {
           </div>
           <div>
             <p className="text-body md:text-[17px] font-bold text-foreground">Send us three photos</p>
-            <p className="mt-[3px] text-body-sm md:text-[15px] leading-[1.5] text-muted-foreground">
+            <p className="mt-[3px] text-body-sm leading-[1.5] text-muted-foreground">
               It takes about a minute on your phone.
             </p>
           </div>
@@ -136,7 +136,7 @@ export function PhotoRequestCard() {
             className="flex flex-col items-center gap-2 md:gap-2.5 rounded-lg border border-border bg-secondary p-3.5 md:px-2.5 md:py-[18px] text-center"
           >
             <Icon className="h-[22px] w-[22px] md:h-6 md:w-6 text-brand-icon" aria-hidden="true" />
-            <span className="text-[12.5px] md:text-body-sm leading-[1.35] text-muted-foreground">{label}</span>
+            <span className="text-caption md:text-body-sm leading-[1.35] text-muted-foreground">{label}</span>
           </li>
         ))}
       </ul>
@@ -171,7 +171,7 @@ export function PhotoRequestCard() {
               lead_id: lead.leadId,
             })
           }
-          className="focus-ring flex min-h-[44px] items-center gap-[7px] rounded-md px-2 text-body-sm md:text-[15px] font-medium text-muted-foreground transition-colors duration-quick hover:text-foreground"
+          className="focus-ring flex min-h-[44px] items-center gap-[7px] rounded-md px-2 text-body-sm font-medium text-muted-foreground transition-colors duration-quick hover:text-foreground"
         >
           <Mail className="h-4 w-4 md:h-[17px] md:w-[17px]" aria-hidden="true" />
           <span className="border-b border-field">or email them instead</span>

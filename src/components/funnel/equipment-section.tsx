@@ -68,7 +68,7 @@ export function EquipmentSection() {
                   {e.badge}
                 </span>
                 <h3 className="mt-3 text-lg font-bold leading-tight text-foreground">{e.t}</h3>
-                <p className="mt-2.5 text-[15px] text-muted-foreground" style={{ lineHeight: "1.55" }}>
+                <p className="mt-2.5 text-body-sm text-muted-foreground" style={{ lineHeight: "1.55" }}>
                   {e.d}
                 </p>
               </div>
