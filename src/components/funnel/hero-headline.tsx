@@ -11,11 +11,17 @@ const CLASS = "h1-hero animate-slide-up animate-delay-100 mb-4 text-white md:mb-
  * Hero H1. Renders the default responsive headline server-side (good for SEO),
  * and swaps to an A/B variant headline on the client when one is assigned.
  */
-export function HeroHeadline() {
+export function HeroHeadline({ headline }: { headline?: string } = {}) {
   const config = useExperimentConfig();
 
+  // An assigned experiment still wins: segment landings are not in the A/B, so
+  // in practice only one of these two ever applies on a given page.
   if (config.headline) {
     return <h1 className={CLASS}>{config.headline}</h1>;
+  }
+
+  if (headline) {
+    return <h1 className={CLASS}>{headline}</h1>;
   }
 
   return (

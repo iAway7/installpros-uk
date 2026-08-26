@@ -12,9 +12,20 @@ function GoogleG({ size = 20 }: { size?: number }) {
   );
 }
 
+export interface InstallsStat {
+  /** Formatted figure, e.g. "3,500+". */
+  count: string;
+  /** What the figure counts, e.g. "UK installations". */
+  label: string;
+}
+
+const DEFAULT_INSTALLS: InstallsStat = { count: "3,500+", label: "UK installations" };
+
 /** The five trust badges (inner content only). Reused by the desktop row and
- *  the mobile marquee. */
-const BADGES: ReactNode[] = [
+ *  the mobile marquee. Built per render so a segment landing can swap the
+ *  installs figure for one that counts its own work. */
+function buildBadges(installs: InstallsStat): ReactNode[] {
+  return [
   <a
     key="google"
     href="https://maps.app.goo.gl/UvqYwqVrAV6R9T5m6"
@@ -43,8 +54,8 @@ const BADGES: ReactNode[] = [
     </span>
   </a>,
   <div key="installs" className="flex items-center gap-2">
-    <span className="text-body font-semibold">3,500+</span>
-    <span className="text-body text-white/70">UK installations</span>
+    <span className="text-body font-semibold">{installs.count}</span>
+    <span className="whitespace-nowrap text-body text-white/70">{installs.label}</span>
   </div>,
   <div key="times" className="flex flex-col items-center gap-0.5">
     <span className="text-[8.5px] font-medium uppercase tracking-[0.24em] text-white/70">As featured in</span>
@@ -64,7 +75,8 @@ const BADGES: ReactNode[] = [
       <span className="text-body font-semibold text-white">Starlink Installer</span>
     </div>
   </div>,
-];
+  ];
+}
 
 /**
  * Hero trust bar. Desktop: all five badges in one row with dividers. Mobile: a
@@ -72,14 +84,17 @@ const BADGES: ReactNode[] = [
  * client state), so the height is identical on the server and after hydration —
  * which is what keeps the my-auto-centred hero from shifting (CLS).
  */
-export function HeroTrustBar() {
+export function HeroTrustBar({ installs = DEFAULT_INSTALLS }: { installs?: InstallsStat } = {}) {
+  const BADGES = buildBadges(installs);
+
   return (
     <div className="relative z-10 w-full border-t border-white/10 bg-black/85 text-white backdrop-blur">
-      {/* Desktop: full row */}
-      <div
-        className="container mx-auto hidden flex-wrap items-center justify-center gap-y-3 px-6 py-4 sm:flex"
-        style={{ maxWidth: "1160px" }}
-      >
+      {/* Desktop: full row, edge to edge with a 20px gutter. It used to sit in
+          the 1160px container, which was fine while the installs badge read
+          "UK installations" and became a two-line wrap the moment a segment
+          landing set a longer label. The badges are centred as a group, so the
+          extra width buys room rather than spreading them apart. */}
+      <div className="hidden w-full flex-wrap items-center justify-center gap-y-3 px-5 py-4 sm:flex">
         {BADGES.map((badge, i) => (
           <div
             key={i}

@@ -1,11 +1,25 @@
 import ReactDOM from "react-dom";
 import { ZipAvailabilityChecker } from "./zip-availability-checker";
-import { HeroTrustBar } from "./hero-trust-bar";
+import { HeroTrustBar, type InstallsStat } from "./hero-trust-bar";
 import { HeroHeadline } from "./hero-headline";
+
+/** The residential photo. Segment landings pass their own via `image`. */
+const DEFAULT_HERO = "/funnel/hero-uk-residential.webp";
 
 /** Full-bleed hero with the funnel, and a full-width trust bar pinned at the bottom. */
 export function HeroSection(
-  { smartCoverage = false, addressMode = false }: { smartCoverage?: boolean; addressMode?: boolean } = {},
+  { smartCoverage = false, addressMode = false, image = DEFAULT_HERO, headline, subheadline, installs }: {
+    smartCoverage?: boolean;
+    addressMode?: boolean;
+    /** Background photo. Keep replacements around 60 KB: the preload below is
+     *  high priority, so weight here is paid straight out of first paint. */
+    image?: string;
+    /** Segment landings override the copy; the funnel pages leave both unset. */
+    headline?: string;
+    subheadline?: string;
+    /** Trust-bar installs figure. Segment landings count their own work. */
+    installs?: InstallsStat;
+  } = {},
 ) {
   // The hero photo is a CSS background, which the preload scanner cannot see:
   // it has to fetch the HTML, build the CSSOM and only then discover the URL.
@@ -17,7 +31,7 @@ export function HeroSection(
   // on a slow connection, so first paint lands later. Reverted. The real fault
   // was never the delivery mechanism — it was the source growing from 19.5 KB
   // to 147 KB. It is now 58 KB, which is what actually needed fixing.
-  ReactDOM.preload("/funnel/hero-uk-residential.webp", {
+  ReactDOM.preload(image, {
     as: "image",
     fetchPriority: "high",
   });
@@ -33,7 +47,7 @@ export function HeroSection(
         <div
           className="absolute inset-0"
           style={{
-            backgroundImage: "url(/funnel/hero-uk-residential.webp)",
+            backgroundImage: `url(${image})`,
             backgroundSize: "cover",
             backgroundPosition: "center top",
           }}
@@ -63,10 +77,10 @@ export function HeroSection(
             <img src="/funnel/uk-flag.svg" alt="" aria-hidden="true" className="h-4 w-4 rounded-xs" />
           </div>
 
-          <HeroHeadline />
+          <HeroHeadline headline={headline} />
 
           <p className="animate-slide-up animate-delay-200 mx-auto mb-8 max-w-3xl text-balance text-lg text-white/95 md:mb-10 md:text-xl lg:mb-12 lg:text-2xl">
-            Fitted to maximise performance and give you WiFi wherever you need it. Same-week scheduling.
+            {subheadline ?? "Fitted to maximise performance and give you WiFi wherever you need it. Same-week scheduling."}
           </p>
 
           <div className="animate-slide-up animate-delay-300 mx-auto w-full md:max-w-2xl">
@@ -76,7 +90,7 @@ export function HeroSection(
       </div>
 
       {/* Trust bar — full width, pinned to the bottom of the hero */}
-      <HeroTrustBar />
+      <HeroTrustBar installs={installs} />
     </section>
   );
 }

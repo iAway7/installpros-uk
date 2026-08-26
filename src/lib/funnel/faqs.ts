@@ -30,6 +30,63 @@ export interface Faq {
 }
 
 /**
+ * Commercial landing FAQ. Ordered for the buyer who cannot sign alone: the
+ * blockers that stop a facilities or operations manager getting internal
+ * approval (failover, disruption, invoicing) come before the questions about
+ * the product itself.
+ *
+ * THREE ANSWERS ARE UNVERIFIED and must be confirmed by Will before this page
+ * goes live. They are marked TODO(will) below. VAT is not one of them: we are
+ * VAT registered (GB456635174, in the footer), so that half is fact. Whether we
+ * open credit accounts is the part nobody has confirmed.
+ *
+ * There is deliberately no finance FAQ here. Super/Abound credit is an FCA
+ * regulated financial promotion, and business lending is not the same product
+ * as the consumer credit in the footer. That copy has to come from Super or
+ * Abound, not from us.
+ */
+export const COMMERCIAL_FAQS: { q: string; a: string }[] = [
+  {
+    // TODO(will): confirm we actually configure failover alongside an existing
+    // line as routine work, and that we test the changeover on the day.
+    q: "Can Starlink back up our existing line rather than replace it?",
+    a: "Yes. Many of our commercial customers keep the line they already have and add Starlink alongside it, so a fibre or leased-line fault does not take the site offline. We set the changeover up during the installation and test it before we leave.",
+  },
+  {
+    // TODO(will): confirm evenings and weekends are genuinely available, and
+    // whether they carry a surcharge. If they do, say so here rather than at quote.
+    q: "Can you install out of hours so we do not stop trading?",
+    a: "Yes. We can work evenings or weekends where the site needs it, so the installation does not interrupt trading or production. Tell us your constraints at survey and we plan the visit around them.",
+  },
+  {
+    q: "Can Starlink handle multiple users and heavy use?",
+    a: "Yes. We configure the system for the number of people on site and the applications you run, and we position the router and any access points around how the building is actually laid out rather than where the cable happens to arrive.",
+  },
+  {
+    q: "What is included in a commercial Starlink installation?",
+    a: "Site assessment, mounting hardware, cabling, configuration and testing. We tailor the install to the building and to how your teams use the connection, and everything is quoted and fixed before we arrive.",
+  },
+  {
+    q: "Do I need to buy the Starlink kit first?",
+    a: "No. We can supply the kit as part of the job, or install one you already own.",
+  },
+  {
+    q: "How long does a commercial install take?",
+    a: "Most are done in a single day, typically three to five hours on site, with the connection settling to full performance within about twelve hours. Larger or multi-building sites take longer, and we tell you which at survey rather than on the day.",
+  },
+  {
+    q: "Where do you cover?",
+    a: "The whole UK. Give us the postcode and we will confirm access and flag anything unusual about the site before we quote.",
+  },
+  {
+    // TODO(will): "invoiced with VAT" is fact. "Pay on account" is NOT
+    // confirmed. If we do not offer account terms, cut that sentence.
+    q: "Do you invoice with VAT and can we pay on account?",
+    a: "Every commercial job is invoiced with VAT, and we can provide a formal written quote for your purchase order. Talk to us about account terms if your finance team needs them.",
+  },
+];
+
+/**
  * The concise, curated FAQ shown on the landing pages (no tabs). Kept separate
  * from the full ALL_FAQS list (which still powers the /faqs hub). Also used for
  * each landing page's FAQPage structured data so schema matches what's visible.
