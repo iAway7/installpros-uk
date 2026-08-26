@@ -38,7 +38,7 @@ export function TrackRecordSection() {
         </h2>
 
         <div
-          className="mt-14 grid gap-10 md:mt-[70px]"
+          className="mt-14 grid gap-10 md:mt-18"
           style={{ gridTemplateColumns: "repeat(auto-fit, minmax(230px, 1fr))" }}
         >
           {STATS.map((s) => (

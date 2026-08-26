@@ -49,7 +49,7 @@ export function HeroSection(
           its own heading up underneath the fixed header, where it was clipped
           and unreachable. Auto margins collapse to zero instead of overflowing,
           so the content always starts below `pt-28`. */}
-      <div className="relative z-10 flex flex-1 justify-center pt-28 pb-16 md:pt-36 md:pb-16">
+      <div className="relative z-10 flex flex-1 justify-center pt-28 pb-16 md:pt-36">
         <div className="container mx-auto my-auto text-center text-white">
           {/* Supporting label, not a headline: it sits above the value
               proposition, so it has to read as subordinate to it. The pill

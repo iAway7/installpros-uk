@@ -82,8 +82,13 @@ export interface SegmentFilter {
   days: number;
 }
 
-/** Landing pages worth funnelling separately — the A/B pair. */
-export const FUNNEL_PAGES = ["/install-quote", "/starlink-installation"] as const;
+/** Landing pages worth funnelling separately: the A/B pair, plus each
+ *  Ads segment landing. */
+export const FUNNEL_PAGES = [
+  "/install-quote",
+  "/starlink-installation",
+  "/commercial-starlink-installation",
+] as const;
 
 function segmentWhere(f: SegmentFilter): string {
   const parts = [`timestamp >= now() - interval ${Math.max(1, Math.min(365, f.days))} day`];

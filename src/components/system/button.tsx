@@ -37,6 +37,11 @@ const buttonVariants = cva(
         // anything — it only looked like a decision. Height is the token that
         // controls the box; padding here was a second, silent answer to the
         // same question.
+        //
+        // px-[18px] is the one deliberate off-grid value left in the system: it
+        // is the button's designed horizontal padding, and snapping it to 16 or
+        // 20 would resize every button on the site. Off the grid on purpose
+        // beats on the grid by accident.
         default: "h-control rounded-lg px-[18px]",
         sm: "h-control-sm rounded-md px-4",
         lg: "h-control-lg rounded-lg px-6",

@@ -87,16 +87,16 @@ export function PhotoRequestCard() {
         <span className="text-caption font-semibold text-success md:text-body-sm">Request received</span>
       </p>
 
-      <h1 className="mt-[18px] md:mt-5 text-[29px] md:text-[36px] font-bold leading-[1.15] md:leading-[1.12] tracking-[-0.02em] md:tracking-[-0.025em] text-foreground [text-wrap:pretty]">
+      <h1 className="mt-4 md:mt-5 text-[29px] md:text-[36px] font-bold leading-[1.15] md:leading-[1.12] tracking-[-0.02em] md:tracking-[-0.025em] text-foreground [text-wrap:pretty]">
         Your photos are the last step
       </h1>
-      <p className="mt-3 md:mt-3.5 text-body md:text-lead leading-[1.55] md:leading-[1.6] text-muted-foreground [text-wrap:pretty]">
+      <p className="mt-3.5 text-body md:text-lead leading-[1.55] md:leading-[1.6] text-muted-foreground [text-wrap:pretty]">
         Send three quick shots and your fixed price lands today. No site visit, no waiting in for an engineer.
       </p>
 
       {/* Two beats, one done and one live. The done row is deliberately quiet
           so the eye lands on the live one. */}
-      <div className="mt-[26px] md:mt-[30px] flex flex-col gap-0.5">
+      <div className="mt-6 md:mt-7 flex flex-col gap-0.5">
         <div className="flex gap-3.5 md:gap-4">
           <div className="flex flex-col items-center gap-1">
             <div className="flex h-[26px] w-[26px] items-center justify-center rounded-full bg-success/10">
@@ -104,9 +104,9 @@ export function PhotoRequestCard() {
             </div>
             <div className="w-0.5 flex-grow bg-border" />
           </div>
-          <div className="pb-[18px] md:pb-5">
+          <div className="pb-4 md:pb-5">
             <p className="text-body-sm md:text-body font-semibold text-muted-foreground">Details received</p>
-            <p className="mt-[3px] text-body-sm text-muted-foreground">Postcode and contact saved.</p>
+            <p className="mt-0.5 text-body-sm text-muted-foreground">Postcode and contact saved.</p>
           </div>
         </div>
 
@@ -122,18 +122,18 @@ export function PhotoRequestCard() {
           </div>
           <div>
             <p className="text-body md:text-lead font-bold text-foreground">Send us three photos</p>
-            <p className="mt-[3px] text-body-sm leading-[1.5] text-muted-foreground">
+            <p className="mt-0.5 text-body-sm leading-[1.5] text-muted-foreground">
               It takes about a minute on your phone.
             </p>
           </div>
         </div>
       </div>
 
-      <ul className="mt-[18px] md:mt-[22px] grid grid-cols-3 gap-2.5 md:gap-3">
+      <ul className="mt-4 md:mt-5 grid grid-cols-3 gap-2.5 md:gap-3">
         {SHOTS.map(({ icon: Icon, label }) => (
           <li
             key={label}
-            className="flex flex-col items-center gap-2 md:gap-2.5 rounded-lg border border-border bg-secondary p-3.5 md:px-2.5 md:py-[18px] text-center"
+            className="flex flex-col items-center gap-2.5 rounded-lg border border-border bg-secondary p-3.5 md:px-2.5 md:py-4 text-center"
           >
             <Icon className="h-[22px] w-[22px] md:h-6 md:w-6 text-brand-icon" aria-hidden="true" />
             <span className="text-caption md:text-body-sm leading-[1.35] text-muted-foreground">{label}</span>
@@ -161,7 +161,7 @@ export function PhotoRequestCard() {
       </a>
 
       {/* Email is a text link, not a second button: one tap dominates. */}
-      <div className="mt-4 md:mt-[18px] flex justify-center">
+      <div className="mt-4 flex justify-center">
         <a
           href={emailHref}
           onClick={() =>
@@ -171,7 +171,7 @@ export function PhotoRequestCard() {
               lead_id: lead.leadId,
             })
           }
-          className="focus-ring flex min-h-[44px] items-center gap-[7px] rounded-md px-2 text-body-sm font-medium text-muted-foreground transition-colors duration-quick hover:text-foreground"
+          className="focus-ring flex min-h-[44px] items-center gap-1.5 rounded-md px-2 text-body-sm font-medium text-muted-foreground transition-colors duration-quick hover:text-foreground"
         >
           <Mail className="h-4 w-4 md:h-[17px] md:w-[17px]" aria-hidden="true" />
           <span className="border-b border-field">or email them instead</span>

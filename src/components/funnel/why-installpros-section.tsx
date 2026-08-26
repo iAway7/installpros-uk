@@ -54,7 +54,7 @@ export function WhyInstallProsSection() {
         </div>
 
         <div
-          className="mt-12 grid gap-3.5 md:mt-[70px]"
+          className="mt-12 grid gap-3.5 md:mt-18"
           style={{ gridTemplateColumns: "repeat(auto-fit, minmax(258px, 1fr))" }}
         >
           {FEATURES.map((f) => (
