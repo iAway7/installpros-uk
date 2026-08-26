@@ -212,7 +212,7 @@ function SatelliteView({ leadId, mapsQuery, exact }: { leadId: string; mapsQuery
   return (
     <div className="space-y-1.5">
       <div className="flex items-center justify-between">
-        <p className="flex items-center gap-1 text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+        <p className="flex items-center gap-1 text-label font-medium uppercase tracking-wide text-muted-foreground">
           Satellite view
           <InfoTip
             text="Aerial imagery centred on the postcode. Check the roof, outbuildings and tree line before quoting, even when the customer sent no photos."
@@ -233,7 +233,7 @@ function SatelliteView({ leadId, mapsQuery, exact }: { leadId: string; mapsQuery
         onError={() => setFailed(true)}
         className="w-full rounded-lg border border-border"
       />
-      <div className="flex items-center justify-between text-[11px] text-muted-foreground">
+      <div className="flex items-center justify-between text-label text-muted-foreground">
         <span>{exact ? "Centred on the property" : "Postcode-centre view"} · imagery © Esri/Maxar</span>
         <a
           href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapsQuery)}&basemap=satellite`}
@@ -307,7 +307,7 @@ function AddressResolver({ leadId, intel }: { leadId: string; intel?: LeadIntel 
     return (
       <div className="space-y-2">
         <div className="rounded-lg bg-secondary/50 p-3 text-body-sm">
-          <p className="mb-1 flex items-center gap-1 text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+          <p className="mb-1 flex items-center gap-1 text-label font-medium uppercase tracking-wide text-muted-foreground">
             Exact property
             <InfoTip
               text="The specific building, not the postcode. Room counts are modelled estimates; floor area, tax band and plot come from records."
@@ -331,7 +331,7 @@ function AddressResolver({ leadId, intel }: { leadId: string; intel?: LeadIntel 
     <div className="space-y-2">
       {candidates && candidates.length > 1 ? (
         <div className="space-y-1 rounded-lg border border-border p-2">
-          <p className="px-1 text-[11px] font-medium uppercase tracking-wide text-muted-foreground">Pick the exact address</p>
+          <p className="px-1 text-label font-medium uppercase tracking-wide text-muted-foreground">Pick the exact address</p>
           {candidates.map((c) => (
             <button
               key={c.property_id}
@@ -380,7 +380,7 @@ function IntelSection({ leadId, intel }: { leadId: string; intel?: LeadIntel }) 
         <button
           onClick={refresh}
           disabled={refreshing}
-          className="inline-flex items-center gap-1 text-[11px] font-medium text-muted-foreground hover:text-primary disabled:opacity-50"
+          className="inline-flex items-center gap-1 text-label font-medium text-muted-foreground hover:text-primary disabled:opacity-50"
         >
           <RefreshCw className={`h-3 w-3 ${refreshing ? "animate-spin" : ""}`} />
           {intel ? "Refresh" : "Fetch"}
@@ -501,7 +501,7 @@ function IntelSection({ leadId, intel }: { leadId: string; intel?: LeadIntel }) 
               {intel.energy_cost_annual != null ? `~£${Number(intel.energy_cost_annual).toLocaleString("en-GB")}/yr` : "—"}
             </Field>
           </div>
-          <p className="text-[11px] leading-snug text-muted-foreground">
+          <p className="text-label leading-snug text-muted-foreground">
             Broadband, property, value and crime figures describe the postcode, not the exact house. Resolve the address
             above for property-level data.
           </p>
@@ -542,7 +542,7 @@ function PlanningConstraints({ constraints }: { constraints?: PlanningConstraint
 
   return (
     <div className="rounded-lg border border-amber-500/30 bg-amber-500/5 p-3">
-      <p className="mb-1 flex items-center gap-1 text-[11px] font-bold uppercase tracking-wide text-amber-600">
+      <p className="mb-1 flex items-center gap-1 text-label font-bold uppercase tracking-wide text-amber-600">
         Install constraints
         <InfoTip
           align="end"
@@ -566,7 +566,7 @@ function PitchAngles({ intel }: { intel: LeadIntel }) {
   if (!angles.length) return null;
   return (
     <div className="rounded-lg border border-primary/20 bg-primary/5 p-3">
-      <p className="mb-1 text-[11px] font-bold uppercase tracking-wide text-primary">Pitch angles</p>
+      <p className="mb-1 text-label font-bold uppercase tracking-wide text-primary">Pitch angles</p>
       {angles.map((a) => (
         <p key={a} className="text-body-sm">{a}</p>
       ))}
@@ -669,7 +669,7 @@ function Field({
 }) {
   return (
     <div>
-      <p className="flex items-center gap-1 text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+      <p className="flex items-center gap-1 text-label font-medium uppercase tracking-wide text-muted-foreground">
         {label}
         {tip && <InfoTip text={tip} source={source} align={align} />}
       </p>

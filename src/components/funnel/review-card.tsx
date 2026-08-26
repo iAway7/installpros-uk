@@ -69,8 +69,8 @@ export function ReviewCard({ r, source = "google" }: { r: Review; source?: "goog
           </div>
         )}
         <div className="min-w-0 flex-1">
-          <div className="truncate text-[16px] font-semibold text-foreground">{r.name}</div>
-          <div className="text-[13px] text-muted-foreground">{label}</div>
+          <div className="truncate text-body font-semibold text-foreground">{r.name}</div>
+          <div className="text-caption text-muted-foreground">{label}</div>
         </div>
         {source === "trustpilot" ? <TrustpilotStar size={24} /> : <GoogleG size={24} />}
       </div>
@@ -89,7 +89,7 @@ export function ReviewCard({ r, source = "google" }: { r: Review; source?: "goog
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
-          className="-mb-2 mt-1 flex min-h-[48px] items-center self-start pr-6 text-[14px] font-medium text-muted-foreground transition-colors duration-quick hover:text-foreground"
+          className="-mb-2 mt-1 flex min-h-[48px] items-center self-start pr-6 text-body-sm font-medium text-muted-foreground transition-colors duration-quick hover:text-foreground"
         >
           {open ? "Show less" : "Read more"}
         </button>

@@ -193,19 +193,19 @@ export function BeforeAfterSection() {
   // only ever exist once in the tree — two copies would fight over the refs.
   const beforeBody = (stacked: boolean) => (
     <>
-      <div className="text-[13px] tracking-[0.06em]" style={{ color: VIZ.ink }}>Typical rural broadband</div>
+      <div className="text-caption tracking-[0.06em]" style={{ color: VIZ.ink }}>Typical rural broadband</div>
       <div className="mt-2.5 flex items-baseline gap-2">
         <span ref={bVal} style={{ fontSize: stacked ? "clamp(52px,14vw,64px)" : "clamp(44px,5.5vw,72px)", fontWeight: 200, letterSpacing: "-0.04em", color: VIZ.dim }}>3.7</span>
-        <span className="text-[16px]" style={{ color: VIZ.dim }}>Mbps</span>
+        <span className="text-body" style={{ color: VIZ.dim }}>Mbps</span>
       </div>
       <div className="mt-5 h-[3px] max-w-[260px] overflow-hidden rounded-full bg-black/10">
         <div ref={bBar} className="h-full rounded-full" style={{ width: "12%", background: VIZ.dim }} />
       </div>
-      <div className="mt-3 flex items-center gap-2 text-[13px]" style={{ color: VIZ.ink }}>
+      <div className="mt-3 flex items-center gap-2 text-caption" style={{ color: VIZ.ink }}>
         <span ref={bBuf} className="h-[7px] w-[7px] rounded-full" style={{ opacity: 0.35, background: VIZ.warn }} />
         <span ref={bStatus}>Loading…</span>
       </div>
-      <div className="mt-5 text-[13px] leading-[1.7]" style={{ color: VIZ.ink }}>
+      <div className="mt-5 text-caption leading-[1.7]" style={{ color: VIZ.ink }}>
         {phase === "done" && result ? (
           <>
             Latency {Math.round(result.latency ?? 0)} ms
@@ -222,7 +222,7 @@ export function BeforeAfterSection() {
       </div>
 
       {(phase === "testing" || phase === "done") && server && (
-        <div className="mt-2 flex items-center gap-1.5 text-[12px]" style={{ color: VIZ.dim }}>
+        <div className="mt-2 flex items-center gap-1.5 text-label" style={{ color: VIZ.dim }}>
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <rect x="3" y="4" width="18" height="7" rx="1.5" />
             <rect x="3" y="13" width="18" height="7" rx="1.5" />
@@ -237,7 +237,7 @@ export function BeforeAfterSection() {
         onPointerDown={(e) => e.stopPropagation()}
         onClick={runSpeedTest}
         disabled={phase === "testing"}
-        className={`mt-6 inline-flex items-center justify-center gap-2 rounded-full border border-black/15 bg-white/70 px-4 text-[13px] font-semibold text-foreground transition-colors duration-quick hover:bg-white disabled:cursor-default disabled:opacity-60 ${
+        className={`mt-6 inline-flex items-center justify-center gap-2 rounded-full border border-black/15 bg-white/70 px-4 text-caption font-semibold text-foreground transition-colors duration-quick hover:bg-white disabled:cursor-default disabled:opacity-60 ${
           stacked ? "h-12 w-full" : "py-2"
         }`}
         style={{ cursor: phase === "testing" ? "default" : "pointer" }}
@@ -264,7 +264,7 @@ export function BeforeAfterSection() {
 
   const afterBody = (right: boolean) => (
     <>
-      <div className="text-[13px] tracking-[0.06em]" style={{ color: VIZ.rose }}>Starlink, professionally installed</div>
+      <div className="text-caption tracking-[0.06em]" style={{ color: VIZ.rose }}>Starlink, professionally installed</div>
       <div className={`mt-2.5 flex items-baseline gap-2.5 ${right ? "justify-end" : ""}`}>
         <span ref={aVal} style={{ fontSize: right ? "clamp(52px,6.5vw,88px)" : "clamp(60px,16vw,76px)", fontWeight: 400, letterSpacing: "-0.04em", color: "#fff", textShadow: "0 0 40px hsl(var(--brand-soft) / 0.5)" }}>247</span>
         <span className="text-[17px]" style={{ color: VIZ.rose2 }}>Mbps</span>
@@ -272,11 +272,11 @@ export function BeforeAfterSection() {
       <div className={`mt-5 h-[3px] max-w-[280px] overflow-hidden rounded-full bg-white/10 ${right ? "ml-auto" : ""}`}>
         <div ref={aBar} className="h-full rounded-full" style={{ width: "70%", background: "linear-gradient(90deg, hsl(var(--brand-soft)), hsl(var(--primary)))", boxShadow: "0 0 12px hsl(var(--brand-soft) / 0.8)" }} />
       </div>
-      <div className={`mt-3 flex items-center gap-2 text-[13px] ${right ? "justify-end" : ""}`} style={{ color: VIZ.rose2 }}>
+      <div className={`mt-3 flex items-center gap-2 text-caption ${right ? "justify-end" : ""}`} style={{ color: VIZ.rose2 }}>
         <span className="h-[7px] w-[7px] rounded-full bg-success-bright" style={{ boxShadow: "0 0 10px hsl(var(--success-bright) / 0.9)" }} />
         Connected · rock solid
       </div>
-      <div className="mt-5 text-[13px] leading-[1.7]" style={{ color: VIZ.rose3 }}>
+      <div className="mt-5 text-caption leading-[1.7]" style={{ color: VIZ.rose3 }}>
         Latency ~28 ms
         <br />
         4K on every screen, all at once

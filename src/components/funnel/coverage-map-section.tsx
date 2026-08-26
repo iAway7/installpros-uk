@@ -41,7 +41,7 @@ export function CoverageMapSection() {
                   <div className="text-[34px] font-normal leading-[1.1] tracking-[-0.03em] text-foreground">
                     {s.value}
                   </div>
-                  <div className="mt-1 text-[13px] text-muted-foreground">{s.label}</div>
+                  <div className="mt-1 text-caption text-muted-foreground">{s.label}</div>
                 </div>
               ))}
             </div>

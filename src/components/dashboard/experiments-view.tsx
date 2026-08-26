@@ -205,15 +205,15 @@ function ExperimentCard({ data, isAdmin }: { data: ExperimentWithResults; isAdmi
                     <div className="flex items-center gap-2 font-medium">
                       {r.variant.name}
                       {r.variant.is_control && (
-                        <span className="rounded bg-muted px-1.5 py-0.5 text-[11px] text-muted-foreground">Original</span>
+                        <span className="rounded bg-muted px-1.5 py-0.5 text-label text-muted-foreground">Original</span>
                       )}
                       {r.isWinner && (
-                        <span className="inline-flex items-center gap-1 rounded bg-success/10 px-1.5 py-0.5 text-[11px] font-semibold text-success">
+                        <span className="inline-flex items-center gap-1 rounded bg-success/10 px-1.5 py-0.5 text-label font-semibold text-success">
                           <Trophy className="h-3 w-3" /> Winner
                         </span>
                       )}
                       {!r.isWinner && r.isSignificant && (
-                        <span className="rounded bg-accent/10 px-1.5 py-0.5 text-[11px] font-semibold text-accent">Significant</span>
+                        <span className="rounded bg-accent/10 px-1.5 py-0.5 text-label font-semibold text-accent">Significant</span>
                       )}
                     </div>
                     {typeof r.variant.config?.path === "string" ? (
@@ -334,7 +334,7 @@ function VariantDetail({
         <span className="flex items-center gap-2 text-body-sm font-medium">
           {r.variant.name}
           {r.isWinner && (
-            <span className="inline-flex items-center gap-1 rounded bg-success/10 px-1.5 py-0.5 text-[11px] font-semibold text-success">
+            <span className="inline-flex items-center gap-1 rounded bg-success/10 px-1.5 py-0.5 text-label font-semibold text-success">
               <Trophy className="h-3 w-3" /> Winner
             </span>
           )}

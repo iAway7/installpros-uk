@@ -64,7 +64,7 @@ export function EquipmentSection() {
                     ragged.
                     Stacked, the title gets the full width and a longer product
                     name later cannot squeeze the badge. */}
-                <span className="inline-flex whitespace-nowrap rounded-full border border-brand-deep px-2.5 py-1 text-[10.5px] font-semibold uppercase tracking-[0.14em] text-brand-deep">
+                <span className="inline-flex whitespace-nowrap rounded-full border border-brand-deep px-2.5 py-1 text-micro font-semibold uppercase tracking-[0.14em] text-brand-deep">
                   {e.badge}
                 </span>
                 <h3 className="mt-3 text-lg font-bold leading-tight text-foreground">{e.t}</h3>

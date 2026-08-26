@@ -15,7 +15,7 @@ export function FormLegalNotice({ tone = "light" }: { tone?: "light" | "dark" })
     dark ? "text-white/90 hover:text-white" : "text-foreground hover:text-brand-hover",
   );
   return (
-    <p className={cn("mt-4 text-center text-[13px] leading-relaxed", dark ? "text-white/70" : "text-muted-foreground")}>
+    <p className={cn("mt-4 text-center text-caption leading-relaxed", dark ? "text-white/70" : "text-muted-foreground")}>
       By submitting, you agree to our{" "}
       <a href={TERMS_URL} target="_blank" rel="noopener noreferrer" className={link}>
         Terms

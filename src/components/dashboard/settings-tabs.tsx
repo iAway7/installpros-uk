@@ -21,7 +21,7 @@ export function SettingsTabs({ active }: { active: "apis" | "webhooks" }) {
         ),
       )}
       <span className="cursor-default px-4 py-1.5 text-muted-foreground/60">
-        Team <span className="ml-1 rounded bg-muted px-1.5 py-0.5 text-[10px] uppercase">soon</span>
+        Team <span className="ml-1 rounded bg-muted px-1.5 py-0.5 text-micro uppercase">soon</span>
       </span>
     </div>
   );

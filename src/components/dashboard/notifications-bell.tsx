@@ -70,7 +70,7 @@ export function NotificationsBell({ initialAlerts }: { initialAlerts: AlertItem[
       >
         <Bell className="h-5 w-5" />
         {unread > 0 && (
-          <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-bold text-white">
+          <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive px-1 text-micro font-bold text-white">
             {unread > 9 ? "9+" : unread}
           </span>
         )}
@@ -107,7 +107,7 @@ export function NotificationsBell({ initialAlerts }: { initialAlerts: AlertItem[
                   <span className="min-w-0">
                     <span className="block text-body-sm font-medium leading-snug">{a.title}</span>
                     {a.body && <span className="mt-0.5 block text-label text-muted-foreground">{a.body}</span>}
-                    <span className="mt-1 block text-[11px] text-muted-foreground/70">{timeAgo(a.created_at)}</span>
+                    <span className="mt-1 block text-label text-muted-foreground/70">{timeAgo(a.created_at)}</span>
                   </span>
                   {!a.read_at && <span className="ml-auto mt-1.5 h-2 w-2 shrink-0 rounded-full bg-primary" />}
                 </a>
