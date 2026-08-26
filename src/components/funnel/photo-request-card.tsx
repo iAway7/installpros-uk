@@ -90,7 +90,7 @@ export function PhotoRequestCard() {
       <h1 className="mt-[18px] md:mt-5 text-[29px] md:text-[36px] font-bold leading-[1.15] md:leading-[1.12] tracking-[-0.02em] md:tracking-[-0.025em] text-foreground [text-wrap:pretty]">
         Your photos are the last step
       </h1>
-      <p className="mt-3 md:mt-3.5 text-body md:text-[17px] leading-[1.55] md:leading-[1.6] text-muted-foreground [text-wrap:pretty]">
+      <p className="mt-3 md:mt-3.5 text-body md:text-lead leading-[1.55] md:leading-[1.6] text-muted-foreground [text-wrap:pretty]">
         Send three quick shots and your fixed price lands today. No site visit, no waiting in for an engineer.
       </p>
 
@@ -121,7 +121,7 @@ export function PhotoRequestCard() {
             </span>
           </div>
           <div>
-            <p className="text-body md:text-[17px] font-bold text-foreground">Send us three photos</p>
+            <p className="text-body md:text-lead font-bold text-foreground">Send us three photos</p>
             <p className="mt-[3px] text-body-sm leading-[1.5] text-muted-foreground">
               It takes about a minute on your phone.
             </p>

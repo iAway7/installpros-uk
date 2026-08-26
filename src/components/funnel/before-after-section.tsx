@@ -267,7 +267,7 @@ export function BeforeAfterSection() {
       <div className="text-caption tracking-[0.06em]" style={{ color: VIZ.rose }}>Starlink, professionally installed</div>
       <div className={`mt-2.5 flex items-baseline gap-2.5 ${right ? "justify-end" : ""}`}>
         <span ref={aVal} style={{ fontSize: right ? "clamp(52px,6.5vw,88px)" : "clamp(60px,16vw,76px)", fontWeight: 400, letterSpacing: "-0.04em", color: "#fff", textShadow: "0 0 40px hsl(var(--brand-soft) / 0.5)" }}>247</span>
-        <span className="text-[17px]" style={{ color: VIZ.rose2 }}>Mbps</span>
+        <span className="text-body" style={{ color: VIZ.rose2 }}>Mbps</span>
       </div>
       <div className={`mt-5 h-[3px] max-w-[280px] overflow-hidden rounded-full bg-white/10 ${right ? "ml-auto" : ""}`}>
         <div ref={aBar} className="h-full rounded-full" style={{ width: "70%", background: "linear-gradient(90deg, hsl(var(--brand-soft)), hsl(var(--primary)))", boxShadow: "0 0 12px hsl(var(--brand-soft) / 0.8)" }} />

@@ -31,7 +31,7 @@ export function FaqSectionAlt() {
                   </span>
                 </AccordionPrimitive.Trigger>
               </AccordionPrimitive.Header>
-              <AccordionPrimitive.Content className="overflow-hidden text-[17px] leading-relaxed text-muted-foreground data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
+              <AccordionPrimitive.Content className="overflow-hidden text-body leading-relaxed text-muted-foreground data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
                 <div className="max-w-2xl pb-7 pr-10">{f.a}</div>
               </AccordionPrimitive.Content>
             </AccordionPrimitive.Item>

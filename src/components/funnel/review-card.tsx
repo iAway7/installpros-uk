@@ -64,7 +64,7 @@ export function ReviewCard({ r, source = "google" }: { r: Review; source?: "goog
             referrerPolicy="no-referrer"
           />
         ) : (
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-secondary text-[17px] font-medium text-foreground">
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-secondary text-lead font-medium text-foreground">
             {r.initial}
           </div>
         )}

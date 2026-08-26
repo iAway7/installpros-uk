@@ -56,7 +56,7 @@ export function CoverageSection() {
               >
                 <f.icon className="h-[21px] w-[21px]" strokeWidth={1.6} />
               </div>
-              <h3 className="mt-5 text-[17px] font-semibold text-foreground">{f.title}</h3>
+              <h3 className="mt-5 text-lead font-semibold text-foreground">{f.title}</h3>
               <p className="mt-2.5 text-body-sm text-muted-foreground" style={{ lineHeight: "1.6" }}>
                 {f.description}
               </p>
