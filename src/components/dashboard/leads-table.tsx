@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { Search, Phone, Mail, MapPin, Loader2, Inbox, Download, Camera } from "lucide-react";
 import { toast } from "sonner";
 import { Input } from "@/components/system/input";
+import { Table, TableHead, TableBody, TableRow, TableHeaderCell, TableCell } from "@/components/system/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/system/select";
 import { Card, CardContent } from "@/components/system/card";
 import { LeadDetailPanel } from "@/components/dashboard/lead-detail-panel";
@@ -281,27 +282,27 @@ export function LeadsTable({
           {/* Desktop table */}
           <Card className="hidden overflow-hidden md:block">
             <div className="overflow-x-auto">
-              <table className="w-full text-body-sm">
-                <thead className="border-b border-border bg-secondary/50 text-left text-label uppercase tracking-wide text-muted-foreground">
-                  <tr>
-                    <th className="px-4 py-3 font-medium">Score</th>
-                    <th className="px-4 py-3 font-medium">Name</th>
-                    <th className="px-4 py-3 font-medium">Contact</th>
-                    <th className="px-4 py-3 font-medium">City</th>
-                    <th className="px-4 py-3 font-medium">Service</th>
-                    <th className="px-4 py-3 font-medium">Date</th>
-                    <th className="px-4 py-3 font-medium">Status</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-border">
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableHeaderCell>Score</TableHeaderCell>
+                    <TableHeaderCell>Name</TableHeaderCell>
+                    <TableHeaderCell>Contact</TableHeaderCell>
+                    <TableHeaderCell>City</TableHeaderCell>
+                    <TableHeaderCell>Service</TableHeaderCell>
+                    <TableHeaderCell>Date</TableHeaderCell>
+                    <TableHeaderCell>Status</TableHeaderCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
                   {filtered.map((l) => (
-                    <tr
+                    <TableRow
                       key={l.id}
                       onClick={() => setOpenId(l.id)}
                       className="cursor-pointer hover:bg-secondary/30"
                     >
-                      <td className="px-4 py-3"><ScoreBadge score={l.lead_score} /></td>
-                      <td className="px-4 py-3 font-medium">
+                      <TableCell><ScoreBadge score={l.lead_score} /></TableCell>
+                      <TableCell className="font-medium">
                         <span className="flex items-center gap-1.5">
                           {l.name}
                           {(photos[l.id]?.length ?? 0) > 0 && (
@@ -310,8 +311,8 @@ export function LeadsTable({
                             </span>
                           )}
                         </span>
-                      </td>
-                      <td className="px-4 py-3">
+                      </TableCell>
+                      <TableCell>
                         <div className="flex flex-col gap-0.5 text-label">
                           <a href={`mailto:${l.email}`} onClick={(e) => e.stopPropagation()} className="flex items-center gap-1 text-muted-foreground hover:text-primary">
                             <Mail className="h-3 w-3" /> {l.email}
@@ -320,17 +321,17 @@ export function LeadsTable({
                             <Phone className="h-3 w-3" /> {l.phone}
                           </a>
                         </div>
-                      </td>
-                      <td className="px-4 py-3">{cityOf(l) ?? <span className="uppercase">{l.postcode}</span>}</td>
-                      <td className="px-4 py-3">{serviceOf(l)}</td>
-                      <td className="px-4 py-3 whitespace-nowrap text-muted-foreground">{formatDateTime(l.created_at)}</td>
-                      <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
+                      </TableCell>
+                      <TableCell>{cityOf(l) ?? <span className="uppercase">{l.postcode}</span>}</TableCell>
+                      <TableCell>{serviceOf(l)}</TableCell>
+                      <TableCell className="whitespace-nowrap text-muted-foreground">{formatDateTime(l.created_at)}</TableCell>
+                      <TableCell onClick={(e) => e.stopPropagation()}>
                         <StatusPicker lead={l} saving={saving === l.id} onChange={(s) => updateStatus(l.id, s)} />
-                      </td>
-                    </tr>
+                      </TableCell>
+                    </TableRow>
                   ))}
-                </tbody>
-              </table>
+                </TableBody>
+              </Table>
             </div>
           </Card>
 
