@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { Review } from "@/lib/reviews/google-reviews";
+import { TrustpilotStars, TrustpilotStarMark, TrustpilotVerified } from "./trustpilot-marks";
 
 const CLAMP = 165; // characters before truncating with "Read more"
 
@@ -16,24 +17,41 @@ function GoogleG({ size = 24 }: { size?: number }) {
   );
 }
 
-/** Trustpilot green star mark. */
-function TrustpilotStar({ size = 24 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="#00B67A" aria-hidden="true">
-      <path d="M12 1.5l3.09 6.83 7.41.66-5.62 4.93 1.68 7.26L12 17.35l-6.56 3.83 1.68-7.26L1.5 8.99l7.41-.66L12 1.5z" />
-    </svg>
-  );
-}
+/**
+ * Blue seal. The lobes are placed by trigonometry rather than drawn by hand —
+ * the previous path had uneven points and read as a squashed blob at 16px.
+ * Twelve circles on a common orbit, unioned by a shared fill, give a perfectly
+ * regular scallop at any size.
+ */
+const SEAL_LOBES = 12;
+const SEAL_ORBIT = 8.3; // distance from centre to each lobe's centre
+const SEAL_LOBE_R = 2.35; // lobe radius; outer edge lands at 10.65 of 12
 
-/** Blue "verified" seal like Google's. */
-function VerifiedBadge() {
+function VerifiedBadge({ size = 16 }: { size?: number }) {
   return (
-    <svg width="16" height="16" viewBox="0 0 24 24" aria-label="Verified" role="img">
+    <svg width={size} height={size} viewBox="0 0 24 24" aria-label="Verified" role="img">
+      <g fill="#4285F4">
+        {Array.from({ length: SEAL_LOBES }, (_, i) => {
+          const a = (i / SEAL_LOBES) * Math.PI * 2;
+          return (
+            <circle
+              key={i}
+              cx={12 + SEAL_ORBIT * Math.cos(a)}
+              cy={12 + SEAL_ORBIT * Math.sin(a)}
+              r={SEAL_LOBE_R}
+            />
+          );
+        })}
+        <circle cx="12" cy="12" r={SEAL_ORBIT + 0.2} />
+      </g>
       <path
-        fill="#4285F4"
-        d="M12 1l2.4 1.8 3-.2 1 2.8 2.6 1.5-.7 2.9L23 12l-1.7 2.4.7 2.9-2.6 1.5-1 2.8-3-.2L12 23l-2.4-1.8-3 .2-1-2.8L3 17.3l.7-2.9L2 12l1.7-2.4L3 6.7l2.6-1.5 1-2.8 3 .2z"
+        d="M7.9 12.3l2.8 2.8 5.4-5.6"
+        fill="none"
+        stroke="#fff"
+        strokeWidth="2.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
-      <path fill="#fff" d="M10.6 14.6l-2.2-2.2-1.1 1.1 3.3 3.3 5.8-5.8-1.1-1.1z" />
     </svg>
   );
 }
@@ -43,6 +61,13 @@ export function ReviewCard({ r, source = "google" }: { r: Review; source?: "goog
   const long = r.q.length > CLAMP;
   const text = open || !long ? r.q : r.q.slice(0, CLAMP).trimEnd() + "…";
   const label = source === "trustpilot" ? "Trustpilot review" : "Google review";
+  // The date is the stronger signal: it proves the review is recent. Fall back
+  // to the source label only when we have no date for that review.
+  const meta = r.when ?? label;
+  // Trustpilot tells us per review whether it is Verified, so the seal only
+  // shows when it does. Google has no such concept, so `verified` is undefined
+  // there and the badge stays on as before.
+  const showVerified = r.verified ?? true;
 
   return (
     <div className="flex h-full flex-col rounded-xl border border-border bg-card p-6 shadow-sm">
@@ -70,15 +95,24 @@ export function ReviewCard({ r, source = "google" }: { r: Review; source?: "goog
         )}
         <div className="min-w-0 flex-1">
           <div className="truncate text-body font-semibold text-foreground">{r.name}</div>
-          <div className="text-caption text-muted-foreground">{label}</div>
+          <div className="text-caption text-muted-foreground">{meta}</div>
         </div>
-        {source === "trustpilot" ? <TrustpilotStar size={24} /> : <GoogleG size={24} />}
+        {source === "trustpilot" ? <TrustpilotStarMark size={26} /> : <GoogleG size={24} />}
       </div>
 
       {/* Stars + verified */}
       <div className="mt-4 flex items-center gap-2">
-        <span className="text-body-sm tracking-[2px] text-gold">{"★".repeat(Math.min(5, Math.max(4, r.rating)))}</span>
-        <VerifiedBadge />
+        {source === "trustpilot" ? (
+          <>
+            <TrustpilotStars rating={r.rating} height={18} />
+            {showVerified && <TrustpilotVerified />}
+          </>
+        ) : (
+          <>
+            <span className="text-body-sm tracking-[2px] text-gold">{"★".repeat(Math.min(5, Math.max(4, r.rating)))}</span>
+            {showVerified && <VerifiedBadge />}
+          </>
+        )}
       </div>
 
       {/* Text + read more */}

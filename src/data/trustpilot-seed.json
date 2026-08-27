@@ -1,0 +1,137 @@
+[
+  {
+    "id": "seed-2026-08-25-trudy-davies",
+    "stars": 5,
+    "title": "Excellent service throughout",
+    "text": "Ray at Install Pros has been excellent. I have been kept up to date every step of the way, only dealing with Ray so no need to keep repeating myself. Everything was explained, my queries answered, all followed up with WhatsApp messages and a very short turn around on installation was honoured which was urgently required. The excellent service continued with the prompt arrival of Kevin to complete the installation, who was very patient whilst explaining the set up & didn't leave until I was completely satisfied. I would highly recommend Install Pros to family & friends",
+    "consumer_name": "Trudy Davies",
+    "created_at": "2026-08-25",
+    "is_verified": false
+  },
+  {
+    "id": "seed-2026-08-24-john-spence",
+    "stars": 5,
+    "title": "Having already used the same installers...",
+    "text": "Having already used the same installers I was again extremely satisfied with the service",
+    "consumer_name": "John Spence",
+    "created_at": "2026-08-24",
+    "is_verified": true
+  },
+  {
+    "id": "seed-2026-08-20-anthony-flin",
+    "stars": 5,
+    "title": "Gary was friendly & professional",
+    "text": "Gary was friendly & professional - good job!",
+    "consumer_name": "Mr ANTHONY Flin",
+    "created_at": "2026-08-21",
+    "is_verified": true
+  },
+  {
+    "id": "seed-2026-08-18-alison",
+    "stars": 5,
+    "title": "Mark was very good and helpful highly...",
+    "text": "Mark was very good and helpful highly recommend",
+    "consumer_name": "Alison",
+    "created_at": "2026-08-18",
+    "is_verified": true
+  },
+  {
+    "id": "seed-2026-08-18-jill-bradley",
+    "stars": 5,
+    "title": "He turned up on time",
+    "text": "He turned up on time, did the job, explained everything and tidied up, great job!",
+    "consumer_name": "Mrs Jill Bradley",
+    "created_at": "2026-08-18",
+    "is_verified": true
+  },
+  {
+    "id": "seed-2026-08-14-robert-brush",
+    "stars": 5,
+    "title": "Ray was excellent",
+    "text": "Ray was excellent. Very patient and went above and beyond and ultimately solved our problem. Great service.",
+    "consumer_name": "Robert Brush",
+    "created_at": "2026-08-14",
+    "is_verified": false
+  },
+  {
+    "id": "seed-2026-08-12-lee",
+    "stars": 5,
+    "title": "Dan was extremely helpful",
+    "text": "Dan was extremely helpful. I felt very confident that all would be well.",
+    "consumer_name": "Lee",
+    "created_at": "2026-08-12",
+    "is_verified": true
+  },
+  {
+    "id": "seed-2026-08-12-judy-fellingham",
+    "stars": 5,
+    "title": "Our installer Dan was friendly",
+    "text": "Our installer Dan was friendly, efficient and carefully explained the operation of starlink",
+    "consumer_name": "Judy Fellingham",
+    "created_at": "2026-08-12",
+    "is_verified": true
+  },
+  {
+    "id": "seed-2026-08-12-andrew-harrison",
+    "stars": 5,
+    "title": "I called to enquire about Starlink and...",
+    "text": "I called to enquire about Starlink and spoke to Nathan who was very helpful and explained everything and was very helpful and patient. Amazingly Dan came the same day and set it up.....he was great and explained everything thoroughly and was very helpful. I shall definitely be recommending them to friends in the future.",
+    "consumer_name": "Andrew Harrison",
+    "created_at": "2026-08-12",
+    "is_verified": true
+  },
+  {
+    "id": "seed-2026-08-11-tony",
+    "stars": 5,
+    "title": "From order to installation a great service",
+    "text": "From order to installation a great service",
+    "consumer_name": "Tony",
+    "created_at": "2026-08-11",
+    "is_verified": true
+  },
+  {
+    "id": "seed-2026-08-11-issam",
+    "stars": 5,
+    "title": "Excellent and great service",
+    "text": "Excellent and great service and explanation of the system",
+    "consumer_name": "Issam",
+    "created_at": "2026-08-11",
+    "is_verified": true
+  },
+  {
+    "id": "seed-2026-08-11-mandy",
+    "stars": 5,
+    "title": "Good experience",
+    "text": "Good experience with Simon he's been really helpful.",
+    "consumer_name": "Mandy",
+    "created_at": "2026-08-11",
+    "is_verified": false
+  },
+  {
+    "id": "seed-2026-08-10-mrs-mcdermott",
+    "stars": 5,
+    "title": "Amazing Job!!!",
+    "text": "Today we had our fitting of Starlink. Dan C what a great guy. He arrived and although he had had a long day getting to us for 5.30 he was professional and took his time. He was respectful and really thought through how he was going to fit everything. We live on a houseboat and for the first time in 4 years have internet in the kitchen!!! Dan C set up all of our Sky TV boxes and made sure they were all working before left. What an amazing job in such extreme heat as well!!! Thank you Dan C what a star ⭐",
+    "consumer_name": "Mrs Mcdermott",
+    "created_at": "2026-08-10",
+    "is_verified": true
+  },
+  {
+    "id": "seed-2026-08-10-liz-felton-gerber",
+    "stars": 5,
+    "title": "Install Pros handled our Starlink...",
+    "text": "Install Pros handled our Starlink installation. Really professional and responsive throughout and when we had some minor issues following installation they were dealt with promptly and effectively - many thanks to James who organised everything and to Dan the engineer!",
+    "consumer_name": "Liz Felton Gerber",
+    "created_at": "2026-08-10",
+    "is_verified": false
+  },
+  {
+    "id": "seed-2026-08-09-nick",
+    "stars": 5,
+    "title": "Fast and v good customer service",
+    "text": "Fast and v good customer service",
+    "consumer_name": "Nick",
+    "created_at": "2026-08-09",
+    "is_verified": true
+  }
+]

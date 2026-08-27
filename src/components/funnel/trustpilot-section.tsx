@@ -1,115 +1,94 @@
-"use client";
+import { getTrustpilotReviews, reviewDate } from "@/lib/reviews/trustpilot";
+import seed from "@/data/trustpilot-seed.json";
+import type { Review } from "@/lib/reviews/google-reviews";
+import { ReviewsCarousel } from "./reviews-carousel";
+import { TrustpilotStarMark } from "./trustpilot-marks";
 
-import { useEffect, useRef, useState } from "react";
-
-const TRUSTPILOT_URL = "https://uk.trustpilot.com/review/installpros.co.uk";
-const SCRIPT_SRC = "https://widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js";
-
-/** Reserved height for the Slider TrustBox — must match data-style-height so
- *  the widget doesn't push the page down when it hydrates (CLS). */
-const WIDGET_HEIGHT = 240;
-
-/** Loads the TrustBox bootstrap once per page, reusing an in-flight load. */
-function loadTrustpilotScript(): Promise<void> {
-  if (typeof window === "undefined") return Promise.resolve();
-  if (window.Trustpilot) return Promise.resolve();
-
-  const existing = document.querySelector<HTMLScriptElement>(`script[src="${SCRIPT_SRC}"]`);
-  if (existing) {
-    return new Promise((resolve) => existing.addEventListener("load", () => resolve(), { once: true }));
-  }
-
-  return new Promise((resolve) => {
-    const script = document.createElement("script");
-    script.src = SCRIPT_SRC;
-    script.async = true;
-    script.addEventListener("load", () => resolve(), { once: true });
-    script.addEventListener("error", () => resolve(), { once: true }); // fail soft: the <a> fallback stays
-    document.body.appendChild(script);
-  });
+interface SeedEntry {
+  stars: number;
+  text: string;
+  consumer_name: string;
+  created_at: string;
+  is_verified: boolean;
+  _todo?: string;
 }
 
+const TRUSTPILOT_URL = "https://uk.trustpilot.com/review/installpros.co.uk";
+
+/** Read off the Trustpilot profile on 27 Aug 2026. Only used until
+ *  `trustpilot_stats` is seeded; after that the database wins. */
+const FALLBACK_SCORE = 4.8;
+const FALLBACK_COUNT = 323;
+
 /**
- * Trustpilot proof, sitting under the Google reviews.
+ * Shown until `trustpilot_reviews` is seeded and the webhook takes over.
  *
- * This is the official "Slider" TrustBox rather than our own cards. The reason
- * is data we cannot fake: Trustpilot renders the real review date and the real
- * "Verified" label per review, which is exactly what the hand-written card list
- * this replaced could never do honestly.
- *
- * There is deliberately NO rating header above the widget. The old one read
- * "Rated 4.8 / 5 from 303 reviews" from hardcoded values, so it went stale on
- * its own and quietly published a wrong number. If the aggregate is wanted back,
- * use the live Micro Star TrustBox (see `trustpilot-badge.tsx`) — never a
- * hand-typed score.
- *
- * Cost control: the third-party script is NOT loaded on page load. An
- * IntersectionObserver starts it only when the section is ~400px from the
- * viewport, so it never competes with the LCP image, and the container reserves
- * the widget's exact height so hydration causes no layout shift.
+ * These are the same reviews the seed script loads (`src/data/trustpilot-seed.json`,
+ * copied by hand from the Trustpilot profile), so what renders before and after
+ * the migration is identical — including the real dates and each review's real
+ * Verified flag. Entries still marked `_todo` are skipped: their text was
+ * truncated in the source screenshots and half a sentence is worse than one
+ * review fewer.
  */
-export function TrustpilotSection() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const widgetRef = useRef<HTMLDivElement>(null);
-  const [shouldLoad, setShouldLoad] = useState(false);
+const FALLBACK: Review[] = (seed as SeedEntry[])
+  .filter((e) => !e._todo)
+  .sort((a, b) => +new Date(b.created_at) - +new Date(a.created_at))
+  .map((e) => ({
+    q: e.text,
+    name: e.consumer_name,
+    initial: e.consumer_name.charAt(0).toUpperCase(),
+    rating: e.stars,
+    when: reviewDate(e.created_at),
+    verified: e.is_verified,
+  }));
 
-  // Phase 1: only decide *when* to fetch the script.
-  useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) return;
-    if (typeof IntersectionObserver === "undefined") {
-      setShouldLoad(true); // very old browser: just load it
-      return;
-    }
-    const io = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((e) => e.isIntersecting)) {
-          setShouldLoad(true);
-          io.disconnect();
-        }
-      },
-      { rootMargin: "400px" },
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
+/**
+ * Trustpilot proof, in our own cards, matching the Google section above.
+ *
+ * Server-rendered from `trustpilot_reviews` (see lib/reviews/trustpilot.ts).
+ * No TrustBox script, no iframe: the browser never contacts Trustpilot, the
+ * review text is in our HTML, and the date and Verified seal on each card are
+ * Trustpilot's real values rather than something we typed in.
+ */
+export async function TrustpilotSection() {
+  const data = await getTrustpilotReviews();
+  const reviews = data.reviews.length ? data.reviews : FALLBACK;
 
-  // Phase 2: load + hydrate the TrustBox.
-  useEffect(() => {
-    if (!shouldLoad) return;
-    let cancelled = false;
-    loadTrustpilotScript().then(() => {
-      if (cancelled || !widgetRef.current || !window.Trustpilot) return;
-      window.Trustpilot.loadFromElement(widgetRef.current, true);
-    });
-    return () => {
-      cancelled = true;
-    };
-  }, [shouldLoad]);
+  // Mirrors the Google block above it, word for word: "5.0 on Google" /
+  // "From 185 reviews". Same shape, same rhythm, different platform.
+  //
+  // The numbers live in app_settings (`trustpilot_stats`) and the webhook keeps
+  // the count moving. FALLBACK_* is what shows before that row exists — the real
+  // figures read off the Trustpilot profile on the date below, not placeholders.
+  const score = data.score ?? FALLBACK_SCORE;
+  const count = data.count ?? FALLBACK_COUNT;
+
+  const heading = `${score.toFixed(1)} on Trustpilot`;
+  const subline = `From ${count.toLocaleString("en-GB")} reviews`;
 
   return (
-    <section ref={sectionRef} id="trustpilot" className="w-full bg-background pb-16 md:pb-24">
-      <div className="container mx-auto max-w-6xl px-6">
-        {/* Height reserved up front so the widget never shifts the layout. */}
-        <div style={{ minHeight: WIDGET_HEIGHT }}>
-          <div
-            ref={widgetRef}
-            className="trustpilot-widget"
-            data-locale="en-GB"
-            data-template-id="54ad5defc6454f065c28af8b"
-            data-businessunit-id="68a59af06ad677c356e7b938"
-            data-style-height={`${WIDGET_HEIGHT}px`}
-            data-style-width="100%"
-            data-token="664da81f-df30-40c0-ace4-f97eeb55b027"
-            data-stars="4,5"
-            data-review-languages="en"
-            data-font-family="Barlow"
-            data-text-color="#171717"
+    <section id="trustpilot" className="w-full scroll-mt-28 bg-background pb-16 md:pb-24">
+      <div className="container mx-auto max-w-6xl">
+        {/* No heading here on purpose: this block sits directly under the
+            Google one, and a second section title made the page top-heavy.
+            The rating link alone carries the attribution. */}
+        <div className="flex flex-wrap items-end justify-end gap-7">
+          <a
+            href={TRUSTPILOT_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-3 transition-opacity duration-quick ease-ds hover:opacity-80"
           >
-            <a href={TRUSTPILOT_URL} target="_blank" rel="noopener noreferrer">
-              Trustpilot
-            </a>
-          </div>
+            <TrustpilotStarMark size={26} />
+            <div>
+              <div className="text-body-sm font-semibold text-foreground">{heading}</div>
+              <div className="text-caption text-muted-foreground">{subline}</div>
+            </div>
+          </a>
+        </div>
+
+        <div className="mt-8 md:mt-10">
+          <ReviewsCarousel reviews={reviews} source="trustpilot" />
         </div>
       </div>
     </section>

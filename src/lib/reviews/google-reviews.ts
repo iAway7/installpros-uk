@@ -8,6 +8,9 @@ export interface Review {
   rating: number;
   photo?: string;
   when?: string;
+  /** Platform-confirmed verification. Undefined = the platform makes no such
+   *  claim (Google), in which case the card falls back to its own styling. */
+  verified?: boolean;
 }
 
 export interface ReviewsData {

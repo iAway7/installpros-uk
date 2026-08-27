@@ -1,0 +1,22 @@
+[
+  {
+    "id": "seed-2026-08-01-andy",
+    "stars": 5,
+    "title": "Perfect communication",
+    "text": "Perfect communication and delivered exactly as promised. Even though I changed the date last minute, it was rescheduled and delivered as promised.",
+    "consumer_name": "Andy",
+    "created_at": "2026-08-01",
+    "is_verified": true,
+    "link": "https://uk.trustpilot.com/reviews/xxxxxxxxxxxxxxxx"
+  },
+  {
+    "id": "seed-2026-07-22-cp-venue",
+    "stars": 5,
+    "title": "Fantastic from start to finish",
+    "text": "Install Pros have been fantastic from start to finish, and I have now used them for more than one installation.",
+    "consumer_name": "CP Venue Consulting",
+    "created_at": "2026-07-22",
+    "is_verified": false,
+    "link": "https://uk.trustpilot.com/reviews/xxxxxxxxxxxxxxxx"
+  }
+]

@@ -9,3 +9,7 @@
 .vercel
 *.tsbuildinfo
 next-env.d.ts
+
+# local build output from ad-hoc runs
+build.log
+scripts/_to_delete/
