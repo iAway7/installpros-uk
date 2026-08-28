@@ -40,7 +40,7 @@ export async function CustomerStoriesSection() {
       <div className="container mx-auto max-w-6xl">
         {/* The heading lives on the Trustpilot section above: the two are one
             block, and repeating it here would read as a second section. */}
-        <div className="flex flex-wrap items-end justify-end gap-7">
+        <div className="flex flex-wrap items-end justify-start gap-7 md:justify-end">
           <a
             href="https://maps.app.goo.gl/UvqYwqVrAV6R9T5m6"
             target="_blank"

@@ -7,6 +7,9 @@ import type { Review } from "@/lib/reviews/google-reviews";
 
 const GAP = 14; // px, matches gap-3.5
 
+/** Above this, the dot row stops fitting a phone. See the note below. */
+const DOTS_MAX = 7;
+
 /** Horizontal review slider. Desktop: 3 cards (2 tablet) with side arrows.
  *  Mobile: 1 card at a time with arrows + dots below. Native scroll-snap =
  *  swipe on touch. */
@@ -48,7 +51,7 @@ export function ReviewsCarousel({
       <div
         ref={track}
         onScroll={onScroll}
-        className="flex snap-x snap-mandatory gap-3.5 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        className="flex items-stretch snap-x snap-mandatory gap-3.5 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {reviews.map((r, i) => (
           <div
@@ -96,28 +99,38 @@ export function ReviewsCarousel({
             <ChevronLeft className="h-5 w-5" />
           </button>
 
-          {/* w-8 h-8 = 32px de area tactil por punto (Chrome exige 24px
-              minimo); el punto visible sigue siendo de 8px. Sin gap: la caja
-              de 32px ya deja aire suficiente y evita desbordar en 375px
-              cuando hay muchas resenas. */}
-          <div className="flex items-center">
-            {reviews.map((_, i) => (
-              <button
-                key={i}
-                type="button"
-                aria-label={`Go to review ${i + 1}`}
-                aria-current={i === active}
-                onClick={() => scrollToIndex(i)}
-                className="flex h-8 w-8 items-center justify-center"
-              >
-                <span
-                  className={`block h-2 rounded-full transition-all duration-quick ${
-                    i === active ? "w-5 bg-foreground" : "w-2 bg-muted-foreground/40"
-                  }`}
-                />
-              </button>
-            ))}
-          </div>
+          {/* Dots only while they still work as dots. Each one needs a 32px
+              touch box (Chrome's minimum is 24px), so at 15 reviews the row is
+              480px wide and pushes a 375px phone into horizontal scroll — which
+              is what it was doing across the whole site. Past DOTS_MAX a
+              counter says the same thing in 40px and scales to any number;
+              nobody aims for dot eleven anyway. */}
+          {reviews.length <= DOTS_MAX ? (
+            <div className="flex items-center">
+              {reviews.map((_, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  aria-label={`Go to review ${i + 1}`}
+                  aria-current={i === active}
+                  onClick={() => scrollToIndex(i)}
+                  className="flex h-8 w-8 items-center justify-center"
+                >
+                  <span
+                    className={`block h-2 rounded-full transition-all duration-quick ${
+                      i === active ? "w-5 bg-foreground" : "w-2 bg-muted-foreground/40"
+                    }`}
+                  />
+                </button>
+              ))}
+            </div>
+          ) : (
+            <p className="min-w-[52px] text-center text-caption tabular-nums text-muted-foreground" aria-live="polite">
+              <span className="font-medium text-foreground">{Math.min(active + 1, reviews.length)}</span>
+              {" / "}
+              {reviews.length}
+            </p>
+          )}
 
           <button
             type="button"
