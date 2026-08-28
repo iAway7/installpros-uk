@@ -34,6 +34,8 @@ interface TrustpilotEventData {
   isVerified?: boolean;
   link?: string;
   consumer?: { id?: string; name?: string };
+  /** Set by us on the invitation or in the portal: service, area, installer. */
+  tags?: Array<{ group?: string; value?: string }>;
 }
 
 interface TrustpilotEvent {
@@ -186,8 +188,14 @@ export async function POST(req: Request) {
         text: (data.text ?? "").trim(),
         consumer_name: data.consumer?.name?.trim() || "Customer",
         language: data.language ?? null,
-        link: data.link ?? null,
+        // NOT data.link — that is https://api.trustpilot.com/v1/reviews/{id},
+        // an API endpoint a visitor cannot read. The public page is the same id
+        // under the UK consumer site, which is where the card should point.
+        link: `https://uk.trustpilot.com/reviews/${data.id}`,
         is_verified: Boolean(data.isVerified),
+        // Stored even though nothing reads it yet: the payload only comes past
+        // once, and without the API an untagged review cannot be back-filled.
+        tags: Array.isArray(data.tags) ? data.tags.filter((t) => t?.value) : [],
         created_at: data.createdAt ?? new Date().toISOString(),
         source: "webhook",
         // An edit can un-delete a review; clearing this keeps the two in sync.
