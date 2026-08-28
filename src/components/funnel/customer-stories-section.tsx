@@ -36,19 +36,11 @@ export async function CustomerStoriesSection() {
   const subline = data.count ? `From ${data.count.toLocaleString("en-GB")} reviews` : "Every review, five stars";
 
   return (
-    <section id="stories" className="w-full scroll-mt-28 bg-background py-16 md:py-24">
+    <section id="stories" className="w-full scroll-mt-28 bg-background pb-16 md:pb-24">
       <div className="container mx-auto max-w-6xl">
-        <div className="flex flex-wrap items-end justify-between gap-7">
-          <div>
-            <p className="eyebrow">Customer Stories</p>
-            <h2
-              className="mt-4 h2-section text-foreground"
-            >
-              Five stars,
-              <br />
-              everywhere we go.
-            </h2>
-          </div>
+        {/* The heading lives on the Trustpilot section above: the two are one
+            block, and repeating it here would read as a second section. */}
+        <div className="flex flex-wrap items-end justify-end gap-7">
           <a
             href="https://maps.app.goo.gl/UvqYwqVrAV6R9T5m6"
             target="_blank"
@@ -63,7 +55,7 @@ export async function CustomerStoriesSection() {
           </a>
         </div>
 
-        <div className="mt-12 md:mt-16">
+        <div className="mt-8 md:mt-10">
           <ReviewsCarousel reviews={reviews} />
         </div>
       </div>

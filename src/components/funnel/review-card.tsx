@@ -72,7 +72,7 @@ export function ReviewCard({ r, source = "google" }: { r: Review; source?: "goog
   const tone = source === "trustpilot" ? avatarTone(r.name) : null;
 
   return (
-    <div className="flex h-full flex-col rounded-xl border border-border bg-card p-6 shadow-sm">
+    <div className="flex h-full flex-col rounded-2xl border border-border bg-card p-8 shadow-sm">
       {/* Top: avatar + name/time + Google mark */}
       <div className="flex items-center gap-3">
         {r.photo ? (

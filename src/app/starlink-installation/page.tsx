@@ -61,8 +61,8 @@ export default function StarlinkInstallationPage() {
           <HeroSection smartCoverage addressMode />
           <WhyInstallProsSection />
           <CoverageSection />
-          <CustomerStoriesSection />
           <TrustpilotSection />
+          <CustomerStoriesSection />
           <EquipmentSection />
           <InstallVideoSection />
           <BeforeAfterSection />

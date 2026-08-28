@@ -71,12 +71,20 @@ export async function TrustpilotSection() {
   const subline = `From ${count.toLocaleString("en-GB")} reviews`;
 
   return (
-    <section id="trustpilot" className="w-full scroll-mt-28 bg-background pb-16 md:pb-24">
+    <section id="trustpilot" className="w-full scroll-mt-28 bg-background py-16 md:py-24">
       <div className="container mx-auto max-w-6xl">
-        {/* No heading here on purpose: this block sits directly under the
-            Google one, and a second section title made the page top-heavy.
-            The rating link alone carries the attribution. */}
-        <div className="flex flex-wrap items-end justify-end gap-7">
+        {/* The pair reads as one "Customer Stories" block. This section opens
+            it, so it carries the heading; the Google one below is the same
+            block continued and only carries its own rating link. */}
+        <div className="flex flex-wrap items-end justify-between gap-7">
+          <div>
+            <p className="eyebrow">Customer Stories</p>
+            <h2 className="mt-4 h2-section text-foreground">
+              Five stars,
+              <br />
+              everywhere we go.
+            </h2>
+          </div>
           <a
             href={TRUSTPILOT_URL}
             target="_blank"
@@ -91,7 +99,7 @@ export async function TrustpilotSection() {
           </a>
         </div>
 
-        <div className="mt-8 md:mt-10">
+        <div className="mt-12 md:mt-16">
           <ReviewsCarousel reviews={reviews} source="trustpilot" />
         </div>
       </div>

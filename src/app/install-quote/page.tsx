@@ -59,8 +59,8 @@ export default function InstallQuotePage() {
           <HeroSection />
           <WhyInstallProsSection />
           <CoverageSection />
-          <CustomerStoriesSection />
           <TrustpilotSection />
+          <CustomerStoriesSection />
           <EquipmentSection />
           <InstallVideoSection />
           <BeforeAfterSection />
