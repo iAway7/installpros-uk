@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import type { Review } from "@/lib/reviews/google-reviews";
-import { TrustpilotStars, TrustpilotStarMark, TrustpilotVerified } from "./trustpilot-marks";
+import { TrustpilotStars, TrustpilotStarMark, TrustpilotVerified, avatarTone } from "./trustpilot-marks";
 
 const CLAMP = 165; // characters before truncating with "Read more"
 
@@ -68,6 +68,8 @@ export function ReviewCard({ r, source = "google" }: { r: Review; source?: "goog
   // shows when it does. Google has no such concept, so `verified` is undefined
   // there and the badge stays on as before.
   const showVerified = r.verified ?? true;
+  // Only Trustpilot cards get the pastel monogram; Google's usually have a photo.
+  const tone = source === "trustpilot" ? avatarTone(r.name) : null;
 
   return (
     <div className="flex h-full flex-col rounded-xl border border-border bg-card p-6 shadow-sm">
@@ -89,12 +91,28 @@ export function ReviewCard({ r, source = "google" }: { r: Review; source?: "goog
             referrerPolicy="no-referrer"
           />
         ) : (
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-secondary text-lead font-medium text-foreground">
+          <div
+            className="flex h-12 w-12 items-center justify-center rounded-full bg-secondary text-lead font-medium text-foreground"
+            style={tone ? { backgroundColor: tone.bg, color: tone.fg } : undefined}
+          >
             {r.initial}
           </div>
         )}
         <div className="min-w-0 flex-1">
-          <div className="truncate text-body font-semibold text-foreground">{r.name}</div>
+          {/* The name is the way to go and check the review at the source, which
+              is what makes a wall of praise verifiable rather than a claim. */}
+          {r.link ? (
+            <a
+              href={r.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block truncate text-body font-semibold text-foreground underline-offset-4 transition-colors duration-quick hover:underline"
+            >
+              {r.name}
+            </a>
+          ) : (
+            <div className="truncate text-body font-semibold text-foreground">{r.name}</div>
+          )}
           <div className="text-caption text-muted-foreground">{meta}</div>
         </div>
         {source === "trustpilot" ? <TrustpilotStarMark size={26} /> : <GoogleG size={24} />}
@@ -109,14 +127,14 @@ export function ReviewCard({ r, source = "google" }: { r: Review; source?: "goog
           </>
         ) : (
           <>
-            <span className="text-body-sm tracking-[2px] text-gold">{"★".repeat(Math.min(5, Math.max(4, r.rating)))}</span>
+            <span className="text-lead tracking-[3px] text-gold">{"★".repeat(Math.min(5, Math.max(4, r.rating)))}</span>
             {showVerified && <VerifiedBadge />}
           </>
         )}
       </div>
 
       {/* Text + read more */}
-      <p className="mt-3 text-body-sm text-foreground" style={{ lineHeight: "1.6", textWrap: "pretty" }}>
+      <p className="mt-4 text-body text-foreground" style={{ lineHeight: "1.6", textWrap: "pretty" }}>
         {text}
       </p>
       {long && (

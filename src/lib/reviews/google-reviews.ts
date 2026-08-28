@@ -11,6 +11,9 @@ export interface Review {
   /** Platform-confirmed verification. Undefined = the platform makes no such
    *  claim (Google), in which case the card falls back to its own styling. */
   verified?: boolean;
+  /** Public URL of the review on the platform. Being able to go and check it is
+   *  what separates a review wall from a claim. */
+  link?: string;
 }
 
 export interface ReviewsData {

@@ -47,6 +47,30 @@ export function TrustpilotStars({ rating = 5, height = 20 }: { rating?: number; 
 }
 
 /**
+ * Avatar tint, picked from the name.
+ *
+ * Trustpilot gives every reviewer a pastel monogram — pink, green, yellow,
+ * peach. Ours were all the same grey, and a column of identical grey circles is
+ * the thing that makes a review wall read as template data rather than people.
+ *
+ * Deterministic on the name, so a given reviewer always gets the same colour and
+ * the server and client render the same thing.
+ */
+const AVATAR_TONES = [
+  { bg: "#FBDDE4", fg: "#8A2846" }, // pink
+  { bg: "#DBF3E1", fg: "#1F5B33" }, // green
+  { bg: "#FBF1C7", fg: "#6B5312" }, // yellow
+  { bg: "#FBE3CB", fg: "#7A4715" }, // peach
+  { bg: "#DCE8FA", fg: "#234270" }, // blue
+];
+
+export function avatarTone(name: string) {
+  let h = 0;
+  for (let i = 0; i < name.length; i++) h = (h + name.charCodeAt(i) * (i + 1)) % 9973;
+  return AVATAR_TONES[h % AVATAR_TONES.length];
+}
+
+/**
  * The Trustpilot star on its own (their `Shape.svg`, 48x45).
  *
  * Cropping the star out of the logo file left it padded inside a 14x26 box and

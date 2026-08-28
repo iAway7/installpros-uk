@@ -10,6 +10,7 @@ interface SeedEntry {
   consumer_name: string;
   created_at: string;
   is_verified: boolean;
+  link?: string;
   _todo?: string;
 }
 
@@ -40,6 +41,7 @@ const FALLBACK: Review[] = (seed as SeedEntry[])
     rating: e.stars,
     when: reviewDate(e.created_at),
     verified: e.is_verified,
+    link: e.link,
   }));
 
 /**
@@ -52,7 +54,9 @@ const FALLBACK: Review[] = (seed as SeedEntry[])
  */
 export async function TrustpilotSection() {
   const data = await getTrustpilotReviews();
-  const reviews = data.reviews.length ? data.reviews : FALLBACK;
+  const reviews: Review[] = data.reviews.length
+    ? data.reviews.map(({ createdAt, ...r }) => ({ ...r, when: reviewDate(createdAt) }))
+    : FALLBACK;
 
   // Mirrors the Google block above it, word for word: "5.0 on Google" /
   // "From 185 reviews". Same shape, same rhythm, different platform.

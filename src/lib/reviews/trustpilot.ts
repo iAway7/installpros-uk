@@ -28,8 +28,11 @@ export interface TrustpilotStats {
   score: number | null;
 }
 
+/** A stored review, still carrying its raw timestamp. */
+export type StoredReview = Omit<Review, "when"> & { createdAt: string };
+
 export interface TrustpilotData {
-  reviews: Review[];
+  reviews: StoredReview[];
   count: number | null;
   score: number | null;
 }
@@ -43,15 +46,19 @@ interface Row {
   consumer_name: string;
   is_verified: boolean;
   created_at: string;
+  link: string | null;
 }
 
 /**
- * Date exactly as Trustpilot renders it: relative for the first week ("2 days
- * ago", "3 days ago"), then the calendar date ("18 August"). Their own widget
- * switches at about a week, and matching it means our cards and their profile
- * never disagree about when a review was left.
+ * Date as Trustpilot renders it: relative for the first week ("2 days ago",
+ * "3 days ago"), then the calendar date with the year ("Aug 14, 2026"). Their
+ * own widget switches at about a week, and matching it means our cards and
+ * their profile never disagree about when a review was left.
  *
- * The year is only shown once it stops being the current one, again like theirs.
+ * Deliberately NOT called inside the cached query. Formatting there would bake
+ * the string into the cache for an hour, so "2 days ago" would keep saying two
+ * days into the third, and a change to this function would not show up until
+ * the cache expired. The section formats at render time instead.
  */
 export function reviewDate(iso: string): string | undefined {
   const then = new Date(iso);
@@ -63,12 +70,9 @@ export function reviewDate(iso: string): string | undefined {
   if (days === 1) return "yesterday";
   if (days < 7) return `${days} days ago`;
 
-  const sameYear = then.getUTCFullYear() === new Date().getUTCFullYear();
-  return then.toLocaleDateString("en-GB", {
-    day: "numeric",
-    month: "long",
-    ...(sameYear ? {} : { year: "numeric" }),
-  });
+  // "Aug 14, 2026" — the format Trustpilot prints on the review itself. Always
+  // with the year: a date without one quietly reads as recent.
+  return then.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
 }
 
 async function query(): Promise<TrustpilotData> {
@@ -78,26 +82,31 @@ async function query(): Promise<TrustpilotData> {
     const supabase = createPlainServiceClient();
     const { data, error } = await supabase
       .from("trustpilot_reviews")
-      .select("id, stars, text, consumer_name, is_verified, created_at")
+      .select("id, stars, text, consumer_name, is_verified, created_at, link")
       .is("deleted_at", null)
       .gte("stars", MIN_RATING)
       .neq("text", "")
       .order("created_at", { ascending: false })
+      // Tiebreaker: several reviews share a day, and without a second key
+      // Postgres is free to return same-day rows in any order — the carousel
+      // reshuffled itself between renders.
+      .order("id", { ascending: false })
       .limit(WINDOW);
 
     if (error) throw error;
 
-    const reviews: Review[] = ((data ?? []) as Row[]).map((r) => {
+    const reviews: StoredReview[] = ((data ?? []) as Row[]).map((r) => {
       const name = r.consumer_name?.trim() || "Customer";
       return {
         q: r.text.trim(),
         name,
         initial: name.charAt(0).toUpperCase(),
         rating: r.stars,
-        when: reviewDate(r.created_at),
+        createdAt: r.created_at,
         // Trustpilot's own flag. Never inferred — a badge we invented would be
         // a claim their platform did not make.
         verified: r.is_verified,
+        link: r.link ?? undefined,
       };
     });
 
