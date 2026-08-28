@@ -15,7 +15,7 @@ const EQUIPMENT: EquipmentItem[] = [
   {
     t: "Router 3",
     badge: "Premium Upgrade",
-    d: "Premium upgrade over the standard Router Mini. WiFi 6, whole-home coverage.",
+    d: "Premium upgrade over the Standard Mini Router, delivering stronger WiFi 6 performance, improved range and more reliable coverage.",
     img: "/funnel/starlink-gen-3-router.webp",
   },
   {
@@ -36,9 +36,9 @@ const EQUIPMENT: EquipmentItem[] = [
  *  are the same kit either way.
  *
  *  The router card cannot be reused from residential. There the base kit ships
- *  with a Router Mini and Router 3 is a paid upgrade, which is what that copy
+ *  with a Mini Router and Router 3 is a paid upgrade, which is what that copy
  *  says. The Performance kit ships with no router at all, so "premium upgrade
- *  over the standard Router Mini" would describe a product that is not in the
+ *  over the Standard Mini Router" would describe a product that is not in the
  *  box. Hence "Included" rather than "Premium Upgrade".
  *
  *  TODO(will): two things to confirm before this page is indexed. First, that
