@@ -7,7 +7,7 @@ import { CustomerStoriesSection } from "@/components/funnel/customer-stories-sec
 import { TrustpilotSection } from "@/components/funnel/trustpilot-section";
 import { WhyInstallProsSection, COMMERCIAL_FEATURES } from "@/components/funnel/why-installpros-section";
 import { CoverageMapSection } from "@/components/funnel/coverage-map-section";
-import { EquipmentSection } from "@/components/funnel/equipment-section";
+import { EquipmentSection, COMMERCIAL_EQUIPMENT } from "@/components/funnel/equipment-section";
 import { InstallVideoSection } from "@/components/funnel/install-video-section";
 import { TrackRecordSection } from "@/components/funnel/track-record-section";
 import { BeforeAfterSection } from "@/components/funnel/before-after-section";
@@ -83,9 +83,9 @@ export default function CommercialStarlinkInstallationPage() {
           />
           <SectorsSection />
           <CoverageSection />
-          <CustomerStoriesSection />
           <TrustpilotSection />
-          <EquipmentSection />
+          <CustomerStoriesSection />
+          <EquipmentSection equipment={COMMERCIAL_EQUIPMENT} />
           <InstallVideoSection />
           <BeforeAfterSection />
           <CoverageMapSection />

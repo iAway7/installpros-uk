@@ -4,46 +4,32 @@ import { useState } from "react";
 import { ukRegions, UK_MAP_VIEWBOX } from "@/lib/funnel/uk-regions";
 
 /**
- * Real UK map (NUTS1 region geometry) with live-install city pulses.
- * City coordinates were projected into the map's coordinate space with an
- * affine fit against the region centroids, so dots land on real locations.
+ * Real UK map (NUTS1 region geometry) with one pin per region.
+ *
+ * It used to carry twenty-three hand-picked town dots, which read as a list of
+ * the only places we go: Will pointed out that Surrey, one of our biggest
+ * markets, looked uncovered because no dot happened to land there. One pin per
+ * region says the true thing instead, that we work in all twelve, and it cannot
+ * develop a new hole every time someone scans the map for their own county.
+ *
+ * Pins come straight from the region geometry, so they cannot drift out of sync
+ * with the shapes underneath them and there is no coordinate list to maintain.
  */
-// Real InstallPros coverage areas (England from the coverage page) plus the
-// Scotland / Wales / NI spread. Coordinates projected into the map space.
-const CITIES = [
-  { n: "London", x: 615.7, y: 716.3 },
-  { n: "Birmingham", x: 481.5, y: 641.4 },
-  { n: "Cheltenham", x: 471.1, y: 685.2 },
-  { n: "Leeds", x: 501.0, y: 543.1 },
-  { n: "Manchester", x: 451.2, y: 566.5 },
-  { n: "Nottingham", x: 533.5, y: 606.9 },
-  { n: "Peak District", x: 484.4, y: 576.7 },
-  { n: "Lake District", x: 383.8, y: 493.1 },
-  { n: "Cotswolds", x: 487.4, y: 690.6 },
-  { n: "Northumberland", x: 457.7, y: 434.0 },
-  { n: "Devon", x: 352.2, y: 772.2 },
-  { n: "Cumbria", x: 398.0, y: 483.5 },
-  { n: "Cornwall", x: 276.2, y: 795.3 },
-  { n: "Bristol", x: 434.6, y: 718.2 },
-  { n: "Bath", x: 451.8, y: 723.9 },
-  { n: "Plymouth", x: 324.7, y: 797.7 },
-  { n: "Norwich", x: 715.9, y: 633.3 },
-  { n: "Glasgow", x: 292.7, y: 386.1 },
-  { n: "Edinburgh", x: 370.7, y: 380.3 },
-  { n: "Aberdeen", x: 446.1, y: 291.5 },
-  { n: "Inverness", x: 287.7, y: 265.1 },
-  { n: "Cardiff", x: 390.9, y: 715.6 },
-  { n: "Belfast", x: 174.6, y: 479.6 },
-];
+const PINS = Object.entries(ukRegions).map(([id, r]) => ({
+  id,
+  n: r.name,
+  x: r.labelX,
+  y: r.labelY,
+}));
 
 const VB = { w: 760, h: 836 };
 
 // London is where most of our traffic is — show its tooltip by default, but
 // only until the user first interacts. After any hover it behaves normally.
-const DEFAULT_CITY = CITIES.find((c) => c.n === "London") ?? CITIES[0];
+const DEFAULT_PIN = PINS.find((p) => p.id === "London") ?? PINS[0];
 
 export function UkCoverageMap({ baseColor = "var(--primary)" }: { baseColor?: string } = {}) {
-  const [hover, setHover] = useState<(typeof CITIES)[number] | null>(DEFAULT_CITY);
+  const [hover, setHover] = useState<(typeof PINS)[number] | null>(DEFAULT_PIN);
 
   return (
     <div style={{ position: "relative", width: "100%" }}>
@@ -82,29 +68,31 @@ export function UkCoverageMap({ baseColor = "var(--primary)" }: { baseColor?: st
           ))}
         </g>
 
-        {/* Live install pulses */}
+        {/* One pulse per region */}
         <g>
-          {CITIES.map((c, i) => (
+          {PINS.map((p, i) => (
             <g
-              key={c.n}
+              key={p.id}
               className="ipx-city"
-              onMouseEnter={() => setHover(c)}
+              onMouseEnter={() => setHover(p)}
               onMouseLeave={() => setHover(null)}
               style={{ cursor: "pointer" }}
             >
-              {/* generous invisible hit area */}
-              <circle cx={c.x} cy={c.y} r={18} fill="transparent" />
+              {/* Generous invisible hit area. 16 rather than 18: London and the
+                  South East sit 41 units apart, the closest pair on the map, and
+                  at 18 their targets would start to fight over the pointer. */}
+              <circle cx={p.x} cy={p.y} r={16} fill="transparent" />
               <circle
                 className="ipx-pulse"
-                cx={c.x}
-                cy={c.y}
+                cx={p.x}
+                cy={p.y}
                 r={5}
                 fill="none"
                 stroke="#FF5A5A"
                 strokeWidth={1.4}
                 style={{ animationDelay: `${(i * 0.37) % 3.4}s` }}
               />
-              <circle className="ipx-dot" cx={c.x} cy={c.y} r={4.5} fill="#FF5A5A" />
+              <circle className="ipx-dot" cx={p.x} cy={p.y} r={4.5} fill="#FF5A5A" />
             </g>
           ))}
         </g>

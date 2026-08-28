@@ -2,7 +2,14 @@ import { UkCoverageMap } from "./uk-coverage-map";
 
 const STATS = [
   { value: "4", label: "Nations covered" },
-  { value: "175+", label: "Towns & cities served" },
+  // 225 is the count of Will's major-towns list (27 Aug 2026). That list is a
+  // COVERAGE list, not our install record, which is why the label says covered
+  // and not served: we can stand behind travelling to all of them, we cannot
+  // claim to have worked in all of them.
+  //
+  // The list itself is not on the page, so nothing here shows the reader where
+  // 225 comes from. That is a known gap, not an oversight.
+  { value: "225+", label: "Towns & cities covered" },
   { value: "3 days", label: "Typical lead time" },
   { value: "100%", label: "Fixed-price quotes" },
 ];
@@ -60,7 +67,7 @@ export function CoverageMapSection() {
               </div>
               <UkCoverageMap baseColor="hsl(var(--foreground))" />
               <p className="mt-4 text-center text-label text-muted-foreground">
-                Areas we cover · tap a location
+                Areas we cover · tap a region
               </p>
             </div>
           </div>

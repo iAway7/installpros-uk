@@ -1,4 +1,11 @@
-const EQUIPMENT = [
+export interface EquipmentItem {
+  t: string;
+  badge: string;
+  d: string;
+  img: string;
+}
+
+const EQUIPMENT: EquipmentItem[] = [
   {
     t: "Starlink Standard",
     badge: "Supply & Fit",
@@ -25,9 +32,39 @@ const EQUIPMENT = [
   },
 ];
 
+/** Commercial swaps the dish and the router. The mounts and the access points
+ *  are the same kit either way.
+ *
+ *  The router card cannot be reused from residential. There the base kit ships
+ *  with a Router Mini and Router 3 is a paid upgrade, which is what that copy
+ *  says. The Performance kit ships with no router at all, so "premium upgrade
+ *  over the standard Router Mini" would describe a product that is not in the
+ *  box. Hence "Included" rather than "Premium Upgrade".
+ *
+ *  TODO(will): two things to confirm before this page is indexed. First, that
+ *  Performance really is what we quote on commercial jobs, because this card
+ *  is a spec claim and a customer will hold us to it. Second, the wording
+ *  below: wider field of view and better wet-weather performance are Starlink's
+ *  own claims for the hardware, not measurements we have taken. */
+export const COMMERCIAL_EQUIPMENT: EquipmentItem[] = [
+  {
+    t: "Starlink Performance",
+    badge: "Supply & Fit",
+    d: "The commercial dish. Wider field of view and steadier in rain than the standard kit.",
+    img: "/funnel/starlink-performance.webp",
+  },
+  {
+    t: "Router 3",
+    badge: "Included",
+    d: "The Performance kit ships without a router. We supply Router 3 and configure it for the site. WiFi 6, whole-site coverage.",
+    img: "/funnel/starlink-gen-3-router.webp",
+  },
+  ...EQUIPMENT.slice(2),
+];
+
 /** "The hardware, handled." — the four equipment cards, ported from the
- *  /starlink-installations landing. */
-export function EquipmentSection() {
+ *  /starlink-installations landing. Segment landings pass their own kit. */
+export function EquipmentSection({ equipment = EQUIPMENT }: { equipment?: EquipmentItem[] } = {}) {
   return (
     <section id="equipment" className="w-full scroll-mt-28 bg-background py-16 md:py-24">
       <div className="container mx-auto max-w-6xl">
@@ -44,7 +81,7 @@ export function EquipmentSection() {
         </div>
 
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {EQUIPMENT.map((e) => (
+          {equipment.map((e) => (
             <div
               key={e.t}
               className="rounded-xl border border-border bg-secondary/50 p-6 transition-all duration-card ease-ds hover:-translate-y-[5px] hover:border-brand-soft/35"

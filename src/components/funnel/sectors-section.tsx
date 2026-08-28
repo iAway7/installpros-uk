@@ -33,10 +33,8 @@ const SECTORS: Sector[] = [
     d: "Coverage across the whole floor, not just the office",
   },
   {
-    // Placeholder shows timber-frame construction, which reads as North
-    // American rather than UK brick and block.
     img: "/funnel/sector-construction.webp",
-    alt: "Groundworker finishing a concrete slab on a building site",
+    alt: "Crane lifting a precast floor slab onto a city-centre building site",
     t: "Construction sites",
     d: "Connected from week one, long before a line could be",
   },
