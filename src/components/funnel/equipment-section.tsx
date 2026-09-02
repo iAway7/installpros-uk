@@ -9,25 +9,25 @@ const EQUIPMENT: EquipmentItem[] = [
   {
     t: "Starlink Standard",
     badge: "Supply & Fit",
-    d: "The dish: supplied, mounted and aligned for a clear view of the sky.",
+    d: "Supplied, mounted and aligned for peak performance",
     img: "/funnel/starlink-gen-3.webp",
   },
   {
     t: "Router 3",
     badge: "Premium Upgrade",
-    d: "Premium upgrade over the Standard Mini Router, delivering stronger WiFi 6 performance, improved range and more reliable coverage.",
+    d: "Upgraded router for improved range and more reliable coverage",
     img: "/funnel/starlink-gen-3-router.webp",
   },
   {
     t: "Mounts & Masts",
     badge: "All-metal",
-    d: "Durable roof, wall and pole mounts for any property type.",
+    d: "Durable roof, wall and pole mounts for any property type",
     img: "/funnel/mounts-masts.webp",
   },
   {
     t: "Indoor/Outdoor WiFi",
     badge: "Add-on",
-    d: "Seamless coverage across every floor and outbuilding.",
+    d: "Seamless coverage across every floor and outbuilding",
     img: "/funnel/wifi-access-point.webp",
   },
 ];
@@ -36,27 +36,33 @@ const EQUIPMENT: EquipmentItem[] = [
  *  are the same kit either way.
  *
  *  The router card cannot be reused from residential. There the base kit ships
- *  with a Mini Router and Router 3 is a paid upgrade, which is what that copy
- *  says. The Performance kit ships with no router at all, so "premium upgrade
- *  over the Standard Mini Router" would describe a product that is not in the
- *  box. Hence "Included" rather than "Premium Upgrade".
+ *  with a Mini Router and Router 3 is a paid upgrade, which is what the
+ *  residential copy is about. The Performance kit ships with no router at all,
+ *  so an "upgrade" framing would describe a product that is not in the box.
+ *  Hence "Included" rather than "Premium Upgrade", and copy about supplying it
+ *  rather than improving on it.
+ *
+ *  Two rules for every description in both lists. It lands on two lines at
+ *  card width, roughly 50 to 60 characters, because longer makes the row
+ *  heights ragged. And it takes no full stop: these are fragments, and the
+ *  site already splits that way, with the sector cards running without one and
+ *  the why cards, which are complete sentences, running with one.
  *
  *  TODO(will): two things to confirm before this page is indexed. First, that
  *  Performance really is what we quote on commercial jobs, because this card
- *  is a spec claim and a customer will hold us to it. Second, the wording
- *  below: wider field of view and better wet-weather performance are Starlink's
- *  own claims for the hardware, not measurements we have taken. */
+ *  is a spec claim and a customer will hold us to it. Second, "wider field of
+ *  view" is Starlink's own claim for the hardware, not something we measured. */
 export const COMMERCIAL_EQUIPMENT: EquipmentItem[] = [
   {
     t: "Starlink Performance",
     badge: "Supply & Fit",
-    d: "The commercial dish. Wider field of view and steadier in rain than the standard kit.",
+    d: "Bigger dish, wider field of view, mounted and aligned",
     img: "/funnel/starlink-performance.webp",
   },
   {
     t: "Router 3",
     badge: "Included",
-    d: "The Performance kit ships without a router. We supply Router 3 and configure it for the site. WiFi 6, whole-site coverage.",
+    d: "Not included in the Performance kit, so we supply it",
     img: "/funnel/starlink-gen-3-router.webp",
   },
   ...EQUIPMENT.slice(2),
