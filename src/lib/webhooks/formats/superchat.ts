@@ -8,11 +8,13 @@ import type { WebhookPayload } from "../types";
 export interface SuperchatLeadPayload {
   event_type: "lead_received";
   /**
-   * Superchat's own contact id (sc_contact_...). Our leads come from the web
-   * form, so no Superchat contact exists yet. Sent as null until Will's
-   * developer confirms how their function handles a lead with no contact.
+   * Unique id for the lead. Will's developer (2 Sep 2026): web leads have no
+   * Superchat contact, so send our own unique id instead; it lets their side
+   * update the same record if a lead arrives twice ("partial completion").
+   * Currently our lead UUID; CONTACT_ID_PREFIX is there for when they confirm
+   * the format they want.
    */
-  contact_id: string | null;
+  contact_id: string;
   first_name: string;
   last_name: string;
   phone: string;
@@ -22,17 +24,19 @@ export interface SuperchatLeadPayload {
   trigger_timestamp: string;
 }
 
+/** Prepended to our lead UUID. Empty until Will's developer sends the id format. */
+export const CONTACT_ID_PREFIX = "";
+
 /**
- * Our `lead.service` values -> the label their router expects.
- * PENDING confirmation from Will's developer: their example is
- * "Sky Installation", so "Starlink Installation" is an educated guess, and
- * we don't know whether Marine / Commercial / Mobile should route differently.
+ * Our `lead.service` values -> what goes in their `install_type`.
+ * Will's developer confirmed (2 Sep 2026) it is a free-text field, so we keep
+ * the distinction instead of collapsing everything to one label.
  */
 export const SUPERCHAT_INSTALL_TYPE: Record<string, string> = {
-  residential: "Starlink Installation",
-  marine: "Starlink Installation",
-  commercial: "Starlink Installation",
-  mobile_rv: "Starlink Installation",
+  residential: "Starlink Residential",
+  marine: "Starlink Marine",
+  commercial: "Starlink Commercial",
+  mobile_rv: "Starlink Mobile/RV",
 };
 const SUPERCHAT_INSTALL_TYPE_FALLBACK = "Starlink Installation";
 
@@ -68,7 +72,7 @@ export function toSuperchat(payload: WebhookPayload): SuperchatLeadPayload {
   const service = (payload.lead.service ?? "").toLowerCase();
   return {
     event_type: "lead_received",
-    contact_id: null,
+    contact_id: `${CONTACT_ID_PREFIX}${payload.lead.id}`,
     first_name,
     last_name,
     phone: ukPhone(payload.lead.phone),

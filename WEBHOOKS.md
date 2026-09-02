@@ -92,21 +92,21 @@ Each endpoint has a `format` (migration `0015_webhook_format.sql`):
 ```jsonc
 {
   "event_type": "lead_received",
-  "contact_id": null,                 // no Superchat contact exists for a web lead
+  "contact_id": "45b39a1d-84e2-...",  // our lead UUID (their side dedupes on it); prefix TBC
   "first_name": "John",               // lead.name split on the first space
   "last_name": "Smith",
   "phone": "+44 7700 900123",         // normalised from 07700900123 / 447700... / +44...
   "email": "john@example.com",
   "postcode": "SW1A 1AA",
-  "install_type": "Starlink Installation",  // mapped from lead.service (SUPERCHAT_INSTALL_TYPE)
+  "install_type": "Starlink Marine",  // free text on their side; mapped from lead.service (SUPERCHAT_INSTALL_TYPE)
   "trigger_timestamp": "2026-09-02T13:26:41.583Z"  // lead.created_at
 }
 ```
 
 Use it with `lead.created` only: the shape has no score field, so
-`lead.enriched` would just deliver the same lead twice. Still pending from
-Will's developer: the exact `install_type` strings their router accepts, and
-whether `contact_id: null` is accepted or a Superchat contact must exist first.
+`lead.enriched` would just deliver the same lead twice. Will's developer
+confirmed `install_type` is free text and asked for a unique id per lead in
+`contact_id`; the exact id format is still pending (see `CONTACT_ID_PREFIX`).
 
 ## Signing (optional)
 
