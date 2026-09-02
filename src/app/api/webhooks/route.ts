@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient, createServiceClient } from "@/lib/supabase/server";
-import { WEBHOOK_EVENTS, type WebhookEvent } from "@/lib/webhooks/types";
+import { WEBHOOK_EVENTS, WEBHOOK_FORMATS, type WebhookEvent, type WebhookFormat } from "@/lib/webhooks/types";
 
 export const runtime = "nodejs";
 
@@ -48,6 +48,7 @@ interface CreateBody {
   url?: string;
   secret?: string;
   events?: string[];
+  format?: string;
   headers?: Record<string, string>;
 }
 
@@ -71,6 +72,10 @@ export async function POST(req: Request) {
     WEBHOOK_EVENTS.includes(e as WebhookEvent),
   );
 
+  const format: WebhookFormat = WEBHOOK_FORMATS.includes(body.format as WebhookFormat)
+    ? (body.format as WebhookFormat)
+    : "generic";
+
   const { data, error } = await createServiceClient()
     .from("webhook_endpoints")
     .insert({
@@ -78,6 +83,7 @@ export async function POST(req: Request) {
       url: body.url,
       secret: body.secret?.trim() || null,
       events: events.length ? events : WEBHOOK_EVENTS,
+      format,
       headers: body.headers ?? {},
     })
     .select("*")

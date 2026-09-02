@@ -8,12 +8,27 @@ export const EVENT_LABEL: Record<WebhookEvent, string> = {
   "lead.enriched": "Lead enriched: ~4s later, adds score + property intel",
 };
 
+/**
+ * How the body is shaped for a given endpoint.
+ *   generic   — our native nested payload (WebhookPayload below).
+ *   superchat — the flat lead_received shape Will's Superchat function expects.
+ */
+export type WebhookFormat = "generic" | "superchat";
+
+export const WEBHOOK_FORMATS: WebhookFormat[] = ["generic", "superchat"];
+
+export const FORMAT_LABEL: Record<WebhookFormat, string> = {
+  generic: "Generic JSON: full lead, attribution, score and property intel (Zapier, Make, n8n)",
+  superchat: "Superchat (Will): flat lead_received payload, contact fields only",
+};
+
 export interface WebhookEndpoint {
   id: string;
   name: string;
   url: string;
   secret: string | null;
   events: WebhookEvent[];
+  format: WebhookFormat;
   headers: Record<string, string>;
   active: boolean;
   created_at: string;

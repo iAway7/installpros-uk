@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient, createServiceClient } from "@/lib/supabase/server";
-import { WEBHOOK_EVENTS, type WebhookEvent } from "@/lib/webhooks/types";
+import { WEBHOOK_EVENTS, WEBHOOK_FORMATS, type WebhookEvent, type WebhookFormat } from "@/lib/webhooks/types";
 
 export const runtime = "nodejs";
 
@@ -20,6 +20,7 @@ interface PatchBody {
   url?: string;
   secret?: string | null;
   events?: string[];
+  format?: string;
   active?: boolean;
 }
 
@@ -47,6 +48,12 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
   }
   if (body.secret !== undefined) patch.secret = body.secret?.trim() || null;
   if (typeof body.active === "boolean") patch.active = body.active;
+  if (typeof body.format === "string") {
+    if (!WEBHOOK_FORMATS.includes(body.format as WebhookFormat)) {
+      return NextResponse.json({ error: "invalid_format" }, { status: 422 });
+    }
+    patch.format = body.format;
+  }
   if (Array.isArray(body.events)) {
     patch.events = body.events.filter((e): e is WebhookEvent => WEBHOOK_EVENTS.includes(e as WebhookEvent));
   }

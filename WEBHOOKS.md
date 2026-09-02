@@ -80,6 +80,34 @@ isn't a database row) but its deliveries do appear in the log.
 Nested, but Zapier and Make flatten it automatically — you'll see
 `lead__email`, `attribution__gclid` and so on.
 
+## Payload formats
+
+Each endpoint has a `format` (migration `0015_webhook_format.sql`):
+
+- `generic` (default): the payload documented above, byte for byte.
+- `superchat`: the flat `lead_received` shape Will's Superchat edge function
+  expects. Built in `src/lib/webhooks/formats/superchat.ts` at send time; the
+  delivery log stores what was actually sent.
+
+```jsonc
+{
+  "event_type": "lead_received",
+  "contact_id": null,                 // no Superchat contact exists for a web lead
+  "first_name": "John",               // lead.name split on the first space
+  "last_name": "Smith",
+  "phone": "+44 7700 900123",         // normalised from 07700900123 / 447700... / +44...
+  "email": "john@example.com",
+  "postcode": "SW1A 1AA",
+  "install_type": "Starlink Installation",  // mapped from lead.service (SUPERCHAT_INSTALL_TYPE)
+  "trigger_timestamp": "2026-09-02T13:26:41.583Z"  // lead.created_at
+}
+```
+
+Use it with `lead.created` only: the shape has no score field, so
+`lead.enriched` would just deliver the same lead twice. Still pending from
+Will's developer: the exact `install_type` strings their router accepts, and
+whether `contact_id: null` is accepted or a Superchat contact must exist first.
+
 ## Signing (optional)
 
 Set a secret and every request carries:

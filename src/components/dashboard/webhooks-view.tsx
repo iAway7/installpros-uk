@@ -7,7 +7,16 @@ import { Card, CardContent } from "@/components/system/card";
 import { Button } from "@/components/system/button";
 import { Input } from "@/components/system/input";
 import { Label } from "@/components/system/label";
-import { WEBHOOK_EVENTS, EVENT_LABEL, type WebhookDelivery, type WebhookEndpoint, type WebhookEvent } from "@/lib/webhooks/types";
+import {
+  WEBHOOK_EVENTS,
+  EVENT_LABEL,
+  WEBHOOK_FORMATS,
+  FORMAT_LABEL,
+  type WebhookDelivery,
+  type WebhookEndpoint,
+  type WebhookEvent,
+  type WebhookFormat,
+} from "@/lib/webhooks/types";
 
 interface ApiState {
   endpoints: WebhookEndpoint[];
@@ -149,6 +158,11 @@ export function WebhooksView() {
                           Signed
                         </span>
                       )}
+                      {ep.format && ep.format !== "generic" && (
+                        <span className="rounded-full bg-secondary px-2 py-0.5 text-label font-semibold capitalize">
+                          {ep.format} format
+                        </span>
+                      )}
                     </div>
                     <p className="mt-1 break-all font-mono text-label text-muted-foreground">{ep.url}</p>
                   </div>
@@ -232,7 +246,15 @@ function NewEndpointForm({ onDone }: { onDone: () => void }) {
   const [url, setUrl] = useState("");
   const [secret, setSecret] = useState("");
   const [events, setEvents] = useState<WebhookEvent[]>([...WEBHOOK_EVENTS]);
+  const [format, setFormat] = useState<WebhookFormat>("generic");
   const [saving, setSaving] = useState(false);
+
+  function pickFormat(next: WebhookFormat) {
+    setFormat(next);
+    // Superchat's shape has no score field, and their function likely messages
+    // the customer on every hit, so default it to the one event that matters.
+    if (next === "superchat") setEvents(["lead.created"]);
+  }
 
   async function save() {
     if (!name.trim() || !url.trim()) return toast.error("Name and URL are required");
@@ -241,7 +263,7 @@ function NewEndpointForm({ onDone }: { onDone: () => void }) {
       const res = await fetch("/api/webhooks", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, url, secret: secret || undefined, events }),
+        body: JSON.stringify({ name, url, secret: secret || undefined, events, format }),
       });
       if (!res.ok) throw new Error();
       toast.success("Endpoint added", "Send a test to confirm it receives.");
@@ -273,6 +295,32 @@ function NewEndpointForm({ onDone }: { onDone: () => void }) {
             When set, each request carries an <code className="rounded bg-secondary px-1">X-InstallPros-Signature</code>{" "}
             HMAC so the receiver can verify it came from us.
           </p>
+        </div>
+        <div className="space-y-2">
+          <p className="text-body-sm font-medium">Payload format</p>
+          {WEBHOOK_FORMATS.map((f) => (
+            <label key={f} className="flex items-start gap-2 text-body-sm">
+              <input
+                type="radio"
+                name="wh-format"
+                className="mt-1"
+                checked={format === f}
+                onChange={() => pickFormat(f)}
+              />
+              <span>
+                <span className="font-mono text-label">{f}</span>
+                <span className="block text-muted-foreground">{FORMAT_LABEL[f]}</span>
+              </span>
+            </label>
+          ))}
+          {format === "superchat" && (
+            <p className="text-label text-muted-foreground">
+              Sends <code className="rounded bg-secondary px-1">event_type: &quot;lead_received&quot;</code> with
+              first/last name split, phone as +44, and <code className="rounded bg-secondary px-1">install_type</code>{" "}
+              mapped from the service. Only <code className="rounded bg-secondary px-1">lead.created</code> is
+              recommended: the format carries no score, so the enriched event would only duplicate the lead.
+            </p>
+          )}
         </div>
         <div className="space-y-2">
           <p className="text-body-sm font-medium">Events</p>

@@ -37,7 +37,7 @@ export async function POST(_req: Request, { params }: { params: { id: string } }
     endpoint_url: outcome.endpoint,
     event: payload.event,
     lead_id: null,
-    payload,
+    payload: outcome.sent,
     status: outcome.ok ? "success" : "failed",
     status_code: outcome.statusCode,
     attempts: outcome.attempts,

@@ -1,6 +1,7 @@
 import { createHmac } from "crypto";
 import { createServiceClient } from "@/lib/supabase/server";
 import { buildPayload } from "./payload";
+import { formatPayload } from "./formats";
 import type { WebhookEndpoint, WebhookEvent, WebhookPayload } from "./types";
 
 const TIMEOUT_MS = 8000;
@@ -46,6 +47,7 @@ async function resolveTargets(event: WebhookEvent | "webhook.test"): Promise<Web
       url: envUrl,
       secret: process.env.LEAD_WEBHOOK_SECRET?.trim() || null,
       events: envEvents,
+      format: "generic",
       headers: {},
       active: true,
       created_at: "",
@@ -70,6 +72,8 @@ async function resolveTargets(event: WebhookEvent | "webhook.test"): Promise<Web
 
 export interface DeliveryOutcome {
   endpoint: string;
+  /** The exact body that went over the wire, after per-endpoint formatting. */
+  sent: unknown;
   ok: boolean;
   statusCode: number | null;
   attempts: number;
@@ -79,10 +83,11 @@ export interface DeliveryOutcome {
 
 /** POST the payload to one endpoint, retrying transient failures. */
 export async function deliver(
-  endpoint: Pick<WebhookEndpoint, "id" | "url" | "secret" | "headers">,
+  endpoint: Pick<WebhookEndpoint, "id" | "url" | "secret" | "headers"> & Partial<Pick<WebhookEndpoint, "format">>,
   payload: WebhookPayload,
 ): Promise<DeliveryOutcome> {
-  const body = JSON.stringify(payload);
+  const sent = formatPayload(endpoint.format, payload);
+  const body = JSON.stringify(sent);
   const started = Date.now();
   let statusCode: number | null = null;
   let error: string | null = null;
@@ -110,7 +115,7 @@ export async function deliver(
       statusCode = res.status;
 
       if (res.ok) {
-        return { endpoint: endpoint.url, ok: true, statusCode, attempts: attempt, error: null, durationMs: Date.now() - started };
+        return { endpoint: endpoint.url, sent, ok: true, statusCode, attempts: attempt, error: null, durationMs: Date.now() - started };
       }
 
       error = `HTTP ${res.status}`;
@@ -124,6 +129,7 @@ export async function deliver(
 
   return {
     endpoint: endpoint.url,
+    sent,
     ok: false,
     statusCode,
     attempts: MAX_ATTEMPTS,
@@ -144,7 +150,8 @@ async function logDelivery(
       endpoint_url: outcome.endpoint,
       event: payload.event,
       lead_id: payload.lead.id.startsWith("00000000") ? null : payload.lead.id,
-      payload,
+      // Log what the receiver actually got, not our internal shape.
+      payload: outcome.sent,
       status: outcome.ok ? "success" : "failed",
       status_code: outcome.statusCode,
       attempts: outcome.attempts,
