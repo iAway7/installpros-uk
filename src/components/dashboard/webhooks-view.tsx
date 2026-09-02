@@ -2,11 +2,12 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "@/components/system/toast";
-import { Plus, Send, Trash2, CheckCircle2, XCircle, Loader2, RefreshCw } from "lucide-react";
+import { Plus, Send, CheckCircle2, XCircle, Loader2, RefreshCw } from "lucide-react";
 import { Card, CardContent } from "@/components/system/card";
 import { Button } from "@/components/system/button";
 import { Input } from "@/components/system/input";
 import { Label } from "@/components/system/label";
+import { Menu } from "@/components/system/menu";
 import {
   WEBHOOK_EVENTS,
   EVENT_LABEL,
@@ -29,6 +30,8 @@ export function WebhooksView() {
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
+  const [editing, setEditing] = useState<string | null>(null);
+  const [logFilter, setLogFilter] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     try {
@@ -61,27 +64,34 @@ export function WebhooksView() {
     }
   }
 
-  async function toggleActive(ep: WebhookEndpoint) {
+  async function setActive(ep: WebhookEndpoint, active: boolean) {
     setBusy(ep.id);
     try {
-      await fetch(`/api/webhooks/${ep.id}`, {
+      const res = await fetch(`/api/webhooks/${ep.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ active: !ep.active }),
+        body: JSON.stringify({ active }),
       });
+      if (!res.ok) throw new Error();
+      toast.success(active ? "Endpoint active" : "Endpoint paused", active ? "Leads are flowing again." : "Nothing is sent until you resume it.");
       await load();
+    } catch {
+      toast.error("Couldn't update");
     } finally {
       setBusy(null);
     }
   }
 
   async function remove(ep: WebhookEndpoint) {
-    if (!window.confirm(`Delete "${ep.name}"? Its delivery log goes with it.`)) return;
     setBusy(ep.id);
     try {
-      await fetch(`/api/webhooks/${ep.id}`, { method: "DELETE" });
-      toast.success("Endpoint deleted");
+      const res = await fetch(`/api/webhooks/${ep.id}`, { method: "DELETE" });
+      if (!res.ok) throw new Error();
+      toast.success("Endpoint deleted", "Its delivery history is kept in the log.");
+      if (logFilter === ep.id) setLogFilter(null);
       await load();
+    } catch {
+      toast.error("Couldn't delete");
     } finally {
       setBusy(null);
     }
@@ -96,7 +106,11 @@ export function WebhooksView() {
   }
 
   const endpoints = state?.endpoints ?? [];
-  const deliveries = state?.deliveries ?? [];
+  const allDeliveries = state?.deliveries ?? [];
+  const filteredEndpoint = logFilter ? endpoints.find((e) => e.id === logFilter) : null;
+  const deliveries = filteredEndpoint
+    ? allDeliveries.filter((d) => d.endpoint_id === filteredEndpoint.id || d.endpoint_url === filteredEndpoint.url)
+    : allDeliveries;
 
   return (
     <div className="space-y-6">
@@ -110,7 +124,7 @@ export function WebhooksView() {
           <Button variant="outline" size="sm" onClick={() => void load()}>
             <RefreshCw className="h-4 w-4" /> Refresh
           </Button>
-          <Button size="sm" onClick={() => setShowForm((v) => !v)}>
+          <Button size="sm" onClick={() => { setEditing(null); setShowForm((v) => !v); }}>
             <Plus className="h-4 w-4" /> New endpoint
           </Button>
         </div>
@@ -128,7 +142,13 @@ export function WebhooksView() {
         </Card>
       )}
 
-      {showForm && <NewEndpointForm onDone={() => { setShowForm(false); void load(); }} />}
+      {showForm && (
+        <Card>
+          <CardContent className="p-5">
+            <EndpointForm onDone={() => { setShowForm(false); void load(); }} onCancel={() => setShowForm(false)} />
+          </CardContent>
+        </Card>
+      )}
 
       {endpoints.length === 0 ? (
         <Card>
@@ -139,66 +159,50 @@ export function WebhooksView() {
         </Card>
       ) : (
         <div className="space-y-3">
-          {endpoints.map((ep) => (
-            <Card key={ep.id}>
-              <CardContent className="space-y-3 p-5">
-                <div className="flex flex-wrap items-start justify-between gap-3">
-                  <div className="min-w-0">
-                    <div className="flex items-center gap-2">
-                      <span className="font-semibold">{ep.name}</span>
-                      <span
-                        className={`rounded-full px-2 py-0.5 text-label font-semibold ${
-                          ep.active ? "bg-success/10 text-success" : "bg-muted text-muted-foreground"
-                        }`}
-                      >
-                        {ep.active ? "Active" : "Paused"}
-                      </span>
-                      {ep.secret && (
-                        <span className="rounded-full bg-primary/10 px-2 py-0.5 text-label font-semibold text-primary">
-                          Signed
-                        </span>
-                      )}
-                      {ep.format && ep.format !== "generic" && (
-                        <span className="rounded-full bg-secondary px-2 py-0.5 text-label font-semibold capitalize">
-                          {ep.format} format
-                        </span>
-                      )}
-                    </div>
-                    <p className="mt-1 break-all font-mono text-label text-muted-foreground">{ep.url}</p>
-                  </div>
-                  <div className="flex shrink-0 gap-2">
-                    <Button variant="outline" size="sm" disabled={busy === ep.id} onClick={() => void sendTest(ep.id)}>
-                      {busy === ep.id ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
-                      Send test
-                    </Button>
-                    <Button variant="ghost" size="sm" disabled={busy === ep.id} onClick={() => void toggleActive(ep)}>
-                      {ep.active ? "Pause" : "Resume"}
-                    </Button>
-                    <Button variant="ghost" size="icon" disabled={busy === ep.id} onClick={() => void remove(ep)}>
-                      <Trash2 className="h-4 w-4 text-destructive" />
-                    </Button>
-                  </div>
-                </div>
-                <div className="flex flex-wrap gap-1.5">
-                  {ep.events.map((e) => (
-                    <span key={e} className="rounded bg-secondary px-2 py-0.5 font-mono text-label">{e}</span>
-                  ))}
-                </div>
-                {ep.last_delivery_at && (
-                  <p className="text-label text-muted-foreground">
-                    Last delivery {new Date(ep.last_delivery_at).toLocaleString("en-GB")} · {ep.last_status}
-                  </p>
-                )}
-              </CardContent>
-            </Card>
-          ))}
+          {endpoints.map((ep) =>
+            editing === ep.id ? (
+              <Card key={ep.id}>
+                <CardContent className="p-5">
+                  <EndpointForm
+                    endpoint={ep}
+                    onDone={() => { setEditing(null); void load(); }}
+                    onCancel={() => setEditing(null)}
+                  />
+                </CardContent>
+              </Card>
+            ) : (
+              <EndpointCard
+                key={ep.id}
+                endpoint={ep}
+                busy={busy === ep.id}
+                selected={logFilter === ep.id}
+                onSelect={() => setLogFilter((cur) => (cur === ep.id ? null : ep.id))}
+                onSendTest={() => void sendTest(ep.id)}
+                onSetActive={(active) => void setActive(ep, active)}
+                onEdit={() => { setShowForm(false); setEditing(ep.id); }}
+                onDelete={() => void remove(ep)}
+              />
+            ),
+          )}
         </div>
       )}
 
       <div>
-        <h2 className="mb-2 text-body font-semibold">Delivery log</h2>
+        <div className="mb-2 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+          <h2 className="text-body font-semibold">Delivery log</h2>
+          {filteredEndpoint && (
+            <p className="text-label text-muted-foreground">
+              Showing <span className="font-semibold text-foreground">{filteredEndpoint.name}</span> only ·{" "}
+              <button type="button" className="underline underline-offset-2" onClick={() => setLogFilter(null)}>
+                Show all
+              </button>
+            </p>
+          )}
+        </div>
         {deliveries.length === 0 ? (
-          <p className="text-body-sm text-muted-foreground">Nothing sent yet.</p>
+          <p className="text-body-sm text-muted-foreground">
+            {filteredEndpoint ? "Nothing sent to this endpoint yet." : "Nothing sent yet."}
+          </p>
         ) : (
           <Card>
             <CardContent className="p-0">
@@ -241,12 +245,157 @@ export function WebhooksView() {
   );
 }
 
-function NewEndpointForm({ onDone }: { onDone: () => void }) {
-  const [name, setName] = useState("");
-  const [url, setUrl] = useState("");
+/* ────────────────────────────────────────────────────────────────────── */
+
+function EndpointCard({
+  endpoint: ep,
+  busy,
+  selected,
+  onSelect,
+  onSendTest,
+  onSetActive,
+  onEdit,
+  onDelete,
+}: {
+  endpoint: WebhookEndpoint;
+  busy: boolean;
+  selected: boolean;
+  onSelect: () => void;
+  onSendTest: () => void;
+  onSetActive: (active: boolean) => void;
+  onEdit: () => void;
+  onDelete: () => void;
+}) {
+  const [confirmingDelete, setConfirmingDelete] = useState(false);
+
+  return (
+    <Card className={`${ep.active ? "" : "opacity-60"} ${selected ? "ring-2 ring-primary/40" : ""}`}>
+      <CardContent className="space-y-3 p-5">
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <button type="button" className="min-w-0 text-left" onClick={onSelect} title="Filter the delivery log to this endpoint">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="font-semibold">{ep.name}</span>
+              <span
+                className={`rounded-full px-2 py-0.5 text-label font-semibold ${
+                  ep.active ? "bg-success/10 text-success" : "bg-muted text-muted-foreground"
+                }`}
+              >
+                {ep.active ? "Active" : "Paused"}
+              </span>
+              {ep.secret && (
+                <span className="rounded-full bg-primary/10 px-2 py-0.5 text-label font-semibold text-primary">
+                  Signed
+                </span>
+              )}
+              {ep.format && ep.format !== "generic" && (
+                <span className="rounded-full bg-secondary px-2 py-0.5 text-label font-semibold capitalize">
+                  {ep.format} format
+                </span>
+              )}
+            </div>
+            <p className="mt-1 break-all font-mono text-label text-muted-foreground">{ep.url}</p>
+          </button>
+
+          {confirmingDelete ? (
+            <div className="flex shrink-0 flex-wrap items-center gap-2 rounded-md border border-destructive/40 bg-destructive/5 px-3 py-2">
+              <span className="text-body-sm">
+                Delete <span className="font-semibold">{ep.name}</span>? This can&apos;t be undone.
+              </span>
+              <Button
+                variant="outline"
+                size="sm"
+                className="border-destructive/60 text-destructive hover:bg-destructive/10"
+                disabled={busy}
+                onClick={() => { setConfirmingDelete(false); onDelete(); }}
+              >
+                {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : null} Delete
+              </Button>
+              <Button variant="ghost" size="sm" onClick={() => setConfirmingDelete(false)}>
+                Cancel
+              </Button>
+            </div>
+          ) : (
+            <div className="flex shrink-0 items-center gap-3">
+              <Button variant="outline" size="sm" disabled={busy || !ep.active} onClick={onSendTest} title={ep.active ? undefined : "Resume the endpoint to send a test"}>
+                {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
+                Send test
+              </Button>
+              <ActiveSwitch on={ep.active} disabled={busy} onChange={onSetActive} />
+              <Menu
+                label="Actions"
+                align="end"
+                items={[
+                  { label: "Edit", onSelect: onEdit },
+                  { label: "Delete", destructive: true, onSelect: () => setConfirmingDelete(true) },
+                ]}
+              />
+            </div>
+          )}
+        </div>
+        <div className="flex flex-wrap gap-1.5">
+          {ep.events.map((e) => (
+            <span key={e} className="rounded bg-secondary px-2 py-0.5 font-mono text-label">{e}</span>
+          ))}
+        </div>
+        {ep.last_delivery_at && (
+          <p className="text-label text-muted-foreground">
+            Last delivery {new Date(ep.last_delivery_at).toLocaleString("en-GB")} · {ep.last_status}
+          </p>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
+function ActiveSwitch({ on, disabled, onChange }: { on: boolean; disabled?: boolean; onChange: (next: boolean) => void }) {
+  return (
+    <label className="flex cursor-pointer items-center gap-2 text-body-sm">
+      <button
+        type="button"
+        role="switch"
+        aria-checked={on}
+        disabled={disabled}
+        onClick={() => onChange(!on)}
+        title={on ? "Pause: stop sending leads here" : "Resume: start sending leads here"}
+        className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors disabled:opacity-50 ${
+          on ? "bg-success" : "bg-muted"
+        }`}
+      >
+        <span
+          className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform ${
+            on ? "translate-x-[22px]" : "translate-x-0.5"
+          }`}
+        />
+      </button>
+      <span className={on ? "" : "text-muted-foreground"}>{on ? "Active" : "Paused"}</span>
+    </label>
+  );
+}
+
+/* ────────────────────────────────────────────────────────────────────── */
+
+/**
+ * One form for both creating and editing. In edit mode the secret is never
+ * echoed back: the user sees that one is set and can replace or remove it.
+ */
+function EndpointForm({
+  endpoint,
+  onDone,
+  onCancel,
+}: {
+  endpoint?: WebhookEndpoint;
+  onDone: () => void;
+  onCancel: () => void;
+}) {
+  const isEdit = Boolean(endpoint);
+  const [name, setName] = useState(endpoint?.name ?? "");
+  const [url, setUrl] = useState(endpoint?.url ?? "");
   const [secret, setSecret] = useState("");
-  const [events, setEvents] = useState<WebhookEvent[]>([...WEBHOOK_EVENTS]);
-  const [format, setFormat] = useState<WebhookFormat>("generic");
+  // Edit mode: "keep" leaves the stored secret alone, "replace" sends the new
+  // value, "remove" clears it.
+  const [secretMode, setSecretMode] = useState<"keep" | "replace" | "remove">(endpoint?.secret ? "keep" : "replace");
+  const [events, setEvents] = useState<WebhookEvent[]>(endpoint?.events?.length ? [...endpoint.events] : [...WEBHOOK_EVENTS]);
+  const [format, setFormat] = useState<WebhookFormat>(endpoint?.format ?? "generic");
   const [saving, setSaving] = useState(false);
 
   function pickFormat(next: WebhookFormat) {
@@ -258,15 +407,28 @@ function NewEndpointForm({ onDone }: { onDone: () => void }) {
 
   async function save() {
     if (!name.trim() || !url.trim()) return toast.error("Name and URL are required");
+    if (events.length === 0) return toast.error("Pick at least one event");
     setSaving(true);
     try {
-      const res = await fetch("/api/webhooks", {
-        method: "POST",
+      const body: Record<string, unknown> = { name, url, events, format };
+      if (isEdit) {
+        if (secretMode === "replace" && secret.trim()) body.secret = secret;
+        if (secretMode === "remove") body.secret = null;
+      } else if (secret.trim()) {
+        body.secret = secret;
+      }
+
+      const res = await fetch(isEdit ? `/api/webhooks/${endpoint!.id}` : "/api/webhooks", {
+        method: isEdit ? "PATCH" : "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, url, secret: secret || undefined, events, format }),
+        body: JSON.stringify(body),
       });
       if (!res.ok) throw new Error();
-      toast.success("Endpoint added", "Send a test to confirm it receives.");
+
+      const destinationChanged = isEdit && (url !== endpoint!.url || format !== endpoint!.format);
+      if (destinationChanged) toast.success("Saved", "Send a test to confirm the new destination works.");
+      else if (isEdit) toast.success("Saved");
+      else toast.success("Endpoint added", "Send a test to confirm it receives.");
       onDone();
     } catch {
       toast.error("Couldn't save", "Check the URL is valid.");
@@ -276,76 +438,86 @@ function NewEndpointForm({ onDone }: { onDone: () => void }) {
   }
 
   return (
-    <Card>
-      <CardContent className="space-y-4 p-5">
-        <div className="grid gap-4 sm:grid-cols-2">
-          <div className="space-y-1.5">
-            <Label htmlFor="wh-name">Name</Label>
-            <Input id="wh-name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Will's Zapier" />
-          </div>
-          <div className="space-y-1.5">
-            <Label htmlFor="wh-url">URL</Label>
-            <Input id="wh-url" value={url} onChange={(e) => setUrl(e.target.value)} placeholder="https://hooks.zapier.com/hooks/catch/…" />
-          </div>
+    <div className="space-y-4">
+      {isEdit && <p className="text-body-sm font-semibold">Edit endpoint</p>}
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div className="space-y-1.5">
+          <Label htmlFor="wh-name">Name</Label>
+          <Input id="wh-name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Will's Zapier" />
         </div>
         <div className="space-y-1.5">
-          <Label htmlFor="wh-secret">Signing secret (optional)</Label>
+          <Label htmlFor="wh-url">URL</Label>
+          <Input id="wh-url" value={url} onChange={(e) => setUrl(e.target.value)} placeholder="https://hooks.zapier.com/hooks/catch/…" />
+        </div>
+      </div>
+
+      <div className="space-y-1.5">
+        <Label htmlFor="wh-secret">Signing secret (optional)</Label>
+        {isEdit && secretMode === "keep" ? (
+          <div className="flex flex-wrap items-center gap-3 text-body-sm">
+            <span className="rounded-full bg-primary/10 px-2 py-0.5 text-label font-semibold text-primary">Secret set</span>
+            <button type="button" className="underline underline-offset-2" onClick={() => setSecretMode("replace")}>Replace</button>
+            <button type="button" className="text-muted-foreground underline underline-offset-2" onClick={() => setSecretMode("remove")}>Remove</button>
+          </div>
+        ) : isEdit && secretMode === "remove" ? (
+          <div className="flex flex-wrap items-center gap-3 text-body-sm">
+            <span className="text-muted-foreground">Secret will be removed on save.</span>
+            <button type="button" className="underline underline-offset-2" onClick={() => setSecretMode("keep")}>Keep it</button>
+          </div>
+        ) : (
           <Input id="wh-secret" value={secret} onChange={(e) => setSecret(e.target.value)} placeholder="Leave blank for Zapier / Make" />
+        )}
+        <p className="text-label text-muted-foreground">
+          When set, each request carries an <code className="rounded bg-secondary px-1">X-InstallPros-Signature</code>{" "}
+          HMAC so the receiver can verify it came from us.
+        </p>
+      </div>
+
+      <div className="space-y-2">
+        <p className="text-body-sm font-medium">Payload format</p>
+        {WEBHOOK_FORMATS.map((f) => (
+          <label key={f} className="flex items-start gap-2 text-body-sm">
+            <input type="radio" name="wh-format" className="mt-1" checked={format === f} onChange={() => pickFormat(f)} />
+            <span>
+              <span className="font-mono text-label">{f}</span>
+              <span className="block text-muted-foreground">{FORMAT_LABEL[f]}</span>
+            </span>
+          </label>
+        ))}
+        {format === "superchat" && (
           <p className="text-label text-muted-foreground">
-            When set, each request carries an <code className="rounded bg-secondary px-1">X-InstallPros-Signature</code>{" "}
-            HMAC so the receiver can verify it came from us.
+            Sends <code className="rounded bg-secondary px-1">event_type: &quot;lead_received&quot;</code> with
+            first/last name split, phone as +44, and <code className="rounded bg-secondary px-1">install_type</code>{" "}
+            mapped from the service. Only <code className="rounded bg-secondary px-1">lead.created</code> is
+            recommended: the format carries no score, so the enriched event would only duplicate the lead.
           </p>
-        </div>
-        <div className="space-y-2">
-          <p className="text-body-sm font-medium">Payload format</p>
-          {WEBHOOK_FORMATS.map((f) => (
-            <label key={f} className="flex items-start gap-2 text-body-sm">
-              <input
-                type="radio"
-                name="wh-format"
-                className="mt-1"
-                checked={format === f}
-                onChange={() => pickFormat(f)}
-              />
-              <span>
-                <span className="font-mono text-label">{f}</span>
-                <span className="block text-muted-foreground">{FORMAT_LABEL[f]}</span>
-              </span>
-            </label>
-          ))}
-          {format === "superchat" && (
-            <p className="text-label text-muted-foreground">
-              Sends <code className="rounded bg-secondary px-1">event_type: &quot;lead_received&quot;</code> with
-              first/last name split, phone as +44, and <code className="rounded bg-secondary px-1">install_type</code>{" "}
-              mapped from the service. Only <code className="rounded bg-secondary px-1">lead.created</code> is
-              recommended: the format carries no score, so the enriched event would only duplicate the lead.
-            </p>
-          )}
-        </div>
-        <div className="space-y-2">
-          <p className="text-body-sm font-medium">Events</p>
-          {WEBHOOK_EVENTS.map((e) => (
-            <label key={e} className="flex items-start gap-2 text-body-sm">
-              <input
-                type="checkbox"
-                className="mt-1"
-                checked={events.includes(e)}
-                onChange={(ev) => setEvents((prev) => (ev.target.checked ? [...prev, e] : prev.filter((x) => x !== e)))}
-              />
-              <span>
-                <span className="font-mono text-label">{e}</span>
-                <span className="block text-muted-foreground">{EVENT_LABEL[e]}</span>
-              </span>
-            </label>
-          ))}
-        </div>
-        <div className="flex gap-2">
-          <Button size="sm" disabled={saving} onClick={() => void save()}>
-            {saving && <Loader2 className="h-4 w-4 animate-spin" />} Add endpoint
-          </Button>
-          <Button variant="ghost" size="sm" onClick={onDone}>Cancel</Button>
-        </div>
-      </CardContent>
-    </Card>
+        )}
+      </div>
+
+      <div className="space-y-2">
+        <p className="text-body-sm font-medium">Events</p>
+        {WEBHOOK_EVENTS.map((e) => (
+          <label key={e} className="flex items-start gap-2 text-body-sm">
+            <input
+              type="checkbox"
+              className="mt-1"
+              checked={events.includes(e)}
+              onChange={(ev) => setEvents((prev) => (ev.target.checked ? [...prev, e] : prev.filter((x) => x !== e)))}
+            />
+            <span>
+              <span className="font-mono text-label">{e}</span>
+              <span className="block text-muted-foreground">{EVENT_LABEL[e]}</span>
+            </span>
+          </label>
+        ))}
+      </div>
+
+      <div className="flex gap-2">
+        <Button size="sm" disabled={saving} onClick={() => void save()}>
+          {saving && <Loader2 className="h-4 w-4 animate-spin" />} {isEdit ? "Save changes" : "Add endpoint"}
+        </Button>
+        <Button variant="ghost" size="sm" onClick={onCancel}>Cancel</Button>
+      </div>
+    </div>
   );
 }
