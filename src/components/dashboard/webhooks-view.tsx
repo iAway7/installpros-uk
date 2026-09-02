@@ -2,12 +2,13 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "@/components/system/toast";
-import { Plus, Send, CheckCircle2, XCircle, Loader2, RefreshCw } from "lucide-react";
+import { Plus, Send, CheckCircle2, XCircle, Loader2, RefreshCw, Pencil, Trash2, ExternalLink } from "lucide-react";
 import { Card, CardContent } from "@/components/system/card";
 import { Button } from "@/components/system/button";
 import { Input } from "@/components/system/input";
 import { Label } from "@/components/system/label";
-import { Menu } from "@/components/system/menu";
+import { Table, TableHead, TableBody, TableRow, TableHeaderCell, TableCell } from "@/components/system/table";
+import { MiddleTruncate } from "@/components/system/middle-truncate";
 import {
   WEBHOOK_EVENTS,
   EVENT_LABEL,
@@ -158,33 +159,39 @@ export function WebhooksView() {
           </CardContent>
         </Card>
       ) : (
-        <div className="space-y-3">
-          {endpoints.map((ep) =>
-            editing === ep.id ? (
-              <Card key={ep.id}>
-                <CardContent className="p-5">
-                  <EndpointForm
+        <Card>
+          <CardContent className="overflow-x-auto p-0">
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableHeaderCell>Name</TableHeaderCell>
+                  <TableHeaderCell>URL</TableHeaderCell>
+                  <TableHeaderCell>Events</TableHeaderCell>
+                  <TableHeaderCell>Status</TableHeaderCell>
+                  <TableHeaderCell className="text-right">Actions</TableHeaderCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {endpoints.map((ep) => (
+                  <EndpointRow
+                    key={ep.id}
                     endpoint={ep}
-                    onDone={() => { setEditing(null); void load(); }}
-                    onCancel={() => setEditing(null)}
+                    busy={busy === ep.id}
+                    selected={logFilter === ep.id}
+                    editing={editing === ep.id}
+                    onSelect={() => setLogFilter((cur) => (cur === ep.id ? null : ep.id))}
+                    onSendTest={() => void sendTest(ep.id)}
+                    onSetActive={(active) => void setActive(ep, active)}
+                    onEdit={() => { setShowForm(false); setEditing(ep.id); }}
+                    onCancelEdit={() => setEditing(null)}
+                    onSaved={() => { setEditing(null); void load(); }}
+                    onDelete={() => void remove(ep)}
                   />
-                </CardContent>
-              </Card>
-            ) : (
-              <EndpointCard
-                key={ep.id}
-                endpoint={ep}
-                busy={busy === ep.id}
-                selected={logFilter === ep.id}
-                onSelect={() => setLogFilter((cur) => (cur === ep.id ? null : ep.id))}
-                onSendTest={() => void sendTest(ep.id)}
-                onSetActive={(active) => void setActive(ep, active)}
-                onEdit={() => { setShowForm(false); setEditing(ep.id); }}
-                onDelete={() => void remove(ep)}
-              />
-            ),
-          )}
-        </div>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
       )}
 
       <div>
@@ -205,38 +212,38 @@ export function WebhooksView() {
           </p>
         ) : (
           <Card>
-            <CardContent className="p-0">
-              <table className="w-full text-body-sm">
-                <thead className="border-b border-border/50 text-label uppercase text-muted-foreground">
-                  <tr>
-                    <th className="px-4 py-2 text-left font-semibold">When</th>
-                    <th className="px-4 py-2 text-left font-semibold">Event</th>
-                    <th className="px-4 py-2 text-left font-semibold">Destination</th>
-                    <th className="px-4 py-2 text-left font-semibold">Result</th>
-                  </tr>
-                </thead>
-                <tbody>
+            <CardContent className="overflow-x-auto p-0">
+              <Table density="compact">
+                <TableHead>
+                  <TableRow>
+                    <TableHeaderCell>When</TableHeaderCell>
+                    <TableHeaderCell>Event</TableHeaderCell>
+                    <TableHeaderCell>Destination</TableHeaderCell>
+                    <TableHeaderCell>Result</TableHeaderCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
                   {deliveries.map((d) => (
-                    <tr key={d.id} className="border-b border-border/30 last:border-0">
-                      <td className="whitespace-nowrap px-4 py-2 text-muted-foreground">
+                    <TableRow key={d.id}>
+                      <TableCell className="whitespace-nowrap text-muted-foreground">
                         {new Date(d.created_at).toLocaleString("en-GB")}
-                      </td>
-                      <td className="px-4 py-2 font-mono text-label">{d.event}</td>
-                      <td className="max-w-[240px] truncate px-4 py-2 font-mono text-label text-muted-foreground">
-                        {d.endpoint_url}
-                      </td>
-                      <td className="px-4 py-2">
+                      </TableCell>
+                      <TableCell className="font-mono text-label">{d.event}</TableCell>
+                      <TableCell className="max-w-[260px] font-mono text-label text-muted-foreground">
+                        <MiddleTruncate value={d.endpoint_url} />
+                      </TableCell>
+                      <TableCell>
                         <span className={`inline-flex items-center gap-1.5 ${d.status === "success" ? "text-success" : "text-destructive"}`}>
                           {d.status === "success" ? <CheckCircle2 className="h-3.5 w-3.5" /> : <XCircle className="h-3.5 w-3.5" />}
                           {d.status_code ?? "—"}
                           {d.attempts > 1 && <span className="text-muted-foreground">· {d.attempts} attempts</span>}
                           {d.error && <span className="text-muted-foreground">· {d.error}</span>}
                         </span>
-                      </td>
-                    </tr>
+                      </TableCell>
+                    </TableRow>
                   ))}
-                </tbody>
-              </table>
+                </TableBody>
+              </Table>
             </CardContent>
           </Card>
         )}
@@ -247,60 +254,80 @@ export function WebhooksView() {
 
 /* ────────────────────────────────────────────────────────────────────── */
 
-function EndpointCard({
+function EndpointRow({
   endpoint: ep,
   busy,
   selected,
+  editing,
   onSelect,
   onSendTest,
   onSetActive,
   onEdit,
+  onCancelEdit,
+  onSaved,
   onDelete,
 }: {
   endpoint: WebhookEndpoint;
   busy: boolean;
   selected: boolean;
+  editing: boolean;
   onSelect: () => void;
   onSendTest: () => void;
   onSetActive: (active: boolean) => void;
   onEdit: () => void;
+  onCancelEdit: () => void;
+  onSaved: () => void;
   onDelete: () => void;
 }) {
   const [confirmingDelete, setConfirmingDelete] = useState(false);
 
   return (
-    <Card className={`${ep.active ? "" : "opacity-60"} ${selected ? "ring-2 ring-primary/40" : ""}`}>
-      <CardContent className="space-y-3 p-5">
-        <div className="flex flex-wrap items-start justify-between gap-3">
-          <button type="button" className="min-w-0 text-left" onClick={onSelect} title="Filter the delivery log to this endpoint">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="font-semibold">{ep.name}</span>
-              <span
-                className={`rounded-full px-2 py-0.5 text-label font-semibold ${
-                  ep.active ? "bg-success/10 text-success" : "bg-muted text-muted-foreground"
-                }`}
-              >
-                {ep.active ? "Active" : "Paused"}
-              </span>
-              {ep.secret && (
-                <span className="rounded-full bg-primary/10 px-2 py-0.5 text-label font-semibold text-primary">
-                  Signed
-                </span>
-              )}
-              {ep.format && ep.format !== "generic" && (
-                <span className="rounded-full bg-secondary px-2 py-0.5 text-label font-semibold capitalize">
-                  {ep.format} format
-                </span>
-              )}
-            </div>
-            <p className="mt-1 break-all font-mono text-label text-muted-foreground">{ep.url}</p>
+    <>
+      <TableRow className={`${ep.active ? "" : "opacity-60"} ${selected ? "bg-secondary/30" : ""}`}>
+        <TableCell className="align-top">
+          <button type="button" className="text-left" onClick={onSelect} title="Filter the delivery log to this endpoint">
+            <span className="font-semibold">{ep.name}</span>
           </button>
-
+          <div className="mt-1 flex flex-wrap gap-1.5">
+            {ep.format && ep.format !== "generic" && (
+              <span className="rounded-full bg-secondary px-2 py-0.5 text-label font-semibold capitalize">{ep.format}</span>
+            )}
+            {ep.secret && (
+              <span className="rounded-full bg-primary/10 px-2 py-0.5 text-label font-semibold text-primary">Signed</span>
+            )}
+          </div>
+        </TableCell>
+        <TableCell className="max-w-[320px] align-top">
+          <a
+            href={ep.url}
+            target="_blank"
+            rel="noreferrer"
+            className="flex max-w-full items-center gap-1.5 font-mono text-label text-primary hover:underline"
+            title={ep.url}
+          >
+            <MiddleTruncate value={ep.url} className="min-w-0" />
+            <ExternalLink className="h-3.5 w-3.5 shrink-0" />
+          </a>
+          {ep.last_delivery_at && (
+            <p className="mt-1 text-label text-muted-foreground">
+              Last {new Date(ep.last_delivery_at).toLocaleString("en-GB")} · {ep.last_status}
+            </p>
+          )}
+        </TableCell>
+        <TableCell className="align-top">
+          <div className="flex flex-wrap gap-1.5">
+            {ep.events.map((e) => (
+              <span key={e} className="whitespace-nowrap rounded bg-secondary px-2 py-0.5 font-mono text-label">{e}</span>
+            ))}
+          </div>
+        </TableCell>
+        <TableCell className="align-top">
+          <ActiveSwitch on={ep.active} disabled={busy} onChange={onSetActive} />
+        </TableCell>
+        <TableCell className="align-top text-right">
           {confirmingDelete ? (
-            <div className="flex shrink-0 flex-wrap items-center gap-2 rounded-md border border-destructive/40 bg-destructive/5 px-3 py-2">
-              <span className="text-body-sm">
-                Delete <span className="font-semibold">{ep.name}</span>? This can&apos;t be undone.
-              </span>
+            <div className="inline-flex flex-wrap items-center justify-end gap-2">
+              <span className="text-body-sm">Delete <span className="font-semibold">{ep.name}</span>?</span>
               <Button
                 variant="outline"
                 size="sm"
@@ -310,40 +337,38 @@ function EndpointCard({
               >
                 {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : null} Delete
               </Button>
-              <Button variant="ghost" size="sm" onClick={() => setConfirmingDelete(false)}>
-                Cancel
-              </Button>
+              <Button variant="ghost" size="sm" onClick={() => setConfirmingDelete(false)}>Cancel</Button>
             </div>
           ) : (
-            <div className="flex shrink-0 items-center gap-3">
-              <Button variant="outline" size="sm" disabled={busy || !ep.active} onClick={onSendTest} title={ep.active ? undefined : "Resume the endpoint to send a test"}>
+            <div className="inline-flex items-center gap-1">
+              <Button
+                variant="ghost"
+                size="icon"
+                disabled={busy || !ep.active}
+                onClick={onSendTest}
+                title={ep.active ? "Send test" : "Resume the endpoint to send a test"}
+                aria-label="Send test"
+              >
                 {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
-                Send test
               </Button>
-              <ActiveSwitch on={ep.active} disabled={busy} onChange={onSetActive} />
-              <Menu
-                label="Actions"
-                align="end"
-                items={[
-                  { label: "Edit", onSelect: onEdit },
-                  { label: "Delete", destructive: true, onSelect: () => setConfirmingDelete(true) },
-                ]}
-              />
+              <Button variant="ghost" size="icon" disabled={busy} onClick={editing ? onCancelEdit : onEdit} title="Edit" aria-label="Edit">
+                <Pencil className="h-4 w-4" />
+              </Button>
+              <Button variant="ghost" size="icon" disabled={busy} onClick={() => setConfirmingDelete(true)} title="Delete" aria-label="Delete">
+                <Trash2 className="h-4 w-4 text-destructive" />
+              </Button>
             </div>
           )}
-        </div>
-        <div className="flex flex-wrap gap-1.5">
-          {ep.events.map((e) => (
-            <span key={e} className="rounded bg-secondary px-2 py-0.5 font-mono text-label">{e}</span>
-          ))}
-        </div>
-        {ep.last_delivery_at && (
-          <p className="text-label text-muted-foreground">
-            Last delivery {new Date(ep.last_delivery_at).toLocaleString("en-GB")} · {ep.last_status}
-          </p>
-        )}
-      </CardContent>
-    </Card>
+        </TableCell>
+      </TableRow>
+      {editing && (
+        <TableRow className="bg-secondary/20">
+          <TableCell colSpan={5} className="p-5">
+            <EndpointForm endpoint={ep} onDone={onSaved} onCancel={onCancelEdit} />
+          </TableCell>
+        </TableRow>
+      )}
+    </>
   );
 }
 
@@ -367,7 +392,7 @@ function ActiveSwitch({ on, disabled, onChange }: { on: boolean; disabled?: bool
           }`}
         />
       </button>
-      <span className={on ? "" : "text-muted-foreground"}>{on ? "Active" : "Paused"}</span>
+      <span className="sr-only">{on ? "Active" : "Paused"}</span>
     </label>
   );
 }
