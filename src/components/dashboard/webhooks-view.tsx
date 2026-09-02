@@ -279,20 +279,15 @@ function EndpointRow({
   return (
     <>
       <TableRow className={`${ep.active ? "" : "opacity-60"} ${selected ? "bg-secondary/30" : ""}`}>
-        <TableCell className="align-top">
-          <button type="button" className="text-left" onClick={onSelect} title="Filter the delivery log to this endpoint">
+        <TableCell className="align-middle">
+          <button type="button" className="inline-flex items-center gap-2 text-left" onClick={onSelect} title="Filter the delivery log to this endpoint">
             <span className="font-semibold">{ep.name}</span>
-          </button>
-          <div className="mt-1 flex flex-wrap gap-1.5">
-            {ep.format && ep.format !== "generic" && (
-              <span className="rounded-full bg-secondary px-2 py-0.5 text-label font-semibold capitalize">{ep.format}</span>
-            )}
             {ep.secret && (
               <span className="rounded-full bg-primary/10 px-2 py-0.5 text-label font-semibold text-primary">Signed</span>
             )}
-          </div>
+          </button>
         </TableCell>
-        <TableCell className="max-w-[320px] align-top">
+        <TableCell className="max-w-[320px] align-middle">
           <a
             href={ep.url}
             target="_blank"
@@ -309,17 +304,17 @@ function EndpointRow({
             </p>
           )}
         </TableCell>
-        <TableCell className="align-top">
+        <TableCell className="align-middle">
           <div className="flex flex-wrap gap-1.5">
             {ep.events.map((e) => (
               <span key={e} className="whitespace-nowrap rounded bg-secondary px-2 py-0.5 font-mono text-label">{e}</span>
             ))}
           </div>
         </TableCell>
-        <TableCell className="align-top">
+        <TableCell className="align-middle">
           <ActiveSwitch on={ep.active} disabled={busy} onChange={onSetActive} />
         </TableCell>
-        <TableCell className="align-top text-right">
+        <TableCell className="align-middle text-right">
           {confirmingDelete ? (
             <div className="inline-flex flex-wrap items-center justify-end gap-2">
               <span className="text-body-sm">Delete <span className="font-semibold">{ep.name}</span>?</span>
