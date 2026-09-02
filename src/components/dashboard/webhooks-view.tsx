@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "@/components/system/toast";
-import { Plus, Send, CheckCircle2, XCircle, Loader2, RefreshCw, Pencil, Trash2, ExternalLink } from "lucide-react";
+import { Plus, Send, CheckCircle2, XCircle, Loader2, Pencil, Trash2, ExternalLink } from "lucide-react";
 import { Card, CardContent } from "@/components/system/card";
 import { Button } from "@/components/system/button";
 import { Input } from "@/components/system/input";
@@ -115,20 +115,15 @@ export function WebhooksView() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-start justify-between gap-3">
+      <div className="flex items-start justify-between gap-6">
         <p className="max-w-2xl text-body-sm text-muted-foreground">
           Every lead is POSTed as JSON to each active endpoint. Paste a Zapier or Make catch-hook URL
           and leads reach your CRM, WhatsApp or a spreadsheet without anyone opening this dashboard.
           Delivery never blocks the form: a failing endpoint is retried and logged, never surfaced to the visitor.
         </p>
-        <div className="flex gap-2">
-          <Button variant="outline" size="sm" onClick={() => void load()}>
-            <RefreshCw className="h-4 w-4" /> Refresh
-          </Button>
-          <Button size="sm" onClick={() => { setEditing(null); setShowForm((v) => !v); }}>
-            <Plus className="h-4 w-4" /> New endpoint
-          </Button>
-        </div>
+        <Button size="sm" className="shrink-0" onClick={() => { setEditing(null); setShowForm((v) => !v); }}>
+          <Plus className="h-4 w-4" /> New endpoint
+        </Button>
       </div>
 
       {state?.envConfigured && (
