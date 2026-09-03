@@ -58,6 +58,21 @@ for (const key of heights) {
   if (cn(`h-10`, `h-${key}`) !== `h-${key}`) fail.push(`cn() does not let h-${key} override a core height.`);
 }
 
+// A fontSize key that also exists as a colour is the nastiest of these,
+// because it does not drop anything — it emits two rules under one class
+// name and the sheet order decides. `text-field` set a font size AND a
+// colour, so every Select that did not also pass text-foreground rendered
+// its value in border-grey and read as disabled.
+const colourBlock = /colors:\s*\{([\s\S]*?)\n\s{6}\},/.exec(config)?.[1] ?? "";
+const colours = new Set([...colourBlock.matchAll(/^\s{8}"?([a-z0-9-]+)"?:/gm)].map((m) => m[1]));
+for (const key of declared) {
+  if (colours.has(key)) {
+    fail.push(`"${key}" is both a fontSize and a colour. Tailwind builds text-${key} ` +
+              `from both, so it emits two rules under one class name and sheet order ` +
+              `picks the winner. Rename one of them.`);
+  }
+}
+
 // Motion durations. tailwind-merge only knows duration-{number}, so a named
 // one is guessed as a different group and two durations can survive together —
 // the element then gets whichever CSS rule happens to win, not the last class.
@@ -115,4 +130,4 @@ if (fail.length) {
   for (const f of fail) console.error(`  ${f}`);
   process.exit(1);
 }
-console.log(`✓ ${declared.length} type sizes, ${heights.length} heights, ${durations.length} durations, ${shadows.length} shadows OK · leading order clean in ${scanned} files`);
+console.log(`✓ ${declared.length} type sizes, ${heights.length} heights, ${durations.length} durations, ${shadows.length} shadows OK · no size/colour name clashes · leading order clean in ${scanned} files`);

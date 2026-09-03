@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { setSetting } from "@/lib/settings/app-settings";
+import { isAdmin } from "@/lib/auth/role";
 
 export const runtime = "nodejs";
 
@@ -11,6 +12,8 @@ export async function PATCH(request: Request) {
   const supabase = createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+  // Signed in is not enough: flipping these spends credits.
+  if (!(await isAdmin())) return NextResponse.json({ error: "forbidden" }, { status: 403 });
 
   let body: { key?: string; value?: unknown };
   try {

@@ -634,7 +634,7 @@ export const SCALES: Scale[] = [
         "differs": true
       },
       {
-        "name": "--text-field",
+        "name": "--text-entry",
         "editorial": "16px",
         "product": "16px",
         "differs": false

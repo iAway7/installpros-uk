@@ -4,6 +4,7 @@ import { RefreshButton } from "@/components/dashboard/refresh-button";
 import { SettingToggle } from "@/components/dashboard/setting-toggle";
 import { SettingsTabs } from "@/components/dashboard/settings-tabs";
 import { getApiStatuses, type ApiHealth } from "@/lib/settings/api-status";
+import { isAdmin } from "@/lib/auth/role";
 
 export const dynamic = "force-dynamic";
 
@@ -31,6 +32,28 @@ const HEALTH_META: Record<ApiHealth, { label: string; icon: React.ReactNode; pil
 };
 
 export default async function SettingsPage() {
+  // Admin-only: these toggles spend API credits and change what every lead is
+  // enriched with. The API route enforces this too — hiding the UI alone would
+  // only be cosmetic.
+  if (!(await isAdmin())) {
+    return (
+      <div className="mx-auto max-w-4xl space-y-6">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">Settings</h1>
+          <p className="text-muted-foreground">Integrations, connections and configuration.</p>
+        </div>
+        <Card>
+          <CardContent className="py-10 text-center">
+            <p className="font-medium">Admins only</p>
+            <p className="mt-1 text-body-sm text-muted-foreground">
+              Ask an admin if you need an integration turned on or off.
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   const statuses = await getApiStatuses();
   const connected = statuses.filter((s) => s.health === "connected").length;
 

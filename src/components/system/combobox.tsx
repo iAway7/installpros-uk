@@ -94,7 +94,7 @@ export function Combobox({
           onChange={(e) => { setQuery(e.target.value); setOpen(true); setActive(0); }}
           onFocus={() => setOpen(true)}
           onKeyDown={onKeyDown}
-          className="min-w-0 flex-1 bg-transparent text-field text-foreground outline-none placeholder:text-muted-foreground"
+          className="min-w-0 flex-1 bg-transparent text-entry text-foreground outline-none placeholder:text-muted-foreground"
         />
         {selected && !open ? (
           <button

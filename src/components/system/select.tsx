@@ -32,11 +32,11 @@ const SelectTrigger = React.forwardRef<
   <SelectPrimitive.Trigger
     ref={ref}
     className={cn(
-      // text-foreground must follow text-field: `field` is both a font-size
-      // token and a colour token, so `text-field` also emits
+      // text-foreground must follow text-entry: `field` is both a font-size
+      // token and a colour token, so `text-entry` also emits
       // `color: hsl(var(--field))` (border grey). Without the explicit colour
       // every closed Select reads as disabled.
-      "flex h-control w-full items-center justify-between rounded-lg px-3 py-2 text-field text-foreground",
+      "flex h-control w-full items-center justify-between rounded-lg px-3 py-2 text-entry text-foreground",
       "border-[length:var(--border-field)] border-field bg-background",
       "focus-ring focus-visible:border-selection-border",
       "placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",

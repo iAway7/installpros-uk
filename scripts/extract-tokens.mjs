@@ -90,7 +90,7 @@ const prodMap = Object.fromEntries(prodDecls.map((d) => [d.name, d.value]));
 
 const FAMILIES = [
   ["Type scale", ["--text-micro", "--text-label", "--text-caption", "--text-body-sm",
-                  "--text-body", "--text-field", "--text-lead", "--text-title"]],
+                  "--text-body", "--text-entry", "--text-lead", "--text-title"]],
   ["Button voice", ["--button-size", "--button-weight", "--button-case", "--button-tracking"]],
   ["Line height", ["--leading-body"]],
   ["Control height", ["--control-sm", "--control-aux", "--control", "--control-lg"]],

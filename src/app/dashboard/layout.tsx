@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { LayoutDashboard, Users, BarChart3, FlaskConical, Filter, Map, Settings, Satellite, LogOut, ExternalLink, LayoutTemplate } from "lucide-react";
+import { LayoutDashboard, Users, BarChart3, FlaskConical, Filter, Map, Settings, Satellite, LogOut, LayoutTemplate } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { siteConfig } from "@/lib/site-config";
 import { evaluateAlerts } from "@/lib/alerts/evaluate";
@@ -46,13 +46,6 @@ export default async function DashboardLayout({ children }: { children: React.Re
           <NavItem href="/dashboard/settings" icon={<Settings className="h-4 w-4" />} label="Settings" />
         </nav>
         <div className="border-t border-border p-3">
-          <a
-            href="/install-quote"
-            target="_blank"
-            className="mb-2 flex items-center gap-2 rounded-lg px-3 py-2 text-body-sm text-muted-foreground hover:bg-secondary hover:text-foreground"
-          >
-            <ExternalLink className="h-4 w-4" /> View landing page
-          </a>
           <div className="rounded-lg bg-secondary/60 p-3 text-label">
             <p className="truncate font-medium text-foreground">{profile?.full_name || user.email}</p>
             <p className="capitalize text-muted-foreground">{role.replace("_", " ")}</p>

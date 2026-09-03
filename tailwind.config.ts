@@ -18,8 +18,15 @@ const config: Config = {
       screens: { "2xl": "1200px" },
     },
     extend: {
-      // Enforce a 16px minimum across the site: bump the sub-16 utilities so
-      // text-xs / text-sm never render below 1rem.
+      // Type scale. Resolves per theme, so one class is 16px in the funnel and
+      // 14px in the dashboard.
+      //
+      // No key here may match a key in `colors` below. Tailwind builds both
+      // font sizes and text colours off the `text-` prefix, so a shared name
+      // emits two rules under one class and whichever sits later in the sheet
+      // wins silently. `field` was in both, which is why every closed Select
+      // rendered its value in border-grey and looked disabled. Guarded in
+      // scripts/check-tokens.mjs.
       fontSize: {
         // text-xs and text-sm used to be forced to 1rem here to stop the sizes
         // that shipped with the old component library from applying. The side
@@ -27,14 +34,12 @@ const config: Config = {
         // size, which flattened the hierarchy anywhere someone used it for
         // secondary text. Nothing uses those names now, so they go back to
         // meaning what Tailwind says they mean.
-        // Type scale — resolves per theme, so the same class is 15px in the
-        // funnel and 14px in the dashboard.
         micro: ["var(--text-micro)", { lineHeight: "var(--leading-body)" }],
         label: ["var(--text-label)", { lineHeight: "var(--leading-body)" }],
         caption: ["var(--text-caption)", { lineHeight: "var(--leading-body)" }],
         "body-sm": ["var(--text-body-sm)", { lineHeight: "var(--leading-body)" }],
         body: ["var(--text-body)", { lineHeight: "var(--leading-body)" }],
-        field: ["var(--text-field)", { lineHeight: "var(--leading-body)" }],
+        entry: ["var(--text-entry)", { lineHeight: "var(--leading-body)" }],
         lead: ["var(--text-lead)", { lineHeight: "var(--leading-body)" }],
         title: ["var(--text-title)", { lineHeight: "var(--leading-body)" }],
         // Not part of the reading scale: the button's size is a voice token

@@ -13,14 +13,14 @@ const inputVariants = cva(
   "flex w-full border bg-background text-foreground ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 transition-colors duration-quick",
   {
     variants: {
-      // text-field, not text-body: --text-field deliberately stays at 16px in
+      // text-entry, not text-body: --text-entry deliberately stays at 16px in
       // both densities, because 16px is the threshold below which iOS Safari
       // zooms the page when the field takes focus. Everything else in Product
       // steps down a size; a form field must not.
       inputSize: {
-        sm: "h-control-sm rounded-md px-4 py-1 text-field",
-        default: "h-control rounded-lg px-5 py-2 text-field",
-        lg: "h-control-lg rounded-lg px-6 py-3 text-field",
+        sm: "h-control-sm rounded-md px-4 py-1 text-entry",
+        default: "h-control rounded-lg px-5 py-2 text-entry",
+        lg: "h-control-lg rounded-lg px-6 py-3 text-entry",
       },
       state: {
         default:

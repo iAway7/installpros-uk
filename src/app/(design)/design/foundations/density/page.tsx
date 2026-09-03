@@ -71,7 +71,7 @@ export default function DensityPage() {
 
       <Section title="Two that deliberately do not move">
         <Rule>
-          <Mono>--text-field</Mono> stays at 16px in both. Below 16px, iOS Safari zooms the page when
+          <Mono>--text-entry</Mono> stays at 16px in both. Below 16px, iOS Safari zooms the page when
           a field takes focus, and a denser dashboard is not worth that. Everything else in Product
           steps down one rung; a form field does not.
         </Rule>
