@@ -37,6 +37,22 @@ const VIZ = {
   rose4: "#FFB5B5",    // "After · Starlink" tag
 } as const;
 
+/** The idle "before" figures are an illustration, and the three of them have
+ *  to move together or the panel stops being believable.
+ *
+ *  12 Mbps: the UK universal service obligation is 10 Mbps down, so a rural
+ *  line sits just above it far more often than it sits at 3.7, which is what
+ *  this used to show. Below the legal minimum reads as a straw man, and the
+ *  customer whose line does 12 does not recognise himself in it.
+ *
+ *  ~45 ms: what a British copper line actually does. The 620 ms this used to
+ *  claim is geostationary satellite, and next to a 12 Mbps reading it is the
+ *  kind of mismatch a technical visitor spots immediately. The real failure is
+ *  the spike under load, which is what breaks video calls, and it is true.
+ *
+ *  4K: Netflix wants about 15 Mbps for it, so the claim survives at 12.
+ */
+
 /** Shared by both panels so the two readings are directly comparable. Same
  *  size either side on purpose: the numbers are 3.7 and 247, and making the
  *  good one physically bigger as well would be counting the same argument
@@ -166,7 +182,7 @@ export function BeforeAfterSection() {
       if (m.p1 >= 100) m.p1 = 0;
       if (bBar.current) bBar.current.style.width = m.p1 + "%";
       if (bBuf.current) bBuf.current.style.opacity = m.mode === "stall" ? String(0.4 + 0.6 * Math.abs(Math.sin(t * 0.008))) : "0.35";
-      if (t > m.tv && bVal.current) { m.tv = t + 800; bVal.current.textContent = (2.6 + Math.random() * 2.4).toFixed(1); }
+      if (t > m.tv && bVal.current) { m.tv = t + 800; bVal.current.textContent = (10.4 + Math.random() * 3.2).toFixed(1); }
       m.p2 = (m.p2 + dt * 0.028) % 100;
       if (aBar.current) aBar.current.style.width = m.p2 + "%";
       if (t > m.tv2 && aVal.current) { m.tv2 = t + 640; aVal.current.textContent = String(238 + Math.round(Math.random() * 14)); }
@@ -198,7 +214,7 @@ export function BeforeAfterSection() {
 
             <div className="mt-8 text-caption tracking-[0.06em]" style={{ color: VIZ.ink }}>Typical rural broadband</div>
             <div className="mt-2.5 flex items-baseline gap-2">
-              <span ref={bVal} style={{ ...NUM, fontWeight: 200, color: VIZ.dim }}>3.7</span>
+              <span ref={bVal} style={{ ...NUM, fontWeight: 200, color: VIZ.dim }}>12</span>
               <span className="text-body" style={{ color: VIZ.dim }}>Mbps</span>
             </div>
             <div className="mt-5 h-[3px] w-full overflow-hidden rounded-full bg-black/10">
@@ -217,7 +233,7 @@ export function BeforeAfterSection() {
                 </>
               ) : (
                 <>
-                  Latency ~620 ms
+                  Latency ~45 ms, 300 ms+ under load
                   <br />
                   4K streaming: not possible
                 </>
