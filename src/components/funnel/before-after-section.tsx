@@ -37,41 +37,35 @@ const VIZ = {
   rose4: "#FFB5B5",    // "After · Starlink" tag
 } as const;
 
+/** Shared by both panels so the two readings are directly comparable. Same
+ *  size either side on purpose: the numbers are 3.7 and 247, and making the
+ *  good one physically bigger as well would be counting the same argument
+ *  twice. Weight and colour carry the difference instead. */
+const NUM = { fontSize: "clamp(52px,7vw,72px)", letterSpacing: "-0.04em" } as const;
+
 /**
- * "Life before. Life after." — a draggable before/after comparison of typical
- * rural broadband vs a professionally installed Starlink. Ported from the
- * /starlink-installations landing (rebuilt as a self-contained React slider).
- * The two meters animate live (speeds fluctuate, bars fill, status flickers).
+ * "Life before. Life after." — typical rural broadband against a
+ * professionally installed Starlink, with a real speed test of the visitor's
+ * own line. The two meters animate live (speeds fluctuate, bars fill, status
+ * flickers) until a real test replaces the left-hand one.
+ *
+ * There used to be a drag-to-reveal slider here on desktop. It was removed:
+ * a before/after slider earns its keep when both halves are the same thing in
+ * two states, aligned, so dragging transforms one into the other. These two
+ * halves are different layouts, so dragging only wiped one card out and
+ * brought the other in, which is why it read as decoration. Will said as much.
+ *
+ * Dropping it also puts the speed-test button back inside the Before card,
+ * where the original had it: with no clipping layer there is nothing to cover
+ * it, and it belongs to that half because it measures the visitor's own line.
+ *
+ * Dropping it also removes the matchMedia state this component used to carry
+ * purely to choose between slider and stack. That default was the entire CLS
+ * of /install-quote (0.163): the server emitted the desktop slider and React
+ * swapped in the stacked cards after hydration. The layout is now plain CSS
+ * grid, identical on the server and the client, so there is nothing to shift.
  */
 export function BeforeAfterSection() {
-  // Server-rendered default is the STACKED layout, not the slider.
-  //
-  // useIsMobile() starts false, so the server used to emit the desktop drag
-  // slider and React replaced it with the stacked cards right after hydration.
-  // On a phone that swaps a ~460px panel for two much taller cards, and it was
-  // the entire CLS of /install-quote: 0.163, attributed by DevTools to the
-  // `div.mt-6` that only exists inside the stacked branch.
-  //
-  // Defaulting to stacked means phones receive their final layout from the
-  // server and never shift. Desktop takes the swap instead, which is the right
-  // way round: the slider is the enhancement, the stack is the baseline.
-  //
-  // Deliberately not useIsMobile(): that hook is shared with
-  // property-image-upload, and flipping its default there is a separate call.
-  const [isDesktop, setIsDesktop] = useState(false);
-  useEffect(() => {
-    const mql = window.matchMedia("(min-width: 768px)");
-    const onChange = () => setIsDesktop(mql.matches);
-    mql.addEventListener("change", onChange);
-    onChange();
-    return () => mql.removeEventListener("change", onChange);
-  }, []);
-  const isMobile = !isDesktop;
-
-  const [pos, setPos] = useState(55); // divider position, %
-  const ref = useRef<HTMLDivElement>(null);
-  const dragging = useRef(false);
-
   // Live-meter refs — mutated directly in the rAF loop (no re-render per frame).
   const bBar = useRef<HTMLDivElement>(null);
   const bVal = useRef<HTMLSpanElement>(null);
@@ -182,216 +176,145 @@ export function BeforeAfterSection() {
     return () => cancelAnimationFrame(raf);
   }, [phase]);
 
-  const setFromClientX = (clientX: number) => {
-    const el = ref.current;
-    if (!el) return;
-    const r = el.getBoundingClientRect();
-    setPos(Math.max(4, Math.min(96, ((clientX - r.left) / r.width) * 100)));
-  };
-
-  // Panel content, shared by the stacked and slider layouts so the live meters
-  // only ever exist once in the tree — two copies would fight over the refs.
-  const beforeBody = (stacked: boolean) => (
-    <>
-      <div className="text-caption tracking-[0.06em]" style={{ color: VIZ.ink }}>Typical rural broadband</div>
-      <div className="mt-2.5 flex items-baseline gap-2">
-        <span ref={bVal} style={{ fontSize: stacked ? "clamp(52px,14vw,64px)" : "clamp(44px,5.5vw,72px)", fontWeight: 200, letterSpacing: "-0.04em", color: VIZ.dim }}>3.7</span>
-        <span className="text-body" style={{ color: VIZ.dim }}>Mbps</span>
-      </div>
-      <div className="mt-5 h-[3px] max-w-[260px] overflow-hidden rounded-full bg-black/10">
-        <div ref={bBar} className="h-full rounded-full" style={{ width: "12%", background: VIZ.dim }} />
-      </div>
-      <div className="mt-3 flex items-center gap-2 text-caption" style={{ color: VIZ.ink }}>
-        <span ref={bBuf} className="h-[7px] w-[7px] rounded-full" style={{ opacity: 0.35, background: VIZ.warn }} />
-        <span ref={bStatus}>Loading…</span>
-      </div>
-      <div className="mt-5 text-caption leading-[1.7]" style={{ color: VIZ.ink }}>
-        {phase === "done" && result ? (
-          <>
-            Latency {Math.round(result.latency ?? 0)} ms
-            <br />
-            Measured on your connection just now
-          </>
-        ) : (
-          <>
-            Latency ~620 ms
-            <br />
-            4K streaming: not possible
-          </>
-        )}
-      </div>
-
-      {(phase === "testing" || phase === "done") && server && (
-        <div className="mt-2 flex items-center gap-1.5 text-label" style={{ color: VIZ.dim }}>
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <rect x="3" y="4" width="18" height="7" rx="1.5" />
-            <rect x="3" y="13" width="18" height="7" rx="1.5" />
-            <path d="M7 7.5h.01M7 16.5h.01" />
-          </svg>
-          Test server · {server}
-        </div>
-      )}
-
-      <button
-        type="button"
-        onPointerDown={(e) => e.stopPropagation()}
-        onClick={runSpeedTest}
-        disabled={phase === "testing"}
-        className={`mt-6 inline-flex items-center justify-center gap-2 rounded-full border border-black/15 bg-white/70 px-4 text-caption font-semibold text-foreground transition-colors duration-quick hover:bg-white disabled:cursor-default disabled:opacity-60 ${
-          stacked ? "h-12 w-full" : "py-2"
-        }`}
-        style={{ cursor: phase === "testing" ? "default" : "pointer" }}
-      >
-        {phase === "testing" ? (
-          <>
-            <svg className="animate-spin" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <circle cx="12" cy="12" r="9" stroke="#9ca3af" strokeWidth="3" opacity="0.3" />
-              <path d="M21 12a9 9 0 0 0-9-9" stroke="#374151" strokeWidth="3" strokeLinecap="round" />
-            </svg>
-            Testing…
-          </>
-        ) : (
-          <>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="M13 2 4.5 13.5H12l-1 8.5L19.5 10.5H12l1-8.5Z" />
-            </svg>
-            {phase === "done" ? "Test again" : phase === "error" ? "Retry test" : "Test my current speed"}
-          </>
-        )}
-      </button>
-    </>
-  );
-
-  const afterBody = (right: boolean) => (
-    <>
-      <div className="text-caption tracking-[0.06em]" style={{ color: VIZ.rose }}>Starlink, professionally installed</div>
-      <div className={`mt-2.5 flex items-baseline gap-2.5 ${right ? "justify-end" : ""}`}>
-        <span ref={aVal} style={{ fontSize: right ? "clamp(52px,6.5vw,88px)" : "clamp(60px,16vw,76px)", fontWeight: 400, letterSpacing: "-0.04em", color: "#fff", textShadow: "0 0 40px hsl(var(--brand-soft) / 0.5)" }}>247</span>
-        <span className="text-body" style={{ color: VIZ.rose2 }}>Mbps</span>
-      </div>
-      <div className={`mt-5 h-[3px] max-w-[280px] overflow-hidden rounded-full bg-white/10 ${right ? "ml-auto" : ""}`}>
-        <div ref={aBar} className="h-full rounded-full" style={{ width: "70%", background: "linear-gradient(90deg, hsl(var(--brand-soft)), hsl(var(--primary)))", boxShadow: "0 0 12px hsl(var(--brand-soft) / 0.8)" }} />
-      </div>
-      <div className={`mt-3 flex items-center gap-2 text-caption ${right ? "justify-end" : ""}`} style={{ color: VIZ.rose2 }}>
-        <span className="h-[7px] w-[7px] rounded-full bg-success-bright" style={{ boxShadow: "0 0 10px hsl(var(--success-bright) / 0.9)" }} />
-        Connected · rock solid
-      </div>
-      <div className="mt-5 text-caption leading-[1.7]" style={{ color: VIZ.rose3 }}>
-        Latency ~28 ms
-        <br />
-        4K on every screen, all at once
-      </div>
-    </>
-  );
-
   return (
     <section id="difference" className="w-full scroll-mt-28 bg-background py-16 md:py-24">
       <div className="container mx-auto max-w-6xl">
         <div className="mb-12 text-center">
           <p className="eyebrow">The Difference</p>
-          <h2
-            className="mt-4 h2-section text-foreground"
-          >
-            Life before. Life after.
-          </h2>
+          <h2 className="mt-4 h2-section text-foreground">Life before. Life after.</h2>
           <p className="mx-auto mt-5 max-w-md text-body text-muted-foreground md:text-lg" style={{ lineHeight: "1.6" }}>
-            {isMobile
-              ? "Test your real speed. This is what a professional install changes."
-              : "Drag the handle, or test your real speed. This is what a professional install changes."}
+            Test your real speed. This is what a professional install changes.
           </p>
         </div>
 
-        {/*
-          The two panels share their content between layouts. Below md we stack
-          them — before on top, after underneath, which is the order the story
-          reads in — because at 375px the drag-slider gives each side ~165px and
-          the text clips against the divider and the handle.
-        */}
-        {isMobile ? (
-          <div className="flex flex-col gap-4">
-            <div className="rounded-xl border border-border p-6" style={{ background: "var(--before-grad)" }}>
-              <span className="inline-block rounded-full border border-black/15 px-[15px] py-[7px] text-micro font-semibold uppercase tracking-[0.18em]" style={{ color: VIZ.ink }}>
-                Before
-              </span>
-              <div className="mt-6">{beforeBody(true)}</div>
+        {/* Two panels, one grid. Cards stretch to a common height, so the two
+            readings sit on the same line and can be compared at a glance. */}
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          {/* BEFORE (light) */}
+          <div className="rounded-xl border border-border p-6 md:p-10" style={{ background: "var(--before-grad)" }}>
+            <span className="inline-block rounded-full border border-black/15 px-[15px] py-[7px] text-micro font-semibold uppercase tracking-[0.18em]" style={{ color: VIZ.ink }}>
+              Before
+            </span>
+
+            <div className="mt-8 text-caption tracking-[0.06em]" style={{ color: VIZ.ink }}>Typical rural broadband</div>
+            <div className="mt-2.5 flex items-baseline gap-2">
+              <span ref={bVal} style={{ ...NUM, fontWeight: 200, color: VIZ.dim }}>3.7</span>
+              <span className="text-body" style={{ color: VIZ.dim }}>Mbps</span>
+            </div>
+            <div className="mt-5 h-[3px] w-full overflow-hidden rounded-full bg-black/10">
+              <div ref={bBar} className="h-full rounded-full" style={{ width: "12%", background: VIZ.dim }} />
+            </div>
+            <div className="mt-3 flex items-center gap-2 text-caption" style={{ color: VIZ.ink }}>
+              <span ref={bBuf} className="h-[7px] w-[7px] rounded-full" style={{ opacity: 0.35, background: VIZ.warn }} />
+              <span ref={bStatus}>Loading…</span>
+            </div>
+            <div className="mt-5 text-caption leading-[1.7]" style={{ color: VIZ.ink }}>
+              {phase === "done" && result ? (
+                <>
+                  Latency {Math.round(result.latency ?? 0)} ms
+                  <br />
+                  Measured on your connection just now
+                </>
+              ) : (
+                <>
+                  Latency ~620 ms
+                  <br />
+                  4K streaming: not possible
+                </>
+              )}
             </div>
 
-            <div
-              className="rounded-xl p-6"
-              style={{ background: "radial-gradient(120% 130% at 85% 110%, hsl(var(--primary) / 0.28) 0%, rgba(20,10,10,.9) 45%, #0B0B0C 100%)" }}
+            {(phase === "testing" || phase === "done") && server && (
+              <div className="mt-2 flex items-center gap-1.5 text-label" style={{ color: VIZ.dim }}>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <rect x="3" y="4" width="18" height="7" rx="1.5" />
+                  <rect x="3" y="13" width="18" height="7" rx="1.5" />
+                  <path d="M7 7.5h.01M7 16.5h.01" />
+                </svg>
+                Test server · {server}
+              </div>
+            )}
+
+            {/* Inside the Before card on purpose: it measures the visitor's own
+                line, which is the before. It also keeps the section to one
+                primary action at the bottom instead of three stacked buttons. */}
+            <button
+              type="button"
+              onClick={runSpeedTest}
+              disabled={phase === "testing"}
+              className="mt-7 inline-flex h-12 w-full items-center justify-center gap-2 rounded-full border border-black/15 bg-white/70 px-5 text-caption font-semibold text-foreground transition-colors duration-quick hover:bg-white disabled:cursor-default disabled:opacity-60 sm:h-11 sm:w-auto"
+              style={{ cursor: phase === "testing" ? "default" : "pointer" }}
             >
-              <span
-                className="inline-block rounded-full px-[15px] py-[7px] text-micro font-semibold uppercase tracking-[0.18em]"
-                style={{ border: "1px solid hsl(var(--brand-soft) / 0.4)", color: VIZ.rose4, background: "rgba(60,5,5,.35)" }}
-              >
-                After · Starlink
-              </span>
-              <div className="mt-6">{afterBody(false)}</div>
+              {phase === "testing" ? (
+                <>
+                  <svg className="animate-spin" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <circle cx="12" cy="12" r="9" stroke="#9ca3af" strokeWidth="3" opacity="0.3" />
+                    <path d="M21 12a9 9 0 0 0-9-9" stroke="#374151" strokeWidth="3" strokeLinecap="round" />
+                  </svg>
+                  Testing…
+                </>
+              ) : (
+                <>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M13 2 4.5 13.5H12l-1 8.5L19.5 10.5H12l1-8.5Z" />
+                  </svg>
+                  {phase === "done" ? "Test again" : phase === "error" ? "Retry test" : "Test my current speed"}
+                </>
+              )}
+            </button>
+          </div>
+
+          {/* AFTER (dark) */}
+          <div className="relative overflow-hidden rounded-xl p-6 md:p-10">
+            {/* Earth from low orbit, which is where the constellation actually
+                is: the picture is the argument, not decoration. It sits UNDER
+                the gradient, and that ordering is the whole trick. The gradient
+                is radial from 85% 110%, so its most opaque region is the top
+                left, which is exactly where the pill, the caption, the reading
+                and the small print live. The photograph therefore only reveals
+                itself in the bottom-right corner, where there is no text.
+                Alphas softened from .9/1 so it can. */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/funnel/starlink-earth-from-orbit.webp"
+              alt=""
+              aria-hidden="true"
+              loading="lazy"
+              width={904}
+              height={695}
+              className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+            />
+            <div
+              className="pointer-events-none absolute inset-0"
+              style={{ background: "radial-gradient(120% 130% at 85% 110%, hsl(var(--primary) / 0.22) 0%, rgba(20,10,10,.62) 45%, rgba(11,11,12,.9) 100%)" }}
+            />
+
+            <span
+              className="relative inline-block rounded-full px-[15px] py-[7px] text-micro font-semibold uppercase tracking-[0.18em]"
+              style={{ border: "1px solid hsl(var(--brand-soft) / 0.4)", color: VIZ.rose4, background: "rgba(60,5,5,.35)" }}
+            >
+              After · Starlink
+            </span>
+
+            <div className="relative mt-8 text-caption tracking-[0.06em]" style={{ color: VIZ.rose }}>Starlink, professionally installed</div>
+            <div className="relative mt-2.5 flex items-baseline gap-2">
+              <span ref={aVal} style={{ ...NUM, fontWeight: 400, color: "#fff", textShadow: "0 0 40px hsl(var(--brand-soft) / 0.5)" }}>247</span>
+              <span className="text-body" style={{ color: VIZ.rose2 }}>Mbps</span>
+            </div>
+            <div className="relative mt-5 h-[3px] w-full overflow-hidden rounded-full bg-white/10">
+              <div ref={aBar} className="h-full rounded-full" style={{ width: "70%", background: "linear-gradient(90deg, hsl(var(--brand-soft)), hsl(var(--primary)))", boxShadow: "0 0 12px hsl(var(--brand-soft) / 0.8)" }} />
+            </div>
+            <div className="relative mt-3 flex items-center gap-2 text-caption" style={{ color: VIZ.rose2 }}>
+              <span className="h-[7px] w-[7px] rounded-full bg-success-bright" style={{ boxShadow: "0 0 10px hsl(var(--success-bright) / 0.9)" }} />
+              Connected · rock solid
+            </div>
+            <div className="relative mt-5 text-caption leading-[1.7]" style={{ color: VIZ.rose3 }}>
+              Latency ~28 ms
+              <br />
+              4K on every screen, all at once
             </div>
           </div>
-        ) : (
-          <div
-            ref={ref}
-            onPointerDown={(e) => {
-              dragging.current = true;
-              (e.currentTarget as Element).setPointerCapture?.(e.pointerId);
-              setFromClientX(e.clientX);
-            }}
-            onPointerMove={(e) => dragging.current && setFromClientX(e.clientX)}
-            onPointerUp={() => (dragging.current = false)}
-            onPointerCancel={() => (dragging.current = false)}
-            className="relative w-full select-none overflow-hidden rounded-3xl border border-border"
-            style={{ height: "clamp(400px, 46vw, 520px)", cursor: "ew-resize", touchAction: "pan-y" }}
-          >
-            {/* BEFORE (light) */}
-            <div className="absolute inset-0" style={{ background: "var(--before-grad)" }}>
-              <span className="absolute left-[30px] top-[26px] rounded-full border border-black/15 px-[15px] py-[7px] text-micro font-semibold uppercase tracking-[0.18em]" style={{ color: VIZ.ink }}>
-                Before
-              </span>
-              <div className="absolute top-1/2 -translate-y-1/2" style={{ left: "clamp(24px,6vw,80px)", maxWidth: "44%" }}>
-                {beforeBody(false)}
-              </div>
-            </div>
-
-            {/* AFTER (dark, clipped from the divider) */}
-            <div
-              className="absolute inset-0"
-              style={{
-                background:
-                  "radial-gradient(120% 130% at 85% 110%, hsl(var(--primary) / 0.28) 0%, rgba(20,10,10,.9) 45%, #0B0B0C 100%)",
-                clipPath: `inset(0 0 0 ${pos}%)`,
-              }}
-            >
-              <span
-                className="absolute right-[30px] top-[26px] rounded-full px-[15px] py-[7px] text-micro font-semibold uppercase tracking-[0.18em]"
-                style={{ border: "1px solid hsl(var(--brand-soft) / 0.4)", color: VIZ.rose4, background: "rgba(60,5,5,.35)" }}
-              >
-                After · Starlink
-              </span>
-              <div className="absolute top-1/2 -translate-y-1/2 text-right" style={{ right: "clamp(24px,6vw,80px)", maxWidth: "44%" }}>
-                {afterBody(true)}
-              </div>
-            </div>
-
-            {/* HANDLE */}
-            <div
-              className="absolute bottom-0 top-0"
-              style={{ left: `${pos}%`, width: 1, background: "rgba(255,255,255,.5)", boxShadow: "0 0 20px rgba(255,255,255,.4)" }}
-            >
-              <div
-                className="absolute left-1/2 top-1/2 flex h-[52px] w-[52px] -translate-x-1/2 -translate-y-1/2 items-center justify-center gap-[3px] rounded-full"
-                style={{ background: "rgba(20,20,20,.85)", border: "1px solid rgba(255,255,255,.35)", backdropFilter: "blur(8px)", boxShadow: "0 10px 34px rgba(0,0,0,.6)" }}
-              >
-                <svg width="9" height="12" viewBox="0 0 8 12" fill="none" stroke="#fff" strokeWidth="1.8" strokeLinecap="round">
-                  <path d="M6 1L2 6l4 5" />
-                </svg>
-                <svg width="9" height="12" viewBox="0 0 8 12" fill="none" stroke="#fff" strokeWidth="1.8" strokeLinecap="round">
-                  <path d="M2 1l4 5-4 5" />
-                </svg>
-              </div>
-            </div>
-          </div>
-        )}
+        </div>
 
         <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
           {/* Both CTAs go through Button so there is exactly one button
