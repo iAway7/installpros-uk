@@ -15,7 +15,7 @@ const EQUIPMENT: EquipmentItem[] = [
   {
     t: "Router 3",
     badge: "Premium Upgrade",
-    d: "Upgraded router for improved range and more reliable coverage",
+    d: "Improved range and more reliable coverage",
     img: "/funnel/starlink-gen-3-router.webp",
   },
   {
@@ -42,11 +42,16 @@ const EQUIPMENT: EquipmentItem[] = [
  *  Hence "Included" rather than "Premium Upgrade", and copy about supplying it
  *  rather than improving on it.
  *
- *  Two rules for every description in both lists. It lands on two lines at
- *  card width, roughly 50 to 60 characters, because longer makes the row
- *  heights ragged. And it takes no full stop: these are fragments, and the
- *  site already splits that way, with the sector cards running without one and
- *  the why cards, which are complete sentences, running with one.
+ *  Two rules for every description in both lists.
+ *
+ *  It fits on two lines. A card is 261px wide and the p-6 padding leaves about
+ *  213px for text, which at 14px is roughly 28 characters a line. So the
+ *  ceiling is about 55 characters and only if the words break kindly: 60 spills
+ *  onto a third line and the row heights go ragged. Under 50 is safe.
+ *
+ *  And it takes no full stop. These are fragments, and the site already splits
+ *  that way: the sector cards run without one, the why cards, which are
+ *  complete sentences, run with one.
  *
  *  TODO(will): two things to confirm before this page is indexed. First, that
  *  Performance really is what we quote on commercial jobs, because this card
@@ -62,7 +67,7 @@ export const COMMERCIAL_EQUIPMENT: EquipmentItem[] = [
   {
     t: "Router 3",
     badge: "Included",
-    d: "Not included in the Performance kit, so we supply it",
+    d: "Not in the Performance kit, we supply it",
     img: "/funnel/starlink-gen-3-router.webp",
   },
   ...EQUIPMENT.slice(2),
