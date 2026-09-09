@@ -110,7 +110,10 @@ export default function CommercialStarlinkInstallationPage() {
           <CustomerStoriesSection />
           <EquipmentSection equipment={COMMERCIAL_EQUIPMENT} />
           <InstallVideoSection />
-          <BeforeAfterSection />
+          {/* Continuity, not speed: on this page the speed comparison argues
+              against us the moment a visitor on good fibre runs the test. See
+              the component for the full reasoning. */}
+          <BeforeAfterSection variant="continuity" />
           <CoverageMapSection />
           <TrackRecordSection />
           <FaqSectionAlt faqs={COMMERCIAL_FAQS} />
