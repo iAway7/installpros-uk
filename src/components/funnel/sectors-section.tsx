@@ -1,3 +1,8 @@
+"use client";
+
+import { track, EVENTS } from "@/lib/analytics";
+import { rememberSectorInterest } from "@/lib/funnel/sector-interest";
+
 /**
  * Sector cards for the commercial landing.
  *
@@ -8,9 +13,15 @@
  * columns also gives the largest card the container allows, 358px, which is
  * where the photographs start doing their job.
  *
- * IMAGES ARE PLACEHOLDERS. They are stock, none shows one of our installs, and
- * two are visibly not British (see the note on each). Replace with real job
- * photographs before this page takes spend.
+ * The cards are links, not decoration. They already lifted on hover, which
+ * promised a click that never happened; now the whole card goes to the quote
+ * form, carries which sector was clicked into the lead, and fires a
+ * cta_clicked so we can see which sector actually pulls. That last one answers
+ * a question nobody can answer today: whether these six are the right six.
+ *
+ * WAREHOUSES AND RETAIL ARE STILL STOCK. Offices, farms, campsites and
+ * construction are real photographs now. Replace the last two before this page
+ * takes spend.
  */
 interface Sector {
   img?: string;
@@ -81,9 +92,27 @@ export function SectorsSection() {
 
         <div className="mt-12 grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-3 md:mt-16">
           {SECTORS.map((s) => (
-            <div
+            /* An anchor rather than a button with a scroll handler: the browser
+               does the scrolling, it works with the keyboard and with JS off,
+               and #quote already carries scroll-mt so the heading is not cut by
+               the header on arrival.
+
+               The border colour is a plain rgba, not `border-brand-soft/35`.
+               This project's tokens are declared as hsl(var(--token)) with no
+               <alpha-value> placeholder, so Tailwind's /35 modifier is dropped
+               in silence and the hover border came out at full brand red. */
+            <a
               key={s.t}
-              className="overflow-hidden rounded-xl border border-border bg-card transition-all duration-card ease-ds hover:-translate-y-[5px] hover:border-brand-soft/35"
+              href="#quote"
+              onClick={() => {
+                rememberSectorInterest(s.t);
+                track(EVENTS.CTA_CLICKED, {
+                  cta_id: `sector_${s.t.toLowerCase().replace(/[^a-z0-9]+/g, "_")}`,
+                  cta_label: s.t,
+                  cta_location: "sectors",
+                });
+              }}
+              className="group block overflow-hidden rounded-xl border border-border bg-card transition-all duration-card ease-ds hover:-translate-y-[5px] hover:border-[rgba(255,90,90,0.35)] focus-visible:-translate-y-[5px] focus-visible:border-[rgba(255,90,90,0.35)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             >
               {s.img ? (
                 <>
@@ -116,8 +145,16 @@ export function SectorsSection() {
                 <p className="mt-1.5 text-body-sm text-muted-foreground" style={{ lineHeight: "1.45" }}>
                   {s.d}
                 </p>
+                {/* Always visible, not on hover. There is no hover on a phone,
+                    and without this the card is a photo with a caption. */}
+                <span className="mt-3 inline-flex items-center gap-1.5 text-caption font-semibold text-brand-deep">
+                  Get a quote
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="transition-transform duration-quick group-hover:translate-x-0.5">
+                    <path d="M5 12h14M13 6l6 6-6 6" />
+                  </svg>
+                </span>
               </div>
-            </div>
+            </a>
           ))}
         </div>
       </div>

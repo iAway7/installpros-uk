@@ -1,5 +1,6 @@
 import { track, identifyLead, getLeadAttribution, EVENTS } from "@/lib/analytics";
 import { toUkNationalDigits } from "@/lib/funnel/validation";
+import { readSectorInterest } from "@/lib/funnel/sector-interest";
 import { recordExperimentConversions } from "@/lib/experiments/client";
 
 export interface LeadInput {
@@ -34,6 +35,11 @@ export async function submitLead(input: LeadInput): Promise<string> {
   // losing a lead's phone number is worse than storing an untidy one.
   const phone = toUkNationalDigits(input.phone) || input.phone;
 
+  // Set only if they arrived at the form through a sector card. Appended to the
+  // notes rather than given a column, because the lead schema is shared with
+  // the residential funnel and this is commercial-only for now.
+  const sector = readSectorInterest();
+
   track(EVENTS.QUOTE_SUBMITTED, { install_type: input.installationType as never });
 
   const res = await fetch("/api/lead", {
@@ -46,7 +52,7 @@ export async function submitLead(input: LeadInput): Promise<string> {
       postcode: input.zipCode,
       install_type: "residential", // schema enum; real selection kept in notes
       service: input.installationType,
-      notes: `Service: ${input.installationType} | State: ${input.state} | ZIP: ${input.zipCode}${input.address ? ` | Address: ${input.address}` : ""} | Consent: ${input.marketingConsent ? "yes" : "no"}`,
+      notes: `Service: ${input.installationType} | State: ${input.state} | ZIP: ${input.zipCode}${input.address ? ` | Address: ${input.address}` : ""} | Consent: ${input.marketingConsent ? "yes" : "no"}${sector ? ` | Sector: ${sector}` : ""}`,
       meta: getLeadAttribution(),
     }),
   });
