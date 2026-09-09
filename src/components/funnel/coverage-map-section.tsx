@@ -15,7 +15,7 @@ const STATS = [
 ];
 
 /**
- * "One team. The whole map." coverage section — real UK map with live-install
+ * "One team. Full coverage." coverage section — real UK map with live-install
  * pulses on the right, headline + stat grid on the left. Used on
  * /starlink-installation in place of the generic availability section.
  */
@@ -32,7 +32,7 @@ export function CoverageMapSection() {
             >
               One team.
               <br />
-              The whole map.
+              Full coverage.
             </h2>
             <p className="mt-6 max-w-md text-body text-muted-foreground md:text-lg" style={{ lineHeight: "1.6" }}>
               From the Highlands to Cornwall, our engineers cover all four nations. No postcode too remote.

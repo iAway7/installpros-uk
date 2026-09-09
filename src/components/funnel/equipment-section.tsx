@@ -21,13 +21,13 @@ const EQUIPMENT: EquipmentItem[] = [
   {
     t: "Mounts & Masts",
     badge: "All-metal",
-    d: "Durable roof, wall and pole mounts for any property type",
+    d: "Heavy-duty roof, wall and pole mounts, or custom-built",
     img: "/funnel/mounts-masts.webp",
   },
   {
     t: "Indoor/Outdoor WiFi",
     badge: "Add-on",
-    d: "Seamless coverage across every floor and outbuilding",
+    d: "Consistent coverage across every floor and outbuilding",
     img: "/funnel/wifi-access-point.webp",
   },
 ];
@@ -66,9 +66,9 @@ export const COMMERCIAL_EQUIPMENT: EquipmentItem[] = [
     img: "/funnel/starlink-performance.webp",
   },
   {
-    t: "Router 3",
+    t: "Gen 3 Router",
     badge: "Included",
-    d: "Not in the Performance kit, we supply it",
+    d: "Not in the Performance kit, we supply and configure it",
     img: "/funnel/starlink-gen-3-router.webp",
   },
   ...EQUIPMENT.slice(2),
