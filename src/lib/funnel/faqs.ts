@@ -35,10 +35,11 @@ export interface Faq {
  * approval (failover, disruption, invoicing) come before the questions about
  * the product itself.
  *
- * THREE ANSWERS ARE UNVERIFIED and must be confirmed by Will before this page
- * goes live. They are marked TODO(will) below. VAT is not one of them: we are
- * VAT registered (GB456635174, in the footer), so that half is fact. Whether we
- * open credit accounts is the part nobody has confirmed.
+ * Answered by Will on 8 Sep 2026: failover yes and it is the primary use case,
+ * out of hours yes, multi-site yes, account terms yes, lead time "within days"
+ * with emergency set-up for a business suddenly offline. Nothing in this list
+ * is unverified any more. VAT was never in doubt: we are VAT registered
+ * (GB456635174, in the footer).
  *
  * There is deliberately no finance FAQ here. Super/Abound credit is an FCA
  * regulated financial promotion, and business lending is not the same product
@@ -47,14 +48,10 @@ export interface Faq {
  */
 export const COMMERCIAL_FAQS: { q: string; a: string }[] = [
   {
-    // TODO(will): confirm we actually configure failover alongside an existing
-    // line as routine work, and that we test the changeover on the day.
     q: "Can Starlink back up our existing line rather than replace it?",
-    a: "Yes. Many of our commercial customers keep the line they already have and add Starlink alongside it, so a fibre or leased-line fault does not take the site offline. We set the changeover up during the installation and test it before we leave.",
+    a: "Yes, and for most of our commercial customers that is the point. You keep the line you already have, whether that is fibre or a leased line, and we add Starlink alongside it with 5G as a further fallback. If one link goes down the site keeps working. We set the changeover up during the installation and test it before we leave.",
   },
   {
-    // TODO(will): confirm evenings and weekends are genuinely available, and
-    // whether they carry a surcharge. If they do, say so here rather than at quote.
     q: "Can you install out of hours so we do not stop trading?",
     a: "Yes. We can work evenings or weekends where the site needs it, so the installation does not interrupt trading or production. Tell us your constraints at survey and we plan the visit around them.",
   },
@@ -75,14 +72,26 @@ export const COMMERCIAL_FAQS: { q: string; a: string }[] = [
     a: "Most are done in a single day, typically three to five hours on site, with the connection settling to full performance within about twelve hours. Larger or multi-building sites take longer, and we tell you which at survey rather than on the day.",
   },
   {
+    // Will's own answer, tightened. This objection was not addressed anywhere on
+    // the site and it is the one a burned customer arrives with.
+    q: "We tried a 4G router and it was not reliable. Why is this different?",
+    a: "A 4G router on its own will not keep a business running. A combined system will. We design the connection so there is more than one way out of the building, and we manage it, so you keep operating even when your main source of internet is down.",
+  },
+  {
+    q: "Can you do multiple sites?",
+    a: "Yes. We install and manage multi-site estates, with the same setup and the same point of contact across all of them.",
+  },
+  {
+    q: "How soon can you start?",
+    a: "Within days of the survey in most cases. If a business is suddenly without internet we can arrange an emergency set-up rather than book you into the normal queue.",
+  },
+  {
     q: "Where do you cover?",
     a: "The whole UK. Give us the postcode and we will confirm access and flag anything unusual about the site before we quote.",
   },
   {
-    // TODO(will): "invoiced with VAT" is fact. "Pay on account" is NOT
-    // confirmed. If we do not offer account terms, cut that sentence.
     q: "Do you invoice with VAT and can we pay on account?",
-    a: "Every commercial job is invoiced with VAT, and we can provide a formal written quote for your purchase order. Talk to us about account terms if your finance team needs them.",
+    a: "Yes to both. Every commercial job is invoiced with VAT and we can open an account for you, and we will provide a formal written quote your finance team can raise a purchase order against.",
   },
 ];
 

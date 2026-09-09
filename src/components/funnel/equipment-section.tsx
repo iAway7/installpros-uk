@@ -53,15 +53,16 @@ const EQUIPMENT: EquipmentItem[] = [
  *  that way: the sector cards run without one, the why cards, which are
  *  complete sentences, run with one.
  *
- *  TODO(will): two things to confirm before this page is indexed. First, that
- *  Performance really is what we quote on commercial jobs, because this card
- *  is a spec claim and a customer will hold us to it. Second, "wider field of
- *  view" is Starlink's own claim for the hardware, not something we measured. */
+ *  Will, 8 Sep 2026, asked whether Performance is really what we quote on
+ *  commercial jobs: "depends on use case/requirements". So the card no longer
+ *  promises a bigger dish on every job, it says the kit is specified to the
+ *  site. The picture stays Performance because that is the upper end of what
+ *  we fit, and the claim about a wider field of view is gone with the copy. */
 export const COMMERCIAL_EQUIPMENT: EquipmentItem[] = [
   {
     t: "Starlink Performance",
     badge: "Supply & Fit",
-    d: "Bigger dish, wider field of view, mounted and aligned",
+    d: "Specified to the site, not the same kit every time",
     img: "/funnel/starlink-performance.webp",
   },
   {

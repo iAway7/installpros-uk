@@ -10,14 +10,28 @@ const CLASS = "h1-hero animate-slide-up animate-delay-100 mb-4 text-white md:mb-
 /**
  * Hero H1. Renders the default responsive headline server-side (good for SEO),
  * and swaps to an A/B variant headline on the client when one is assigned.
+ *
+ * `configKey` is which field of the variant config to read, and it exists
+ * because on-page experiments are NOT scoped to a page: ExperimentProvider
+ * applies every running experiment's config on whatever landing the visitor is
+ * on. A variant setting plain `headline` would therefore rewrite the H1 on
+ * /install-quote and /starlink-installation as well, with commercial copy.
+ *
+ * So a page that wants its own headline test passes its own key (commercial
+ * uses `headlineCommercial`) and the experiment sets that field instead. The
+ * residential pair keeps reading `headline` and is unaffected.
+ *
+ * The real fix is page targeting on the experiment record itself. This is the
+ * version that does not need a schema change.
  */
-export function HeroHeadline({ headline }: { headline?: string } = {}) {
+export function HeroHeadline(
+  { headline, configKey = "headline" }: { headline?: string; configKey?: string } = {},
+) {
   const config = useExperimentConfig();
 
-  // An assigned experiment still wins: segment landings are not in the A/B, so
-  // in practice only one of these two ever applies on a given page.
-  if (config.headline) {
-    return <h1 className={CLASS}>{config.headline}</h1>;
+  const assigned = config[configKey];
+  if (typeof assigned === "string" && assigned.length > 0) {
+    return <h1 className={CLASS}>{assigned}</h1>;
   }
 
   if (headline) {

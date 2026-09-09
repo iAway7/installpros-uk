@@ -61,27 +61,44 @@ const FEATURES: Feature[] = [
  * paragraphs instead of four claims. The commercial argument belongs in the
  * body copy; the title is a label you scan.
  */
+const IconShield = (
+  <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M12 3 5 6v5.5c0 4.3 2.9 8.2 7 9.5 4.1-1.3 7-5.2 7-9.5V6l-7-3z" />
+    <path d="m9 12 2 2 4-4" />
+  </svg>
+);
+
 export const COMMERCIAL_FEATURES: Feature[] = [
   {
-    // TODO(will): confirm 24/7 is genuinely staffed before this ships. It is
-    // the strongest claim on the page and it will be quoted back at us.
-    t: "24/7 Support",
-    d: "Ring at any hour and a person picks up. We get the site back online, not logged as a ticket.",
+    // This card used to say "24/7 Support · Ring at any hour and a person picks
+    // up". Asked outright whether that was genuinely staffed, Will did not say
+    // yes: he said to position the work as a managed service. So the card says
+    // what he actually stands behind. If 24/7 cover is real and staffed, this
+    // is the place to put it back.
+    t: "Managed Service",
+    d: "We do not fit it and disappear. We specify, install and then manage the connection as a service.",
     i: IconHeadset,
   },
   {
-    t: "Certified Engineers",
-    d: "Insured and accredited. We survey the building and scan for obstructions before quoting.",
-    i: IconWrench,
+    // Will: failover is "the primary use case", Starlink with 5G backup, and it
+    // can run alongside an existing leased line rather than replacing it.
+    t: "Built-In Failover",
+    d: "Starlink with 5G backup, working alongside the line you already have. The site stays up when one link does not.",
+    i: IconWifi,
+  },
+  {
+    // Replaces "Certified, insured engineers". Will confirmed we hold none of
+    // CHAS, SafeContractor, ISO 9001, ISO 14001, ISO 45001, IPAF, PASMA or
+    // NICEIC yet, so an accreditation claim would have been false. The cover is
+    // real, it is unusually high, and for a facilities team it does much of the
+    // same job.
+    t: "£10m Cover",
+    d: "Public liability, professional indemnity, employers' liability and cyber, all at ten million.",
+    i: IconShield,
   },
   {
     t: "Whole-Site Coverage",
     d: "Offices, warehouses, yards and outbuildings. Not just the room the dish lands in.",
-    i: IconWifi,
-  },
-  {
-    t: "Cable Management",
-    d: "Discreet, weatherproofed and planned around the structure, not the nearest wall.",
     i: IconCable,
   },
 ];

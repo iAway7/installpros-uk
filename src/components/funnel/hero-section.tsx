@@ -8,7 +8,7 @@ const DEFAULT_HERO = "/funnel/hero-uk-residential.webp";
 
 /** Full-bleed hero with the funnel, and a full-width trust bar pinned at the bottom. */
 export function HeroSection(
-  { smartCoverage = false, addressMode = false, image = DEFAULT_HERO, headline, subheadline, installs }: {
+  { smartCoverage = false, addressMode = false, image = DEFAULT_HERO, headline, subheadline, badge = "Nationwide UK Coverage", badgeFlag = true, headlineConfigKey, installs }: {
     smartCoverage?: boolean;
     addressMode?: boolean;
     /** Background photo. Keep replacements around 60 KB: the preload below is
@@ -17,6 +17,18 @@ export function HeroSection(
     /** Segment landings override the copy; the funnel pages leave both unset. */
     headline?: string;
     subheadline?: string;
+    /** Pill above the H1. The default is a nationwide claim the map, the trust
+     *  bar and the coverage section all make again further down, so a segment
+     *  page can spend it on something the page is not already saying. */
+    badge?: string;
+    /** The flag is decorative shorthand for the word UK in the default badge.
+     *  A badge that does not talk about coverage should turn it off rather than
+     *  carry a flag next to an unrelated label. */
+    badgeFlag?: boolean;
+    /** Which variant-config field this page's headline test writes to. See
+     *  HeroHeadline: on-page experiments are not page-scoped, so each page that
+     *  runs its own headline test needs its own key. */
+    headlineConfigKey?: string;
     /** Trust-bar installs figure. Segment landings count their own work. */
     installs?: InstallsStat;
   } = {},
@@ -36,10 +48,14 @@ export function HeroSection(
     fetchPriority: "high",
   });
 
+  // No overflow-hidden on the section. The address autocomplete opens downwards
+  // and with three or more suggestions it runs past the bottom of the hero, and
+  // a clip here cut it off. The clip only ever existed for the parallax
+  // background, so it now sits on that layer instead.
   return (
-    <section className="relative flex min-h-[100svh] flex-col overflow-hidden">
+    <section className="relative flex min-h-[100svh] flex-col">
       <div
-        className="absolute inset-0"
+        className="absolute inset-0 overflow-hidden"
         // `fixed` is broken on iOS Safari (the image rescales and jumps), so the
         // parallax only kicks in from md up, where it actually works.
         data-parallax
@@ -63,7 +79,11 @@ export function HeroSection(
           its own heading up underneath the fixed header, where it was clipped
           and unreachable. Auto margins collapse to zero instead of overflowing,
           so the content always starts below `pt-28`. */}
-      <div className="relative z-10 flex flex-1 justify-center pt-28 pb-16 md:pt-36">
+      {/* z-20, not z-10. The trust bar below is also z-10 and comes later in
+          the DOM, so at equal z it painted over the address suggestions. The
+          dropdown's own z-30 could not save it: this wrapper's z-index opens a
+          stacking context, so the 30 only ranks inside it. */}
+      <div className="relative z-20 flex flex-1 justify-center pt-28 pb-16 md:pt-36">
         <div className="container mx-auto my-auto text-center text-white">
           {/* Supporting label, not a headline: it sits above the value
               proposition, so it has to read as subordinate to it. The pill
@@ -71,13 +91,17 @@ export function HeroSection(
               semibold on top of that made a 14px chip outweigh the 16px
               sentence underneath. */}
           <div className="animate-slide-up mb-4 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 py-1.5 md:mb-8">
-            <span className="text-body-sm font-medium tracking-wide text-white/95">Nationwide UK Coverage</span>
-            {/* Decorative: the label already says UK. */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/funnel/uk-flag.svg" alt="" aria-hidden="true" className="h-4 w-4 rounded-xs" />
+            <span className="text-body-sm font-medium tracking-wide text-white/95">{badge}</span>
+            {badgeFlag && (
+              <>
+                {/* Decorative: the label already says UK. */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/funnel/uk-flag.svg" alt="" aria-hidden="true" className="h-4 w-4 rounded-xs" />
+              </>
+            )}
           </div>
 
-          <HeroHeadline headline={headline} />
+          <HeroHeadline headline={headline} configKey={headlineConfigKey} />
 
           <p className="animate-slide-up animate-delay-200 mx-auto mb-8 max-w-3xl text-balance text-lg text-white/95 md:mb-10 md:text-xl lg:mb-12 lg:text-2xl">
             {subheadline ?? "Fitted to maximise performance and give you WiFi wherever you need it. Same-week scheduling."}

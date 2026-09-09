@@ -6,6 +6,7 @@ import { SectorsSection } from "@/components/funnel/sectors-section";
 import { CustomerStoriesSection } from "@/components/funnel/customer-stories-section";
 import { TrustpilotSection } from "@/components/funnel/trustpilot-section";
 import { WhyInstallProsSection, COMMERCIAL_FEATURES } from "@/components/funnel/why-installpros-section";
+import { ClientLogosSection } from "@/components/funnel/client-logos-section";
 import { CoverageMapSection } from "@/components/funnel/coverage-map-section";
 import { EquipmentSection, COMMERCIAL_EQUIPMENT } from "@/components/funnel/equipment-section";
 import { InstallVideoSection } from "@/components/funnel/install-video-section";
@@ -72,10 +73,32 @@ export default function CommercialStarlinkInstallationPage() {
             smartCoverage
             addressMode
             image="/funnel/hero-commercial-rooftop.webp"
-            headline="Commercial Starlink installation, fitted in under a week"
-            subheadline="Offices, warehouses, depots and rural sites across the UK. Survey, fixed quote and full install, usually inside seven days."
+            // The keyword moves into the pill so the H1 is free to sell what
+            // Will says the business actually is. Message match survives:
+            // someone arriving on "commercial starlink installation" still
+            // reads it back, just one line higher.
+            badge="Commercial Starlink Installation"
+            badgeFlag={false}
+            // Leads with what Will says the business actually is: not a faster
+            // connection, a site that does not go down. It also makes the
+            // visitor who already has good fibre the target rather than an
+            // objection, because he is the one with something to lose.
+            //
+            // The old headline, "Commercial Starlink installation, fitted in
+            // under a week", is the obvious challenger if we want to test this.
+            // It goes in an experiment as `headlineCommercial`, a key only this
+            // page reads. See HeroHeadline for why it is not plain `headline`:
+            // on-page experiments are not page-scoped, and that key would
+            // rewrite the residential H1s too.
+            headline="Your site stays online, whatever happens to your main line"
+            headlineConfigKey="headlineCommercial"
+            // Two lines. The paragraph is max-w-3xl at 24px on lg, so roughly
+            // 62 characters a line: past about 120 it spills to a third. This
+            // is 107.
+            subheadline="Starlink installed and managed, with 5G failover alongside your existing line. Fixed quote, set-up in days."
             installs={{ count: "460+", label: "commercial installations" }}
           />
+          <ClientLogosSection />
           <WhyInstallProsSection
             features={COMMERCIAL_FEATURES}
             heading="Engineered for sites that cannot go offline."
