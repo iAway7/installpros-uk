@@ -21,8 +21,12 @@ interface Sector {
 
 const SECTORS: Sector[] = [
   {
+    // Replaced the stock shot Will called out: "i don't think offices look like
+    // that any more lol". This one is bench desks, glass partitions and a
+    // commercial block out of the window, which is what a UK office actually
+    // looks like now.
     img: "/funnel/sector-offices.webp",
-    alt: "Open-plan office floor",
+    alt: "Open-plan office with bench desks and a glazed frontage",
     t: "Offices",
     d: "Video calls, cloud tools and VoIP handsets",
   },
