@@ -12,7 +12,7 @@ import { Button } from "@/components/system/button";
  */
 const PACK_REQUEST_URL =
   "https://wa.me/447446112343?text=" +
-  encodeURIComponent("Hi, please send me the landlord pack for a commercial Starlink install.");
+  encodeURIComponent("Hi, please send me the site approval pack for a commercial Starlink install.");
 
 type PackItem = { title: string; detail: string };
 
@@ -63,12 +63,19 @@ function IconDoc() {
 }
 
 /**
- * The landlord pack.
+ * The site approval pack.
+ *
+ * It was the "landlord pack" until Will read that as a residential landlord,
+ * which is exactly how it lands in the UK: the word belongs to flats. The
+ * commercial equivalents are the building owner, the managing agent and the
+ * site health and safety team. "Site approval" covers all three, and it also
+ * covers the owner-occupier who has nobody to ask but still has to file a RAMS,
+ * which the old name shut out entirely.
  *
  * Most commercial sites are leased, so the person writing to us cannot say yes
- * to the install. They can say yes to asking. The one who decides is the
- * landlord or the building management team, and that person does not approve
- * anything over WhatsApp: they ask for documents.
+ * to the install. They can say yes to asking. Whoever does decide, the building
+ * owner or the managing agent, does not approve anything over WhatsApp: they
+ * ask for documents.
  *
  * Three conversations in the Superchat corpus stall at exactly this point, and
  * one was only won after chasing the team for days to assemble the paperwork by
@@ -98,23 +105,24 @@ function IconDoc() {
  * rather than shipping a list the team cannot fulfil.
  * ─────────────────────────────────────────────────────────────────────────────
  */
-export function LandlordPackSection() {
+export function SiteApprovalPackSection() {
   return (
-    <section id="landlord-pack" className="w-full scroll-mt-28 bg-secondary py-16 md:py-24">
+    <section id="site-approval-pack" className="w-full scroll-mt-28 bg-secondary py-16 md:py-24">
       <div className="container mx-auto max-w-6xl">
         <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-[1fr_1.15fr] lg:gap-16">
           <div>
-            <p className="eyebrow">Leased and managed sites</p>
-            <h2 className="mt-4 h2-section text-foreground">Your landlord will want paperwork.</h2>
+            <p className="eyebrow">Getting it signed off</p>
+            <h2 className="mt-4 h2-section text-foreground">Whoever signs it off will want paperwork.</h2>
             <p className="mt-5 max-w-md text-body text-muted-foreground md:text-lg" style={{ lineHeight: "1.6" }}>
-              Most commercial units are leased, and the building manager decides what goes on the
-              roof. We send you everything they normally ask for, so chasing it is not your job.
+              Building owners, managing agents and health and safety teams all ask for the same
+              documents before anyone goes on a roof. We send you the lot up front, so chasing it
+              is not your job.
             </p>
             <div className="mt-8">
               <Button asChild>
                 <a href={PACK_REQUEST_URL} target="_blank" rel="noopener noreferrer">
                   <WhatsAppIcon className="h-5 w-5 text-whatsapp" />
-                  Ask us for the landlord pack
+                  Ask us for the site approval pack
                 </a>
               </Button>
             </div>
