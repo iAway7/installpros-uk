@@ -27,8 +27,12 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: "bg-primary text-primary-foreground hover:bg-brand-hover",
-        secondary: "bg-secondary/80 text-foreground hover:bg-secondary border border-border/30",
-        outline: "border border-border/50 bg-transparent text-foreground hover:bg-secondary/50",
+        // Both borders are the --border token at full strength, #EBEBEB. They
+        // were at 30% and 50%, which over white lands around #F5F5F5 and reads
+        // as an edge that nearly is not there. On a secondary button next to a
+        // solid red primary, the outline is the only thing giving it a shape.
+        secondary: "bg-secondary/80 text-foreground hover:bg-secondary border border-border",
+        outline: "border border-border bg-transparent text-foreground hover:bg-secondary/50",
         ghost: "hover:bg-accent hover:text-accent-foreground",
       },
       size: {
