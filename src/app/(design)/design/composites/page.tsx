@@ -43,7 +43,7 @@ hover    -5px, border --brand-soft/35, 450ms ease-ds`}</Code>
             </div>
           </div>
           <div className="w-[200px] border-t border-border pt-6">
-            <div className="text-[34px] font-normal leading-[1.1] tracking-[-1px] text-foreground">175+</div>
+            <div className="text-[34px] font-normal leading-[1.1] tracking-[-1px] text-foreground">225+</div>
             <div className="mt-1 text-[13px] text-muted-foreground">Towns &amp; cities served</div>
           </div>
         </Preview>

@@ -11,7 +11,15 @@ const STATS: { value: ReactNode; label: string }[] = [
     ),
     label: "Google rating, every review counted",
   },
-  { value: "175+", label: "Towns and cities served, and counting" },
+  // 225 is the count of Will's major-towns list (27 Aug 2026), the same figure
+  // the coverage map uses. It was 175 here and 225 there, which is the kind of
+  // mismatch a reader notices and nobody can explain.
+  //
+  // "Covered", not "served". That list is where we will travel, not where we
+  // have worked, and this section is otherwise a record of things we have
+  // actually done. Claiming 225 towns served would be the one number here we
+  // could not stand behind.
+  { value: "225+", label: "Towns and cities covered" },
   {
     value: (
       <>

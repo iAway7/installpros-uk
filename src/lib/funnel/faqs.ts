@@ -171,7 +171,7 @@ export const LANDING_FAQS: { q: string; a: string }[] = [
   },
   {
     q: "Do you cover my area?",
-    a: "Almost certainly. Our engineers cover all four nations: 175+ towns and cities served so far, from the Highlands to Cornwall. Request a quote and we'll confirm your postcode straight away.",
+    a: "Almost certainly. Our engineers cover all four nations: 225+ towns and cities covered, from the Highlands to Cornwall. Request a quote and we'll confirm your postcode straight away.",
   },
 ];
 
