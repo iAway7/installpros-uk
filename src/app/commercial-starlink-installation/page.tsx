@@ -9,6 +9,7 @@ import { WhyInstallProsSection, COMMERCIAL_FEATURES } from "@/components/funnel/
 import { ClientLogosSection } from "@/components/funnel/client-logos-section";
 import { CoverageMapSection } from "@/components/funnel/coverage-map-section";
 import { EquipmentSection, COMMERCIAL_EQUIPMENT } from "@/components/funnel/equipment-section";
+import { LandlordPackSection } from "@/components/funnel/landlord-pack-section";
 import { InstallVideoSection } from "@/components/funnel/install-video-section";
 import { TrackRecordSection } from "@/components/funnel/track-record-section";
 import { BeforeAfterSection } from "@/components/funnel/before-after-section";
@@ -109,6 +110,10 @@ export default function CommercialStarlinkInstallationPage() {
           <TrustpilotSection />
           <CustomerStoriesSection />
           <EquipmentSection equipment={COMMERCIAL_EQUIPMENT} />
+          {/* Straight after the equipment card on purpose: the reader has just
+              seen what goes on the roof, and the next thought for anyone in a
+              leased unit is who has to approve it. */}
+          <LandlordPackSection />
           <InstallVideoSection />
           {/* Continuity, not speed: on this page the speed comparison argues
               against us the moment a visitor on good fibre runs the test. See
