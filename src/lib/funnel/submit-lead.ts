@@ -1,4 +1,5 @@
 import { track, identifyLead, getLeadAttribution, EVENTS } from "@/lib/analytics";
+import { toUkNationalDigits } from "@/lib/funnel/validation";
 import { recordExperimentConversions } from "@/lib/experiments/client";
 
 export interface LeadInput {
@@ -26,6 +27,13 @@ declare global {
  * Returns the lead id used to deep-link into the upload step.
  */
 export async function submitLead(input: LeadInput): Promise<string> {
+  // Store one shape, not whatever the customer typed. The field accepts
+  // "07700 900123", "+44 7700 900123" and "07700900123", which all used to
+  // reach the CRM verbatim and land there as three different-looking numbers.
+  // The fallback keeps the raw string if normalising ever fails, because
+  // losing a lead's phone number is worse than storing an untidy one.
+  const phone = toUkNationalDigits(input.phone) || input.phone;
+
   track(EVENTS.QUOTE_SUBMITTED, { install_type: input.installationType as never });
 
   const res = await fetch("/api/lead", {
@@ -34,7 +42,7 @@ export async function submitLead(input: LeadInput): Promise<string> {
     body: JSON.stringify({
       name: input.fullName,
       email: input.email,
-      phone: input.phone,
+      phone,
       postcode: input.zipCode,
       install_type: "residential", // schema enum; real selection kept in notes
       service: input.installationType,
@@ -88,7 +96,7 @@ export async function submitLead(input: LeadInput): Promise<string> {
       JSON.stringify({
         name: input.fullName,
         email: input.email,
-        phone: input.phone,
+        phone,
         postcode: input.zipCode,
         state: input.state,
         installationType: input.installationType,
