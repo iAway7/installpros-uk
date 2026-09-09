@@ -443,12 +443,12 @@ const outageBar = (s: number) => Math.min(100, 20 + s / 12);
  *    that animates is the left counter climbing. That asymmetry is the whole
  *    argument: one is still accumulating, the other stopped after nine seconds.
  *
- * 2. The test moves out of the left card. It cannot sit inside a panel that is
- *    also running a simulated outage, because then a real measurement and an
- *    illustration share one frame and the visitor cannot tell which is which.
- *    Above the pair it measures reality; below, the pair is labelled as an
- *    illustration. The result changes job: it stops being a verdict on his
- *    speed and becomes the setup for the question.
+ * 2. No speed test here at all. It first moved above the panels, where the
+ *    result set the question up ("that is a good line, it is also the only one
+ *    you have") instead of losing an argument to it. Then it came out
+ *    altogether: on a page that no longer argues about Mbps, a speed reading is
+ *    the one thing that pulls the reader back onto the axis we just left. The
+ *    residential variant still has it, which is where it belongs.
  *
  * 3. The arithmetic needs no study and no vendor claim. Two independent
  *    connections multiply their failure rates, and the argument gets stronger
@@ -463,29 +463,6 @@ function ContinuityVariant() {
   const counterRef = useRef<HTMLSpanElement>(null);
   const barRef = useRef<HTMLDivElement>(null);
 
-  const [phase, setPhase] = useState<"idle" | "testing" | "done" | "error">("idle");
-  const [result, setResult] = useState<SpeedResult | null>(null);
-  const [server, setServer] = useState<string | null>(null);
-  const engineRef = useRef<{ pause: () => void } | null>(null);
-
-  const run = async () => {
-    if (phase === "testing") return;
-    setPhase("testing");
-    setResult(null);
-    setServer(null);
-    fetchColo(setServer);
-    try {
-      engineRef.current = await startSpeedTest({
-        onDone: (r) => { setResult(r); setPhase("done"); },
-        onError: () => setPhase("error"),
-      });
-    } catch {
-      setPhase("error");
-    }
-  };
-
-  useEffect(() => () => engineRef.current?.pause(), []);
-
   // The single moving element. setInterval rather than rAF: it ticks once a
   // second, so a frame loop would be 60x the work for the same result.
   useEffect(() => {
@@ -499,53 +476,16 @@ function ContinuityVariant() {
     return () => window.clearInterval(id);
   }, []);
 
-  const measured = phase === "done" && result ? Math.round(result.down) : null;
-
   return (
     <SectionShell
       eyebrow="Business Continuity"
       heading="One line is one point of failure."
-      sub="Run the test. It measures your speed, not your risk."
+      sub="Not how fast your line is. What happens to your site when it stops."
     >
-      {/* THE TEST. Same engine as the residential variant, different job: the
-          result sets the question up instead of losing an argument to it. */}
-      <div className="mb-5 flex flex-wrap items-center justify-between gap-5 rounded-xl border border-border bg-secondary px-6 py-5">
-        <div>
-          {phase === "done" && result ? (
-            <>
-              <div className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1">
-                <span style={{ fontSize: 38, fontWeight: 200, letterSpacing: "-0.04em", lineHeight: 1 }}>
-                  {fmt(result.down)}
-                </span>
-                <span className="text-body text-muted-foreground">Mbps</span>
-                <span className="text-label" style={{ color: VIZ.dim }}>
-                  {result.latency ? `· ${Math.round(result.latency)} ms` : ""}
-                  {server ? ` · ${server}` : ""}
-                </span>
-              </div>
-              <p className="mt-1.5 text-body-sm font-semibold text-foreground">
-                {result.down >= 100
-                  ? "That is a good line. It is also the only one you have."
-                  : "That is one line, doing everything."}
-              </p>
-            </>
-          ) : (
-            <p className="text-body-sm text-muted-foreground">
-              {phase === "error"
-                ? "The test did not complete. It does not change the question below."
-                : "How fast is your line right now? "}
-              {phase !== "error" && <strong className="font-semibold text-foreground">Test it.</strong>}
-            </p>
-          )}
-        </div>
-        <TestButton phase={phase} onClick={run} />
-      </div>
-
-      {/* ONE EVENT, TWO OUTCOMES. The panels below are an illustration and say
-          so: the reading above them is real and they must not be mistaken for
-          more of the same. */}
-      <div className="mb-3 flex items-center justify-between gap-4">
-        <span className="text-caption text-muted-foreground">One main-line failure. Two outcomes.</span>
+      {/* The panels are a simulation, and the counter ticking makes them look
+          like a live readout, so they say what they are. Kept after the test
+          strip came out: the label is about the panels, not the test. */}
+      <div className="mb-3">
         <span className="rounded-full border border-border px-2.5 py-1 text-micro font-semibold uppercase tracking-[0.14em]" style={{ color: VIZ.dim }}>
           Illustration
         </span>
@@ -558,9 +498,7 @@ function ContinuityVariant() {
             One line
           </span>
 
-          <div className="mt-8 text-caption tracking-[0.06em]" style={{ color: VIZ.ink }}>
-            {measured ? `Your ${measured} Mbps line, when it drops` : "Your connection, when it drops"}
-          </div>
+          <div className="mt-8 text-caption tracking-[0.06em]" style={{ color: VIZ.ink }}>Your connection, when it drops</div>
           <div className="mt-2.5 flex items-baseline gap-2">
             <span ref={counterRef} className="tabular-nums" style={{ ...NUM, fontWeight: 200, color: "hsl(var(--error))" }}>
               {clock(OUTAGE_START_SECONDS)}
