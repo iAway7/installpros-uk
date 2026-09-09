@@ -26,15 +26,22 @@ type SystemItem = {
 const SYSTEMS: SystemItem[] = [
   {
     icon: <CreditCard className="h-5 w-5" />,
+    // Will floated "POS systems" and hedged on it. Kept the plain title,
+    // because a barber says "the card machine" and "the till", not "POS", and
+    // this section exists to use their words. EPOS goes in the body instead, so
+    // whoever does think in trade terms still finds themselves here.
     title: "Taking payments",
     // "So we can connect payment devices", "connecting our till systems".
-    detail: "Card terminals and cloud tills, on their own network away from the WiFi you hand to customers.",
+    detail: "Card terminals, cloud tills, EPOS and your booking system, on their own network away from the WiFi you hand to customers.",
   },
   {
     icon: <Wifi className="h-5 w-5" />,
-    title: "Customers on site",
+    // Was "Customers on site", which Will read as something else before the
+    // body corrected him. If the title needs the body to explain it, it is the
+    // wrong title.
+    title: "Guest WiFi",
     // "to be able to offer WiFi to customers as well as connecting our till systems".
-    detail: "Guest WiFi and the booking system, with access points placed around the building rather than where the cable arrives.",
+    detail: "Coverage where your customers actually sit, with access points placed around the building rather than where the cable happens to arrive.",
   },
   {
     icon: <Camera className="h-5 w-5" />,
@@ -59,10 +66,13 @@ const SYSTEMS: SystemItem[] = [
   },
   {
     icon: <Network className="h-5 w-5" />,
-    title: "More than one building",
+    // Will's wording, and better than "More than one building": it covers the
+    // yard as well as the second unit, and several sites in the chat log are a
+    // yard.
+    title: "Full site coverage",
     // "Would the one satellite give internet coverage for the properties
     // surrounding our building ?"
-    detail: "Outbuildings and neighbouring units linked back to the main dish, which usually costs less than a second subscription.",
+    detail: "Outbuildings, yards and neighbouring units linked back to the main dish, which usually costs less than a second subscription.",
   },
 ];
 
