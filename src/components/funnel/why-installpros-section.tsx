@@ -97,7 +97,15 @@ export const COMMERCIAL_FEATURES: Feature[] = [
     i: IconShield,
   },
   {
-    t: "Whole-Site Coverage",
+    // Same words as the systems section further down, on purpose: Will picked
+    // "full site coverage" there, and a page that makes the same promise twice
+    // in two different phrasings reads as two half-claims rather than one point
+    // made twice. Title Case because that is this card set's convention.
+    //
+    // The two are not redundant. This one is the promise and lists the kinds of
+    // building; the systems row is the mechanism, the point to point link and
+    // what it costs against a second subscription.
+    t: "Full Site Coverage",
     d: "Offices, warehouses, yards and outbuildings. Not just the room the dish lands in.",
     i: IconCable,
   },
