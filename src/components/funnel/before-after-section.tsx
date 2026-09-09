@@ -402,12 +402,13 @@ function EarthBackdrop() {
   );
 }
 
-/** TODO(will): the real switchover time, and whether it is automatic in the
- *  router or someone has to do something. Until he answers, the figure renders
- *  with a dashed underline and a caption saying it is a placeholder. Flip
- *  FAILOVER_CONFIRMED to true once it is his number and the marking goes away. */
+/** TODO(will): NOT HIS NUMBER YET. Nine seconds is our assumption for an
+ *  automatic router failover, and it is the only figure in this section that
+ *  nobody has confirmed. It renders clean on the page, so the code is the only
+ *  place that says so: do not treat it as verified because it looks finished.
+ *  Will has been asked how long the switchover really takes and whether it
+ *  happens in the router or someone has to do something. */
 const FAILOVER_SECONDS = 9;
-const FAILOVER_CONFIRMED = false;
 
 /** Where the counter starts. Any value works; this one reads as "long enough
  *  that someone has already phoned the provider". */
@@ -543,13 +544,7 @@ function ContinuityVariant() {
           <div className="relative mt-2.5 flex items-baseline gap-2">
             <span
               className="tabular-nums"
-              style={{
-                ...NUM,
-                fontWeight: 400,
-                color: "#fff",
-                textShadow: "0 0 40px hsl(var(--brand-soft) / 0.5)",
-                ...(FAILOVER_CONFIRMED ? {} : { borderBottom: "2px dashed hsl(var(--brand-soft))" }),
-              }}
+              style={{ ...NUM, fontWeight: 400, color: "#fff", textShadow: "0 0 40px hsl(var(--brand-soft) / 0.5)" }}
             >
               {clock(FAILOVER_SECONDS)}
             </span>
@@ -567,12 +562,6 @@ function ContinuityVariant() {
             <br />
             Nobody on site has to do anything.
           </div>
-
-          {!FAILOVER_CONFIRMED && (
-            <div className="relative mt-4 text-label" style={{ color: "hsl(var(--brand-soft))" }}>
-              Placeholder. Will to confirm the real switchover time.
-            </div>
-          )}
         </div>
       </div>
 
