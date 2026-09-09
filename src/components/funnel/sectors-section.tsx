@@ -51,9 +51,13 @@ const SECTORS: Sector[] = [
     d: "Guest Wi-Fi across pitches, lodges and static vans",
   },
   {
-    // Placeholder shows snow-capped mountains over arid foothills. Not Britain.
+    // Real photo now, replacing a stock tractor under snow-capped mountains
+    // that was plainly not Britain. Will asked for a solar farm or more
+    // agriculture, and this is both: hedgerows, small irregular fields and
+    // sheep on one side, an array on the other. Solar sites are also a genuine
+    // Starlink market, since they are remote by design and need monitoring.
     img: "/funnel/sector-farms.webp",
-    alt: "Tractor working a ploughed field",
+    alt: "Aerial view of a solar farm among British farmland",
     t: "Farms and rural business",
     d: "Where fibre was never going to arrive",
   },
