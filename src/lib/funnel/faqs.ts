@@ -30,15 +30,35 @@ export interface Faq {
 }
 
 /**
- * Commercial landing FAQ. Ordered for the buyer who cannot sign alone: the
- * blockers that stop a facilities or operations manager getting internal
- * approval (failover, disruption, invoicing) come before the questions about
- * the product itself.
+ * Commercial landing FAQ.
  *
- * Answered by Will on 8 Sep 2026: failover yes and it is the primary use case,
- * out of hours yes, multi-site yes, account terms yes, lead time "within days"
- * with emergency set-up for a business suddenly offline. Nothing in this list
- * is unverified any more. VAT was never in doubt: we are VAT registered
+ * Reordered and rewritten on 9 September 2026 from the Superchat commercial
+ * corpus (about eighty conversations). The old order opened with failover,
+ * because Will called it "the primary use case". Nobody in those eighty
+ * conversations asks about failover or backup even once. What they ask is
+ * whether the thing will run the equipment they already own: tills, card
+ * terminals, phones, gates, cameras, a VPN, eight people at the same time.
+ *
+ * So the capability questions come first now and failover drops to eleventh.
+ * It stays on the list because nobody asks for a thing they do not know
+ * exists, and Will sells it, but it is not what the visitor arrives with.
+ *
+ * Four went to make room. "Where do you cover?" duplicated the hero postcode
+ * check and the coverage map section. "What is included?" duplicated the
+ * equipment section three blocks above it and said nothing specific. The two
+ * timing questions and the out-of-hours one were three answers to one worry
+ * and are now a single entry.
+ *
+ * Three of the new answers touch things only Will can confirm: whether a
+ * customer VPN works over a static IP, whether a given number can be ported,
+ * and the real limits of a point to point link. Each is written so that it is
+ * true without the unconfirmed part, and defers the specific to the survey
+ * rather than promising it here. If Will confirms the specifics they can be
+ * tightened; nothing needs correcting if he does not.
+ *
+ * Answered by Will on 8 Sep 2026: failover yes, out of hours yes, multi-site
+ * yes, account terms yes, lead time "within days" with emergency set-up for a
+ * business suddenly offline. VAT was never in doubt: we are VAT registered
  * (GB456635174, in the footer).
  *
  * There is deliberately no finance FAQ here. Super/Abound credit is an FCA
@@ -48,32 +68,65 @@ export interface Faq {
  */
 export const COMMERCIAL_FAQS: { q: string; a: string }[] = [
   {
-    q: "Can Starlink back up our existing line rather than replace it?",
-    a: "Yes, and for most of our commercial customers that is the point. You keep the line you already have, whether that is fibre or a leased line, and we add Starlink alongside it with 5G as a further fallback. If one link goes down the site keeps working. We set the changeover up during the installation and test it before we leave.",
+    // "Is this a business package rather than residential? Or does it not make
+    // any difference?" This is the question that decides the plan, and it was
+    // not answered anywhere on the site.
+    q: "Is this a business package or a residential one?",
+    a: "It makes a difference and we set up either. Starlink's business plans give your traffic priority on the network, which matters when the area is busy, and they come with a business account and VAT invoicing. The residential plans cost less and are fine for a small unit with a handful of people. We tell you which one your site actually needs at survey instead of putting every business on the same plan.",
   },
   {
-    q: "Can you install out of hours so we do not stop trading?",
-    a: "Yes. We can work evenings or weekends where the site needs it, so the installation does not interrupt trading or production. Tell us your constraints at survey and we plan the visit around them.",
+    // "So we can connect payment devices", "to be able to offer WiFi to
+    // customers as well as connecting our till systems".
+    q: "Will it run our tills and card machines?",
+    a: "Yes. Card terminals, cloud tills, cameras and customer WiFi all run over it the same as any other connection. Tell us what you use at survey and we will set the network up around it, including keeping the WiFi you give customers separate from the equipment that takes payments.",
   },
   {
-    q: "Can Starlink handle multiple users and heavy use?",
-    a: "Yes. We configure the system for the number of people on site and the applications you run, and we position the router and any access points around how the building is actually laid out rather than where the cable happens to arrive.",
+    // "how would you run a phone off this and could I keep my buisness phone
+    // number". Portability depends on the number and the current provider, so
+    // the answer commits to checking rather than to the outcome.
+    q: "Can we run our phones off this and keep our number?",
+    a: "Yes, phones can run over the connection, and we can supply the handsets and the service if you need them. Keeping your existing number usually works, but it depends on the number and who currently holds it, so we check that before you commit rather than after.",
   },
   {
-    q: "What is included in a commercial Starlink installation?",
-    a: "Site assessment, mounting hardware, cabling, configuration and testing. We tailor the install to the building and to how your teams use the connection, and everything is quoted and fixed before we arrive.",
+    // "Will this take 8 users ?" and "What speed can you guarantee" and "In a
+    // commercial environment?". The old answer to this one said "we configure
+    // the system for the number of people on site", which does not answer
+    // either half. Nobody can guarantee a speed on a shared network, and
+    // saying so is worth more than a number we would have to walk back.
+    q: "How many users will it take, and what speed can you guarantee?",
+    a: "A unit with eight or ten people is well within what one dish handles, and we size it against what you actually run rather than a head count. On speed, nobody can guarantee a figure on Starlink and anyone who does is guessing, because it is a shared network and the number moves. What we can do is test the connection under load before we leave, so what you see is your real speed rather than a brochure one.",
+  },
+  {
+    // "apparently they said this would not work with Starlink, looking at what
+    // the workaround is". The blocker is CGNAT, described here in plain words.
+    // Whether a specific VPN works over a static IP is a survey question, not
+    // a promise for a landing page.
+    q: "Will our VPN work over Starlink?",
+    a: "Usually, and where it does not the fix is known. The standard service puts you behind shared addressing, which is what breaks inbound connections and some VPNs. A static IP address solves that and is available with the managed service. Tell us which VPN you run at survey and we will tell you which of the two you need before you order anything.",
+  },
+  {
+    // "Would the one satellite give internet coverage for the properties
+    // surrounding our building ?", "what would be the costs for installing
+    // starlink to six properties".
+    q: "Can one dish cover several buildings on the same site?",
+    a: "Often, yes. We link outbuildings and neighbouring units back to the main dish with a point to point wireless link, which usually costs less than a second subscription. Sometimes a second dish is the better answer and we will say so. Distance, line of sight and what sits in between decide it, which is what the survey is for.",
+  },
+  {
+    // Was three separate entries: lead time, duration, and out of hours. They
+    // are three answers to one worry, which is whether this fits around the
+    // business.
+    q: "How soon can you start, and how long does it take?",
+    a: "Within days of the survey in most cases, and if a business is suddenly without internet we can arrange an emergency set-up rather than book you into the normal queue. Most installs are done in a single day, typically three to five hours on site. We can work evenings or weekends where the site cannot stop trading. Larger or multi-building sites take longer, and we tell you that at survey rather than on the day.",
   },
   {
     q: "Do I need to buy the Starlink kit first?",
     a: "No. We can supply the kit as part of the job, or install one you already own.",
   },
   {
-    q: "How long does a commercial install take?",
-    a: "Most are done in a single day, typically three to five hours on site, with the connection settling to full performance within about twelve hours. Larger or multi-building sites take longer, and we tell you which at survey rather than on the day.",
-  },
-  {
     // Will's own answer, tightened. This objection was not addressed anywhere on
-    // the site and it is the one a burned customer arrives with.
+    // the site and it is the one a burned customer arrives with. The chat log
+    // backs it: "We are using 4g and converting it to WiFi, speed is in and
+    // out, best speeds of 60mbps but currently on 2".
     q: "We tried a 4G router and it was not reliable. Why is this different?",
     a: "A 4G router on its own will not keep a business running. A combined system will. We design the connection so there is more than one way out of the building, and we manage it, so you keep operating even when your main source of internet is down.",
   },
@@ -82,12 +135,11 @@ export const COMMERCIAL_FAQS: { q: string; a: string }[] = [
     a: "Yes. We install and manage multi-site estates, with the same setup and the same point of contact across all of them.",
   },
   {
-    q: "How soon can you start?",
-    a: "Within days of the survey in most cases. If a business is suddenly without internet we can arrange an emergency set-up rather than book you into the normal queue.",
-  },
-  {
-    q: "Where do you cover?",
-    a: "The whole UK. Give us the postcode and we will confirm access and flag anything unusual about the site before we quote.",
+    // Eleventh, not first. Will calls this the primary use case and it may well
+    // be where his margin is, but no commercial visitor in the corpus arrives
+    // asking for it.
+    q: "Can Starlink back up our existing line rather than replace it?",
+    a: "Yes, and for a lot of our commercial customers that is the point. You keep the line you already have, whether that is fibre or a leased line, and we add Starlink alongside it with 5G as a further fallback. If one link goes down the site keeps working. We set the changeover up during the installation and test it before we leave.",
   },
   {
     q: "Do you invoice with VAT and can we pay on account?",
