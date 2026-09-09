@@ -10,16 +10,35 @@ const STATS = [
   // The list itself is not on the page, so nothing here shows the reader where
   // 225 comes from. That is a known gap, not an oversight.
   { value: "225+", label: "Towns & cities covered" },
-  { value: "3 days", label: "Typical lead time" },
   { value: "100%", label: "Fixed-price quotes" },
 ];
+
+/**
+ * Lead time is the one stat that differs by segment, so it is a prop rather
+ * than a constant. Residential keeps 3 days. Commercial says 7, which is the
+ * "fitted in under a week" Will has used himself and sits better beside the
+ * FAQ's "within days of the survey" than 3 did.
+ *
+ * The three-versus-seven contradiction this page used to have was the reason
+ * the commercial copy stopped stating a number at all. It is stated again here
+ * because a stat grid with a blank in it is worse than a number, but it now
+ * comes from one place instead of two.
+ */
+const DEFAULT_LEAD_TIME = "3 days";
 
 /**
  * "One team. Full coverage." coverage section — real UK map with live-install
  * pulses on the right, headline + stat grid on the left. Used on
  * /starlink-installation in place of the generic availability section.
  */
-export function CoverageMapSection() {
+export function CoverageMapSection(
+  { leadTime = DEFAULT_LEAD_TIME }: { leadTime?: string } = {},
+) {
+  const stats = [
+    ...STATS.slice(0, 2),
+    { value: leadTime, label: "Typical lead time" },
+    ...STATS.slice(2),
+  ];
   return (
     <section id="coverage" className="w-full scroll-mt-28 bg-background py-16 md:py-24">
       <div className="container mx-auto max-w-6xl">
@@ -40,7 +59,7 @@ export function CoverageMapSection() {
 
             {/* 2×2 stat grid with hairline dividers */}
             <div className="mt-10 grid max-w-lg grid-cols-2 border-t border-border">
-              {STATS.map((s, i) => (
+              {stats.map((s, i) => (
                 <div
                   key={s.label}
                   className={`py-6 ${i % 2 === 1 ? "border-l border-border pl-6" : "pr-6"} ${i >= 2 ? "border-t border-border" : ""}`}

@@ -130,7 +130,9 @@ export default function CommercialStarlinkInstallationPage() {
               against us the moment a visitor on good fibre runs the test. See
               the component for the full reasoning. */}
           <BeforeAfterSection variant="continuity" />
-          <CoverageMapSection />
+          {/* Seven, not the shared three: it is the "under a week" Will has
+              used himself, and it does not undercut the FAQ. */}
+          <CoverageMapSection leadTime="7 days" />
           <TrackRecordSection />
           <FaqSectionAlt faqs={COMMERCIAL_FAQS} />
           <CtaSection addressMode defaultService="commercial" />
