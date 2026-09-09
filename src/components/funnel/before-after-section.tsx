@@ -451,11 +451,7 @@ const outageBar = (s: number) => Math.min(100, 20 + s / 12);
  *    the one thing that pulls the reader back onto the axis we just left. The
  *    residential variant still has it, which is where it belongs.
  *
- * 3. The arithmetic needs no study and no vendor claim. Two independent
- *    connections multiply their failure rates, and the argument gets stronger
- *    the worse you assume the satellite link is. The starting percentages are
- *    labelled illustrative because they are.
- *
+
  * Server and client render the same first frame (the counter starts at a
  * constant, the interval only starts in an effect), so there is no CLS here
  * either.
@@ -563,35 +559,6 @@ function ContinuityVariant() {
             It moves back to your main line on its own when it returns.
             <br />
             Nobody on site has to do anything.
-          </div>
-        </div>
-      </div>
-
-      {/* THE ONLY NUMBER HERE THAT NEEDS NO STUDY AND NO VENDOR CLAIM. */}
-      <div className="mt-4 grid grid-cols-1 items-center gap-5 rounded-xl border border-border bg-secondary p-6 lg:grid-cols-[1fr_auto] lg:gap-10 lg:px-8 lg:py-7">
-        <div>
-          <p className="text-body-sm leading-[1.7] text-muted-foreground">
-            Two connections that fail independently almost never fail together. A main line down{" "}
-            <strong className="font-semibold text-foreground">0.5%</strong> of the year and a satellite
-            link down <strong className="font-semibold text-foreground">1%</strong> of the year are both
-            down at the same time <strong className="font-semibold text-foreground">0.005%</strong> of
-            the year.
-          </p>
-          <p className="mt-2.5 text-caption" style={{ color: VIZ.dim }}>
-            Illustrative figures. Put your own line&apos;s downtime in and the arithmetic goes the same way.
-          </p>
-        </div>
-        <div className="flex items-center gap-[18px]">
-          <div className="text-center">
-            <div style={{ fontSize: 32, fontWeight: 200, letterSpacing: "-0.03em", lineHeight: 1.1, color: "hsl(var(--error))" }}>43 h</div>
-            <div className="mt-1.5 text-label font-semibold uppercase tracking-[0.06em]" style={{ color: VIZ.dim }}>One line</div>
-          </div>
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ color: VIZ.dim, flex: "none" }}>
-            <path d="M5 12h14M13 6l6 6-6 6" />
-          </svg>
-          <div className="text-center">
-            <div style={{ fontSize: 32, fontWeight: 200, letterSpacing: "-0.03em", lineHeight: 1.1, color: "hsl(var(--success))" }}>26 min</div>
-            <div className="mt-1.5 text-label font-semibold uppercase tracking-[0.06em]" style={{ color: VIZ.dim }}>Two lines</div>
           </div>
         </div>
       </div>
