@@ -55,7 +55,19 @@ export function HeroSection(
   // a clip here cut it off. The clip only ever existed for the parallax
   // background, so it now sits on that layer instead.
   return (
-    <section className="relative flex min-h-[100svh] flex-col">
+    // 88svh on mobile, not 100. The trust bar is not pinned: the content block
+    // above it has flex-1, so it is pushed to the bottom of whatever min-height
+    // this section has, and on a tall phone at step 0 that left roughly 230px
+    // of empty photo between the address field and the bar. 88 recovers about
+    // 100px of that and still leaves the engineer in shot.
+    //
+    // Nothing changes once the form grows: past step 1 the content already
+    // exceeds the min-height, so the bar rides down with it and the content
+    // block's pb-16 guarantees 64px of air. The bar can never crowd the form,
+    // it can only be pushed below the fold, which is a different problem.
+    //
+    // Desktop keeps 100svh, where the gap does not appear.
+    <section className="relative flex min-h-[88svh] flex-col md:min-h-[100svh]">
       <div
         className="absolute inset-0 overflow-hidden"
         // `fixed` is broken on iOS Safari (the image rescales and jumps), so the
