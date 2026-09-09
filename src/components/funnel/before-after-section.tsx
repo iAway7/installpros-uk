@@ -520,10 +520,12 @@ function ContinuityVariant() {
             <span className="h-[7px] w-[7px] rounded-full motion-safe:animate-pulse" style={{ background: "hsl(var(--error))" }} />
             No connection. Nothing to fall back to.
           </div>
+          {/* Was the full list of systems. That list is its own section further
+              up the page now, so this keeps only the point the panel is making. */}
           <div className="mt-5 text-caption leading-[1.7]" style={{ color: VIZ.ink }}>
-            Card payments, phones, cloud EPOS, CCTV, the booking system.
+            Everything on site runs through it.
             <br />
-            All of it on the same line.
+            There is no second way out of the building.
           </div>
         </div>
 

@@ -3,6 +3,7 @@ import { MainHeader } from "@/components/funnel/main-header";
 import { HeroSection } from "@/components/funnel/hero-section";
 import { CoverageSection } from "@/components/funnel/coverage-section";
 import { SectorsSection } from "@/components/funnel/sectors-section";
+import { WhatItRunsSection } from "@/components/funnel/what-it-runs-section";
 import { CustomerStoriesSection } from "@/components/funnel/customer-stories-section";
 import { TrustpilotSection } from "@/components/funnel/trustpilot-section";
 import { WhyInstallProsSection, COMMERCIAL_FEATURES } from "@/components/funnel/why-installpros-section";
@@ -10,7 +11,6 @@ import { ClientLogosSection } from "@/components/funnel/client-logos-section";
 import { CoverageMapSection } from "@/components/funnel/coverage-map-section";
 import { EquipmentSection, COMMERCIAL_EQUIPMENT } from "@/components/funnel/equipment-section";
 import { LandlordPackSection } from "@/components/funnel/landlord-pack-section";
-import { InstallVideoSection } from "@/components/funnel/install-video-section";
 import { TrackRecordSection } from "@/components/funnel/track-record-section";
 import { BeforeAfterSection } from "@/components/funnel/before-after-section";
 import { FaqSectionAlt } from "@/components/funnel/faq-section-alt";
@@ -110,6 +110,10 @@ export default function CommercialStarlinkInstallationPage() {
             intro="One certified team handles everything, from the first site survey to the final speed test, and picks up the phone long after."
           />
           <SectorsSection />
+          {/* "Who this is for" running straight into "what it keeps working for
+              you". The chat log asks about tills, gates, cameras and phones far
+              more than about speed, and that answer was buried in the FAQ. */}
+          <WhatItRunsSection />
           <CoverageSection />
           <TrustpilotSection />
           <CustomerStoriesSection />
@@ -118,7 +122,10 @@ export default function CommercialStarlinkInstallationPage() {
               seen what goes on the roof, and the next thought for anyone in a
               leased unit is who has to approve it. */}
           <LandlordPackSection />
-          <InstallVideoSection />
+          {/* No install video here. The one we have is a residential job, and a
+              house works against everything else this page says to someone
+              buying for a depot. The slot stays empty until there is commercial
+              footage. Both residential landings still show it. */}
           {/* Continuity, not speed: on this page the speed comparison argues
               against us the moment a visitor on good fibre runs the test. See
               the component for the full reasoning. */}
