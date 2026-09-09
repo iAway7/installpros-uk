@@ -479,15 +479,6 @@ function ContinuityVariant() {
       heading="One line is one point of failure."
       sub="Not how fast your line is. What happens to your site when it stops."
     >
-      {/* The panels are a simulation, and the counter ticking makes them look
-          like a live readout, so they say what they are. Kept after the test
-          strip came out: the label is about the panels, not the test. */}
-      <div className="mb-3">
-        <span className="rounded-full border border-border px-2.5 py-1 text-micro font-semibold uppercase tracking-[0.14em]" style={{ color: VIZ.dim }}>
-          Illustration
-        </span>
-      </div>
-
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {/* ONE LINE (light) */}
         <div className="rounded-xl border border-border p-6 md:p-10" style={{ background: "var(--before-grad)" }}>
