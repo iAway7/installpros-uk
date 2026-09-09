@@ -97,6 +97,10 @@ export default function CommercialStarlinkInstallationPage() {
             // 62 characters a line: past about 120 it spills to a third. This
             // is 107.
             subheadline="Starlink installed and managed, with 5G failover alongside your existing line. Fixed quote, set-up in days."
+            // They arrived on the commercial page, from a commercial ad, and
+            // have just read a commercial headline. Asking them what they are
+            // installing is a step that answers itself.
+            defaultInstallType="commercial"
             installs={{ count: "460+", label: "commercial installations" }}
           />
           <ClientLogosSection />
@@ -122,7 +126,7 @@ export default function CommercialStarlinkInstallationPage() {
           <CoverageMapSection />
           <TrackRecordSection />
           <FaqSectionAlt faqs={COMMERCIAL_FAQS} />
-          <CtaSection addressMode />
+          <CtaSection addressMode defaultService="commercial" />
         </main>
       </ExperimentProvider>
       <FunnelFooter />

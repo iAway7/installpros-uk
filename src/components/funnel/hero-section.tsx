@@ -8,9 +8,11 @@ const DEFAULT_HERO = "/funnel/hero-uk-residential.webp";
 
 /** Full-bleed hero with the funnel, and a full-width trust bar pinned at the bottom. */
 export function HeroSection(
-  { smartCoverage = false, addressMode = false, image = DEFAULT_HERO, headline, subheadline, badge = "Nationwide UK Coverage", badgeFlag = true, headlineConfigKey, installs }: {
+  { smartCoverage = false, addressMode = false, image = DEFAULT_HERO, headline, subheadline, badge = "Nationwide UK Coverage", badgeFlag = true, headlineConfigKey, installs, defaultInstallType }: {
     smartCoverage?: boolean;
     addressMode?: boolean;
+    /** Pre-selects the install type on the hero funnel. Segment landings only. */
+    defaultInstallType?: string;
     /** Background photo. Keep replacements around 60 KB: the preload below is
      *  high priority, so weight here is paid straight out of first paint. */
     image?: string;
@@ -108,7 +110,7 @@ export function HeroSection(
           </p>
 
           <div className="animate-slide-up animate-delay-300 mx-auto w-full md:max-w-2xl">
-            <ZipAvailabilityChecker smartCoverage={smartCoverage} addressMode={addressMode} />
+            <ZipAvailabilityChecker smartCoverage={smartCoverage} addressMode={addressMode} defaultInstallType={defaultInstallType} />
           </div>
         </div>
       </div>

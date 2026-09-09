@@ -1,6 +1,6 @@
 import { ServiceQuoteForm } from "./service-quote-form";
 
-export function CtaSection({ addressMode = false }: { addressMode?: boolean } = {}) {
+export function CtaSection({ addressMode = false, defaultService = "" }: { addressMode?: boolean; defaultService?: string } = {}) {
   return (
     <section id="quote" className="scroll-mt-24 bg-background py-12 md:py-20">
       <div className="container mx-auto" style={{ maxWidth: "1140px" }}>
@@ -17,7 +17,7 @@ export function CtaSection({ addressMode = false }: { addressMode?: boolean } = 
             Let&apos;s make your Starlink setup stress-free, fast, and fully optimised.
           </p>
           <div className="mx-auto max-w-xl">
-            <ServiceQuoteForm addressMode={addressMode} />
+            <ServiceQuoteForm addressMode={addressMode} defaultService={defaultService} />
           </div>
         </div>
 

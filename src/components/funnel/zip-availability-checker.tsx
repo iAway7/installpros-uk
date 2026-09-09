@@ -36,7 +36,15 @@ const cleanPostcode = (v: string) => v.toUpperCase().replace(/[^A-Z0-9 ]/g, "").
  * back ("We're available in Westminster") before the lead form begins.
  */
 export function ZipAvailabilityChecker(
-  { smartCoverage = false, addressMode = false }: { smartCoverage?: boolean; addressMode?: boolean } = {},
+  { smartCoverage = false, addressMode = false, defaultInstallType = "" }: {
+    smartCoverage?: boolean;
+    addressMode?: boolean;
+    /** Pre-selects step 4 on a segment landing. Somebody who arrived on the
+     *  commercial page and read a commercial headline should not be asked what
+     *  they are installing; the step still renders so they can correct us, and
+     *  because the Next button on step 3 validates against a non-empty value. */
+    defaultInstallType?: string;
+  } = {},
 ) {
   const router = useRouter();
   const [step, setStep] = useState(0);
@@ -51,7 +59,7 @@ export function ZipAvailabilityChecker(
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [formData, setFormData] = useState<FormData>({
-    postcode: "", address: "", fullName: "", phone: "", email: "", installationType: "",
+    postcode: "", address: "", fullName: "", phone: "", email: "", installationType: defaultInstallType,
   });
   const [errors, setErrors] = useState({ fullName: "", phone: "", email: "" });
   const [showPhoneCheck, setShowPhoneCheck] = useState(false);
