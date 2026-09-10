@@ -371,6 +371,22 @@ function SpeedVariant() {
           </div>
         </div>
       </div>
+
+      {/* TODO(will): PERMISSION. His words, in the same message where he said to
+          stop using the word failover and talk about keeping businesses online:
+          "One logistics company we solved lost £150k per day just coz their only
+          source of internet died."
+
+          It is the best thing this section could have and it is not ours. The
+          company is unnamed, which needs no permission from them, but the figure
+          is his customer's and he has to be happy for it to be public.
+
+          "Told us" on purpose. It is their number, not something we measured,
+          and the sentence should not pretend otherwise. */}
+      <p className="mt-6 text-center text-body-sm text-muted-foreground">
+        A logistics operator told us a day without their only line cost them{" "}
+        <strong className="font-semibold text-foreground">£150,000</strong>.
+      </p>
     </SectionShell>
   );
 }
@@ -402,13 +418,20 @@ function EarthBackdrop() {
   );
 }
 
-/** TODO(will): NOT HIS NUMBER YET. Nine seconds is our assumption for an
- *  automatic router failover, and it is the only figure in this section that
- *  nobody has confirmed. It renders clean on the page, so the code is the only
- *  place that says so: do not treat it as verified because it looks finished.
- *  Will has been asked how long the switchover really takes and whether it
- *  happens in the router or someone has to do something. */
-const FAILOVER_SECONDS = 9;
+/** Zero, and it is Will's number now rather than our guess. Asked how long the
+ *  switchover takes he said: "failover is instant and automatic. If one system
+ *  goes down, the other kicks in (it's always running in the back ground)."
+ *
+ *  Zero is also the better design. A counter climbing on one side against a
+ *  hard nought on the other is a cleaner comparison than against nine seconds,
+ *  and both sides now carry the same unit so the number does all the work.
+ *
+ *  What is NOT going on the page is the rest of that message: "as close to 100%
+ *  uptime as possible (99.99999999rec)". Eight nines is three milliseconds of
+ *  downtime a year, which nothing with a dish on a roof achieves, and his own
+ *  "rec" suggests he threw it out from memory. His plain phrasing, "as close to
+ *  100% uptime as possible", is publishable as it stands. */
+const SWITCHOVER_SECONDS = 0;
 
 /** Where the counter starts. Any value works; this one reads as "long enough
  *  that someone has already phoned the provider". */
@@ -475,7 +498,7 @@ function ContinuityVariant() {
 
   return (
     <SectionShell
-      eyebrow="Business Continuity"
+      eyebrow="Staying online"
       heading="One line is one point of failure."
       sub="Not how fast your line is. What happens to your site when it stops."
     >
@@ -535,9 +558,9 @@ function ContinuityVariant() {
               className="tabular-nums"
               style={{ ...NUM, fontWeight: 400, color: "#fff", textShadow: "0 0 40px hsl(var(--brand-soft) / 0.5)" }}
             >
-              {clock(FAILOVER_SECONDS)}
+              {clock(SWITCHOVER_SECONDS)}
             </span>
-            <span className="text-body" style={{ color: VIZ.rose2 }}>to switch over</span>
+            <span className="text-body" style={{ color: VIZ.rose2 }}>offline</span>
           </div>
           <div className="relative mt-5 h-[3px] w-full overflow-hidden rounded-full bg-white/10">
             <div className="h-full rounded-full" style={{ width: "4%", background: "#fff", boxShadow: "0 0 12px hsl(var(--brand-soft) / 0.8)" }} />
@@ -547,12 +570,28 @@ function ContinuityVariant() {
             Site online, running on Starlink.
           </div>
           <div className="relative mt-5 text-caption leading-[1.7]" style={{ color: VIZ.rose3 }}>
-            It moves back to your main line on its own when it returns.
+            Starlink is already running alongside your line, so there is
             <br />
-            Nobody on site has to do anything.
+            nothing to switch on and nobody on site has to do anything.
           </div>
         </div>
       </div>
+
+      {/* TODO(will): PERMISSION. His words, in the same message where he said to
+          stop using the word failover and talk about keeping businesses online:
+          "One logistics company we solved lost £150k per day just coz their only
+          source of internet died."
+
+          It is the best thing this section could have and it is not ours. The
+          company is unnamed, which needs no permission from them, but the figure
+          is his customer's and he has to be happy for it to be public.
+
+          "Told us" on purpose. It is their number, not something we measured,
+          and the sentence should not pretend otherwise. */}
+      <p className="mt-6 text-center text-body-sm text-muted-foreground">
+        A logistics operator told us a day without their only line cost them{" "}
+        <strong className="font-semibold text-foreground">£150,000</strong>.
+      </p>
     </SectionShell>
   );
 }

@@ -82,7 +82,12 @@ export const COMMERCIAL_FEATURES: Feature[] = [
   {
     // Will: failover is "the primary use case", Starlink with 5G backup, and it
     // can run alongside an existing leased line rather than replacing it.
-    t: "Built-In Failover",
+    // Not "Built-In Failover" any more. Will: "if businesses aren't searching
+    // for that term (it's a technical term) I believe we should focus on
+    // keeping businesses online." He reached that from knowing his customers;
+    // eighty commercial chats in which nobody says the word reached it from the
+    // other side.
+    t: "Always A Second Line",
     d: "Starlink with 5G backup, working alongside the line you already have. The site stays up when one link does not.",
     i: IconWifi,
   },
