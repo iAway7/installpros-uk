@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { MainHeader } from "@/components/funnel/main-header";
 import { HeroSection } from "@/components/funnel/hero-section";
+import { WhatsAppFab } from "@/components/funnel/whatsapp-fab";
 import { WhyInstallProsSection } from "@/components/funnel/why-installpros-section";
 import { CoverageSection } from "@/components/funnel/coverage-section";
 import { CustomerStoriesSection } from "@/components/funnel/customer-stories-section";
@@ -57,6 +58,10 @@ export default function InstallQuotePage() {
       <ExperimentProvider>
         <main id="main" tabIndex={-1} className="flex flex-col outline-none">
           <HeroSection />
+          {/* Mounted here on purpose: the sentinel inside it sits in flow at
+              this exact spot, so the button appears once the hero is behind
+              you. It takes itself off screen again over the quote form. */}
+          <WhatsAppFab />
           <WhyInstallProsSection />
           <CoverageSection />
           <TrustpilotSection />

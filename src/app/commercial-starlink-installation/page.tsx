@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { MainHeader } from "@/components/funnel/main-header";
 import { HeroSection } from "@/components/funnel/hero-section";
+import { WhatsAppFab } from "@/components/funnel/whatsapp-fab";
 import { CoverageSection } from "@/components/funnel/coverage-section";
 import { SectorsSection } from "@/components/funnel/sectors-section";
 import { WhatItRunsSection } from "@/components/funnel/what-it-runs-section";
@@ -103,6 +104,10 @@ export default function CommercialStarlinkInstallationPage() {
             defaultInstallType="commercial"
             installs={{ count: "460+", label: "commercial installations" }}
           />
+          {/* Mounted here on purpose: the sentinel inside it sits in flow at
+              this exact spot, so the button appears once the hero is behind
+              you. It takes itself off screen again over the quote form. */}
+          <WhatsAppFab />
           <ClientLogosSection />
           <WhyInstallProsSection
             features={COMMERCIAL_FEATURES}
