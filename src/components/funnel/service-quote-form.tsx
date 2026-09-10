@@ -19,7 +19,6 @@ import { submitLead } from "@/lib/funnel/submit-lead";
 import { track, EVENTS } from "@/lib/analytics";
 
 type CheckStatus = "idle" | "checking" | "available" | "invalid";
-const TOTAL_STEPS = 4;
 
 interface FormData {
   postcode: string;
@@ -51,12 +50,30 @@ export function ServiceQuoteForm({
   defaultService = "",
   serviceMode = "starlink",
   addressMode = false,
+  skipServiceStep = false,
+  formName = "cta_form",
 }: {
   defaultService?: string;
   serviceMode?: "starlink" | "any";
   addressMode?: boolean;
+  /** Removes the service step. Needs defaultService to be set. */
+  skipServiceStep?: boolean;
+  /** Names this form in analytics and on the lead, e.g. "starlink_commercial",
+   *  so a lead is traceable to the landing page that produced it. */
+  formName?: string;
 }) {
   const router = useRouter();
+  // A landing that already knows what it is selling can drop the service step.
+  // Will's reasoning, and it is right: the page is the segment, so the
+  // question's answer is already on the screen above the form.
+  //
+  // It only takes effect together with defaultService, because submit() still
+  // needs a value and the page no longer has a control that could set one. The
+  // consent box and the legal notice move to whatever the last step now is, so
+  // nothing is quietly dropped along with the step.
+  const skipService = skipServiceStep && defaultService !== "";
+  const lastStep = skipService ? 3 : 4;
+
   const [step, setStep] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [direction, setDirection] = useState<"forward" | "backward">("forward");
@@ -105,14 +122,14 @@ export function ServiceQuoteForm({
   // Per-step funnel tracking for precise drop-off analysis in PostHog.
   useEffect(() => {
     const names = ["postcode", "name", "phone", "email", "service"];
-    track(EVENTS.FORM_STEP_VIEWED, { step_number: step, step_name: names[step], form_name: "cta_form" });
-  }, [step]);
+    track(EVENTS.FORM_STEP_VIEWED, { step_number: step, step_name: names[step], form_name: formName });
+  }, [step, formName]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== "Enter" || isTransitioning || isSubmitting) return;
       if (step === 0 && status === "available") next();
-      else if (step > 0 && step < 4 && canProceed()) stepNext();
+      else if (step > 0 && step < lastStep && canProceed()) stepNext();
     };
     window.addEventListener("keypress", onKey);
     return () => window.removeEventListener("keypress", onKey);
@@ -191,7 +208,7 @@ export function ServiceQuoteForm({
         zipCode: formData.postcode, state: region, fullName: formData.fullName,
         phone: formData.phone, email: formData.email, address: formData.address || undefined,
         installationType: formData.installationType, source: "cta_section",
-        marketingConsent: consent,
+        marketingConsent: consent, formName,
       });
       toast.success("Quote request submitted!");
       router.push(`/thank-you?leadId=${leadId}`);
@@ -203,7 +220,7 @@ export function ServiceQuoteForm({
   function stepNext() {
     if (step === 1 && checkName()) return next();
     if (step === 2 && checkPhone()) return next();
-    if (step === 3 && checkEmail()) return next();
+    if (step === 3 && checkEmail()) return skipService ? submit() : next();
     if (step === 4) return submit();
   }
 
@@ -264,12 +281,12 @@ export function ServiceQuoteForm({
           )}
 
           {step === 1 && (
-            <StepField anim={anim} label={`Step 1 of ${TOTAL_STEPS}`} title="What's your name?" error={errors.fullName} errorId="cta-err-name">
+            <StepField anim={anim} label={`Step 1 of ${lastStep}`} title="What's your name?" error={errors.fullName} errorId="cta-err-name">
               <Input ref={nameRef} type="text" value={formData.fullName} onChange={(e) => setFormData((d) => ({ ...d, fullName: e.target.value }))} placeholder="Full Name" inputSize="lg" aria-label="Full name" state={errors.fullName ? "error" : "default"} aria-describedby={errors.fullName ? "cta-err-name" : undefined} className="text-center text-body md:text-[22px]" />
             </StepField>
           )}
           {step === 2 && (
-            <StepField anim={anim} label={`Step 2 of ${TOTAL_STEPS}`} title="What's your phone number?" error={errors.phone} errorId="cta-err-phone">
+            <StepField anim={anim} label={`Step 2 of ${lastStep}`} title="What's your phone number?" error={errors.phone} errorId="cta-err-phone">
               <div className="relative">
                 <Input ref={phoneRef} type="tel" value={formData.phone} onChange={onPhoneChange} placeholder="Enter phone number" inputSize="lg" aria-label="Phone number" state={errors.phone ? "error" : "default"} aria-describedby={errors.phone ? "cta-err-phone" : undefined} className="text-center text-body md:text-[22px]" />
                 {showPhoneCheck && <Check className="absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-success" />}
@@ -277,17 +294,32 @@ export function ServiceQuoteForm({
             </StepField>
           )}
           {step === 3 && (
-            <StepField anim={anim} label={`Step 3 of ${TOTAL_STEPS}`} title="What's your email?" error={errors.email} errorId="cta-err-email">
+            <StepField anim={anim} label={`Step 3 of ${lastStep}`} title="What's your email?" error={errors.email} errorId="cta-err-email">
               <div className="relative">
                 <Input ref={emailRef} type="email" value={formData.email} onChange={onEmailChange} placeholder="you@example.com" inputSize="lg" aria-label="Email" state={errors.email ? "error" : "default"} aria-describedby={errors.email ? "cta-err-email" : undefined} className="text-center text-body md:text-[22px]" />
                 {showEmailCheck && <Check className="absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-success" />}
               </div>
             </StepField>
           )}
+
+          {/* The consent box and the legal notice belong to the last step,
+              wherever that is. Without this they would vanish with step 4. */}
+          {skipService && step === 3 && (
+            <div className={`mt-6 ${anim}`}>
+              <ConsentCheckbox
+                checked={consent}
+                onChange={setConsent}
+                tone="light"
+                id="cta-marketing"
+                label={<>Keep me updated on offers and news from Install Pros <span className="text-muted-foreground/60">(optional)</span>.</>}
+              />
+            </div>
+          )}
+
           {step === 4 && (
             <div className={`space-y-4 ${anim}`}>
               <div className="space-y-2 text-center">
-                <p className="text-body font-semibold text-primary">Step 4 of {TOTAL_STEPS}</p>
+                <p className="text-body font-semibold text-primary">Step 4 of {lastStep}</p>
                 <h2 className="h2-form text-foreground">
                   {serviceMode === "starlink" ? "What are we installing?" : "Which service are you looking for?"}
                 </h2>
@@ -346,13 +378,13 @@ export function ServiceQuoteForm({
               {isSubmitting ? (
                 <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> Submitting...</>
               ) : (
-                <>{step === 4 ? "Get My Free Quote" : "Next"} <ArrowRight className="ml-2 h-5 w-5" /></>
+                <>{step === lastStep ? "Get My Free Quote" : "Next"} <ArrowRight className="ml-2 h-5 w-5" /></>
               )}
             </Button>
           </div>
         )}
 
-        {step === 4 && <FormLegalNotice tone="light" />}
+        {step === lastStep && <FormLegalNotice tone="light" />}
       </div>
     </div>
   );

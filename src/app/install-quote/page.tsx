@@ -57,7 +57,7 @@ export default function InstallQuotePage() {
       <MainHeader />
       <ExperimentProvider>
         <main id="main" tabIndex={-1} className="flex flex-col outline-none">
-          <HeroSection />
+          <HeroSection formName="starlink_install_quote" />
           {/* Mounted here on purpose: the sentinel inside it sits in flow at
               this exact spot, so the button appears once the hero is behind
               you. It takes itself off screen again over the quote form. */}
@@ -72,7 +72,7 @@ export default function InstallQuotePage() {
           <CoverageMapSection />
           <TrackRecordSection />
           <FaqSectionAlt />
-          <CtaSection />
+          <CtaSection formName="starlink_install_quote" />
         </main>
       </ExperimentProvider>
       <FunnelFooter />

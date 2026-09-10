@@ -59,7 +59,10 @@ export default function StarlinkInstallationPage() {
       <MainHeader />
       <ExperimentProvider>
         <main id="main" tabIndex={-1} className="flex flex-col outline-none">
-          <HeroSection smartCoverage addressMode />
+          {/* The step stays here: this page sells all four install types and
+              Marine and Mobile/RV have no landing of their own yet, so it is
+              the only place those leads can identify themselves. */}
+          <HeroSection smartCoverage addressMode formName="starlink_residential" />
           {/* Mounted here on purpose: the sentinel inside it sits in flow at
               this exact spot, so the button appears once the hero is behind
               you. It takes itself off screen again over the quote form. */}
@@ -74,7 +77,7 @@ export default function StarlinkInstallationPage() {
           <CoverageMapSection />
           <TrackRecordSection />
           <FaqSectionAlt />
-          <CtaSection addressMode />
+          <CtaSection addressMode formName="starlink_residential" />
         </main>
       </ExperimentProvider>
       <FunnelFooter />

@@ -17,7 +17,6 @@ import { submitLead } from "@/lib/funnel/submit-lead";
 import { track, EVENTS } from "@/lib/analytics";
 
 type CheckStatus = "idle" | "checking" | "available" | "invalid";
-const TOTAL_STEPS = 4;
 
 interface FormData {
   postcode: string;
@@ -36,17 +35,33 @@ const cleanPostcode = (v: string) => v.toUpperCase().replace(/[^A-Z0-9 ]/g, "").
  * back ("We're available in Westminster") before the lead form begins.
  */
 export function ZipAvailabilityChecker(
-  { smartCoverage = false, addressMode = false, defaultInstallType = "" }: {
+  { smartCoverage = false, addressMode = false, defaultInstallType = "", skipServiceStep = false, formName = "hero_funnel" }: {
     smartCoverage?: boolean;
     addressMode?: boolean;
-    /** Pre-selects step 4 on a segment landing. Somebody who arrived on the
-     *  commercial page and read a commercial headline should not be asked what
-     *  they are installing; the step still renders so they can correct us, and
-     *  because the Next button on step 3 validates against a non-empty value. */
+    /** Pre-selects the install type on a segment landing. Somebody who arrived
+     *  on the commercial page and read a commercial headline should not be
+     *  asked what they are installing. On its own it keeps the step visible so
+     *  they can correct us; pair it with skipServiceStep to remove it. */
     defaultInstallType?: string;
+    /** Removes the install-type step. Needs defaultInstallType to be set. */
+    skipServiceStep?: boolean;
+    /** Names this form in analytics and on the lead, e.g. "starlink_commercial",
+     *  so a lead is traceable to the landing page that produced it. */
+    formName?: string;
   } = {},
 ) {
   const router = useRouter();
+  // A landing that already knows what it is selling can drop the install-type
+  // step. Will's reasoning, and it is right: the page is the segment, so the
+  // question's answer is already on the screen above the form.
+  //
+  // It only takes effect together with a default, because submit() still needs
+  // a value and the page no longer has a control that could set one. When it
+  // is on, the consent box and the legal notice move to whatever the last step
+  // now is, so nothing is quietly dropped along with the step.
+  const skipService = skipServiceStep && defaultInstallType !== "";
+  const lastStep = skipService ? 3 : 4;
+
   const [step, setStep] = useState(0);
   const [smartMessage, setSmartMessage] = useState<string | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -130,8 +145,8 @@ export function ZipAvailabilityChecker(
   // Per-step funnel tracking, so PostHog shows exactly where people drop off.
   useEffect(() => {
     const names = ["postcode", "name", "phone", "email", "install_type"];
-    track(EVENTS.FORM_STEP_VIEWED, { step_number: step, step_name: names[step], form_name: "hero_funnel" });
-  }, [step]);
+    track(EVENTS.FORM_STEP_VIEWED, { step_number: step, step_name: names[step], form_name: formName });
+  }, [step, formName]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -265,7 +280,7 @@ export function ZipAvailabilityChecker(
         zipCode: formData.postcode, state: region, fullName: formData.fullName,
         phone: formData.phone, email: formData.email, address: formData.address || undefined,
         installationType: formData.installationType, source: "hero_funnel",
-        marketingConsent: consent,
+        marketingConsent: consent, formName,
       });
       toast.success("Quote request submitted!");
       router.push(`/thank-you?leadId=${leadId}`);
@@ -278,7 +293,7 @@ export function ZipAvailabilityChecker(
   function stepNext() {
     if (step === 1 && checkName()) return next();
     if (step === 2 && checkPhone()) return next();
-    if (step === 3 && checkEmail()) return next();
+    if (step === 3 && checkEmail()) return skipService ? submit() : next();
     if (step === 4) return submit();
   }
 
@@ -360,7 +375,7 @@ export function ZipAvailabilityChecker(
           )}
 
           {step === 1 && (
-            <StepField anim={anim} stepLabel={`Step 1 of ${TOTAL_STEPS}`} title="What's your name?" error={errors.fullName} errorId="err-name">
+            <StepField anim={anim} stepLabel={`Step 1 of ${lastStep}`} title="What's your name?" error={errors.fullName} errorId="err-name">
               <Input
                 ref={nameRef} type="text" value={formData.fullName}
                 onChange={(e) => setFormData((d) => ({ ...d, fullName: e.target.value }))}
@@ -373,7 +388,7 @@ export function ZipAvailabilityChecker(
           )}
 
           {step === 2 && (
-            <StepField anim={anim} stepLabel={`Step 2 of ${TOTAL_STEPS}`} title="What's your phone number?" error={errors.phone} errorId="err-phone">
+            <StepField anim={anim} stepLabel={`Step 2 of ${lastStep}`} title="What's your phone number?" error={errors.phone} errorId="err-phone">
               <div className="relative">
                 <Input
                   ref={phoneRef} type="tel" value={formData.phone} onChange={onPhoneChange}
@@ -388,7 +403,7 @@ export function ZipAvailabilityChecker(
           )}
 
           {step === 3 && (
-            <StepField anim={anim} stepLabel={`Step 3 of ${TOTAL_STEPS}`} title="What's your email?" error={errors.email} errorId="err-email">
+            <StepField anim={anim} stepLabel={`Step 3 of ${lastStep}`} title="What's your email?" error={errors.email} errorId="err-email">
               <div className="relative">
                 <Input
                   ref={emailRef} type="email" value={formData.email} onChange={onEmailChange}
@@ -402,10 +417,24 @@ export function ZipAvailabilityChecker(
             </StepField>
           )}
 
+          {/* The consent box and the legal notice belong to the last step,
+              wherever that is. Without this they would vanish with step 4. */}
+          {skipService && step === 3 && (
+            <div className={`mt-6 ${anim}`}>
+              <ConsentCheckbox
+                checked={consent}
+                onChange={setConsent}
+                tone="dark"
+                id="hero-marketing"
+                label={<>Keep me updated on offers and news from Install Pros <span className="text-white/50">(optional)</span>.</>}
+              />
+            </div>
+          )}
+
           {step === 4 && (
             <div className={`space-y-6 ${anim}`}>
               <div className="space-y-2 text-center">
-                <p className="text-body font-semibold text-white/80">Step 4 of {TOTAL_STEPS}</p>
+                <p className="text-body font-semibold text-white/80">Step 4 of {lastStep}</p>
                 <h2 className="h2-form text-white">What are we installing?</h2>
               </div>
               <div className="grid grid-cols-2 gap-3">
@@ -440,13 +469,13 @@ export function ZipAvailabilityChecker(
               {isSubmitting ? (
                 <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> Submitting...</>
               ) : (
-                <>{step === 4 ? "Get My Free Quote" : "Next"} <ArrowRight className="ml-2 h-5 w-5" /></>
+                <>{step === lastStep ? "Get My Free Quote" : "Next"} <ArrowRight className="ml-2 h-5 w-5" /></>
               )}
             </Button>
           </div>
         )}
 
-        {step === 4 && <FormLegalNotice tone="dark" />}
+        {step === lastStep && <FormLegalNotice tone="dark" />}
       </div>
     </div>
   );

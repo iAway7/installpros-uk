@@ -102,6 +102,11 @@ export default function CommercialStarlinkInstallationPage() {
             // have just read a commercial headline. Asking them what they are
             // installing is a step that answers itself.
             defaultInstallType="commercial"
+            // Will: "they are on a page specific to commercial so shouldn't
+            // need to specify what we're installing". The step goes; the value
+            // still travels with the lead, set by the page rather than typed.
+            skipServiceStep
+            formName="starlink_commercial"
             installs={{ count: "460+", label: "commercial installations" }}
           />
           {/* Mounted here on purpose: the sentinel inside it sits in flow at
@@ -140,7 +145,7 @@ export default function CommercialStarlinkInstallationPage() {
           <CoverageMapSection leadTime="7 days" />
           <TrackRecordSection />
           <FaqSectionAlt faqs={COMMERCIAL_FAQS} />
-          <CtaSection addressMode defaultService="commercial" />
+          <CtaSection addressMode defaultService="commercial" skipServiceStep formName="starlink_commercial" />
         </main>
       </ExperimentProvider>
       <FunnelFooter />

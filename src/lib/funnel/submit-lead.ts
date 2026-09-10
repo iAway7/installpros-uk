@@ -13,6 +13,13 @@ export interface LeadInput {
   source: string; // 'hero_funnel' | 'cta_section'
   address?: string; // full street address (address-autocomplete variant)
   marketingConsent?: boolean; // optional consent tick — recorded, never required
+  /** Which landing page's form this is, e.g. "starlink_commercial". Will asked
+   *  for each landing's form to be identifiable on its own, so a lead can be
+   *  traced to the page that produced it rather than to "the funnel". `source`
+   *  already says which of the two forms on the page it was; this says which
+   *  page. Both are needed: the hero form on the commercial landing and the
+   *  hero form on the residential one are the same component. */
+  formName?: string;
 }
 
 declare global {
@@ -40,7 +47,7 @@ export async function submitLead(input: LeadInput): Promise<string> {
   // the residential funnel and this is commercial-only for now.
   const sector = readSectorInterest();
 
-  track(EVENTS.QUOTE_SUBMITTED, { install_type: input.installationType as never });
+  track(EVENTS.QUOTE_SUBMITTED, { install_type: input.installationType as never, form_name: input.formName });
 
   const res = await fetch("/api/lead", {
     method: "POST",
@@ -52,7 +59,7 @@ export async function submitLead(input: LeadInput): Promise<string> {
       postcode: input.zipCode,
       install_type: "residential", // schema enum; real selection kept in notes
       service: input.installationType,
-      notes: `Service: ${input.installationType} | State: ${input.state} | ZIP: ${input.zipCode}${input.address ? ` | Address: ${input.address}` : ""} | Consent: ${input.marketingConsent ? "yes" : "no"}${sector ? ` | Sector: ${sector}` : ""}`,
+      notes: `Service: ${input.installationType} | State: ${input.state} | ZIP: ${input.zipCode}${input.address ? ` | Address: ${input.address}` : ""} | Consent: ${input.marketingConsent ? "yes" : "no"}${sector ? ` | Sector: ${sector}` : ""}${input.formName ? ` | Form: ${input.formName}` : ""}`,
       meta: getLeadAttribution(),
     }),
   });
@@ -80,7 +87,12 @@ export async function submitLead(input: LeadInput): Promise<string> {
   if (typeof window !== "undefined" && typeof window.gtag === "function") {
     window.gtag("event", "lead_submission", {
       event_category: "conversion",
+      // event_label is deliberately unchanged. The Google Ads conversion action
+      // keys off the event name, but the label is what the existing reports
+      // segment on, and rewriting it would break the history. The landing page
+      // goes in its own parameter instead.
       event_label: `form_submission_${input.source}`,
+      form_name: input.formName,
       value: 1,
     });
   }
@@ -88,6 +100,7 @@ export async function submitLead(input: LeadInput): Promise<string> {
   identifyLead(leadId, { email: input.email, service: input.installationType });
   track(EVENTS.LEAD_CREATED, {
     install_type: input.installationType as never,
+    form_name: input.formName,
     lead_id: leadId,
     lead_persisted: leadPersisted,
   });
