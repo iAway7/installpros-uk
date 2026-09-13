@@ -26,6 +26,30 @@ as a fallback but the service was retired in May 2026; use the bearer token.)
 Without keys the enrichment still runs on the two keyless sources and scores
 with whatever signals it has.
 
+## Broadband: open data, not the API
+
+The Ofcom API subscription has been pending approval for months, and it turns
+out not to matter. Connected Nations publishes the same underlying data as an
+open download, at full postcode resolution, with no key and no quota.
+
+Load it once per annual release:
+
+```bash
+node scripts/load-ofcom-postcode-coverage.mjs \
+  "../202601_fixed_broadband_coverage_and_full_fibre_take-up-r1.zip"
+```
+
+The ZIP comes from ofcom.org.uk (Connected Nations, "Fixed broadband coverage
+and full fibre take-up"). The script reads the 121 per-area CSVs under
+`postcode_files_r2/` and fills `ofcom_postcode_coverage`, about 1.7M rows.
+Run it from your own terminal: the script needs to reach Supabase.
+
+Note the shape of the data. Ofcom gives percentages of premises per speed band,
+not a max speed, so the score and the lead card work in those terms: "82% of
+premises here can't get 30 Mbps" rather than an estimated maximum. The
+`OFCOM_API_KEY` / homedata paths stay as a fallback for postcodes missing from
+the load.
+
 ## How it works
 
 - On form submit, the funnel fires a fire-and-forget `POST

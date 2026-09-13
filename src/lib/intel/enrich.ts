@@ -4,6 +4,7 @@ import { fetchBroadband, fetchCrime, fetchEpc, fetchPostcodeInfo, fetchPricePaid
 import { fetchPropaltBroadband, propaltConfigured } from "@/lib/broadband/propalt";
 import { fetchHomedata } from "@/lib/broadband/coverage";
 import { getOutcodeBroadband } from "@/lib/broadband/outcodes";
+import { fetchPostcodeCoverage } from "@/lib/broadband/postcode-coverage";
 import { getSetting } from "@/lib/settings/app-settings";
 import { scoreLead } from "./score";
 import type { IntelSignals } from "./types";
@@ -121,8 +122,15 @@ export async function enrichLead(leadId: string, opts: { force?: boolean } = {})
   const pcCompact = postcode.replace(/\s+/g, "");
   const actual = await propaltActualSpeed(supabase, pcCompact);
 
-  // Max available download: Ofcom when the key is live, homedata meanwhile.
-  const maxDown = bb?.maxDownloadMbps ?? (await homedataMaxDown(supabase, pcCompact));
+  // Ofcom coverage bands for this exact postcode, from our own table: this is
+  // the primary broadband evidence and costs nothing to read.
+  const coverage = await fetchPostcodeCoverage(supabase, pcCompact);
+
+  // Max available download: only still needed where the Ofcom load has no row
+  // for the postcode. Ofcom API when the key is live, homedata meanwhile.
+  const maxDown = coverage
+    ? (bb?.maxDownloadMbps ?? null)
+    : (bb?.maxDownloadMbps ?? (await homedataMaxDown(supabase, pcCompact)));
 
   // Rural heuristic: England/Wales postcodes in a named civil parish sit
   // overwhelmingly outside the big urban cores (cities are unparished).
@@ -136,6 +144,7 @@ export async function enrichLead(leadId: string, opts: { force?: boolean } = {})
     maxUploadMbps: bb?.maxUploadMbps ?? null,
     actualDownloadMbps: actual.avg,
     outcodeUnable30Pct: getOutcodeBroadband(postcode.split(/\s+/)[0])?.unable30Pct ?? null,
+    coverage,
     propertyType: epc?.propertyType ?? null,
     builtForm: epc?.builtForm ?? null,
     constructionAge: epc?.constructionAge ?? null,
@@ -154,7 +163,7 @@ export async function enrichLead(leadId: string, opts: { force?: boolean } = {})
       ofcom: bb?.raw ?? null,
       epc: epc?.raw ?? null,
       land_registry: price?.raw ?? null,
-      broadband_source: bb?.maxDownloadMbps != null ? "ofcom" : maxDown != null ? "homedata" : null,
+      broadband_source: coverage ? "ofcom_open_data" : bb?.maxDownloadMbps != null ? "ofcom_api" : maxDown != null ? "homedata" : null,
     },
   };
 
@@ -183,6 +192,7 @@ export async function enrichLead(leadId: string, opts: { force?: boolean } = {})
     crime_burglary: crime?.burglary ?? null,
     crime_vehicle: crime?.vehicle ?? null,
     energy_cost_annual: epc?.energyCostAnnual ?? null,
+    broadband_coverage: coverage,
     raw: signals.raw,
   });
   if (error) return { ok: false, reason: error.message };

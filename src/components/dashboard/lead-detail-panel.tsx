@@ -6,6 +6,7 @@ import { X, ExternalLink, Check, Pencil, RefreshCw, Wifi, Home, MapPinned, Loade
 import type { LeadIntel, PlanningConstraint } from "@/lib/intel/types";
 import { pitchAngles } from "@/lib/intel/pitch-angles";
 import { InfoTip } from "@/components/system/info-tip";
+import { coverageHeadline } from "@/lib/broadband/postcode-coverage";
 import { scoreStyle } from "@/lib/dashboard/leads";
 import {
   type Lead,
@@ -415,13 +416,16 @@ function IntelSection({ leadId, intel }: { leadId: string; intel?: LeadIntel }) 
           )}
           <div className="grid grid-cols-2 gap-x-4 gap-y-5">
             <Field
-              label="Broadband (max down)"
-              tip="Fastest download speed available at this postcode. Under 30 Mbps is the strongest Starlink signal there is."
-              source="Ofcom Connected Nations, homedata while Ofcom is pending"
+              label="Broadband availability"
+              tip="What premises at this postcode can actually get. Ofcom publishes the share of homes in each speed band, so a high share unable to get 30 Mbps is the strongest Starlink signal there is."
+              source="Ofcom Connected Nations (open data)"
             >
-              <span className="inline-flex items-center gap-1.5">
-                <Wifi className="h-3.5 w-3.5 text-muted-foreground" />
-                {intel.max_download_mbps != null ? `${intel.max_download_mbps} Mbps` : "—"}
+              <span className="inline-flex items-start gap-1.5">
+                <Wifi className="mt-0.5 h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+                <span>
+                  {coverageHeadline(intel.broadband_coverage) ??
+                    (intel.max_download_mbps != null ? `${intel.max_download_mbps} Mbps max` : "—")}
+                </span>
               </span>
             </Field>
             <Field

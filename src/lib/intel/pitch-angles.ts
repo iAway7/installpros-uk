@@ -7,12 +7,16 @@ import type { LeadIntel } from "./types";
  */
 export function pitchAngles(intel: Pick<
   LeadIntel,
-  "max_download_mbps" | "actual_avg_download_mbps" | "crime_burglary" | "crime_total" | "energy_cost_annual"
+  "max_download_mbps" | "broadband_coverage" | "actual_avg_download_mbps" | "crime_burglary" | "crime_total" | "energy_cost_annual"
 > | null): string[] {
   if (!intel) return [];
   const angles: string[] = [];
 
-  if (intel.max_download_mbps != null && intel.max_download_mbps < 30) {
+  // Postcode coverage first: it is the evidence the score itself is built on.
+  const unable30 = intel.broadband_coverage?.pctUnable30 ?? null;
+  if (unable30 !== null && unable30 >= 20) {
+    angles.push(`${unable30}% of premises here can't get 30 Mbps: lead with Starlink`);
+  } else if (intel.max_download_mbps != null && intel.max_download_mbps < 30) {
     angles.push("Slow broadband: lead with Starlink");
   } else if (intel.actual_avg_download_mbps != null && intel.actual_avg_download_mbps < 25) {
     angles.push(`Residents actually get ~${intel.actual_avg_download_mbps} Mbps: lead with Starlink`);

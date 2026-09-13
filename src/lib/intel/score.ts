@@ -15,9 +15,25 @@ export function scoreLead(s: IntelSignals): { score: number; reasons: ScoreReaso
     if (points !== 0) reasons.push({ signal, points, detail });
   };
 
-  // ── Broadband (dominant, -3 … +4) ──
+  // ── Broadband availability (dominant, -3 … +4) ──
+  // Ofcom publishes bands per postcode, not a max speed. The share of premises
+  // that can't reach the USO is the sharpest signal: those households have no
+  // fixed alternative at all.
+  const cov = s.coverage;
   const down = s.maxDownloadMbps;
-  if (down !== null) {
+  if (cov) {
+    const u10 = cov.pctUnable10;
+    const u30 = cov.pctUnable30;
+    const fast = cov.pct300plus;
+    if (u10 !== null && u10 >= 10) add("broadband", 4, `${u10}% of premises below the 10 Mbps USO`);
+    else if (u30 !== null && u30 >= 50) add("broadband", 3.5, `${u30}% of premises can't get 30 Mbps`);
+    else if (u30 !== null && u30 >= 20) add("broadband", 2.5, `${u30}% of premises can't get 30 Mbps`);
+    else if (u30 !== null && u30 >= 5) add("broadband", 1, `${u30}% of premises can't get 30 Mbps`);
+    else if (fast !== null && fast >= 80) add("broadband", -3, `${fast}% already have 300+ Mbps available`);
+    else if (fast !== null && fast >= 40) add("broadband", -1.5, `${fast}% have 300+ Mbps available`);
+  } else if (down !== null) {
+    // Fallback while a postcode is missing from the Ofcom load: homedata's
+    // single max-speed figure.
     if (down < 10) add("broadband", 4, `${down} Mbps, below USO, desperate for Starlink`);
     else if (down < 30) add("broadband", 3, `${down} Mbps, below superfast threshold`);
     else if (down < 80) add("broadband", 1.5, `${down} Mbps, mediocre`);
@@ -39,7 +55,7 @@ export function scoreLead(s: IntelSignals): { score: number; reasons: ScoreReaso
   // ── District availability fallback (bundled Ofcom data, only when the
   //    postcode-level sources above returned nothing) ──
   const unable30 = s.outcodeUnable30Pct;
-  if (down === null && actual === null && unable30 !== null) {
+  if (!cov && down === null && actual === null && unable30 !== null) {
     if (unable30 >= 30) add("district_broadband", 2.5, `${Math.round(unable30)}% of homes in the district can't get 30 Mbps`);
     else if (unable30 >= 15) add("district_broadband", 1.5, `${Math.round(unable30)}% of homes in the district can't get 30 Mbps`);
     else if (unable30 <= 2) add("district_broadband", -1, "District has near-universal superfast availability");
@@ -72,7 +88,7 @@ export function scoreLead(s: IntelSignals): { score: number; reasons: ScoreReaso
   // Without any broadband signal (postcode-level OR district-level) we're
   // missing the strongest evidence, so cap at 7: no "call first" 8-10 on
   // property shape alone.
-  if (down === null && actual === null && unable30 === null && score > 7) {
+  if (!cov && down === null && actual === null && unable30 === null && score > 7) {
     score = 7;
     reasons.push({ signal: "cap", points: 0, detail: "Capped at 7, no broadband data for this postcode" });
   }

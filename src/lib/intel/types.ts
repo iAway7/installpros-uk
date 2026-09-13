@@ -1,3 +1,5 @@
+import type { PostcodeCoverage } from "@/lib/broadband/postcode-coverage";
+
 /** Property-intelligence result stored in `lead_intel` (one row per lead). */
 export interface LeadIntel {
   lead_id: string;
@@ -40,6 +42,8 @@ export interface LeadIntel {
   property_lng: number | null;
   /** [] = checked and nothing found. null = never checked. */
   planning_constraints: PlanningConstraint[] | null;
+  /** Snapshot of the Ofcom postcode coverage this lead was scored on. */
+  broadband_coverage: PostcodeCoverage | null;
   created_at: string;
 }
 
@@ -65,6 +69,8 @@ export interface IntelSignals {
   actualDownloadMbps: number | null;
   /** District-level % of premises unable to get 30 Mbit/s (bundled Ofcom data) */
   outcodeUnable30Pct: number | null;
+  /** Postcode-level Ofcom coverage, the strongest broadband evidence we have */
+  coverage: PostcodeCoverage | null;
   propertyType: string | null;
   builtForm: string | null;
   constructionAge: string | null;
