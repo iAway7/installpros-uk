@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { ArrowRight } from "lucide-react";
-import { MainHeader } from "@/components/funnel/main-header";
+import { FunnelHeaderLight } from "@/components/funnel/funnel-header-light";
 import { FunnelFooter } from "@/components/funnel/funnel-footer";
 import { Button } from "@/components/system/button";
 import { FaqTabs } from "@/components/funnel/faq-tabs";
@@ -35,9 +35,13 @@ export default function FaqsPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqStructuredData) }}
       />
-      <MainHeader />
+      {/* Not MainHeader: that one is fixed and transparent until you
+          scroll, so its white logo sat invisible on this white page until you
+          moved. This page has no hero to sit over, so it takes the header in
+          its resting state. */}
+      <FunnelHeaderLight ctaLocation="faqs" />
 
-      <main className="px-6 pb-16 pt-28 md:pt-36">
+      <main className="px-6 pb-16 pt-10 md:pt-14">
         <div className="container mx-auto max-w-4xl">
           <div className="text-center">
             <h1
@@ -50,9 +54,6 @@ export default function FaqsPage() {
               Everything you need to know about getting Starlink professionally installed in the UK. Can&apos;t find your
               answer? Check your coverage and we&apos;ll help.
             </p>
-            <Button asChild className="mt-6">
-              <a href="/install-quote#quote">Check Availability</a>
-            </Button>
           </div>
 
           <div className="mt-12">
