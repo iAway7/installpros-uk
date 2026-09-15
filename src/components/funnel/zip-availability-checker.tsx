@@ -125,14 +125,39 @@ export function ZipAvailabilityChecker(
 
   // Address mode (step 0): a chosen suggestion is itself a real UK address, so
   // we mark coverage available and echo back the post town.
+  //
+  // Unless it is a street rather than a house. Google returns a postal_code
+  // component only for premise-level results, and a UK street can span several
+  // postcodes, so picking "De La Bere Ave" yields none. This used to fall back
+  // to `sel.postcode || sel.address`, writing the formatted address into the
+  // postcode field; api/lead cut it to 12 characters and every postcode-keyed
+  // lookup (Propalt, the Ofcom outcode join, EPC, value band, crime) came back
+  // empty. Nothing that is not a postcode goes in that field now, and without
+  // one the step does not pass: the Get a quote button only renders on
+  // "available", so leaving status "idle" is the gate.
+  //
+  // The event still fires, with its own result, so PostHog shows how often
+  // people stop on a street. If that number is high the answer is to ask for
+  // the postcode instead of blocking, not to relax this.
   function onAddressSelect(sel: AddressSelection) {
-    const area = sel.town || sel.postcode || "your area";
+    const pc = normalisePostcode(sel.postcode);
+    if (!isValidUkPostcode(pc)) {
+      setRegion("");
+      setStatus("idle");
+      setError("Pick your house number from the list so we can check your exact postcode.");
+      setFormData((f) => ({ ...f, postcode: "", address: sel.address }));
+      track(EVENTS.COVERAGE_CHECKED, {
+        postcode: "", coverage_result: "needs_house_number", location_name: sel.town || "",
+      });
+      return;
+    }
+    const area = sel.town || pc;
     setRegion(area);
     setStatus("available");
     setError("");
-    setFormData((f) => ({ ...f, postcode: sel.postcode || sel.address, address: sel.address }));
+    setFormData((f) => ({ ...f, postcode: pc, address: sel.address }));
     track(EVENTS.COVERAGE_CHECKED, {
-      postcode: sel.postcode || "", coverage_result: "available", location_name: area,
+      postcode: pc, coverage_result: "available", location_name: area,
     });
   }
 
@@ -317,7 +342,10 @@ export function ZipAvailabilityChecker(
                     onChange={(v) => {
                       markStarted("address");
                       setAddress(v);
-                      if (status !== "idle") { setStatus("idle"); setError(""); }
+                      // Always clear: the street warning leaves us on "idle",
+                      // so the old guard would have kept it on screen.
+                      setError("");
+                      if (status !== "idle") setStatus("idle");
                     }}
                     onSelect={onAddressSelect}
                     placeholder="Start typing your address…"
@@ -342,7 +370,7 @@ export function ZipAvailabilityChecker(
                   </>
                 )}
               </div>
-              {(status === "invalid" || error) && error && (
+              {error && (
                 <p id="err-postcode" role="alert" className="text-center text-body text-error">{error}</p>
               )}
               <div className="min-h-[100px]">

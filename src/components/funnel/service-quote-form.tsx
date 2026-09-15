@@ -105,12 +105,30 @@ export function ServiceQuoteForm({
   }, [postcode, step]);
 
   // Address mode: a chosen suggestion is a real UK address → coverage available.
+  //
+  // Google returns a postal_code component only for premise-level results. Pick
+  // a route (a whole street) and there is none, because a UK street can span
+  // several postcodes. This used to fall back to `sel.postcode || sel.address`,
+  // which put the formatted address into the postcode field; api/lead then cut
+  // it to 12 characters ("DE LA BERE A") and every lookup keyed on the postcode
+  // came back empty: Propalt, the Ofcom outcode join, EPC, value band, crime.
+  //
+  // So: nothing that is not a postcode is ever written to the postcode field,
+  // and without one the step does not pass. Leaving status "idle" is what
+  // blocks it, because the Get a Quote button only renders on "available".
   function onAddressSelect(sel: AddressSelection) {
-    const area = sel.town || sel.postcode || "your area";
-    setRegion(area);
+    const pc = normalisePostcode(sel.postcode);
+    if (!isValidUkPostcode(pc)) {
+      setRegion("");
+      setStatus("idle");
+      setError("Pick your house number from the list so we can check your exact postcode.");
+      setFormData((f) => ({ ...f, postcode: "", address: sel.address }));
+      return;
+    }
+    setRegion(sel.town || pc);
     setStatus("available");
     setError("");
-    setFormData((f) => ({ ...f, postcode: sel.postcode || sel.address, address: sel.address }));
+    setFormData((f) => ({ ...f, postcode: pc, address: sel.address }));
   }
 
   useEffect(() => {
@@ -241,7 +259,7 @@ export function ServiceQuoteForm({
                 {addressMode ? (
                   <AddressAutocomplete
                     value={address}
-                    onChange={(v) => { setAddress(v); if (status !== "idle") { setStatus("idle"); setError(""); } }}
+                    onChange={(v) => { setAddress(v); setError(""); if (status !== "idle") setStatus("idle"); }}
                     onSelect={onAddressSelect}
                     placeholder="Start typing your address…"
                     className="text-body md:text-lg"

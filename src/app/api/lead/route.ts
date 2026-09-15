@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { isValidUkPostcode, normalisePostcode } from "@/lib/utils";
 import { createServiceClient } from "@/lib/supabase/server";
 import { internalSignature } from "@/lib/webhooks/internal";
 import { siteConfig } from "@/lib/site-config";
@@ -91,6 +92,14 @@ function valid(b: Partial<LeadBody>): b is LeadBody {
       b.email.length <= CAPS.email &&
       b.phone &&
       b.postcode &&
+      // Not just "present". The postcode is the key every downstream lookup
+      // runs on (Propalt, the Ofcom outcode join, EPC, value band, crime), and
+      // the address autocomplete used to send the whole formatted address here
+      // when Google gave no postal_code, which `cap()` then silently truncated
+      // to "DE LA BERE A". A 422 is louder and cheaper than a row of junk that
+      // looks like data. Both funnels now block before this, so the only way to
+      // trip it is a broken client or a bot.
+      isValidUkPostcode(normalisePostcode(b.postcode)) &&
       // Anything else is rejected by the enum anyway — but as a 500 from the
       // failed insert rather than an honest 422.
       b.install_type &&
@@ -130,7 +139,7 @@ export async function POST(req: Request) {
         name: cap(body.name, CAPS.name),
         email: cap(body.email, CAPS.email),
         phone: cap(body.phone, CAPS.phone),
-        postcode: cap(body.postcode, CAPS.postcode).toUpperCase(),
+        postcode: cap(normalisePostcode(body.postcode), CAPS.postcode),
         install_type: body.install_type,
         service: clean(body.service),
         notes: body.notes ? cap(body.notes, CAPS.notes) : null,
