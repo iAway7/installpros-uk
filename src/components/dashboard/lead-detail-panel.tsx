@@ -39,7 +39,18 @@ export function LeadDetailPanel({ lead, location, onClose, statusPicker, onSaveV
     };
   }, [onClose]);
 
-  const fullAddress = location ? `${location.city}, ${lead.postcode.toUpperCase()}` : lead.postcode.toUpperCase();
+  // What the visitor actually gave us, in preference to anything derived.
+  //
+  // This used to be `${location.city}, ${postcode}` unconditionally, where city
+  // is the admin_district postcodes.io returns — so a lead who typed a street in
+  // Evesham was shown as "Wychavon, WR11 4PW". Correct data, useless to a person
+  // ringing them and worse to an engineer driving there. The address has its own
+  // column now (migration 0017); town is Google's post town, which is the name
+  // people use. Both are null for postcode-only submissions, hence the fallback
+  // chain rather than a straight swap.
+  const place = lead.town || location?.city;
+  const fullAddress =
+    lead.address || (place ? `${place}, ${lead.postcode.toUpperCase()}` : lead.postcode.toUpperCase());
   const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(fullAddress)}`;
 
   return (

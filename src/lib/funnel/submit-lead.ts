@@ -66,6 +66,11 @@ export async function submitLead(input: LeadInput): Promise<string> {
       email: input.email,
       phone,
       postcode: input.zipCode,
+      // The chosen address and its post town now have real columns. They stay
+      // in the notes too: that string is what the CRM webhook renders, and
+      // rewriting its shape would change what Will's Superchat receives.
+      address: input.address ?? null,
+      town: input.state || null,
       install_type: "residential", // schema enum; real selection kept in notes
       service: input.installationType,
       notes: `Service: ${input.installationType} | State: ${input.state} | ZIP: ${input.zipCode}${input.address ? ` | Address: ${input.address}` : ""} | Consent: ${input.marketingConsent ? "yes" : "no"}${sector ? ` | Sector: ${sector}` : ""}${input.formName ? ` | Form: ${input.formName}` : ""}${input.postcodePrecision === "approximate" ? " | Postcode: APPROXIMATE (street-level — confirm house number)" : ""}`,

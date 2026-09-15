@@ -7,6 +7,14 @@ export interface Lead {
   email: string;
   phone: string;
   postcode: string;
+  /** The address the visitor picked, when they came through the autocomplete.
+   *  Optional, not just nullable: migration 0017 adds the column, and the
+   *  leads query only selects it once that has been applied. Until then these
+   *  are absent and the detail panel falls back to the postcode lookup. */
+  address?: string | null;
+  /** Post town for that address — the name a person uses, unlike the
+   *  admin district a postcode lookup returns. Same caveat as `address`. */
+  town?: string | null;
   install_type: string;
   notes: string | null;
   status: LeadStatus;

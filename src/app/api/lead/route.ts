@@ -12,6 +12,8 @@ interface LeadBody {
   phone: string;
   postcode: string;
   install_type: string;
+  address?: string;
+  town?: string;
   service?: string;
   notes?: string;
   meta?: {
@@ -75,7 +77,7 @@ function clean(v: unknown): string | null {
  * never touched — `notes` in particular accepted a payload of any size.
  * Generous enough that no real submission is affected.
  */
-const CAPS = { name: 120, email: 254, phone: 32, postcode: 12, notes: 2000 } as const;
+const CAPS = { name: 120, email: 254, phone: 32, postcode: 12, notes: 2000, address: 300, town: 100 } as const;
 
 /** Mirrors the install_type enum in 0001_init.sql. */
 const INSTALL_TYPES = ["residential", "business", "rural", "marine", "events"];
@@ -141,6 +143,8 @@ export async function POST(req: Request) {
         phone: cap(body.phone, CAPS.phone),
         postcode: cap(normalisePostcode(body.postcode), CAPS.postcode),
         install_type: body.install_type,
+        address: body.address ? cap(body.address, CAPS.address) : null,
+        town: body.town ? cap(body.town, CAPS.town) : null,
         service: clean(body.service),
         notes: body.notes ? cap(body.notes, CAPS.notes) : null,
         device_type: clean(body.meta?.device_type),
