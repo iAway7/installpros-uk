@@ -25,6 +25,10 @@ interface FormData {
   phone: string;
   email: string;
   installationType: string;
+  /** How postcode was obtained — "approximate" when it came from the street's
+   *  coordinates rather than the visitor's own premise. Travels to the lead so
+   *  nobody reads street-level area data as the exact house. */
+  postcodePrecision?: "exact" | "approximate" | "none";
 }
 
 const cleanPostcode = (v: string) => v.toUpperCase().replace(/[^A-Z0-9 ]/g, "").slice(0, 8);
@@ -75,6 +79,7 @@ export function ZipAvailabilityChecker(
 
   const [formData, setFormData] = useState<FormData>({
     postcode: "", address: "", fullName: "", phone: "", email: "", installationType: defaultInstallType,
+    postcodePrecision: "none",
   });
   const [errors, setErrors] = useState({ fullName: "", phone: "", email: "" });
   const [showPhoneCheck, setShowPhoneCheck] = useState(false);
@@ -133,21 +138,24 @@ export function ZipAvailabilityChecker(
   // postcode field; api/lead cut it to 12 characters and every postcode-keyed
   // lookup (Propalt, the Ofcom outcode join, EPC, value band, crime) came back
   // empty. Nothing that is not a postcode goes in that field now, and without
-  // one the step does not pass: the Get a quote button only renders on
-  // "available", so leaving status "idle" is the gate.
+  // one we fall back to the street's coordinates, which api/address/details
+  // resolves to the nearest real postcode. That is the right area but not
+  // necessarily their house, so it is flagged "approximate" and carried as
+  // such. Only when that fails too does the step stop: status stays "idle"
+  // and the Get a quote button does not render.
   //
-  // The event still fires, with its own result, so PostHog shows how often
-  // people stop on a street. If that number is high the answer is to ask for
-  // the postcode instead of blocking, not to relax this.
+  // The event reports precision either way, so PostHog separates "we knew the
+  // house" from "we guessed the street" from "we got nothing".
   function onAddressSelect(sel: AddressSelection) {
     const pc = normalisePostcode(sel.postcode);
     if (!isValidUkPostcode(pc)) {
       setRegion("");
       setStatus("idle");
-      setError("Pick your house number from the list so we can check your exact postcode.");
-      setFormData((f) => ({ ...f, postcode: "", address: sel.address }));
+      setError("We couldn't find a postcode for that. Try picking your house number from the list.");
+      setFormData((f) => ({ ...f, postcode: "", address: sel.address, postcodePrecision: "none" }));
       track(EVENTS.COVERAGE_CHECKED, {
         postcode: "", coverage_result: "needs_house_number", location_name: sel.town || "",
+        form_name: formName, form_position: "hero", postcode_precision: "none",
       });
       return;
     }
@@ -155,9 +163,10 @@ export function ZipAvailabilityChecker(
     setRegion(area);
     setStatus("available");
     setError("");
-    setFormData((f) => ({ ...f, postcode: pc, address: sel.address }));
+    setFormData((f) => ({ ...f, postcode: pc, address: sel.address, postcodePrecision: sel.precision }));
     track(EVENTS.COVERAGE_CHECKED, {
       postcode: pc, coverage_result: "available", location_name: area,
+      form_name: formName, form_position: "hero", postcode_precision: sel.precision,
     });
   }
 
@@ -192,8 +201,11 @@ export function ZipAvailabilityChecker(
     if (res.status === "available") {
       setRegion(res.region);
       setStatus("available");
-      setFormData((f) => ({ ...f, postcode: pc }));
-      track(EVENTS.COVERAGE_CHECKED, { postcode: pc, coverage_result: "available", location_name: res.region });
+      setFormData((f) => ({ ...f, postcode: pc, postcodePrecision: "exact" }));
+      track(EVENTS.COVERAGE_CHECKED, {
+        postcode: pc, coverage_result: "available", location_name: res.region,
+        form_name: formName, form_position: "hero",
+      });
       // A/B variant: swap in a data-driven coverage message when available.
       // Fire-and-forget — the generic copy stays if this fails or is slow.
       if (smartCoverage) {
@@ -211,7 +223,9 @@ export function ZipAvailabilityChecker(
     } else if (res.status === "invalid") {
       setStatus("invalid");
       setError("That doesn't look like a valid UK postcode. Please check and try again.");
-      track(EVENTS.COVERAGE_CHECKED, { postcode: pc, coverage_result: "invalid" });
+      track(EVENTS.COVERAGE_CHECKED, {
+        postcode: pc, coverage_result: "invalid", form_name: formName, form_position: "hero",
+      });
     } else {
       setStatus("idle");
       setError("We couldn't check your postcode just now. Please try again.");
@@ -305,7 +319,7 @@ export function ZipAvailabilityChecker(
         zipCode: formData.postcode, state: region, fullName: formData.fullName,
         phone: formData.phone, email: formData.email, address: formData.address || undefined,
         installationType: formData.installationType, source: "hero_funnel",
-        marketingConsent: consent, formName,
+        marketingConsent: consent, formName, postcodePrecision: formData.postcodePrecision,
       });
       toast.success("Quote request submitted!");
       router.push(`/thank-you?leadId=${leadId}`);

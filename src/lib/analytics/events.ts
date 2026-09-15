@@ -73,6 +73,18 @@ export interface EventProperties {
   // for the postcode by hand would.
   coverage_result?: "available" | "waitlist" | "invalid" | "needs_house_number";
   location_name?: string; // echoed place name — the US-funnel differentiator
+  /** Which of the two forms on the page fired this: the hero checker or the
+   *  one in the footer CTA. They are different components and only the hero
+   *  used to report at all, so a low needs_house_number count could equally
+   *  have meant "nobody gets stuck" or "we are blind to half the page".
+   *  Pair it with form_name (which landing) to locate a drop-off exactly. */
+  form_position?: "hero" | "footer";
+  /** Where the postcode came from. "approximate" means the visitor picked a
+   *  street, so it is the nearest unit to that street's coordinates rather
+   *  than their own premise — area-level data is sound, house-level is not.
+   *  The share of approximate vs exact is what says whether asking for a house
+   *  number up front would be worth the friction. */
+  postcode_precision?: "exact" | "approximate" | "none";
   // quote_* / lead_created
   install_type?: InstallType;
   lead_id?: string;

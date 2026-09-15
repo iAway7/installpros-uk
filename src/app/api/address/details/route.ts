@@ -52,13 +52,51 @@ export async function POST(req: Request) {
       byType("administrative_area_level_1")?.longText ??
       "";
 
+    // Street-level pick: Google gives a postal_code only for a premise, and a
+    // UK street can span several postcodes, so choosing "De La Bere Ave" yields
+    // none. It does still give the street's coordinates, and postcodes.io turns
+    // those into the nearest real postcode for free — which is enough for
+    // everything we key on the area: the Ofcom outcode join, broadband
+    // availability, region. It is NOT the visitor's own house: on a long street
+    // the nearest unit can sit at the other end, so it comes back flagged and
+    // the caller has to decide what that is good for.
+    const approx = postcode ? null : await nearestPostcode(json.location);
+
     return NextResponse.json({
       address: json.formattedAddress ?? "",
-      postcode,
+      postcode: postcode || approx || "",
+      postcode_precision: postcode ? "exact" : approx ? "approximate" : "none",
       town,
       location: json.location ?? null,
     });
   } catch {
     return NextResponse.json({ error: "network_error" }, { status: 200 });
+  }
+}
+
+/**
+ * Nearest real postcode to a lat/lng, or null when there is none close enough
+ * (offshore, or a coordinate postcodes.io does not cover). Never throws: a
+ * failed lookup just means we carry on without one.
+ */
+async function nearestPostcode(
+  loc: { latitude?: number; longitude?: number } | undefined,
+): Promise<string | null> {
+  const lat = loc?.latitude;
+  const lon = loc?.longitude;
+  if (typeof lat !== "number" || typeof lon !== "number") return null;
+  try {
+    const url = `https://api.postcodes.io/postcodes?lon=${lon}&lat=${lat}&limit=1&radius=2000`;
+    const res = await fetch(url, {
+      signal: AbortSignal.timeout(4000),
+      // The postcode grid does not move; a street resolves to the same unit
+      // every time, so this is worth caching hard.
+      next: { revalidate: 86400 },
+    });
+    if (!res.ok) return null;
+    const json = (await res.json()) as { result?: Array<{ postcode?: string }> | null };
+    return json.result?.[0]?.postcode ?? null;
+  } catch {
+    return null;
   }
 }

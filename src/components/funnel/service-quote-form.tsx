@@ -27,6 +27,10 @@ interface FormData {
   phone: string;
   email: string;
   installationType: string;
+  /** How postcode was obtained — "approximate" when it came from the street's
+   *  coordinates rather than the visitor's own premise. Travels to the lead so
+   *  nobody reads street-level area data as the exact house. */
+  postcodePrecision?: "exact" | "approximate" | "none";
 }
 
 const cleanPostcode = (v: string) => v.toUpperCase().replace(/[^A-Z0-9 ]/g, "").slice(0, 8);
@@ -86,6 +90,7 @@ export function ServiceQuoteForm({
 
   const [formData, setFormData] = useState<FormData>({
     postcode: "", address: "", fullName: "", phone: "", email: "", installationType: defaultService,
+    postcodePrecision: "none",
   });
   const [errors, setErrors] = useState({ fullName: "", phone: "", email: "" });
   const [showPhoneCheck, setShowPhoneCheck] = useState(false);
@@ -113,22 +118,43 @@ export function ServiceQuoteForm({
   // it to 12 characters ("DE LA BERE A") and every lookup keyed on the postcode
   // came back empty: Propalt, the Ofcom outcode join, EPC, value band, crime.
   //
-  // So: nothing that is not a postcode is ever written to the postcode field,
-  // and without one the step does not pass. Leaving status "idle" is what
-  // blocks it, because the Get a Quote button only renders on "available".
+  // Blocking on that was the first fix, and it cost us the visitor. What the
+  // street pick does still carry is coordinates, so api/address/details now
+  // turns those into the nearest real postcode: right area, right outcode —
+  // which is all the Ofcom join and broadband data need — but not necessarily
+  // their own house, hence `precision: "approximate"` travelling with it all
+  // the way to the lead. Nothing that is not a postcode is ever written to the
+  // postcode field. We only stop the visitor when even the coordinates gave
+  // nothing, which leaves status "idle" and hides the Get a Quote button.
+  //
+  // coverage_checked fires from here now. This form never reported it at all —
+  // only the hero checker did — so every coverage number we had described the
+  // top of the page and nothing else, while this is the form that carries
+  // commercial and both vehicle landings. A low needs_house_number count was
+  // unreadable: it could mean nobody gets stuck, or that we were blind to half
+  // the page. form_position says which form; form_name says which landing.
   function onAddressSelect(sel: AddressSelection) {
     const pc = normalisePostcode(sel.postcode);
     if (!isValidUkPostcode(pc)) {
       setRegion("");
       setStatus("idle");
-      setError("Pick your house number from the list so we can check your exact postcode.");
-      setFormData((f) => ({ ...f, postcode: "", address: sel.address }));
+      setError("We couldn't find a postcode for that. Try picking your house number from the list.");
+      setFormData((f) => ({ ...f, postcode: "", address: sel.address, postcodePrecision: "none" }));
+      track(EVENTS.COVERAGE_CHECKED, {
+        postcode: "", coverage_result: "needs_house_number", location_name: sel.town || "",
+        form_name: formName, form_position: "footer", postcode_precision: "none",
+      });
       return;
     }
-    setRegion(sel.town || pc);
+    const area = sel.town || pc;
+    setRegion(area);
     setStatus("available");
     setError("");
-    setFormData((f) => ({ ...f, postcode: pc, address: sel.address }));
+    setFormData((f) => ({ ...f, postcode: pc, address: sel.address, postcodePrecision: sel.precision }));
+    track(EVENTS.COVERAGE_CHECKED, {
+      postcode: pc, coverage_result: "available", location_name: area,
+      form_name: formName, form_position: "footer", postcode_precision: sel.precision,
+    });
   }
 
   useEffect(() => {
@@ -159,10 +185,17 @@ export function ServiceQuoteForm({
     const res = await checkUkPostcode(pc);
     if (res.status === "available") {
       setRegion(res.region); setStatus("available");
-      setFormData((f) => ({ ...f, postcode: pc }));
+      setFormData((f) => ({ ...f, postcode: pc, postcodePrecision: "exact" }));
+      track(EVENTS.COVERAGE_CHECKED, {
+        postcode: pc, coverage_result: "available", location_name: res.region,
+        form_name: formName, form_position: "footer",
+      });
     } else if (res.status === "invalid") {
       setStatus("invalid");
       setError("That doesn't look like a valid UK postcode. Please check and try again.");
+      track(EVENTS.COVERAGE_CHECKED, {
+        postcode: pc, coverage_result: "invalid", form_name: formName, form_position: "footer",
+      });
     } else {
       setStatus("idle");
       setError("We couldn't check your postcode just now. Please try again.");
@@ -226,7 +259,7 @@ export function ServiceQuoteForm({
         zipCode: formData.postcode, state: region, fullName: formData.fullName,
         phone: formData.phone, email: formData.email, address: formData.address || undefined,
         installationType: formData.installationType, source: "cta_section",
-        marketingConsent: consent, formName,
+        marketingConsent: consent, formName, postcodePrecision: formData.postcodePrecision,
       });
       toast.success("Quote request submitted!");
       router.push(`/thank-you?leadId=${leadId}`);

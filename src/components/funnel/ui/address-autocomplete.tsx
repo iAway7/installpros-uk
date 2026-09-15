@@ -8,6 +8,15 @@ export interface AddressSelection {
   address: string;
   postcode: string;
   town: string;
+  /**
+   * How the postcode was arrived at.
+   *   exact       — Google returned a postal_code for the premise.
+   *   approximate — the pick was a street, so there was none; this is the
+   *                 nearest real unit to the street's coordinates. Right area,
+   *                 not necessarily the right house.
+   *   none        — no postcode could be established at all.
+   */
+  precision: "exact" | "approximate" | "none";
 }
 
 interface Props {
@@ -116,14 +125,22 @@ export function AddressAutocomplete({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ placeId: p.placeId, sessionToken: sessionRef.current }),
       });
-      const d = (await res.json()) as { address?: string; postcode?: string; town?: string };
+      const d = (await res.json()) as {
+        address?: string; postcode?: string; town?: string;
+        postcode_precision?: "exact" | "approximate" | "none";
+      };
       if (d.address) {
         justSelected.current = true;
         onChange(d.address);
       }
-      onSelect({ address: d.address || p.full, postcode: d.postcode || "", town: d.town || "" });
+      onSelect({
+        address: d.address || p.full,
+        postcode: d.postcode || "",
+        town: d.town || "",
+        precision: d.postcode_precision ?? (d.postcode ? "exact" : "none"),
+      });
     } catch {
-      onSelect({ address: p.full, postcode: "", town: "" });
+      onSelect({ address: p.full, postcode: "", town: "", precision: "none" });
     } finally {
       // Start a fresh billing session for the next lookup.
       sessionRef.current = newSessionToken();
