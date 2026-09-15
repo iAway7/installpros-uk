@@ -33,10 +33,7 @@ export function MainHeader() {
         scrolled ? "border-b border-border/60 bg-white" : "bg-transparent"
       }`}
     >
-      <div
-        className="container mx-auto flex items-center justify-between py-4"
-        style={{ maxWidth: "1140px" }}
-      >
+      <div className="container mx-auto flex items-center justify-between py-4">
         <a href="/install-quote" className="flex min-h-[48px] items-center" aria-label="Install Pros">
           {/* Inline SVG, not <img src>: this is the LCP element and as a file it
               put a network round trip on the critical path. Swapping colour with

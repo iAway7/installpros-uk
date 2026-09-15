@@ -139,3 +139,7 @@ for (const [n, entry] of entries.entries()) {
 }
 
 console.log(`\nDone. ${total.toLocaleString("en-GB")} postcodes loaded${failed ? `, ${failed} failed` : ""}.`);
+console.log(
+  "\nNow refresh the district rollup the map page reads, in the SQL editor:\n" +
+  "  refresh materialized view ofcom_outcode_coverage;",
+);

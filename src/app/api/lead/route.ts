@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createServiceClient } from "@/lib/supabase/server";
 import { internalSignature } from "@/lib/webhooks/internal";
+import { siteConfig } from "@/lib/site-config";
 
 export const runtime = "nodejs";
 
@@ -31,24 +32,22 @@ interface LeadBody {
   };
 }
 
-function selfOrigin(req: Request): string {
-  // Behind Vercel's proxy the forwarded headers are the public origin;
-  // req.url can be the internal one. Fall back to it when they're absent.
-  const host = req.headers.get("x-forwarded-host") ?? req.headers.get("host");
-  const proto = req.headers.get("x-forwarded-proto") ?? "https";
-  if (host) return `${proto}://${host}`;
-  return new URL(req.url).origin;
-}
-
 /**
  * Kick off the outbound webhooks without making the visitor wait. The fan-out
  * runs in its own request so a slow receiver can never delay the form's
  * response — same pattern as enrichment. The browser fires
  * /api/leads/{id}/notify as a backstop; dispatch is idempotent, so at most one
  * delivery reaches each destination.
+ *
+ * The target origin comes from NEXT_PUBLIC_SITE_URL, never from the request.
+ * This used to derive it from x-forwarded-host / host, which a visitor sets
+ * freely: `Host: evil.com` made us POST the lead fan-out to the attacker —
+ * carrying a valid x-internal-signature — turning lead submission into an
+ * SSRF primitive. siteConfig.url is the same origin metadataBase and the auth
+ * callback already trust.
  */
-function fireLeadCreated(origin: string, leadId: string): void {
-  void fetch(`${origin}/api/webhooks/dispatch`, {
+function fireLeadCreated(leadId: string): void {
+  void fetch(`${siteConfig.url}/api/webhooks/dispatch`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -66,14 +65,36 @@ function clean(v: unknown): string | null {
   return t ? t.slice(0, 255) : null;
 }
 
+/**
+ * Length ceilings for the visitor-supplied fields.
+ *
+ * Every one of these columns is an unbounded `text` in Postgres and the route
+ * runs under the service role, so whatever the form posts is what gets stored.
+ * `clean()` already caps the attribution metadata; these are the fields it
+ * never touched — `notes` in particular accepted a payload of any size.
+ * Generous enough that no real submission is affected.
+ */
+const CAPS = { name: 120, email: 254, phone: 32, postcode: 12, notes: 2000 } as const;
+
+/** Mirrors the install_type enum in 0001_init.sql. */
+const INSTALL_TYPES = ["residential", "business", "rural", "marine", "events"];
+
+function cap(v: string, max: number): string {
+  return v.trim().slice(0, max);
+}
+
 function valid(b: Partial<LeadBody>): b is LeadBody {
   return Boolean(
     b.name &&
       b.email &&
       /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(b.email) &&
+      b.email.length <= CAPS.email &&
       b.phone &&
       b.postcode &&
-      b.install_type,
+      // Anything else is rejected by the enum anyway — but as a 500 from the
+      // failed insert rather than an honest 422.
+      b.install_type &&
+      INSTALL_TYPES.includes(b.install_type),
   );
 }
 
@@ -106,13 +127,13 @@ export async function POST(req: Request) {
     const { data, error } = await supabase
       .from("leads")
       .insert({
-        name: body.name,
-        email: body.email,
-        phone: body.phone,
-        postcode: body.postcode.toUpperCase(),
+        name: cap(body.name, CAPS.name),
+        email: cap(body.email, CAPS.email),
+        phone: cap(body.phone, CAPS.phone),
+        postcode: cap(body.postcode, CAPS.postcode).toUpperCase(),
         install_type: body.install_type,
         service: clean(body.service),
-        notes: body.notes ?? null,
+        notes: body.notes ? cap(body.notes, CAPS.notes) : null,
         device_type: clean(body.meta?.device_type),
         landing_page: clean(body.meta?.landing_page),
         traffic_source: clean(body.meta?.traffic_source),
@@ -135,7 +156,7 @@ export async function POST(req: Request) {
 
     if (error) throw error;
 
-    fireLeadCreated(selfOrigin(req), data.id);
+    fireLeadCreated(data.id);
 
     return NextResponse.json({ lead_id: data.id, persisted: true });
   } catch {

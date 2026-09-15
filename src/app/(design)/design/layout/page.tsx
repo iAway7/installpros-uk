@@ -12,7 +12,7 @@ export default function LayoutPage() {
 
       <Section title="The container">
         <Code>{`<section className="w-full bg-background py-16 md:py-24">
-  <div className="container mx-auto max-w-6xl px-6">
+  <div className="container mx-auto">
     {/* content */}
   </div>
 </section>`}</Code>
@@ -20,17 +20,18 @@ export default function LayoutPage() {
           <Table
             head={["Property", "Value", "Why"]}
             rows={[
-              ["Max width", "1152px (max-w-6xl)", "What eight of eleven sections already used"],
-              ["Side padding", "24px (px-6)", "Constant at every breakpoint"],
+              ["Content width", "1152px", "The 1200px cap minus two gutters"],
+              ["Side padding", "16px → 24px", "16 on phones, 24 from sm up"],
               ["Section padding", "64px → 96px", "py-16 md:py-24"],
             ]}
           />
         </div>
         <div className="mt-6">
           <Rule>
-            The header and footer still hardcode <Mono>maxWidth: 1140px</Mono> and the hero trust bar uses 1160px. That
-            leaves the logo six pixels off from the content edge above 1200px. It is on the migration plan, not fixed.
-            Do not copy those values into anything new.
+            Bare <Mono>container</Mono> is the whole rule. The 1140px and 1160px hardcodes are gone, and so is{" "}
+            <Mono>max-w-6xl</Mono>: it caps the box at 1152 and leaves 1104 of content, which is how the sections ended
+            up 48px narrower than the hero. Do not add <Mono>px-*</Mono> either, it stacks on the gutter instead of
+            replacing it.
           </Rule>
         </div>
       </Section>
@@ -45,7 +46,7 @@ export default function LayoutPage() {
           ]}
         />
         <p className="mt-4 max-w-2xl text-[15px] leading-[1.6] text-neutral-500">
-          Gap is <Mono>14px</Mono> for card grids and <Mono>40px</Mono> where the items are text blocks rather than
+          Gap is <Mono>16px</Mono> for card grids and <Mono>32px</Mono> where the items are text blocks rather than
           bordered cards. Prefer auto-fit, it degrades on its own without a breakpoint for every count.
         </p>
       </Section>

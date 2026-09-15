@@ -17,6 +17,21 @@ export type WebhookFormat = "generic" | "superchat";
 
 export const WEBHOOK_FORMATS: WebhookFormat[] = ["generic", "superchat"];
 
+/**
+ * A usable webhook destination. Shared by create and update so the two cannot
+ * drift: the update path used to call bare `new URL()`, which happily accepts
+ * file:, data: and gopher: URLs that have no business being a destination.
+ */
+export function isWebhookUrl(url: unknown): url is string {
+  if (typeof url !== "string") return false;
+  try {
+    const u = new URL(url);
+    return u.protocol === "https:" || u.protocol === "http:";
+  } catch {
+    return false;
+  }
+}
+
 export const FORMAT_LABEL: Record<WebhookFormat, string> = {
   generic: "Generic JSON: full lead, attribution, score and property intel (Zapier, Make, n8n)",
   superchat: "Superchat (Will): flat lead_received payload, contact fields only",

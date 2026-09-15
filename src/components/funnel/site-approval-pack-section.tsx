@@ -108,7 +108,7 @@ function IconDoc() {
 export function SiteApprovalPackSection() {
   return (
     <section id="site-approval-pack" className="w-full scroll-mt-28 bg-secondary py-16 md:py-24">
-      <div className="container mx-auto max-w-6xl">
+      <div className="container mx-auto">
         <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-[1fr_1.15fr] lg:gap-16">
           <div>
             <p className="eyebrow">Getting it signed off</p>

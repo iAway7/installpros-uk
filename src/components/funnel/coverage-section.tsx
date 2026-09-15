@@ -28,7 +28,7 @@ const FEATURES = [
 export function CoverageSection() {
   return (
     <section className="w-full scroll-mt-28 bg-background py-16 md:py-24">
-      <div className="container mx-auto max-w-6xl">
+      <div className="container mx-auto">
         <div className="text-center">
           <p className="eyebrow">What We Offer</p>
           <h2
@@ -45,19 +45,19 @@ export function CoverageSection() {
           </p>
         </div>
 
-        <div className="mt-12 grid gap-3.5 md:mt-18 md:grid-cols-3">
+        <div className="mt-12 grid gap-4 md:mt-18 md:grid-cols-3">
           {FEATURES.map((f) => (
             <div
               key={f.title}
-              className="rounded-2xl border border-border bg-secondary/40 p-8 transition-all duration-card ease-ds hover:-translate-y-[5px] hover:border-brand-soft/35"
+              className="rounded-2xl border border-border bg-secondary/40 p-6 transition-all duration-card ease-ds hover:-translate-y-[5px] hover:border-brand-soft/35"
             >
               <div
-                className="flex h-11 w-11 items-center justify-center rounded-lg border border-brand-soft/25 bg-primary/10 text-brand-icon"
+                className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary/[0.06] text-brand-icon"
               >
                 <f.icon className="h-[21px] w-[21px]" strokeWidth={1.6} />
               </div>
-              <h3 className="mt-5 text-lead font-semibold text-foreground">{f.title}</h3>
-              <p className="mt-2.5 text-body-sm text-muted-foreground" style={{ lineHeight: "1.6" }}>
+              <h3 className="mt-4 text-lead font-semibold text-foreground">{f.title}</h3>
+              <p className="mt-2 text-body-sm text-muted-foreground" style={{ lineHeight: "1.6" }}>
                 {f.description}
               </p>
             </div>

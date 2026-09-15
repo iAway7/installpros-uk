@@ -1,0 +1,190 @@
+/* Weather Hero. Port of weather-hero-kit/src/hero.css as a CSS module.
+ *
+ * Why a module and not a global import as the kit README suggests: the kit
+ * stylesheet declares `*`, `body`, `:root`, `.eyebrow`, `.label`, `.card`,
+ * `.tab` and `.strip` as plain globals. The funnel already owns
+ * `.theme-editorial .eyebrow` (globals.css) and Tailwind owns the reset, so a
+ * global import would fight both. Scoping it here means the hero brings its
+ * own tokens (on `.hero`) and touches nothing outside itself.
+ *
+ * Values are the kit's, unchanged, except:
+ *  - `--font` reads the next/font variable instead of a Google Fonts link.
+ *  - The kit's top bar (logo + nav + quote) is gone: the page keeps its
+ *    fixed MainHeader, so `.inner` clears it with padding instead of a row.
+ *  - The kit's `.strip` is gone; the site's HeroTrustBar takes its place,
+ *    pinned inside the hero via `.bar`.
+ */
+
+.hero {
+  --ink: #14110F;            /* warm charcoal, not cold black */
+  --paper: #F7F4F0;          /* warm off-white */
+  --muted: rgba(247, 244, 240, .66);
+  --faint: rgba(247, 244, 240, .14);
+  --red: #C8102E;            /* primary action ONLY */
+  --red-press: #A90D27;
+  --green: #3DBE7B;          /* semantic: online / available */
+  --font: var(--font-be-vietnam), system-ui, sans-serif;
+  --r-btn: 10px;
+  --r-card: 16px;
+
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+  overflow: hidden;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font);
+  font-weight: 400;                 /* body is 400, never 300 */
+  -webkit-font-smoothing: antialiased;
+}
+
+.label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+.num { font-variant-numeric: tabular-nums; }
+
+/* ── plates, canvas, scrim ─────────────────────────── */
+.plate {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  opacity: 0; transition: opacity 1100ms cubic-bezier(.4, 0, .2, 1);
+}
+.plate.isOn { opacity: 1; }
+.weather { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+/* Two layers. The kit's vertical scrim, plus a left-side ramp under the copy:
+   measured on the snow plate, the lede sat at 2.8:1 and the eyebrow at 1.6:1
+   against the white slope (AA is 4.5). Darkening the bottom instead would
+   also flatten the vehicle and the card in all three scenes; the side ramp
+   fades out by 60% of the width, before the road and the car. */
+.scrim {
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(to right, rgba(20, 17, 15, .55) 0%, rgba(20, 17, 15, 0) 60%),
+    linear-gradient(to top, rgba(20, 17, 15, .92) 0%, rgba(20, 17, 15, .42) 40%, rgba(20, 17, 15, .12) 64%, rgba(20, 17, 15, .55) 100%);
+}
+
+/* ── layout ────────────────────────────────────────── */
+.inner {
+  position: relative; z-index: 2; flex: 1;
+  display: grid; grid-template-rows: 1fr auto;
+  width: 100%; max-width: 1240px; margin: 0 auto;
+  /* 104px top: MainHeader is fixed and about 72px tall over the hero. */
+  padding: 104px 48px 44px;
+}
+
+/* middle: connection card */
+.middle { display: flex; align-items: center; justify-content: flex-end; }
+.card {
+  width: 264px;
+  background: rgba(20, 17, 15, .55);
+  backdrop-filter: blur(6px);
+  border: 1px solid var(--faint);
+  border-radius: var(--r-card);
+  padding: 18px 20px 8px;
+}
+.cardHead {
+  display: flex; justify-content: space-between; align-items: center;
+  color: var(--muted); margin-bottom: 10px;
+}
+.cardHead b { font-weight: 600; color: var(--paper); }
+.cardRow {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: 10px 0; border-bottom: 1px solid var(--faint);
+  font-size: 14px;
+}
+.cardRow:last-child { border-bottom: 0; }
+.cardK { color: var(--muted); }
+.cardV { font-weight: 600; }
+
+/* bottom: headline block */
+.stack { max-width: 820px; }
+/* Eyebrow and lede at 88%, not the kit's 66%: with the title at 800 the
+   weight already carries the hierarchy, and 66% was the contrast failure. */
+.eyebrow { display: flex; align-items: center; gap: 10px; color: rgba(247, 244, 240, .88); margin-bottom: 16px; }
+.eyebrow i { display: block; width: 26px; height: 2px; border-radius: 2px; background: rgba(247, 244, 240, .4); flex: none; }
+.title {
+  font-weight: 800;
+  font-size: clamp(38px, 6.6vw, 86px);
+  line-height: 1.0;
+  letter-spacing: -.03em;
+  color: var(--paper);
+}
+.lede {
+  margin-top: 18px; max-width: 52ch;
+  font-size: 16px; line-height: 1.6; color: rgba(247, 244, 240, .88);
+}
+.swap { transition: opacity 420ms ease, transform 420ms cubic-bezier(.4, 0, .2, 1); }
+.swap.isOut { opacity: 0; transform: translateY(10px); }
+
+/* postcode-first form */
+.check { margin-top: 30px; max-width: 520px; }
+.checkLabel { display: block; font-size: 14px; font-weight: 600; margin-bottom: 10px; }
+.checkRow { display: flex; gap: 10px; }
+.check input {
+  flex: 1; min-width: 0;
+  font: inherit; font-size: 16px;
+  padding: 15px 16px;
+  border: 1px solid transparent; border-radius: var(--r-btn);
+  background: var(--paper); color: var(--ink);
+  text-transform: uppercase;
+}
+.check input::placeholder { color: rgba(20, 17, 15, .45); text-transform: none; }
+.check input:focus-visible { outline: 2px solid var(--paper); outline-offset: 3px; } /* neutral focus, never red */
+.check input[aria-invalid="true"] { border-color: var(--red); }
+.btnRed {
+  display: inline-flex; align-items: center; justify-content: center;
+  font: inherit; font-size: 15px; font-weight: 700;
+  background: var(--red); color: #fff; border: 0; cursor: pointer;
+  padding: 15px 24px; border-radius: var(--r-btn);
+  transition: background .2s, transform .2s;
+  white-space: nowrap; text-decoration: none;
+}
+.btnRed:hover { background: var(--red-press); transform: translateY(-1px); }
+.btnRed:focus-visible { outline: 2px solid var(--paper); outline-offset: 3px; }
+.btnRed:disabled { opacity: .7; cursor: default; transform: none; }
+.checkMicro { margin-top: 10px; font-size: 13px; color: rgba(247, 244, 240, .55); }
+.checkError { color: #FF8A9A; }
+.checkOk { display: flex; align-items: center; gap: 8px; color: var(--paper); }
+.checkOk i { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--green); flex: none; }
+.checkOk b { font-weight: 600; }
+
+/* scene switcher */
+.switch { display: flex; gap: 2px; margin-top: 42px; max-width: 520px; }
+.tab {
+  flex: 1; background: none; border: 0; cursor: pointer; padding: 0;
+  color: rgba(247, 244, 240, .5); text-align: left;
+  font-family: var(--font);
+  transition: color .25s;
+}
+.tab .label { display: block; }
+.tab[aria-selected="true"] { color: var(--paper); }
+.tab:hover { color: var(--paper); }
+.tabBar { display: block; position: relative; height: 3px; border-radius: 3px; background: rgba(247, 244, 240, .16); margin-bottom: 9px; overflow: hidden; }
+.tabBar span { position: absolute; inset: 0; width: 0; border-radius: 3px; background: var(--paper); }
+.tab[aria-selected="true"] .tabBar span { animation: fill var(--dwell) linear forwards; }
+@keyframes fill { from { width: 0; } to { width: 100%; } }
+.tab:focus-visible { outline: 2px solid var(--paper); outline-offset: 6px; }
+
+/* mobile readout line */
+.cardInline { display: none; font-size: 13px; color: var(--muted); margin-top: 16px; }
+
+/* trust bar slot at the foot of the hero */
+.bar { position: relative; z-index: 2; }
+
+@media (max-width: 900px) {
+  .inner { padding: 88px 20px 30px; }
+  .middle { display: none; }
+  .cardInline { display: block; }
+  .checkRow { flex-direction: column; }
+  .btnRed { width: 100%; }
+  .switch { margin-top: 30px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plate, .swap, .btnRed { transition: none; }
+  .tab[aria-selected="true"] .tabBar span { animation: none; width: 100%; }
+}

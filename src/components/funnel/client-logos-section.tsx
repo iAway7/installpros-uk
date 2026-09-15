@@ -54,7 +54,7 @@ const CLIENTS: Client[] = [
 export function ClientLogosSection() {
   return (
     <section className="w-full bg-background py-14 md:py-16">
-      <div className="container mx-auto max-w-6xl">
+      <div className="container mx-auto">
         {/* Muted, not brand red. The logos are the loud part; an eyebrow in
             primary competes with them for the one second Will wants this
             section to buy. */}

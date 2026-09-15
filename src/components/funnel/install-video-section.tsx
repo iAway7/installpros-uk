@@ -48,7 +48,7 @@ export function InstallVideoSection() {
       // the scrollbar honest so nothing jumps.
       style={{ contentVisibility: "auto", containIntrinsicSize: "auto 700px" }}
     >
-      <div className="container mx-auto max-w-6xl">
+      <div className="container mx-auto">
         <div className="mx-auto max-w-2xl text-center">
           <p className="eyebrow">See it done</p>
           <h2 className="mt-4 h2-section text-foreground">

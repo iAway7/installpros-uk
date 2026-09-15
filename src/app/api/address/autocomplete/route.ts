@@ -42,9 +42,11 @@ export async function POST(req: Request) {
     });
 
     if (!res.ok) {
+      // Log the upstream body server-side, never return it: Google's error
+      // envelope echoes request details back and this route is public.
       const detail = await res.text().catch(() => "");
       console.error(`[address/autocomplete] Google ${res.status}: ${detail}`);
-      return NextResponse.json({ error: "upstream_error", status: res.status, detail, suggestions: [] }, { status: 200 });
+      return NextResponse.json({ error: "upstream_error", suggestions: [] }, { status: 200 });
     }
 
     const json = (await res.json()) as {

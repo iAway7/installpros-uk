@@ -96,7 +96,7 @@ const SYSTEMS: SystemItem[] = [
 export function WhatItRunsSection() {
   return (
     <section id="what-it-runs" className="w-full scroll-mt-28 bg-secondary py-16 md:py-24">
-      <div className="container mx-auto max-w-6xl">
+      <div className="container mx-auto">
         <div className="mb-12 max-w-2xl">
           <p className="eyebrow">Your systems</p>
           <h2 className="mt-4 h2-section text-foreground">Everything on site keeps running.</h2>

@@ -285,3 +285,88 @@ export const ALL_FAQS: Faq[] = [
     a: "The “two-month rule” applies to Starlink's Roam (mobile) plan, not to a fixed home install. On Roam you can use your dish outside your registered country or region for up to around 60 consecutive days; after that, Starlink may ask you to update your registered service address to your current location, or transfer the account, to avoid restrictions. For a standard UK home installation on a Residential plan it doesn't apply. Check starlink.com for the latest Roam terms.",
   },
 ];
+
+/**
+ * Vehicle landing FAQ: motorhomes, campervans, cars, private hire and boats.
+ *
+ * Written on 10 September 2026 from the 36 vehicle and boat conversations in
+ * the Superchat corpus and from the two WordPress pages that already exist for
+ * cars and campervans. The questions are the ones customers typed, tidied but
+ * not reordered by what we would rather talk about: how it mounts, whether it
+ * has to come off, where the work happens, what power it needs, which plan,
+ * and only then what it costs.
+ *
+ * Nothing here names a workshop town or a call-out charge. Both were said
+ * differently by different people in the chat, and one version cost a job
+ * ("No good to me it's a 4.5hr drive. Advertised as Cheltenham"). Until Will
+ * fixes them the answers say what is true either way and leave the specific to
+ * the quote.
+ *
+ * No finance line, for the same reason as the commercial list: regulated
+ * financial promotions are not ours to write. A 50% deposit with the balance
+ * after the fitting is what the team already offers in the chat, so that is
+ * what is said.
+ */
+export const VEHICLE_FAQS: { q: string; a: string }[] = [
+  // Seven entries that between them cover all sixteen questions the vehicle
+  // conversations actually ask (superchat-analysis/vehicle-top-15-questions.md),
+  // grouped so that nobody reaches the bottom of the page with one of the
+  // sixteen unanswered. Ordered by how often each comes up. Some of it repeats
+  // a section above; that is deliberate, people who scroll straight to the
+  // FAQ still get the answer. Every quote in the comments is a customer's.
+  {
+    // 8 of 30 ask where, 4 ask how long, 3 have not got the vehicle yet.
+    // "When I'm going to do it where will I bring the motorhome to get it
+    // installed", "How long would the installation take?", "I've not got the
+    // motorhome yet". Hours from the campervan page on installpros.co.uk.
+    q: "Where does it happen, and how long does it take?",
+    a: "Either at an installation facility, where you bring the vehicle in and drive off with it working, or at your location: your drive, the storage yard or the depot. Tell us the postcode and we confirm which, and any travel charge, with the quote and before you book anything. Most fittings take two to five hours, and the connection settles to full performance within about twelve hours. Not got the vehicle yet? Send the make and model and we book the fitting for the week you collect it.",
+  },
+  {
+    // 7 of 30. "Do you need to drill a hole in the ceiling or will it be done
+    // by suction?", "we do not have roof rails but would like it fixed", "as
+    // few holes in roof as possible Magnetic?", "Its aluminium mate", "Should
+    // be like that inside on front windscreem above my dashbord", and the leak
+    // question from the WordPress page.
+    q: "How does it fix on? Drilling, suction cups, roof rails, leaks",
+    a: "Heavy-duty magnets on a steel roof, clamps on rails or seams, and a bonded plate where there is nothing to grip. Roof rails help but are not needed, and we do not fit suction mounts. The cable comes in through an existing grommet, vent or the boot seal, sealed and weatherproof, so nothing leaks. Where a hole is genuinely the right answer we seal it properly and tell you before we start. It goes on the roof, not behind the windscreen: glass takes away most of the signal.",
+  },
+  {
+    // 3 of 30. "We would rather not add to the height of the van if we can
+    // help it", "Is there anything we can do to account for the car being
+    // black whilst the Starlink mini is white?", "a bit more secure and
+    // discrete". Dimensions to be confirmed against Starlink's spec sheet.
+    q: "Will it look right on my vehicle? Height, and a white dish on a black car",
+    a: "The Starlink Mini is a flat panel about the size of a laptop and the mount sits close to the roof, so you add a few centimetres, not a box. If height matters for a barrier or a garage, tell us and we place it accordingly. On a dark vehicle we use black mounting hardware and put the dish where it shows least. The panel itself stays white, which is Starlink's choice rather than ours.",
+  },
+  {
+    // 7 of 30 on permanent or removable, 4 on driving. "I'm thinking a
+    // permanent installation", "Removable", "We are looking for a fixed not
+    // magnetic unit.", "Can it be retractable when driving?"
+    q: "Permanent or removable, and does it have to come off to drive?",
+    a: "We recommend permanent. The mount is the easy part; the wiring is what makes it just work when you pull up, and a permanent feed is what gives you that. It stays on the roof and keeps working while you drive on a Roam plan, so there is nothing to take down. If you need the dish to come off the vehicle regularly, say so and we will tell you whether a magnetic mount suits your roof.",
+  },
+  {
+    // 6 of 30 raise it, 11 once asked. "The most important thing is
+    // converting from 230V to the car's system.", "We will be on EHU unless
+    // travelling to another site, what would you suggest?", "Yeah 12v
+    // cigarette light point."
+    q: "What power does it need? I only have a 12 V socket.",
+    a: "The Mini runs on 12 to 48 V DC, so no conversion is needed. We fit a fused, protected feed from your leisure battery or the vehicle's 12 V system, and on a campsite the 240 V hook-up charges that same battery, so it works off grid and on site without you doing anything. A 12 V socket will run it, but a permanent feed does not get knocked out and does not flatten the starter battery.",
+  },
+  {
+    // 5 of 30 on their own kit, 1 festival. "I do have everything... I just
+    // need the instalation", "do you provide the equipment or will I need to
+    // buy this?", "This is for a camping festival".
+    q: "Do you supply the Mini, fit the one I have, or rent one out?",
+    a: "Both of the first two. If you have nothing yet, we supply the Mini with the fitting. If you already own one, the quote drops by the price of the kit and covers the mount, the cabling, the power feed and the set-up; tell us what came in your box and we work from that. We do not rent. For a one-off festival or weekend, Starlink sells the Mini directly and it can run on a battery pack.",
+  },
+  {
+    // 4 of 30. "Hi I want starlink for my motorhome to travel to Europe how
+    // much does it cost", "I'm wanting a roaming skylink", "who/how we pay for
+    // subscriptions etc please". Prices are Starlink's, from the text the team
+    // sends in the chat; check starlink.com before touching them.
+    q: "Which plan for touring, does it work abroad, and can I pause it?",
+    a: "Starlink Roam. It works on the move, across the UK and for up to two months at a time abroad, and it renews every 30 days with no minimum term. Starlink's current UK pricing is £50 a month for 50 GB or £96 a month unlimited, and you can pause it from the app for any month you are not touring and restart it when you are. You pay Starlink for the plan; you pay us once for the fitting.",
+  },
+];

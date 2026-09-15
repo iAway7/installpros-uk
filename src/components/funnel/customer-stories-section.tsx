@@ -37,7 +37,7 @@ export async function CustomerStoriesSection() {
 
   return (
     <section id="stories" className="w-full scroll-mt-28 bg-background pb-16 md:pb-24">
-      <div className="container mx-auto max-w-6xl">
+      <div className="container mx-auto">
         {/* The heading lives on the Trustpilot section above: the two are one
             block, and repeating it here would read as a second section. */}
         <div className="flex flex-wrap items-end justify-start gap-7 md:justify-end">

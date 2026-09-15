@@ -41,3 +41,29 @@ export function normalisePostcode(value: string): string {
   if (v.length < 5) return v;
   return `${v.slice(0, v.length - 3)} ${v.slice(-3)}`;
 }
+
+/**
+ * Sanitises a `?next=` redirect target.
+ *
+ * The login form and the Supabase auth callback both forward the visitor to
+ * wherever `next` points once the session exists. Taken raw that is an open
+ * redirect: `next=@evil.com` resolves to `https://evil.com` (our own host is
+ * parsed as URL userinfo), and `next=.evil.com` to an attacker-owned
+ * `site.co.uk.evil.com` — either one lands a freshly-authenticated user on a
+ * phishing page wearing our address bar.
+ *
+ * Only same-origin absolute paths survive. Rejected:
+ *   - anything not starting with "/"  -> absolute URLs, "@evil.com"
+ *   - "//host" and "/\host"           -> protocol-relative (browsers fold "\" into "/")
+ *   - control characters              -> header / URL splitting
+ */
+export function safeNextPath(value: string | null | undefined, fallback = "/dashboard"): string {
+  if (!value || typeof value !== "string") return fallback;
+  if (value[0] !== "/") return fallback;
+  if (value[1] === "/" || value[1] === "\\") return fallback;
+  for (let i = 0; i < value.length; i++) {
+    const code = value.charCodeAt(i);
+    if (code < 0x20 || code === 0x7f) return fallback;
+  }
+  return value;
+}

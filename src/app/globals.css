@@ -2,6 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Gutter de pagina: 16px en movil, 24px a partir de sm. No puede ir en
+   tailwind.config porque las claves de breakpoint de `container.padding` se
+   resuelven contra `container.screens`, que solo define 2xl (poner sm alli
+   caparia el contenedor a 640px entre 640 y 1200). Va aqui, despues de las
+   directivas, para ganarle por orden a la regla de la capa components.
+   El ancho de contenido en el tope es 1152px: 1200 de cap menos dos gutters. */
+@media (min-width: 640px) {
+  .container {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
 /* Hero trust-bar marquee (mobile). Pure CSS so it renders identically on the
    server and after hydration — no layout shift. */
 @keyframes hero-marquee {

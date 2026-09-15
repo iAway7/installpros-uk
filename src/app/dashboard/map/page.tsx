@@ -5,7 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/system/ca
 import { lookupLocations } from "@/lib/dashboard/locations";
 import { WON_STATUSES, type LeadStatus } from "@/lib/dashboard/leads";
 import { ukMap, UK_MAP_VIEWBOX } from "@/lib/funnel/uk-map";
-import { worstServedOutcodes } from "@/lib/broadband/outcodes";
+import { InfoTip } from "@/components/system/info-tip";
+import { worstServedOutcodes, releaseLabel } from "@/lib/broadband/outcode-coverage";
 
 export const dynamic = "force-dynamic";
 
@@ -18,12 +19,26 @@ const VIEWS: Array<{ key: View; label: string }> = [
 
 const QUOTED_OR_LATER: LeadStatus[] = ["quoted", "booked", "installed"];
 
+/**
+ * A district average is only as good as the number of postcodes behind it.
+ * Below this, one airport terminal or industrial estate (TW6 = Heathrow, 109
+ * postcodes, 98% with no 30 Mbit/s) outranks every genuinely rural district in
+ * the country, and none of those premises is a house anyone lives in.
+ */
+const MIN_POSTCODES = 150;
+
 /** Normalise a district name for fuzzy matching against the SVG region names. */
 function norm(s: string): string {
   return s
     .toLowerCase()
     .replace(/\b(city of|royal borough of|county of|council|district|borough)\b/g, "")
     .replace(/[^a-z]/g, "");
+}
+
+/** "LS18 5QB", "ls185qb" → "LS18". Lead postcodes are stored in both shapes. */
+function outcodeOf(postcode: string): string {
+  const pc = postcode.replace(/\s+/g, "").toUpperCase();
+  return pc.length > 3 ? pc.slice(0, -3) : pc;
 }
 
 interface DistrictStats {
@@ -86,17 +101,18 @@ export default async function MapPage({ searchParams }: { searchParams: { view?:
 
   const table = Array.from(districts.values()).sort((a, b) => b.leads - a.leads);
 
-  // Broadband gap list: worst-served outcodes (Ofcom Jan-2025) vs your leads.
-  // Zero leads + terrible broadband = cold audience worth targeting with ads.
+  // Broadband gap list: the worst-served postcode districts in the country
+  // (our own copy of the Ofcom Connected Nations open data) set against where
+  // our leads actually come from. Bad coverage with zero leads is demand that
+  // has never heard of us, which is exactly what an ad campaign is for.
   const leadsByOutcode = new Map<string, number>();
   for (const l of leads) {
-    const ocKey = l.postcode.trim().toUpperCase().split(/\s+/)[0];
-    leadsByOutcode.set(ocKey, (leadsByOutcode.get(ocKey) || 0) + 1);
+    const oc = outcodeOf(l.postcode);
+    leadsByOutcode.set(oc, (leadsByOutcode.get(oc) || 0) + 1);
   }
-  const gaps = worstServedOutcodes(40, 30)
-    .map((o) => ({ ...o, leads: leadsByOutcode.get(o.outcode) ?? 0 }))
-    .filter((o) => o.leads === 0)
-    .slice(0, 15);
+  const worst = await worstServedOutcodes(supabase, { limit: 12, minPostcodes: MIN_POSTCODES });
+  const gaps = worst.map((c) => ({ ...c, leads: leadsByOutcode.get(c.outcode) ?? 0 }));
+  const gapsRelease = releaseLabel(gaps[0]?.release);
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
@@ -215,27 +231,97 @@ export default async function MapPage({ searchParams }: { searchParams: { view?:
                   <table className="w-full text-body-sm">
                     <thead className="border-y border-border bg-secondary/40 text-left text-label uppercase text-muted-foreground">
                       <tr>
-                        <th className="px-4 py-2 font-medium">District</th>
-                        <th className="px-3 py-2 text-right font-medium">Can&apos;t get 30Mbps</th>
-                        <th className="px-3 py-2 text-right font-medium">Below USO</th>
-                        <th className="px-3 py-2 text-right font-medium">Your leads</th>
+                        <th className="px-4 py-2 font-medium">
+                          <span className="inline-flex items-center gap-1">
+                            District
+                            <InfoTip
+                              text="Postcode district: the part before the space, like EX21. Ofcom publishes coverage per full postcode, so each row here is the average of every postcode in that district."
+                              source="Ofcom Connected Nations"
+                            />
+                          </span>
+                        </th>
+                        <th className="px-3 py-2 text-right font-medium">
+                          <span className="inline-flex items-center justify-end gap-1">
+                            No 10Mb
+                            <InfoTip
+                              align="end"
+                              text="Homes that cannot order a 10 Mbit/s line at any price. That is below the UK legal minimum, so these homes can claim a subsidised connection. Your strongest sales case."
+                              source="Ofcom Connected Nations"
+                            />
+                          </span>
+                        </th>
+                        <th className="px-3 py-2 text-right font-medium">
+                          <span className="inline-flex items-center justify-end gap-1">
+                            No 30Mb
+                            <InfoTip
+                              align="end"
+                              text="Homes that cannot get 30 Mbit/s, the UK definition of superfast. Enough for one video stream, not for a family or for working from home."
+                              source="Ofcom Connected Nations"
+                            />
+                          </span>
+                        </th>
+                        <th className="px-3 py-2 text-right font-medium">
+                          <span className="inline-flex items-center justify-end gap-1">
+                            Postcodes
+                            <InfoTip
+                              align="end"
+                              text="How many postcodes the district average is built from. More postcodes means a more reliable figure. Districts under 150 are excluded."
+                              source="Ofcom Connected Nations"
+                            />
+                          </span>
+                        </th>
+                        <th className="px-3 py-2 text-right font-medium">
+                          <span className="inline-flex items-center justify-end gap-1">
+                            Leads
+                            <InfoTip
+                              align="end"
+                              text="Your leads from this district so far. Terrible broadband plus zero leads is an audience that needs you and has never heard of you."
+                            />
+                          </span>
+                        </th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-border">
-                      {gaps.map((g) => (
-                        <tr key={g.outcode}>
-                          <td className="px-4 py-2 font-medium">{g.outcode}</td>
-                          <td className="px-3 py-2 text-right tabular-nums text-destructive">{Math.round(g.unable30Pct)}%</td>
-                          <td className="px-3 py-2 text-right tabular-nums text-muted-foreground">{g.belowUsoPct.toFixed(1)}%</td>
-                          <td className="px-3 py-2 text-right tabular-nums">{g.leads}</td>
+                      {gaps.length === 0 ? (
+                        <tr>
+                          <td colSpan={5} className="px-4 py-6 text-center text-muted-foreground">
+                            Ofcom coverage data not loaded yet.
+                          </td>
                         </tr>
-                      ))}
+                      ) : (
+                        gaps.map((g) => (
+                          <tr key={g.outcode}>
+                            <td className="px-4 py-2 font-medium">
+                              {g.outcode}
+                              {g.leads === 0 && (
+                                <span className="ml-2 rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-semibold uppercase text-primary">
+                                  untapped
+                                </span>
+                              )}
+                            </td>
+                            <td className="px-3 py-2 text-right tabular-nums text-destructive">
+                              {g.pctUnable10 == null ? "\u2014" : `${g.pctUnable10}%`}
+                            </td>
+                            <td className="px-3 py-2 text-right tabular-nums">
+                              {g.pctUnable30 == null ? "\u2014" : `${g.pctUnable30}%`}
+                            </td>
+                            <td className="px-3 py-2 text-right tabular-nums text-muted-foreground">{g.postcodes}</td>
+                            <td className="px-3 py-2 text-right tabular-nums">{g.leads}</td>
+                          </tr>
+                        ))
+                      )}
                     </tbody>
                   </table>
                 </div>
-                <p className="p-4 text-label text-muted-foreground">
-                  Worst fixed-broadband districts in the UK (Ofcom Connected Nations, Jan 2025) where you have zero
-                  leads: people who need Starlink but haven&apos;t heard of you. Target these postcodes with ads.
+                <p className="px-4 pt-4 text-label text-muted-foreground">
+                  Worst-served postcode districts in the UK, ranked by how many homes fall below the legal 10 Mbit/s
+                  minimum. Source: Ofcom Connected Nations, {gapsRelease}.
+                </p>
+                <p className="px-4 pb-4 text-label text-muted-foreground">
+                  These are <span className="font-medium text-foreground">availability</span> figures: what a home is
+                  able to order, not the speed it actually gets. A district marked{" "}
+                  <span className="font-medium text-foreground">untapped</span> has bad broadband and not one lead, so
+                  point ads at it.
                 </p>
               </CardContent>
             </Card>

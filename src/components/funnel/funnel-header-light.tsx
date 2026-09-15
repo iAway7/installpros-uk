@@ -20,7 +20,7 @@ export function FunnelHeaderLight({ ctaLocation = "thank_you" }: { ctaLocation?:
 
   return (
     <header className="border-b border-border/60 bg-white">
-      <div className="container mx-auto flex items-center justify-between gap-4 py-3 md:py-4" style={{ maxWidth: "1140px" }}>
+      <div className="container mx-auto flex items-center justify-between gap-4 py-3 md:py-4">
         <a href="/install-quote" className="flex min-h-[48px] items-center" aria-label="Install Pros">
           <InstallProsLogo className="h-7 w-auto text-black md:h-10" />
         </a>

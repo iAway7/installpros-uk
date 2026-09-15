@@ -72,7 +72,7 @@ export async function TrustpilotSection() {
 
   return (
     <section id="trustpilot" className="w-full scroll-mt-28 bg-background py-16 md:py-24">
-      <div className="container mx-auto max-w-6xl">
+      <div className="container mx-auto">
         {/* The pair reads as one "Customer Stories" block. This section opens
             it, so it carries the heading; the Google one below is the same
             block continued and only carries its own rating link. */}

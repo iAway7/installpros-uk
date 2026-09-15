@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { WhatsAppIcon } from "./ui/whatsapp-icon";
 import { Button } from "@/components/system/button";
+import { getStarlinkCountryStats } from "@/lib/funnel/starlink-country-stats";
 
 const WHATSAPP_URL = "https://wa.me/447446112343";
 
@@ -80,12 +81,17 @@ async function startSpeedTest(handlers: {
   return engine;
 }
 
-/** Which Cloudflare datacenter we are hitting. Runs in parallel with the test.
- *  `colo` is an object: { iata, city, region, cca2, lat, lon }. */
-function fetchColo(set: (label: string) => void) {
+/** Which Cloudflare datacenter we are hitting, and which country the visitor
+ *  is in. Runs in parallel with the test. `colo` is an object: { iata, city,
+ *  region, cca2, lat, lon } and is the test server, which is wherever the ISP
+ *  peers and can be abroad. The top-level `country` is the visitor's own IP
+ *  geolocation, which is what the After panel needs: see
+ *  lib/funnel/starlink-country-stats.ts. */
+function fetchColo(set: (label: string) => void, setCountry: (code: string) => void) {
   fetch("https://speed.cloudflare.com/meta")
-    .then((r) => r.json() as Promise<{ colo?: { iata?: string; city?: string } }>)
+    .then((r) => r.json() as Promise<{ colo?: { iata?: string; city?: string }; country?: string }>)
     .then((meta) => {
+      if (meta?.country) setCountry(meta.country);
       const c = meta?.colo;
       if (!c) return;
       if (c.city) set(c.iata ? `${c.city} (${c.iata})` : c.city);
@@ -101,7 +107,7 @@ function SectionShell({
 }: { eyebrow: string; heading: string; sub: string; children: React.ReactNode }) {
   return (
     <section id="difference" className="w-full scroll-mt-28 bg-background py-16 md:py-24">
-      <div className="container mx-auto max-w-6xl">
+      <div className="container mx-auto">
         <div className="mb-12 text-center">
           <p className="eyebrow">{eyebrow}</p>
           <h2 className="mt-4 h2-section text-foreground">{heading}</h2>
@@ -195,14 +201,22 @@ function SpeedVariant() {
   const [phase, setPhase] = useState<"idle" | "testing" | "done" | "error">("idle");
   const [result, setResult] = useState<SpeedResult | null>(null);
   const [server, setServer] = useState<string | null>(null);
+  const [country, setCountry] = useState<string | null>(null);
   const engineRef = useRef<{ pause: () => void } | null>(null);
+
+  /** Starlink's published range for the visitor's country, shown in the After
+   *  panel once the test has run. Null until the country is known, and null for
+   *  any country not in the table, in which case the panel keeps its
+   *  illustration. */
+  const stats = phase === "done" ? getStarlinkCountryStats(country) : null;
 
   const run = async () => {
     if (phase === "testing") return;
     setPhase("testing");
     setResult(null);
     setServer(null);
-    fetchColo(setServer);
+    setCountry(null);
+    fetchColo(setServer, setCountry);
     if (bStatus.current) bStatus.current.textContent = "Testing your line…";
     if (bBuf.current) bBuf.current.style.opacity = "1";
     if (bBar.current) bBar.current.style.width = "4%";
@@ -354,18 +368,22 @@ function SpeedVariant() {
 
           <div className="relative mt-8 text-caption tracking-[0.06em]" style={{ color: VIZ.rose }}>Starlink, professionally installed</div>
           <div className="relative mt-2.5 flex items-baseline gap-2">
-            <span ref={aVal} style={{ ...NUM, fontWeight: 400, color: "#fff", textShadow: "0 0 40px hsl(var(--brand-soft) / 0.5)" }}>247</span>
-            <span className="text-body" style={{ color: VIZ.rose2 }}>Mbps</span>
+            {/* With a country match the illustration becomes Starlink's own
+                published range for that country: the low end as the big
+                figure, the high end beside it. Without one, the "247" and the
+                rest stay as they were. */}
+            <span ref={aVal} style={{ ...NUM, fontWeight: 400, color: "#fff", textShadow: "0 0 40px hsl(var(--brand-soft) / 0.5)" }}>{stats ? stats.downMin : 247}</span>
+            <span className="text-body" style={{ color: VIZ.rose2 }}>{stats ? `to ${stats.downMax} Mbps` : "Mbps"}</span>
           </div>
           <div className="relative mt-5 h-[3px] w-full overflow-hidden rounded-full bg-white/10">
-            <div ref={aBar} className="h-full rounded-full" style={{ width: "70%", background: "linear-gradient(90deg, hsl(var(--brand-soft)), hsl(var(--primary)))", boxShadow: "0 0 12px hsl(var(--brand-soft) / 0.8)" }} />
+            <div ref={aBar} className="h-full rounded-full" style={{ width: stats ? `${Math.min(100, Math.round(stats.downMax / 4))}%` : "70%", background: "linear-gradient(90deg, hsl(var(--brand-soft)), hsl(var(--primary)))", boxShadow: "0 0 12px hsl(var(--brand-soft) / 0.8)" }} />
           </div>
           <div className="relative mt-3 flex items-center gap-2 text-caption" style={{ color: VIZ.rose2 }}>
             <span className="h-[7px] w-[7px] rounded-full bg-success-bright" style={{ boxShadow: "0 0 10px hsl(var(--success-bright) / 0.9)" }} />
-            Connected · rock solid
+            {stats ? `${stats.name} · Starlink typical` : "Connected · rock solid"}
           </div>
           <div className="relative mt-5 text-caption leading-[1.7]" style={{ color: VIZ.rose3 }}>
-            Latency ~28 ms
+            {stats ? `Latency ${stats.latencyMin} to ${stats.latencyMax} ms` : "Latency ~28 ms"}
             <br />
             4K on every screen, all at once
           </div>

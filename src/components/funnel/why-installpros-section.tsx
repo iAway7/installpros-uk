@@ -116,6 +116,52 @@ export const COMMERCIAL_FEATURES: Feature[] = [
   },
 ];
 
+/**
+ * Vehicle variant: motorhomes, campervans, cars, private hire and boats.
+ *
+ * The four things the vehicle conversations in the Superchat corpus ask about
+ * before price, in the order they ask them: how it mounts, how it is powered,
+ * where the cable goes, and what it looks like when we are done. The bodies
+ * come from the cars page on installpros.co.uk and from the "Vehicle Standard"
+ * block the team already sends with vehicle quotes, so the page promises what
+ * the quote promises.
+ */
+const IconBolt = (
+  <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z" />
+  </svg>
+);
+
+const IconCheck = (
+  <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <circle cx="12" cy="12" r="9" />
+    <path d="m8.5 12 2.5 2.5 4.5-5" />
+  </svg>
+);
+
+export const VEHICLE_FEATURES: Feature[] = [
+  {
+    t: "Vehicle-Specific Mounts",
+    d: "Magnets on steel, clamps on rails and seams, a bonded plate where there is nothing to grip. Low profile, all metal.",
+    i: IconWrench,
+  },
+  {
+    t: "Protected Power",
+    d: "A fused feed from your 12 V system or leisure battery, so it runs off grid and on hook-up with nothing to plug in.",
+    i: IconBolt,
+  },
+  {
+    t: "Concealed Cabling",
+    d: "Routed inside the vehicle, clear of airbags, headlinings and drainage channels, and sealed where it enters.",
+    i: IconCable,
+  },
+  {
+    t: "Tested Before Handover",
+    d: "Configured, connected to your devices and speed-tested before you drive off. Fully insured, with UK support after.",
+    i: IconCheck,
+  },
+];
+
 /** "Engineered installs, not odd jobs." — the four capability cards, ported
  *  from the /starlink-installations landing. */
 export function WhyInstallProsSection(
@@ -128,7 +174,7 @@ export function WhyInstallProsSection(
 ) {
   return (
     <section id="why" className="w-full scroll-mt-28 bg-background py-16 md:py-24">
-      <div className="container mx-auto max-w-6xl">
+      <div className="container mx-auto">
         <div className="flex flex-wrap items-end justify-between gap-7">
           <div>
             <p className="eyebrow">Why InstallPros</p>
@@ -150,7 +196,7 @@ export function WhyInstallProsSection(
         </div>
 
         <div
-          className="mt-12 grid gap-3.5 md:mt-18"
+          className="mt-12 grid gap-4 md:mt-18"
           style={{ gridTemplateColumns: "repeat(auto-fit, minmax(258px, 1fr))" }}
         >
           {features.map((f) => (
@@ -159,12 +205,12 @@ export function WhyInstallProsSection(
               className="rounded-xl border border-border bg-secondary/40 p-6 transition-all duration-card ease-ds hover:-translate-y-[5px] hover:border-brand-soft/35"
             >
               <div
-                className="flex h-11 w-11 items-center justify-center rounded-lg border border-brand-soft/25 bg-primary/10 text-brand-icon"
+                className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary/[0.06] text-brand-icon"
               >
                 {f.i}
               </div>
-              <h3 className="mt-5 text-lead font-semibold text-foreground">{f.t}</h3>
-              <p className="mt-2.5 text-body-sm text-muted-foreground" style={{ lineHeight: "1.4" }}>
+              <h3 className="mt-4 text-lead font-semibold text-foreground">{f.t}</h3>
+              <p className="mt-2 text-body-sm text-muted-foreground" style={{ lineHeight: "1.4" }}>
                 {f.d}
               </p>
             </div>

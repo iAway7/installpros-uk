@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient, createServiceClient } from "@/lib/supabase/server";
-import { WEBHOOK_EVENTS, WEBHOOK_FORMATS, type WebhookEvent, type WebhookFormat } from "@/lib/webhooks/types";
+import { WEBHOOK_EVENTS, WEBHOOK_FORMATS, isWebhookUrl, type WebhookEvent, type WebhookFormat } from "@/lib/webhooks/types";
 
 export const runtime = "nodejs";
 
@@ -13,16 +13,6 @@ async function requireAdmin() {
   const { data: profile } = await supabase.from("profiles").select("role").eq("id", user.id).single();
   if (profile?.role !== "admin") return { ok: false as const, status: 403 };
   return { ok: true as const };
-}
-
-function validUrl(url: unknown): url is string {
-  if (typeof url !== "string") return false;
-  try {
-    const u = new URL(url);
-    return u.protocol === "https:" || u.protocol === "http:";
-  } catch {
-    return false;
-  }
 }
 
 /** List endpoints + the most recent deliveries (admin only). */
@@ -64,7 +54,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "invalid_json" }, { status: 400 });
   }
 
-  if (!body.name?.trim() || !validUrl(body.url)) {
+  if (!body.name?.trim() || !isWebhookUrl(body.url)) {
     return NextResponse.json({ error: "validation_failed" }, { status: 422 });
   }
 

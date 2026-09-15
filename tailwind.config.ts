@@ -10,11 +10,20 @@ const config: Config = {
   theme: {
     container: {
       center: true,
-      // Single source of truth for the page gutter: 24px on every breakpoint.
-      // Do NOT add px-* to an element that already has `container` — it stacks
-      // on top of this instead of replacing it, which is how the site ended up
-      // with 48px gutters in the sections and 40px in the headers.
-      padding: "1.5rem",
+      // Single source of truth for the page gutter: 16px on phones, 24px from
+      // sm up. Do NOT add px-* to an element that already has `container`: it
+      // stacks on top of this instead of replacing it, which is how the site
+      // ended up with 48px gutters in the sections and 40px in the headers.
+      //
+      // Content measures 1152px at the top end (1200 cap minus two 24px
+      // gutters). Do not put max-w-6xl on a container to get 1152: that caps
+      // the BOX at 1152 and leaves 1104 of content. Bare `container` is the
+      // one width, everywhere.
+      // Solo el DEFAULT aquí. Las claves de breakpoint de `container.padding`
+      // se resuelven contra `container.screens` (abajo), que a proposito solo
+      // define 2xl, asi que un `sm:` aqui se ignora en silencio. El salto a
+      // 24px vive en globals.css, justo despues de las directivas.
+      padding: "1rem",
       screens: { "2xl": "1200px" },
     },
     extend: {

@@ -3,7 +3,7 @@ import { ServiceQuoteForm } from "./service-quote-form";
 export function CtaSection({ addressMode = false, defaultService = "", skipServiceStep = false, formName }: { addressMode?: boolean; defaultService?: string; skipServiceStep?: boolean; formName?: string } = {}) {
   return (
     <section id="quote" className="scroll-mt-24 bg-background py-12 md:py-20">
-      <div className="container mx-auto" style={{ maxWidth: "1140px" }}>
+      <div className="container mx-auto">
         {/* 64px of padding only from md up: at 375px it would leave the postcode
             field about 250px wide, which is narrower than the placeholder it has
             to show. Mobile keeps the 32px it had. */}

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient, createServiceClient } from "@/lib/supabase/server";
-import { WEBHOOK_EVENTS, WEBHOOK_FORMATS, type WebhookEvent, type WebhookFormat } from "@/lib/webhooks/types";
+import { WEBHOOK_EVENTS, WEBHOOK_FORMATS, isWebhookUrl, type WebhookEvent, type WebhookFormat } from "@/lib/webhooks/types";
 
 export const runtime = "nodejs";
 
@@ -39,12 +39,12 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
   const patch: Record<string, unknown> = {};
   if (typeof body.name === "string" && body.name.trim()) patch.name = body.name.trim().slice(0, 120);
   if (typeof body.url === "string") {
-    try {
-      new URL(body.url);
-      patch.url = body.url;
-    } catch {
+    // Same check POST uses: bare `new URL()` accepts file:, gopher:, data: …
+    // Only http(s) can be a webhook destination.
+    if (!isWebhookUrl(body.url)) {
       return NextResponse.json({ error: "invalid_url" }, { status: 422 });
     }
+    patch.url = body.url;
   }
   if (body.secret !== undefined) patch.secret = body.secret?.trim() || null;
   if (typeof body.active === "boolean") patch.active = body.active;

@@ -5,7 +5,7 @@ const PRIVACY_URL = "https://installpros.co.uk/privacy-policy/";
 export function FunnelFooter() {
   return (
     <footer className="border-t border-border bg-secondary">
-      <div className="container mx-auto py-6" style={{ maxWidth: "1140px" }}>
+      <div className="container mx-auto py-6">
         <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
           <p className="text-body text-muted-foreground">© {new Date().getFullYear()} Install Pros®</p>
           <nav className="flex items-center gap-2 text-body text-muted-foreground">

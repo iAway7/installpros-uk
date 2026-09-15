@@ -86,7 +86,7 @@ const SECTORS: Sector[] = [
 export function SectorsSection() {
   return (
     <section id="sectors" className="w-full scroll-mt-28 bg-secondary/40 py-16 md:py-24">
-      <div className="container mx-auto max-w-6xl">
+      <div className="container mx-auto">
         <p className="eyebrow">Sectors</p>
         <h2 className="mt-4 max-w-[640px] h2-section text-foreground">
           Every building is a different problem.
