@@ -390,21 +390,6 @@ function SpeedVariant() {
         </div>
       </div>
 
-      {/* TODO(will): PERMISSION. His words, in the same message where he said to
-          stop using the word failover and talk about keeping businesses online:
-          "One logistics company we solved lost £150k per day just coz their only
-          source of internet died."
-
-          It is the best thing this section could have and it is not ours. The
-          company is unnamed, which needs no permission from them, but the figure
-          is his customer's and he has to be happy for it to be public.
-
-          "Told us" on purpose. It is their number, not something we measured,
-          and the sentence should not pretend otherwise. */}
-      <p className="mt-6 text-center text-body-sm text-muted-foreground">
-        A logistics operator told us a day without their only line cost them{" "}
-        <strong className="font-semibold text-foreground">£150,000</strong>.
-      </p>
     </SectionShell>
   );
 }
@@ -605,7 +590,12 @@ function ContinuityVariant() {
           is his customer's and he has to be happy for it to be public.
 
           "Told us" on purpose. It is their number, not something we measured,
-          and the sentence should not pretend otherwise. */}
+          and the sentence should not pretend otherwise.
+
+          Commercial only. It used to sit in SpeedVariant too, which is what
+          /install-quote and /starlink-installation render, and a six-figure
+          outage is a business's number: it means nothing to a household and
+          reads as scaremongering there. Do not copy it back. */}
       <p className="mt-6 text-center text-body-sm text-muted-foreground">
         A logistics operator told us a day without their only line cost them{" "}
         <strong className="font-semibold text-foreground">£150,000</strong>.

@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   title: "Professional Starlink Installation | Fast & Safe Setup",
   description:
     "Professional Starlink installation across the UK. Get connected fast with our accredited installers. Call 020 3397 7003 for a free quote.",
-  alternates: { canonical: "/install-quote" },
+  robots: { index: false, follow: false },
   openGraph: {
     title: "Professional Starlink Installation | Fast & Safe Setup",
     description:

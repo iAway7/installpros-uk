@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   title: "Starlink Installation FAQs | InstallPros UK",
   description:
     "Answers to common questions about professional Starlink installation in the UK: cost, timings, roof mounting, WiFi, and more.",
-  alternates: { canonical: "/faqs" },
+  robots: { index: false, follow: false },
   openGraph: {
     title: "Starlink Installation FAQs | InstallPros UK",
     description: "Everything you need to know about professional Starlink installation in the UK.",
