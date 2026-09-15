@@ -196,6 +196,26 @@ export const LANDING_FAQS: { q: string; a: string }[] = [
   },
 ];
 
+/**
+ * Residential FAQ.
+ *
+ * Capped at twelve, the same ceiling every segment on the /faqs hub now has.
+ * Eighteen was more than anyone reads, and six of them were not earning the
+ * scroll. Removed on 15 September 2026, recoverable from git history:
+ *  - "What are the downsides of Starlink, and can I get it for free?" and
+ *    "What colour and how big is the Starlink dish?": scraped search
+ *    questions, answered better on starlink.com, and neither moves a booking.
+ *  - "How do you decide where to install the dish?": placement is already
+ *    covered by the mounting question above and the line-of-sight one below.
+ *  - "Will my Starlink be up and running before the engineer leaves?": the
+ *    twelve-hour optimisation is already in "How long does the installation
+ *    take?".
+ *  - "What happens if there's bad weather on installation day?": rescheduling
+ *    is covered by the reschedule-or-cancel entry.
+ *  - "What is the Starlink 2-month rule?": a Roam plan question. It does not
+ *    apply to a fixed home install, which the answer itself had to say, so it
+ *    belongs on the Mobile/RV side or nowhere.
+ */
 export const RESIDENTIAL_FAQS: FaqEntry[] = [
   {
     category: "Installation",
@@ -223,11 +243,6 @@ export const RESIDENTIAL_FAQS: FaqEntry[] = [
     a: "No, you don't need to order extra mounts or accessories in advance. We bring professional-grade, all-metal mounting hardware suited to your property and include it in your quote. Just have your Starlink kit ready, or we can advise on ordering one.",
   },
   {
-    category: "Pricing",
-    q: "What are the downsides of Starlink, and can I get it for free?",
-    a: "Starlink needs a clear view of the sky, so heavy obstructions or a poor mounting position can reduce performance, which is exactly why professional placement matters. It isn't generally free: the kit is a one-off purchase from Starlink with a monthly plan, and we handle getting it professionally installed.",
-  },
-  {
     category: "Installation",
     q: "Can I install Starlink myself, or should I use a professional?",
     a: "A basic kit can be self-installed if you're comfortable using a drill and working safely at height. Professional installation gets your dish mounted securely in the optimal position, which is what really determines your speed and reliability, and gives you the peace of mind that it's done properly by an accredited, insured engineer.",
@@ -238,24 +253,9 @@ export const RESIDENTIAL_FAQS: FaqEntry[] = [
     a: "No. Starlink is low-voltage and powers from a standard mains socket, so no electrician and no mains electrical work is required. Our engineers handle the mounting, cabling and router setup from start to finish. If you'd like a dedicated outdoor socket or advanced home networking, we can arrange that too.",
   },
   {
-    category: "Installation",
-    q: "How do you decide where to install the dish?",
-    a: "The dish needs a clear, unobstructed view of the sky, so we assess your roof lines, trees and nearby obstructions to find the spot with the best line of sight and the tidiest cable route. Getting placement right is the single biggest factor in your speed and reliability.",
-  },
-  {
-    category: "Installation",
-    q: "What colour and how big is the Starlink dish?",
-    a: "The current Standard Starlink dish is white and rectangular, roughly 30 × 50 cm, about the size of a large baking tray, on a slim stand or a wall/roof mount. Installed professionally, it sits discreetly and out of the way.",
-  },
-  {
     category: "Coverage & WiFi",
     q: "Does Starlink come with a router, and will the WiFi reach the whole house?",
     a: "Yes, the Starlink kit includes a WiFi router and everything needed to get online. For larger or multi-storey homes where the signal won't reach every room, we offer mesh WiFi and can calibrate coverage so it works throughout the property.",
-  },
-  {
-    category: "Coverage & WiFi",
-    q: "Will my Starlink be up and running before the engineer leaves?",
-    a: "In most cases, yes. We align the dish, connect the router and test your speeds before we leave, so you're online the same visit. Occasionally Starlink needs a few hours to fully optimise with the satellites after setup. If so, we'll confirm it's working and explain exactly what to expect.",
   },
   {
     category: "Coverage & WiFi",
@@ -274,18 +274,8 @@ export const RESIDENTIAL_FAQS: FaqEntry[] = [
   },
   {
     category: "Support",
-    q: "What happens if there's bad weather on installation day?",
-    a: "For safety we may reschedule roof work during high winds or storms, at no extra cost, and agree a new slot that suits you. Once installed, a properly aligned dish keeps you online through normal British rain and wind.",
-  },
-  {
-    category: "Support",
     q: "How do I reschedule or cancel, and what happens after installation?",
     a: "Just message us and we'll move your slot, because we know plans change. We confirm every appointment beforehand and stay reachable by phone, WhatsApp and SMS. After installation, your workmanship is covered by our 12-month guarantee and we're on hand for any support you need.",
-  },
-  {
-    category: "Support",
-    q: "What is the Starlink 2-month rule?",
-    a: "The “two-month rule” applies to Starlink's Roam (mobile) plan, not to a fixed home install. On Roam you can use your dish outside your registered country or region for up to around 60 consecutive days; after that, Starlink may ask you to update your registered service address to your current location, or transfer the account, to avoid restrictions. For a standard UK home installation on a Residential plan it doesn't apply. Check starlink.com for the latest Roam terms.",
   },
 ];
 
