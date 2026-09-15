@@ -21,6 +21,8 @@ export const EVENTS = {
   EMAIL_CLICKED: "email_clicked",
   PHONE_CLICKED: "phone_clicked",
   LEAD_CREATED: "lead_created",
+  /** The server refused or failed to store a lead the visitor had completed. */
+  LEAD_SUBMIT_FAILED: "lead_submit_failed",
   COVERAGE_CHECKED: "coverage_checked",
   SCROLL_DEPTH: "scroll_depth",
   VIDEO_PLAYED: "video_played",
@@ -64,7 +66,12 @@ export interface EventProperties {
   cta_location?: string; // hero | sticky | final_cta | header | benefits
   // coverage_checked
   postcode?: string;
-  coverage_result?: "available" | "waitlist" | "invalid";
+  // "needs_house_number": the visitor picked a street in the address
+  // autocomplete, which carries no postcode, so the funnel asked them to
+  // pick a house number instead of letting the step pass. Watch this one:
+  // if it is a large share of checks, blocking is costing more than asking
+  // for the postcode by hand would.
+  coverage_result?: "available" | "waitlist" | "invalid" | "needs_house_number";
   location_name?: string; // echoed place name — the US-funnel differentiator
   // quote_* / lead_created
   install_type?: InstallType;
@@ -75,6 +82,12 @@ export interface EventProperties {
    *  throwaway local_ uuid. Google Ads triggers on this: without it a backend
    *  outage would report conversions for leads that do not exist. */
   lead_persisted?: boolean;
+  /** lead_submit_failed only. HTTP status /api/lead answered with (0 when the
+   *  request never completed), plus its error code when it sent one. This is
+   *  the only trace a refused lead leaves, so it is what tells us whether the
+   *  postcode gate is rejecting real people or the backend is down. */
+  failure_status?: number;
+  failure_reason?: string;
   // form_step_viewed (per-step funnel drop-off)
   step_number?: number;
   step_name?: string;

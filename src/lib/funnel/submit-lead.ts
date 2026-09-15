@@ -49,6 +49,10 @@ export async function submitLead(input: LeadInput): Promise<string> {
 
   track(EVENTS.QUOTE_SUBMITTED, { install_type: input.installationType as never, form_name: input.formName });
 
+  // A dropped connection throws before there is any response to inspect. The
+  // forms already catch it, but it would otherwise leave no trace at all, and
+  // "the network failed" and "the server said no" need telling apart when we
+  // come to read these numbers.
   const res = await fetch("/api/lead", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -62,14 +66,47 @@ export async function submitLead(input: LeadInput): Promise<string> {
       notes: `Service: ${input.installationType} | State: ${input.state} | ZIP: ${input.zipCode}${input.address ? ` | Address: ${input.address}` : ""} | Consent: ${input.marketingConsent ? "yes" : "no"}${sector ? ` | Sector: ${sector}` : ""}${input.formName ? ` | Form: ${input.formName}` : ""}`,
       meta: getLeadAttribution(),
     }),
+  }).catch((e) => {
+    track(EVENTS.LEAD_SUBMIT_FAILED, {
+      form_name: input.formName,
+      failure_status: 0,
+      failure_reason: "network_error",
+    });
+    throw e;
   });
 
+  // A refusal from the server has to stop this function.
+  //
+  // It used to fall straight through: on a non-OK response we kept the
+  // throwaway local_ id and carried on, which meant the visitor got the success
+  // toast and /thank-you, Google Ads was told a lead existed, and the A/B test
+  // counted a conversion — for a lead nobody had stored and no one would ever
+  // call. Silent, and worst of all invisible: no row, no alert, nothing to
+  // notice. A backend outage looked exactly like a good day.
+  //
+  // Throwing hands control to the `catch` both forms already have, so the
+  // visitor is told to try again with their details still on screen. Nothing
+  // below this line runs, which is the point: no conversion is reported for a
+  // lead that does not exist.
+  if (!res.ok) {
+    const reason = await res
+      .json()
+      .then((j: { error?: string }) => j?.error ?? null)
+      .catch(() => null);
+    track(EVENTS.LEAD_SUBMIT_FAILED, {
+      form_name: input.formName,
+      failure_status: res.status,
+      failure_reason: reason ?? `http_${res.status}`,
+    });
+    throw new Error(`lead_submit_failed:${res.status}:${reason ?? "unknown"}`);
+  }
+
   let leadId = `local_${crypto.randomUUID()}`;
-  // Whether the lead actually landed in the database. The fallback id above
-  // keeps the UI moving when it did not, but nothing downstream should treat
-  // that as a real lead.
+  // Whether the lead actually landed in the database. Supabase being absent is
+  // the one non-persisted case that is still a success: local/dev has no
+  // backend, and the funnel has to stay walkable.
   let leadPersisted = false;
-  if (res.ok) {
+  {
     const json = (await res.json()) as { lead_id?: string; persisted?: boolean };
     if (json.lead_id) leadId = json.lead_id;
     leadPersisted = json.persisted === true;
