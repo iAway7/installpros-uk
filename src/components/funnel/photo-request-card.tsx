@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { CheckCircle2, Check, CloudSun, House, Mail, Router } from "lucide-react";
+import { CheckCircle2, Check, House, Images, Mail, Trees } from "lucide-react";
 import { WhatsAppIcon } from "./ui/whatsapp-icon";
 import { track, EVENTS } from "@/lib/analytics";
 import { mailtoUrl, photoRequestMessage, whatsappUrl } from "@/lib/funnel/contact";
@@ -13,12 +13,19 @@ interface LeadContext {
   leadId?: string;
 }
 
-/** What to photograph. Naming the three shots is the whole point of this step:
- *  "send us some photos" stalls, "the roof or wall" does not. */
+/** What to photograph. Naming the shots is the whole point of this step:
+ *  "send us some photos" stalls, "the front of the property" does not.
+ *
+ *  Will's list, and it is the survey's list rather than the install's: what
+ *  decides the quote is the approach to the building and what stands between
+ *  the roof and the sky, not where the router ends up.
+ *
+ *  These are prompts, not a quota. The copy above deliberately stopped saying
+ *  "three" so nobody stops at three. */
 const SHOTS = [
-  { icon: House, label: "Roof or wall" },
-  { icon: Router, label: "Router spot" },
-  { icon: CloudSun, label: "Sky view" },
+  { icon: House, label: "Front of property" },
+  { icon: Images, label: "Back and side views" },
+  { icon: Trees, label: "Trees, obstructions and extra buildings" },
 ];
 
 /**
@@ -91,7 +98,7 @@ export function PhotoRequestCard() {
         Your photos are the last step
       </h1>
       <p className="mt-3.5 text-body md:text-lead leading-[1.55] md:leading-[1.6] text-muted-foreground [text-wrap:pretty]">
-        Send three quick shots and your fixed price lands today. No site visit, no waiting in for an engineer.
+        Send us a few quick shots and your fixed price lands today. No site visit, no waiting in for an engineer.
       </p>
 
       {/* Two beats, one done and one live. The done row is deliberately quiet
@@ -121,7 +128,7 @@ export function PhotoRequestCard() {
             </span>
           </div>
           <div>
-            <p className="text-body md:text-lead font-bold text-foreground">Send us three photos</p>
+            <p className="text-body md:text-lead font-bold text-foreground">Send us your photos</p>
             <p className="mt-0.5 text-body-sm leading-[1.5] text-muted-foreground">
               It takes about a minute on your phone.
             </p>
@@ -129,14 +136,18 @@ export function PhotoRequestCard() {
         </div>
       </div>
 
-      <ul className="mt-4 md:mt-5 grid grid-cols-3 gap-2.5 md:gap-3">
+      {/* One column on a phone, three across from sm up. The labels went from
+          two words to five, and at a third of a 390px screen "Trees,
+          obstructions and extra buildings" wraps to four lines and breaks the
+          row. Stacked, each one is a line of text with its icon beside it. */}
+      <ul className="mt-4 md:mt-5 grid grid-cols-1 gap-2 sm:grid-cols-3 sm:gap-2.5 md:gap-3">
         {SHOTS.map(({ icon: Icon, label }) => (
           <li
             key={label}
-            className="flex flex-col items-center gap-2.5 rounded-lg border border-border bg-secondary p-3.5 md:px-2.5 md:py-4 text-center"
+            className="flex items-center gap-3 rounded-lg border border-border bg-secondary px-3.5 py-3 text-left sm:flex-col sm:items-center sm:gap-2.5 sm:px-2.5 sm:py-3.5 sm:text-center md:py-4"
           >
-            <Icon className="h-[22px] w-[22px] md:h-6 md:w-6 text-brand-icon" aria-hidden="true" />
-            <span className="text-caption md:text-body-sm leading-[1.35] text-muted-foreground">{label}</span>
+            <Icon className="h-[22px] w-[22px] shrink-0 md:h-6 md:w-6 text-brand-icon" aria-hidden="true" />
+            <span className="text-body-sm leading-[1.35] text-muted-foreground sm:text-caption md:text-body-sm">{label}</span>
           </li>
         ))}
       </ul>
