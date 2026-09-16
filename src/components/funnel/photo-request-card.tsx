@@ -25,7 +25,7 @@ interface LeadContext {
 const SHOTS = [
   { icon: House, label: "Front of property" },
   { icon: Images, label: "Back and side views" },
-  { icon: Trees, label: "Trees, obstructions and extra buildings" },
+  { icon: Trees, label: "Trees and outbuildings" },
 ];
 
 /**
