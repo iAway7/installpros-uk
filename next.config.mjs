@@ -24,18 +24,68 @@ const supabaseOrigin = (() => {
  * snippets and the pages carry inline JSON-LD. Removing it needs nonces, which
  * is a bigger change than this pass.
  */
+// Grouped by who needs what, because a bare list of hostnames tells you
+// nothing about which one you are allowed to remove.
+const CSP_SOURCES = {
+  // Tag Manager loads, then injects GA4, Google Ads and the CookieYes CMP.
+  google: {
+    script: ["https://www.googletagmanager.com", "https://www.googleadservices.com", "https://googleads.g.doubleclick.net"],
+    // GA4 posts to a regional collector: region1 today, a different number for
+    // a visitor elsewhere. The wildcard is what stops this breaking the first
+    // time somebody loads the site from another country.
+    connect: [
+      "https://www.googletagmanager.com",
+      "https://www.google-analytics.com",
+      "https://*.google-analytics.com",
+      "https://*.analytics.google.com",
+      "https://pagead2.googlesyndication.com",
+      "https://*.g.doubleclick.net",
+    ],
+    img: ["https://www.googletagmanager.com", "https://www.google-analytics.com", "https://www.google.com", "https://www.google.co.uk", "https://googleads.g.doubleclick.net"],
+    frame: ["https://td.doubleclick.net"],
+  },
+  // The consent banner, injected by GTM on Consent Initialization. If any of
+  // these is missing once the policy is enforced, the CMP silently disappears
+  // and a UK site is left with no consent banner at all, which is the worst
+  // thing on this list to get wrong. cdn-cookieyes.com is a separate domain
+  // from cookieyes.com, so neither covers the other.
+  cookieyes: {
+    script: ["https://cdn-cookieyes.com"],
+    connect: ["https://cdn-cookieyes.com", "https://log.cookieyes.com"],
+    img: ["https://cdn-cookieyes.com"],
+  },
+  trustpilot: {
+    script: ["https://widget.trustpilot.com", "https://cdn.trustindex.io"],
+    img: ["https://widget.trustpilot.com", "https://cdn.trustindex.io"],
+    frame: ["https://widget.trustpilot.com"],
+  },
+  // Avatars on the Google reviews we render.
+  reviews: { img: ["https://lh3.googleusercontent.com"] },
+  funnel: {
+    // postcodes.io for coverage, Places for the address autocomplete,
+    // Cloudflare for the speed test.
+    connect: ["https://api.postcodes.io", "https://places.googleapis.com", "https://speed.cloudflare.com"],
+    img: ["https://i.ytimg.com", "https://maps.googleapis.com", "https://server.arcgisonline.com"],
+    frame: ["https://www.youtube-nocookie.com"],
+  },
+};
+
+/** Every source declared for one directive, deduped and in a stable order. */
+const sources = (kind) =>
+  [...new Set(Object.values(CSP_SOURCES).flatMap((group) => group[kind] ?? []))].join(" ");
+
 const csp = [
   "default-src 'self'",
   "base-uri 'self'",
   "object-src 'none'",
   "frame-ancestors 'none'",
   "form-action 'self'",
-  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://widget.trustpilot.com https://cdn.trustindex.io",
+  `script-src 'self' 'unsafe-inline' 'unsafe-eval' ${sources("script")}`,
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: blob: https://www.googletagmanager.com https://i.ytimg.com https://maps.googleapis.com https://server.arcgisonline.com https://widget.trustpilot.com https://cdn.trustindex.io",
+  `img-src 'self' data: blob: ${sources("img")}`,
   "font-src 'self' data:",
-  `connect-src 'self' ${supabaseOrigin} https://www.googletagmanager.com https://api.postcodes.io https://speed.cloudflare.com https://places.googleapis.com`,
-  "frame-src 'self' https://www.youtube-nocookie.com https://widget.trustpilot.com",
+  `connect-src 'self' ${supabaseOrigin} ${sources("connect")}`,
+  `frame-src 'self' ${sources("frame")}`,
   "worker-src 'self' blob:",
   "manifest-src 'self'",
   "upgrade-insecure-requests",
@@ -69,14 +119,14 @@ const nextConfig = {
     // put "image/avif" back once we are on Next 16.
     formats: ["image/webp"],
   },
+  async headers() {
+    return [{ source: "/:path*", headers: securityHeaders }];
+  },
   // (The old /starlink-installation → /install-quote redirect was removed:
   // /starlink-installation is now a real page — the A/B variant.)
   // Root → the funnel. The old marketing home (components/landing) is retired;
   // anyone hitting "/" lands on the postcode variant. Temporary (307) so it's
   // easy to change later (e.g. point at /go for a 50/50 split).
-  async headers() {
-    return [{ source: "/:path*", headers: securityHeaders }];
-  },
   async redirects() {
     return [
       { source: "/", destination: "/install-quote", permanent: false },
