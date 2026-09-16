@@ -147,7 +147,7 @@ export function PhotoRequestCard() {
             className="flex items-center gap-3 rounded-lg border border-border bg-secondary px-3.5 py-3 text-left sm:flex-col sm:items-center sm:gap-2.5 sm:px-2.5 sm:py-3.5 sm:text-center md:py-4"
           >
             <Icon className="h-[22px] w-[22px] shrink-0 md:h-6 md:w-6 text-brand-icon" aria-hidden="true" />
-            <span className="text-body-sm leading-[1.35] text-muted-foreground sm:text-caption md:text-body-sm">{label}</span>
+            <span className="text-body-sm text-muted-foreground sm:text-caption md:text-body-sm leading-[1.35]">{label}</span>
           </li>
         ))}
       </ul>
