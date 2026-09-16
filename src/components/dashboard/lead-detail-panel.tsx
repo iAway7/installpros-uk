@@ -14,6 +14,7 @@ import {
   STATUS_LABEL,
   STATUS_STYLE,
   serviceOf,
+  installTypeLabel,
   formatDateTime,
 } from "@/lib/dashboard/leads";
 
@@ -91,6 +92,13 @@ export function LeadDetailPanel({ lead, location, onClose, statusPicker, onSaveV
               <Field label="Phone">
                 <a href={`tel:${lead.phone}`} className="hover:text-primary">{lead.phone}</a>
               </Field>
+              <Field
+                label="Marketing consent"
+                tip="Ticked on the quote form. Blank means the question was never put to them, which is not the same as a no."
+                source="Quote form"
+              >
+                {lead.marketing_consent == null ? "Not asked" : lead.marketing_consent ? "Yes" : "No"}
+              </Field>
             </div>
           </Section>
 
@@ -114,6 +122,11 @@ export function LeadDetailPanel({ lead, location, onClose, statusPicker, onSaveV
                   source="Quote form"
                 >
                   <span className="uppercase">{lead.postcode}</span>
+                  {lead.postcode_precision === "approximate" && (
+                    <span className="mt-1 block text-label text-error">
+                      Approximate: taken from the street, not their own address. Confirm the house number.
+                    </span>
+                  )}
                 </Field>
                 <Field label="Region" align="end" tip="Region resolved from the postcode." source="postcodes.io">
                   {location?.region ?? "—"}
@@ -130,7 +143,7 @@ export function LeadDetailPanel({ lead, location, onClose, statusPicker, onSaveV
 
           <Section title="Property">
             <div className="grid grid-cols-2 gap-x-4 gap-y-5">
-              <Field label="Installation type"><span className="capitalize">{lead.install_type}</span></Field>
+              <Field label="Installation type">{installTypeLabel(lead.install_type)}</Field>
               <Field label="Service">{serviceOf(lead)}</Field>
               <Field
                 label="Est. value"
@@ -178,6 +191,8 @@ export function LeadDetailPanel({ lead, location, onClose, statusPicker, onSaveV
               <Field label="Source"><span className="capitalize">{lead.traffic_source || "direct"}</span></Field>
               <Field label="Device"><span className="capitalize">{lead.device_type ?? "—"}</span></Field>
               <Field label="Landing page">{lead.landing_page ?? "—"}</Field>
+              <Field label="Form">{lead.form_name ?? "—"}</Field>
+              <Field label="Sector">{lead.sector ?? "—"}</Field>
               <Field label="Variant">{lead.variant_id ?? "—"}</Field>
               <Field label="UTM source">{lead.utm_source ?? "—"}</Field>
               <Field label="UTM medium">{lead.utm_medium ?? "—"}</Field>

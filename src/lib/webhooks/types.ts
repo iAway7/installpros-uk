@@ -84,6 +84,14 @@ export interface WebhookPayload {
     postcode: string;
     service: string | null;
     install_type: string | null;
+    address: string | null;
+    town: string | null;
+    /** True ticked, false asked and declined, null never asked. */
+    marketing_consent: boolean | null;
+    /** exact | approximate | none. See leads.postcode_precision. */
+    postcode_precision: string | null;
+    sector: string | null;
+    form_name: string | null;
     notes: string | null;
     status: string | null;
     /** 1-10. Null on lead.created — enrichment hasn't run yet. */

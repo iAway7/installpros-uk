@@ -12,7 +12,7 @@ export default async function LeadsPage() {
   const { data, error } = await supabase
     .from("leads")
     .select(
-      "id, created_at, name, email, phone, postcode, address, town, install_type, notes, status, traffic_source, campaign, source_url, estimated_value, utm_source, utm_medium, utm_campaign, utm_term, utm_content, gclid, fbclid, session_id, variant_id, experiment_id, device_type, landing_page, service, contacted_at, quoted_at, lead_score",
+      "id, created_at, name, email, phone, postcode, address, town, marketing_consent, postcode_precision, sector, form_name, install_type, notes, status, traffic_source, campaign, source_url, estimated_value, utm_source, utm_medium, utm_campaign, utm_term, utm_content, gclid, fbclid, session_id, variant_id, experiment_id, device_type, landing_page, service, contacted_at, quoted_at, lead_score",
     )
     .order("created_at", { ascending: false });
 

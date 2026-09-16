@@ -22,6 +22,10 @@ import { installTypeLabel, splitName, ukPhone } from "./superchat";
  *               the mapping Will's team builds once does not break on the next
  *               lead. `address` is the one exception (see below).
  *
+ * Consent and the address are read from their own columns. They used to be
+ * parsed out of the free-text notes string, which was the only place they
+ * existed until migration 0019 gave them real homes.
+ *
  * Pair it with lead.created only. There is no score in here, so lead.enriched
  * would deliver the same lead a second time and message the customer twice.
  */
@@ -48,31 +52,8 @@ export interface ZapierLeadPayload {
   device_type: string | null;
 }
 
-/**
- * Pull one labelled segment out of the funnel's notes string, which is written
- * as "Service: x | State: y | ZIP: z | Address: a | Consent: yes | Form: f".
- *
- * Consent has never had a column and the address only got one recently, so for
- * leads already in the table this string is the only place either value exists.
- * Google's formatted addresses carry commas but never a pipe, so splitting on
- * the pipe is safe. Returns null when the segment is absent, which covers the
- * postcode only funnel and the "Send test" payload, whose notes are prose.
- */
-function fromNotes(notes: string | null, label: string): string | null {
-  if (!notes) return null;
-  for (const segment of notes.split("|")) {
-    const trimmed = segment.trim();
-    if (trimmed.toLowerCase().startsWith(`${label.toLowerCase()}:`)) {
-      const value = trimmed.slice(label.length + 1).trim();
-      return value || null;
-    }
-  }
-  return null;
-}
-
 export function toZapier(payload: WebhookPayload): ZapierLeadPayload {
   const [first_name, last_name] = splitName(payload.lead.name);
-  const address = fromNotes(payload.lead.notes, "Address");
 
   const out: ZapierLeadPayload = {
     lead_id: payload.lead.id,
@@ -84,10 +65,11 @@ export function toZapier(payload: WebhookPayload): ZapierLeadPayload {
     email: payload.lead.email,
     postcode: payload.lead.postcode,
     install_type: installTypeLabel(payload.lead.service),
-    // Anything other than a recorded "yes" is treated as no consent. Absence of
-    // a tick is not permission, and this value may end up deciding whether the
-    // customer is marketed to.
-    marketing_consent: fromNotes(payload.lead.notes, "Consent")?.toLowerCase() === "yes",
+    // Flattened to a boolean because Zapier filters on true/false, not on a
+    // third state. Null means nobody was asked, and that is sent as false:
+    // absence of a tick is not permission. The distinction is kept intact on
+    // our side in leads.marketing_consent for anyone who has to evidence it.
+    marketing_consent: payload.lead.marketing_consent === true,
     landing_page: payload.attribution.landing_page,
     source_url: payload.attribution.source_url,
     traffic_source: payload.attribution.traffic_source,
@@ -98,6 +80,6 @@ export function toZapier(payload: WebhookPayload): ZapierLeadPayload {
     device_type: payload.attribution.device_type,
   };
 
-  if (address) out.address = address;
+  if (payload.lead.address) out.address = payload.lead.address;
   return out;
 }

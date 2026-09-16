@@ -44,6 +44,12 @@ interface LeadRow {
   postcode: string;
   service: string | null;
   install_type: string | null;
+  address: string | null;
+  town: string | null;
+  marketing_consent: boolean | null;
+  postcode_precision: string | null;
+  sector: string | null;
+  form_name: string | null;
   notes: string | null;
   status: string | null;
   lead_score: number | null;
@@ -74,7 +80,8 @@ export async function buildPayload(event: WebhookEvent, leadId: string): Promise
   const { data } = await supabase
     .from("leads")
     .select(
-      "id, created_at, name, email, phone, postcode, service, install_type, notes, status, lead_score, " +
+      "id, created_at, name, email, phone, postcode, service, install_type, address, town, " +
+        "marketing_consent, postcode_precision, sector, form_name, notes, status, lead_score, " +
         "landing_page, traffic_source, campaign, device_type, source_url, utm_source, utm_medium, " +
         "utm_campaign, utm_term, utm_content, gclid, fbclid, session_id, variant_id, experiment_id",
     )
@@ -107,6 +114,14 @@ export async function buildPayload(event: WebhookEvent, leadId: string): Promise
       postcode: lead.postcode,
       service: lead.service ?? null,
       install_type: lead.install_type ?? null,
+      address: lead.address ?? null,
+      town: lead.town ?? null,
+      // Tri-state on purpose: null is "never asked", false is "asked and
+      // declined". Formats that flatten it must not turn null into false.
+      marketing_consent: lead.marketing_consent ?? null,
+      postcode_precision: lead.postcode_precision ?? null,
+      sector: lead.sector ?? null,
+      form_name: lead.form_name ?? null,
       notes: lead.notes ?? null,
       status: lead.status ?? null,
       score: (lead.lead_score as number | null) ?? null,
@@ -147,8 +162,14 @@ export function testPayload(): WebhookPayload {
       email: "test@example.com",
       phone: "+447700900000",
       postcode: "LS18 5QB",
-      service: "Starlink installation",
+      service: "residential",
       install_type: "residential",
+      address: "12 De La Bere Cl, Evesham, UK",
+      town: "Evesham",
+      marketing_consent: true,
+      postcode_precision: "exact",
+      sector: null,
+      form_name: "starlink_residential",
       notes: "This is a test delivery from the InstallPros dashboard.",
       status: "new",
       score: 9,

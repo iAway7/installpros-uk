@@ -12,6 +12,11 @@ export interface Lead {
    *  leads query only selects it once that has been applied. Until then these
    *  are absent and the detail panel falls back to the postcode lookup. */
   address?: string | null;
+  /** True ticked, false asked and declined, null never asked. */
+  marketing_consent?: boolean | null;
+  postcode_precision?: string | null;
+  sector?: string | null;
+  form_name?: string | null;
   /** Post town for that address — the name a person uses, unlike the
    *  admin district a postcode lookup returns. Same caveat as `address`. */
   town?: string | null;
@@ -89,6 +94,28 @@ export function serviceFromNotes(notes: string | null): string {
 /** Service of a lead — dedicated column (0004+) with notes-parsing fallback. */
 export function serviceOf(lead: Pick<Lead, "service" | "notes">): string {
   return lead.service?.trim() || serviceFromNotes(lead.notes);
+}
+
+/**
+ * Readable name for an install_type slug.
+ *
+ * Needed now that the column holds the real selection: until migration 0019 it
+ * was pinned to "residential" on every lead, so a bare capitalize was enough.
+ * "mobile_rv" would render as "Mobile_rv".
+ */
+const INSTALL_TYPE_LABEL: Record<string, string> = {
+  residential: "Residential",
+  commercial: "Commercial",
+  mobile_rv: "Mobile / RV",
+  marine: "Marine",
+  business: "Business",
+  rural: "Rural",
+  events: "Events",
+};
+
+export function installTypeLabel(slug: string | null | undefined): string {
+  if (!slug) return "\u2014";
+  return INSTALL_TYPE_LABEL[slug] ?? slug.replace(/_/g, " ");
 }
 
 export function formatDate(iso: string): string {

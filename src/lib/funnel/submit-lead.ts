@@ -14,9 +14,9 @@ export interface LeadInput {
   address?: string; // full street address (address-autocomplete variant)
   marketingConsent?: boolean; // optional consent tick — recorded, never required
   /** "approximate" when the postcode came from the coordinates of a street the
-   *  visitor picked rather than from their own premise. It reaches the notes so
-   *  whoever works the lead knows the property intel describes the right area
-   *  but not guaranteed the right house — and knows to ask for the number. */
+   *  visitor picked rather than from their own premise. Stored in its own
+   *  column so whoever works the lead knows the property intel describes the
+   *  right area but not guaranteed the right house, and to ask for the number. */
   postcodePrecision?: "exact" | "approximate" | "none";
   /** Which landing page's form this is, e.g. "starlink_commercial". Will asked
    *  for each landing's form to be identifiable on its own, so a lead can be
@@ -47,9 +47,10 @@ export async function submitLead(input: LeadInput): Promise<string> {
   // losing a lead's phone number is worse than storing an untidy one.
   const phone = toUkNationalDigits(input.phone) || input.phone;
 
-  // Set only if they arrived at the form through a sector card. Appended to the
-  // notes rather than given a column, because the lead schema is shared with
-  // the residential funnel and this is commercial-only for now.
+  // Set only if they arrived at the form through a sector card, which only the
+  // commercial landing has. It has its own column as of 0019; it used to be
+  // appended to the notes because the schema is shared with the residential
+  // funnel and nobody wanted a column for one landing's field.
   const sector = readSectorInterest();
 
   track(EVENTS.QUOTE_SUBMITTED, { install_type: input.installationType as never, form_name: input.formName });
@@ -66,14 +67,21 @@ export async function submitLead(input: LeadInput): Promise<string> {
       email: input.email,
       phone,
       postcode: input.zipCode,
-      // The chosen address and its post town now have real columns. They stay
-      // in the notes too: that string is what the CRM webhook renders, and
-      // rewriting its shape would change what Will's Superchat receives.
       address: input.address ?? null,
       town: input.state || null,
-      install_type: "residential", // schema enum; real selection kept in notes
+      // The real selection, at last. This used to be pinned to "residential"
+      // for every lead because the old enum could not hold "commercial" or
+      // "mobile_rv"; migration 0019 turns the column into text with a check.
+      install_type: input.installationType,
       service: input.installationType,
-      notes: `Service: ${input.installationType} | State: ${input.state} | ZIP: ${input.zipCode}${input.address ? ` | Address: ${input.address}` : ""} | Consent: ${input.marketingConsent ? "yes" : "no"}${sector ? ` | Sector: ${sector}` : ""}${input.formName ? ` | Form: ${input.formName}` : ""}${input.postcodePrecision === "approximate" ? " | Postcode: APPROXIMATE (street-level — confirm house number)" : ""}`,
+      marketing_consent: input.marketingConsent ?? null,
+      postcode_precision: input.postcodePrecision ?? null,
+      sector: sector || null,
+      form_name: input.formName ?? null,
+      // Nothing synthetic goes in here any more. Every value this string used
+      // to carry has its own column as of 0019, so `notes` is free for actual
+      // notes rather than a pipe-delimited record nothing could read back.
+      notes: null,
       meta: getLeadAttribution(),
     }),
   }).catch((e) => {

@@ -15,7 +15,11 @@ interface LeadBody {
   address?: string;
   town?: string;
   service?: string;
-  notes?: string;
+  notes?: string | null;
+  marketing_consent?: boolean | null;
+  postcode_precision?: "exact" | "approximate" | "none" | null;
+  sector?: string;
+  form_name?: string;
   meta?: {
     traffic_source?: string | null;
     campaign?: string | null;
@@ -77,10 +81,19 @@ function clean(v: unknown): string | null {
  * never touched — `notes` in particular accepted a payload of any size.
  * Generous enough that no real submission is affected.
  */
-const CAPS = { name: 120, email: 254, phone: 32, postcode: 12, notes: 2000, address: 300, town: 100 } as const;
+const CAPS = {
+  name: 120, email: 254, phone: 32, postcode: 12, notes: 2000,
+  address: 300, town: 100, sector: 80, form_name: 80,
+} as const;
 
-/** Mirrors the install_type enum in 0001_init.sql. */
-const INSTALL_TYPES = ["residential", "business", "rural", "marine", "events"];
+/**
+ * Mirrors the install_type check in 0019. The first three are what the live
+ * landings actually submit; the rest are the old enum's vocabulary, kept
+ * accepted so nothing that predates the change is refused.
+ */
+const INSTALL_TYPES = ["residential", "commercial", "mobile_rv", "marine", "business", "rural", "events"];
+
+const PRECISIONS = ["exact", "approximate", "none"];
 
 function cap(v: string, max: number): string {
   return v.trim().slice(0, max);
@@ -102,10 +115,11 @@ function valid(b: Partial<LeadBody>): b is LeadBody {
       // looks like data. Both funnels now block before this, so the only way to
       // trip it is a broken client or a bot.
       isValidUkPostcode(normalisePostcode(b.postcode)) &&
-      // Anything else is rejected by the enum anyway — but as a 500 from the
-      // failed insert rather than an honest 422.
+      // The check constraint would reject anything else anyway, but as a 500
+      // from the failed insert rather than an honest 422.
       b.install_type &&
-      INSTALL_TYPES.includes(b.install_type),
+      INSTALL_TYPES.includes(b.install_type) &&
+      (b.postcode_precision == null || PRECISIONS.includes(b.postcode_precision)),
   );
 }
 
@@ -147,6 +161,13 @@ export async function POST(req: Request) {
         town: body.town ? cap(body.town, CAPS.town) : null,
         service: clean(body.service),
         notes: body.notes ? cap(body.notes, CAPS.notes) : null,
+        // Null means nobody was asked; false means asked and declined. Keep the
+        // two apart: collapsing them loses the only evidence of which it was.
+        marketing_consent: typeof body.marketing_consent === "boolean" ? body.marketing_consent : null,
+        consent_at: typeof body.marketing_consent === "boolean" ? new Date().toISOString() : null,
+        postcode_precision: body.postcode_precision ?? null,
+        sector: body.sector ? cap(body.sector, CAPS.sector) : null,
+        form_name: body.form_name ? cap(body.form_name, CAPS.form_name) : null,
         device_type: clean(body.meta?.device_type),
         landing_page: clean(body.meta?.landing_page),
         traffic_source: clean(body.meta?.traffic_source),

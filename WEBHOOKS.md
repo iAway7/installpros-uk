@@ -59,7 +59,11 @@ isn't a database row) but its deliveries do appear in the log.
   "sent_at": "2026-08-19T14:02:11.000Z",
   "lead": {
     "id": "…", "created_at": "…", "name": "…", "email": "…", "phone": "…",
-    "postcode": "LS18 5QB", "service": "…", "install_type": "residential",
+    "postcode": "LS18 5QB", "service": "…", "install_type": "commercial",
+    "address": "…", "town": "Evesham",       // null on postcode-only submissions
+    "marketing_consent": true,               // true ticked, false declined, null never asked
+    "postcode_precision": "exact",           // exact | approximate | none
+    "sector": null, "form_name": "starlink_commercial",
     "notes": "…", "status": "new",
     "score": 9                       // null on lead.created — not scored yet
   },
@@ -150,9 +154,16 @@ the customer twice. Picking the format in the dashboard sets the events to
 
 Deliberately left out, because nobody mapping fields in Zapier would know what
 to do with them: score, property intel, pitch angles, the dashboard link,
-session and experiment ids, `fbclid`, `utm_term` and `utm_content`. The raw
-`notes` string is not sent either: the two things worth having inside it,
-consent and the address, come out as their own fields.
+session and experiment ids, `fbclid`, `utm_term` and `utm_content`. The `notes`
+string is not sent either, and as of migration 0019 there is nothing in it to
+send: consent, the address, the sector and the form name all have their own
+columns now, so the format reads fields instead of splitting a string.
+
+One difference worth knowing: we store consent as three states (`true` ticked,
+`false` asked and declined, `null` never asked) but Zapier filters on true or
+false, so this format flattens `null` to `false`. Absence of a tick is not
+permission. The full three-state value stays on our side in
+`leads.marketing_consent` for anyone who has to evidence it.
 
 Two things to know when setting the Zap up:
 
