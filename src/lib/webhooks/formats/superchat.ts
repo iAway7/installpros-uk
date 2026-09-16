@@ -40,6 +40,15 @@ export const SUPERCHAT_INSTALL_TYPE: Record<string, string> = {
 };
 const SUPERCHAT_INSTALL_TYPE_FALLBACK = "Starlink Installation";
 
+/**
+ * The customer facing label for a service value. Shared with the zapier format
+ * so both send Will's team the same wording for the same lead, rather than two
+ * spellings of "Starlink Marine" that then have to be reconciled downstream.
+ */
+export function installTypeLabel(service: string | null | undefined): string {
+  return SUPERCHAT_INSTALL_TYPE[(service ?? "").toLowerCase()] ?? SUPERCHAT_INSTALL_TYPE_FALLBACK;
+}
+
 /** "John Smith" -> ["John", "Smith"]; "Cher" -> ["Cher", ""]; "Mary Ann Lee" -> ["Mary", "Ann Lee"]. */
 export function splitName(full: string): [string, string] {
   const parts = full.trim().split(/\s+/).filter(Boolean);
@@ -69,7 +78,6 @@ export function ukPhone(raw: string): string {
 
 export function toSuperchat(payload: WebhookPayload): SuperchatLeadPayload {
   const [first_name, last_name] = splitName(payload.lead.name);
-  const service = (payload.lead.service ?? "").toLowerCase();
   return {
     event_type: "lead_received",
     contact_id: `${CONTACT_ID_PREFIX}${payload.lead.id}`,
@@ -78,7 +86,7 @@ export function toSuperchat(payload: WebhookPayload): SuperchatLeadPayload {
     phone: ukPhone(payload.lead.phone),
     email: payload.lead.email,
     postcode: payload.lead.postcode,
-    install_type: SUPERCHAT_INSTALL_TYPE[service] ?? SUPERCHAT_INSTALL_TYPE_FALLBACK,
+    install_type: installTypeLabel(payload.lead.service),
     trigger_timestamp: new Date(payload.lead.created_at).toISOString(),
   };
 }

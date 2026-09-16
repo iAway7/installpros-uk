@@ -12,10 +12,14 @@ export const EVENT_LABEL: Record<WebhookEvent, string> = {
  * How the body is shaped for a given endpoint.
  *   generic   — our native nested payload (WebhookPayload below).
  *   superchat — the flat lead_received shape Will's Superchat function expects.
+ *   zapier:     flat and plain named, for a Zapier Catch Hook feeding Will's
+ *               existing Superchat Zap. Contact details plus the attribution a
+ *               sale can be traced back with, and nothing a non developer
+ *               mapping fields in Zapier would have to ask about.
  */
-export type WebhookFormat = "generic" | "superchat";
+export type WebhookFormat = "generic" | "superchat" | "zapier";
 
-export const WEBHOOK_FORMATS: WebhookFormat[] = ["generic", "superchat"];
+export const WEBHOOK_FORMATS: WebhookFormat[] = ["generic", "superchat", "zapier"];
 
 /**
  * A usable webhook destination. Shared by create and update so the two cannot
@@ -33,8 +37,9 @@ export function isWebhookUrl(url: unknown): url is string {
 }
 
 export const FORMAT_LABEL: Record<WebhookFormat, string> = {
-  generic: "Generic JSON: full lead, attribution, score and property intel (Zapier, Make, n8n)",
+  generic: "Generic JSON: full lead, attribution, score and property intel (Make, n8n, custom)",
   superchat: "Superchat (Will): flat lead_received payload, contact fields only",
+  zapier: "Zapier Catch Hook: flat contact + attribution fields, ready to map by hand",
 };
 
 export interface WebhookEndpoint {

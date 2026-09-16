@@ -417,7 +417,9 @@ function EndpointForm({
     setFormat(next);
     // Superchat's shape has no score field, and their function likely messages
     // the customer on every hit, so default it to the one event that matters.
-    if (next === "superchat") setEvents(["lead.created"]);
+    // Same reasoning for zapier: it carries no score either, so lead.enriched
+    // would resend the lead and message the customer a second time.
+    if (next === "superchat" || next === "zapier") setEvents(["lead.created"]);
   }
 
   async function save() {
@@ -499,6 +501,16 @@ function EndpointForm({
             </span>
           </label>
         ))}
+        {format === "zapier" && (
+          <p className="text-label text-muted-foreground">
+            Flat fields named for a human: name split into first/last, phone as +44,{" "}
+            <code className="rounded bg-secondary px-1">install_type</code> as a readable label,{" "}
+            <code className="rounded bg-secondary px-1">marketing_consent</code> as a true/false, plus
+            landing page, traffic source, UTMs and gclid. Paste the Zapier Catch Hook URL above. Only{" "}
+            <code className="rounded bg-secondary px-1">lead.created</code>: there is no score in it, so
+            the enriched event would deliver the same lead twice.
+          </p>
+        )}
         {format === "superchat" && (
           <p className="text-label text-muted-foreground">
             Sends <code className="rounded bg-secondary px-1">event_type: &quot;lead_received&quot;</code> with
