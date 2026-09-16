@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { rateLimit, LIMITS } from "@/lib/rate-limit";
 import { getCoverage } from "@/lib/broadband/coverage";
 
 export const runtime = "nodejs";
@@ -11,6 +12,9 @@ export const maxDuration = 15;
  * client must then keep its generic message. Never an error to the funnel.
  */
 export async function POST(req: Request) {
+  const limited = rateLimit(req, LIMITS.coverage);
+  if (limited) return limited;
+
   let body: { postcode?: string };
   try {
     body = await req.json();

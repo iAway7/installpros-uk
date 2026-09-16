@@ -6,30 +6,50 @@ sitio donde importa.
 
 ---
 
-## 1. Sin rate limiting — ABIERTO (aplazado conscientemente)
+## 1. Rate limiting - HECHO, con una parte manual pendiente
 
-No hay límite de peticiones en ninguna ruta: ni middleware, ni CAPTCHA, ni WAF.
-Lo relevante no es el spam, es que **hay endpoints públicos que gastan dinero**:
+Dos capas, porque ninguna basta sola.
 
-| Ruta | Qué pasa si la martillean | Coste |
+**Capa 1: cuotas de Google (lo que de verdad acota la factura).**
+Consola de Google Cloud -> APIs y servicios -> Places API (New) -> Cuotas.
+Los valores por defecto son enormes (175.000 autocompletados al dia). Ajustar:
+
+| Fila | Por defecto | Poner |
 |---|---|---|
-| `/api/address/autocomplete` | Llamada a Google Places por request | Facturado por Google |
-| `/api/address/details` | Ídem | Facturado por Google |
-| `/api/broadband-coverage` | Propalt / Ofcom (mitigado por caché por postcode) | Créditos Propalt |
-| `/api/property-photos` | Subida de 10 MB al bucket, sin auth | Storage Supabase |
-| `/api/lead` | Fila en `leads` + fan-out de webhooks al CRM | Ruido en el CRM de Will |
-| `/api/experiments/track` | Falsea conversiones A/B | Decisiones de producto sobre datos sucios |
+| `AutocompletePlacesRequest per day` | 175.000 | 2.000 |
+| `AutocompletePlacesRequest per minute` | 12.000 | 100 |
+| `GetPlaceRequest per day` | 125.000 | 500 |
+| `GetPlaceRequest per minute` | 600 | 30 |
 
-`/api/property-photos` exige un UUID de lead válido y existente, así que no es
-trivial de explotar a ciegas. Las de Google no exigen nada.
+Es lo unico que hace imposible una factura desbocada, en vez de solo
+improbable: el rate limiting va por IP y un ataque distribuido lo esquiva.
+Ojo al contrapeso: si se agota la cuota diaria, el autocompletado deja de dar
+sugerencias y en los landings con direccion el visitante no puede completar el
+formulario. Por eso 2.000 es deliberadamente generoso, unas 200 veces el uso
+actual. Conviene tambien una alerta de presupuesto en Facturacion.
 
-**Opciones evaluadas:**
+**Capa 2: limitador en memoria** (`src/lib/rate-limit.ts`), aplicado a las siete
+rutas publicas. Sin cuenta, sin dependencia, sin variables de entorno.
 
-1. **Upstash Redis** (`@upstash/ratelimit`) — la correcta en serverless: el
-   contador es compartido entre instancias. Requiere cuenta + 2 env vars.
-2. **En memoria** — cero deps, pero en Vercel cada lambda tiene su propio
-   contador y repartir peticiones lo diluye. Parche, no solución.
-3. **Vercel WAF** (Firewall → Rate Limiting) — sin tocar el repo, requiere Pro.
+| Ruta | Limite |
+|---|---|
+| `/api/address/autocomplete` | 60 / min |
+| `/api/address/details` | 20 / min |
+| `/api/broadband-coverage`, `/api/coverage` | 20 / min |
+| `/api/lead` | 5 / min y 20 / hora |
+| `/api/property-photos` | 20 / hora |
+| `/api/experiments/track` | 120 / min |
+
+El ancla es una medicion real: escribir "12 De La Bere Cl, Evesham" a ritmo
+humano produce 6 llamadas de autocompletado (1 si se teclea rapido, por el
+debounce de 250 ms). 60 por minuto es unas diez veces un mecanografo normal.
+
+Limitacion conocida y aceptada: el contador vive en la memoria de una instancia
+y Vercel levanta varias, asi que el limite efectivo es el numero configurado por
+el numero de instancias calientes. Se acepto a cambio de no anadir una cuenta ni
+un servicio antes del lanzamiento, y porque las cuotas de Google ya acotan el
+dinero. Todo pasa por `rateLimit()`, asi que cambiar el Map por Upstash Redis
+mas adelante es tocar un solo fichero.
 
 ## 2. CSP en Report-Only — ABIERTO por diseño
 

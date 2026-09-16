@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { rateLimit, LIMITS } from "@/lib/rate-limit";
 import { createServiceClient } from "@/lib/supabase/server";
 
 export const runtime = "nodejs";
@@ -8,6 +9,9 @@ export const runtime = "nodejs";
  * via the record_experiment_event RPC (migration 0002). No-op without Supabase.
  */
 export async function POST(req: Request) {
+  const limited = rateLimit(req, LIMITS.experimentTrack);
+  if (limited) return limited;
+
   let body: { variantId?: string; kind?: "exposure" | "conversion" };
   try {
     body = await req.json();

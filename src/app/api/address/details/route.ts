@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { rateLimit, LIMITS } from "@/lib/rate-limit";
 
 /**
  * Place Details proxy → Google Places (New). Given a placeId (from the
@@ -8,6 +9,9 @@ import { NextResponse } from "next/server";
  * lookup as one session (cheaper).
  */
 export async function POST(req: Request) {
+  const limited = rateLimit(req, LIMITS.addressDetails);
+  if (limited) return limited;
+
   const key = process.env.GOOGLE_PLACES_API_KEY || process.env.GOOGLE_MAPS_API_KEY;
   if (!key) return NextResponse.json({ error: "address_details_unconfigured" }, { status: 200 });
 

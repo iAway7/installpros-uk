@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { rateLimit, LIMITS } from "@/lib/rate-limit";
 import { isValidUkPostcode, normalisePostcode } from "@/lib/utils";
 import { createServiceClient } from "@/lib/supabase/server";
 import { internalSignature } from "@/lib/webhooks/internal";
@@ -129,6 +130,9 @@ function valid(b: Partial<LeadBody>): b is LeadBody {
  * Server-side is also where you'd forward the lead to email / CRM / WhatsApp.
  */
 export async function POST(req: Request) {
+  const limited = rateLimit(req, LIMITS.lead);
+  if (limited) return limited;
+
   let body: Partial<LeadBody>;
   try {
     body = await req.json();

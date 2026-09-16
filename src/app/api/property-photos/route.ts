@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { rateLimit, LIMITS } from "@/lib/rate-limit";
 import { createServiceClient } from "@/lib/supabase/server";
 
 export const runtime = "nodejs";
@@ -16,6 +17,9 @@ const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
  * still works end-to-end in local/dev.
  */
 export async function POST(req: Request) {
+  const limited = rateLimit(req, LIMITS.propertyPhotos);
+  if (limited) return limited;
+
   try {
     const form = await req.formData();
     const file = form.get("file");

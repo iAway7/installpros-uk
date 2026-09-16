@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { rateLimit, LIMITS } from "@/lib/rate-limit";
 import { isValidUkPostcode, normalisePostcode } from "@/lib/utils";
 
 export const runtime = "edge";
@@ -14,6 +15,9 @@ export const runtime = "edge";
  * capacity constraint ever needs to be expressed.
  */
 export async function POST(req: Request) {
+  const limited = rateLimit(req, LIMITS.coverage);
+  if (limited) return limited;
+
   let body: { postcode?: string; install_type?: string };
   try {
     body = await req.json();

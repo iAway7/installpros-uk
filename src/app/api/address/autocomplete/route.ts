@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { rateLimit, LIMITS } from "@/lib/rate-limit";
 
 /**
  * Address autocomplete proxy → Google Places Autocomplete (New).
@@ -11,6 +12,9 @@ import { NextResponse } from "next/server";
  * "Places API (New)" enabled and billing active on the Google Cloud project.
  */
 export async function POST(req: Request) {
+  const limited = rateLimit(req, LIMITS.addressAutocomplete);
+  if (limited) return limited;
+
   const key = process.env.GOOGLE_PLACES_API_KEY || process.env.GOOGLE_MAPS_API_KEY;
   if (!key) {
     return NextResponse.json({ error: "address_autocomplete_unconfigured", suggestions: [] }, { status: 200 });
