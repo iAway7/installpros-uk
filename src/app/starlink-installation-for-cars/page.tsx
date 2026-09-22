@@ -5,6 +5,8 @@ import { WhatsAppFab } from "@/components/funnel/whatsapp-fab";
 import { CustomerStoriesSection } from "@/components/funnel/customer-stories-section";
 import { TrustpilotSection } from "@/components/funnel/trustpilot-section";
 import { WhyInstallProsSection, VEHICLE_FEATURES } from "@/components/funnel/why-installpros-section";
+import { FinishedInstallSection } from "@/components/funnel/finished-install-section";
+import { InstallVideoSection } from "@/components/funnel/install-video-section";
 import { VehicleFitSection } from "@/components/funnel/vehicle-fit-section";
 import { HowItWorksSection } from "@/components/funnel/how-it-works-section";
 import { RoadPlansSection } from "@/components/funnel/road-plans-section";
@@ -80,15 +82,29 @@ export default function StarlinkInstallationForCarsPage() {
           <HeroSection
             smartCoverage
             addressMode
-            // PLACEHOLDER. There is no vehicle photograph in public/funnel yet.
-            // This is the holiday park image from the commercial sectors grid,
-            // 800px wide, so it will look soft at full bleed. It is here
-            // because a house or an office roof on a vehicle page contradicts
-            // the headline before anyone reads it. Replace with a real install
-            // photo from Will (a motorhome or a van with the Mini on the roof,
-            // around 60 KB, see HeroSection on why the weight matters) before
-            // this page takes traffic.
-            image="/funnel/sector-campsites.webp"
+            // Generated coastal scene from weather-hero-kit (its "wind" plate),
+            // cropped to 2.14:1 with the vehicle centred vertically. That ratio
+            // is the whole trick: the hero anchors the photo to the top, so a
+            // screen wider than the picture eats the BOTTOM of the frame, and
+            // in this shot the vehicle lives there. At the original 1.57 it was
+            // cut off on anything wider than about 1600px.
+            //
+            // Three rungs because one file cannot serve a 375px phone and a
+            // 2000px desktop: the phone downloads 67 KB, in line with the
+            // budget, and the desktop gets 206 KB of sharp. Grass, rock and
+            // swell to the horizon is expensive to compress; this photograph
+            // simply does not go below that at full width.
+            //
+            // Still not a real install. The dish is the white slab on the roof
+            // rack and reads as a roof box at hero size, so the standing ask is
+            // unchanged: a photo from Will of a motorhome or a van with the
+            // Mini on the roof, which is also what FinishedInstallSection below
+            // is waiting on.
+            image="/funnel/hero-vehicle-coastal.webp"
+            // 3:4 centred on the vehicle: at 375px the panoramic crop shows a
+            // strip of its flank and nothing else.
+            imageMobile="/funnel/hero-vehicle-coastal-portrait.webp"
+            imageSrcSet="/funnel/hero-vehicle-coastal-960.webp 960w, /funnel/hero-vehicle-coastal-1440.webp 1440w, /funnel/hero-vehicle-coastal.webp 1920w"
             // The pill names the segment, in the words the customers use. Not
             // "mobile": see the header comment.
             badge="Motorhomes, campervans & cars"
@@ -120,6 +136,36 @@ export default function StarlinkInstallationForCarsPage() {
           {/* Same placement as the parent: the sentinel inside it sits in flow
               here, so the button appears once the hero is behind you. */}
           <WhatsAppFab />
+          {/* Above the process material, which is what the page header asks
+              for: seven of the thirty-six vehicle conversations wanted to see a
+              finished install before deciding, and on a phone this page loses
+              most of its readers before the third screen. Directly under the
+              hero is the only place that reaches them. */}
+          <FinishedInstallSection />
+          {/* The three proofs in one run, still to moving: the annotated
+              photograph, the rail of other vehicles, then somebody doing it.
+              It is the same film that runs on both vehicle URLs of
+              installpros.co.uk, here behind the facade so it costs 3 KB
+              instead of a megabyte of Google before anyone presses play.
+
+              CONFIRM WITH WILL, THEN CHANGE THE CAPTION. The footage opens on
+              a drill, forty lines above a heading that says "No drilling, no
+              suction cups". From the frames the bit goes into the mount's own
+              plate rather than the vehicle roof, which would make this film
+              the best proof of that claim on the page rather than a
+              contradiction of it. I cannot tell from frames alone, so the
+              caption below says only what is certain. Once Will confirms it,
+              the line to use is:
+                "Mercedes Sprinter LWB. The bracket is drilled, not the roof." */}
+          <InstallVideoSection
+            videoId="Vcqw02BLmxo"
+            poster="/funnel/install-video-vehicle-poster.webp"
+            heading={<>One minute.<br />One real install.</>}
+            duration="1 min"
+            caption="Starlink Mini on a Mercedes Sprinter LWB."
+            location="install_video_vehicle"
+            title="Starlink Vehicle Installation UK: Starlink Mini on a Mercedes Sprinter LWB"
+          />
           {/* No client logos. Every logo in that section is a business, and a
               row of company names above a motorhome page reads as the wrong
               page. */}
@@ -133,18 +179,30 @@ export default function StarlinkInstallationForCarsPage() {
               and the systems question ("will my till still work?") becomes
               "what holds it on, where does the cable go, what powers it". */}
           <VehicleFitSection />
+          {/* Moved up from below RoadPlansSection, 20 September. The two kinds
+              of proof now land together and early: the photographs under the
+              hero answer "have you done one like mine", these answer "were they
+              any good", and both are in front of the reader before the page
+              asks them to do anything. The residential diagnosis applies here
+              too — on a phone the old site died at 25% scroll with every review
+              in the bottom three quarters.
+
+              They sit after PermanentOrRemovable rather than before it because
+              that block closes the fit question, and a review rail reads as a
+              change of subject. */}
+          <TrustpilotSection />
+          <CustomerStoriesSection />
           {/* The process, in four numbered steps, ending on the one action this
               segment converts on: sending a photo. Where the job happens is
               step three. This is where the open vehicle conversations in the
-              chat log are stuck, so it sits above the plan and the reviews
-              rather than in the FAQ. */}
+              chat log are stuck, so it sits above the plan rather than in the
+              FAQ. It used to sit above the reviews as well; they now come
+              first, for the reason in the note above. */}
           <HowItWorksSection />
           {/* Starlink's Roam prices, motion, abroad, pausing and an honest
               speed line. Replaces CoverageSection, which argues fixed-site
               speed to a reader who will be on a deprioritised plan. */}
           <RoadPlansSection />
-          <TrustpilotSection />
-          <CustomerStoriesSection />
           {/* No EquipmentSection: it renders the Gen 3 kit and there is no
               Starlink Mini image in public/funnel yet. The Mini is described in
               the hero, the fit section and the FAQ instead. Add it back with a

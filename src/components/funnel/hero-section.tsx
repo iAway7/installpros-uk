@@ -1,4 +1,3 @@
-import ReactDOM from "react-dom";
 import { ZipAvailabilityChecker } from "./zip-availability-checker";
 import { HeroTrustBar, type InstallsStat } from "./hero-trust-bar";
 import { HeroHeadline } from "./hero-headline";
@@ -6,18 +5,54 @@ import { HeroHeadline } from "./hero-headline";
 /** The residential photo. Segment landings pass their own via `image`. */
 const DEFAULT_HERO = "/funnel/hero-uk-residential.webp";
 
+/** The photograph layer. object-cover + object-top is what background-size:
+ *  cover and background-position: center top were doing; what an <img> adds is
+ *  srcset. Anchored to the top because these photos put their sky there: on a
+ *  wide screen the crop eats the bottom of the frame, so anything that matters
+ *  has to live above it. */
+function HeroPhoto({ image, imageSrcSet }: { image: string; imageSrcSet?: string }) {
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={image}
+      srcSet={imageSrcSet}
+      sizes={imageSrcSet ? "100vw" : undefined}
+      alt=""
+      aria-hidden="true"
+      loading="eager"
+      decoding="sync"
+      fetchPriority="high"
+      className="absolute inset-0 h-full w-full object-cover object-top"
+    />
+  );
+}
+
 /** Full-bleed hero with the funnel, and a full-width trust bar pinned at the bottom. */
 export function HeroSection(
-  { smartCoverage = false, addressMode = false, image = DEFAULT_HERO, headline, subheadline, badge = "Nationwide UK Coverage", badgeFlag = true, headlineConfigKey, installs, defaultInstallType, skipServiceStep = false, formName }: {
+  { smartCoverage = false, addressMode = false, image = DEFAULT_HERO, imageMobile, imageSrcSet, headline, subheadline, badge = "Nationwide UK Coverage", badgeFlag = true, headlineConfigKey, installs, defaultInstallType, skipServiceStep = false, formName }: {
     smartCoverage?: boolean;
     addressMode?: boolean;
     /** Pre-selects the install type on the hero funnel. Segment landings only. */
     defaultInstallType?: string;
     skipServiceStep?: boolean;
     formName?: string;
-    /** Background photo. Keep replacements around 60 KB: the preload below is
-     *  high priority, so weight here is paid straight out of first paint. */
+    /** Hero photo. On its own it is a single file for every screen, so keep
+     *  replacements around 60 KB: it is fetched at high priority and the weight
+     *  is paid straight out of first paint. */
     image?: string;
+    /** A different CROP for phones, not a different size: art direction, not
+     *  bandwidth. A photo composed for a wide hero is cut to a fifth of its
+     *  width at 375px, and whatever the picture was about is usually not in
+     *  that fifth. Omit it and phones get `image` like everything else. */
+    imageMobile?: string;
+    /** Widths of the same photo, when one file cannot serve both ends. A phone
+     *  at 375 and a desktop at 2000 are a 5x difference in pixels: one file is
+     *  either soft on the desktop or heavy on the phone, and this page is four
+     *  fifths phones. With this set, `sizes="100vw"` picks per screen and the
+     *  60 KB budget applies to the SMALLEST rung, which is the one the phone
+     *  downloads. Example:
+     *  "/funnel/x-960.webp 960w, /funnel/x-1440.webp 1440w, /funnel/x.webp 1920w" */
+    imageSrcSet?: string;
     /** Segment landings override the copy; the funnel pages leave both unset. */
     headline?: string;
     subheadline?: string;
@@ -37,20 +72,19 @@ export function HeroSection(
     installs?: InstallsStat;
   } = {},
 ) {
-  // The hero photo is a CSS background, which the preload scanner cannot see:
-  // it has to fetch the HTML, build the CSSOM and only then discover the URL.
-  // This preload removes that round trip.
+  // No ReactDOM.preload any more, and no next/image either. The photo used to
+  // be a CSS background, which the preload scanner cannot see — it has to fetch
+  // the HTML, build the CSSOM and only then discover the URL — so a manual
+  // preload bought back that round trip. It is an <img> now, which the scanner
+  // finds on its own, and React hoists its own <link rel=preload> carrying the
+  // same srcset and sizes, so the browser preloads the candidate it is actually
+  // going to use rather than a fixed URL.
   //
-  // We tried next/image with `priority` instead, for responsive sizing. It cost
-  // 1.7s of FCP (1.1s -> 2.8s), measured twice with a warm optimiser cache: the
-  // high-priority image preload competes with the 15 KB of render-blocking CSS
-  // on a slow connection, so first paint lands later. Reverted. The real fault
-  // was never the delivery mechanism — it was the source growing from 19.5 KB
-  // to 147 KB. It is now 58 KB, which is what actually needed fixing.
-  ReactDOM.preload(image, {
-    as: "image",
-    fetchPriority: "high",
-  });
+  // The next/image attempt that cost 1.7s of FCP (1.1s -> 2.8s, measured twice
+  // with a warm optimiser cache) is not what this is. That regression was the
+  // optimiser in the path and a source that had grown from 19.5 KB to 147 KB;
+  // here the files are pre-built, the phone still downloads the smallest rung,
+  // and nothing renders through a loader.
 
   // No overflow-hidden on the section. The address autocomplete opens downwards
   // and with three or more suggestions it runs past the bottom of the hero, and
@@ -76,14 +110,24 @@ export function HeroSection(
         // parallax only kicks in from md up, where it actually works.
         data-parallax
       >
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `url(${image})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center top",
-          }}
-        />
+        {/* The <picture> only appears when there is a phone crop to choose,
+            and that is not cosmetic: React refuses to hoist its <link
+            rel=preload> for any <img> with a <picture> in scope, because it
+            cannot know which <source> will win. A page with no art direction
+            therefore keeps the hoisted preload it had when this was a CSS
+            background, and a page with one relies on the preload scanner,
+            which reads <picture> and its media queries natively and is the
+            reason the manual preload existed in the first place. */}
+        {imageMobile ? (
+          <picture>
+            {/* 767px: the width below Tailwind's md, so the portrait crop covers
+                exactly the screens that get the phone layout. */}
+            <source media="(max-width: 767px)" srcSet={imageMobile} />
+            <HeroPhoto image={image} imageSrcSet={imageSrcSet} />
+          </picture>
+        ) : (
+          <HeroPhoto image={image} imageSrcSet={imageSrcSet} />
+        )}
         <div className="hero-overlay absolute inset-0" />
       </div>
 

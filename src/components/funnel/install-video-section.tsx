@@ -1,11 +1,14 @@
 "use client";
 
+import type { ReactNode } from "react";
 import { useRef, useState } from "react";
 import { track } from "@/lib/analytics/track";
 import { EVENTS } from "@/lib/analytics/events";
 
-const VIDEO_ID = "nBsvd0cRUEQ";
-const POSTER = "/funnel/install-video-poster.webp";
+/** The residential film, and the defaults every page had before this took
+ *  props. A page that passes nothing behaves exactly as it did. */
+const DEFAULT_VIDEO_ID = "nBsvd0cRUEQ";
+const DEFAULT_POSTER = "/funnel/install-video-poster.webp";
 
 /**
  * "Forty seconds. One real install." the install video, embedded as a facade.
@@ -19,8 +22,42 @@ const POSTER = "/funnel/install-video-poster.webp";
  * The connection is opened on intent (hover, touch or focus) rather than on
  * load: the TLS handshake is done by the time the click lands, so the player
  * starts noticeably sooner without costing anything up front.
+ *
+ * Takes props since 22 September, when the vehicle page got its own film. Each
+ * one needs its own `location`, or the two land in the same PostHog bucket and
+ * neither play rate means anything.
  */
-export function InstallVideoSection() {
+export function InstallVideoSection({
+  videoId = DEFAULT_VIDEO_ID,
+  poster = DEFAULT_POSTER,
+  eyebrow = "See it done",
+  heading = (
+    <>
+      Forty seconds.
+      <br />
+      One real install.
+    </>
+  ),
+  /** Printed on the badge and read out in the play button's label. */
+  duration = "40 sec",
+  /** One line under the frame. Use it where the footage needs saying out loud:
+   *  the vehicle film shows a drill, on a page whose mount section says we do
+   *  not drill, and a reader who does not know what is being drilled will
+   *  believe their own eyes. */
+  caption,
+  /** Distinguishes the plays in analytics. */
+  location = "install_video",
+  title = "Professional Starlink installation by InstallPros",
+}: {
+  videoId?: string;
+  poster?: string;
+  eyebrow?: string;
+  heading?: ReactNode;
+  duration?: string;
+  caption?: string;
+  location?: string;
+  title?: string;
+} = {}) {
   const [playing, setPlaying] = useState(false);
   const warmed = useRef(false);
 
@@ -36,7 +73,7 @@ export function InstallVideoSection() {
   }
 
   function play() {
-    track(EVENTS.VIDEO_PLAYED, { video_id: VIDEO_ID, video_location: "install_video" });
+    track(EVENTS.VIDEO_PLAYED, { video_id: videoId, video_location: location });
     setPlaying(true);
   }
 
@@ -50,12 +87,8 @@ export function InstallVideoSection() {
     >
       <div className="container mx-auto">
         <div className="mx-auto max-w-2xl text-center">
-          <p className="eyebrow">See it done</p>
-          <h2 className="mt-4 h2-section text-foreground">
-            Forty seconds.
-            <br />
-            One real install.
-          </h2>
+          <p className="eyebrow">{eyebrow}</p>
+          <h2 className="mt-4 h2-section text-foreground">{heading}</h2>
         </div>
 
         {/* aspect-video reserves the box before anything loads, so neither the
@@ -64,8 +97,8 @@ export function InstallVideoSection() {
           <div className="relative aspect-video w-full overflow-hidden rounded-xl border border-border bg-secondary">
             {playing ? (
               <iframe
-                src={`https://www.youtube-nocookie.com/embed/${VIDEO_ID}?autoplay=1&rel=0&modestbranding=1&playsinline=1`}
-                title="Professional Starlink installation by InstallPros"
+                src={`https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&playsinline=1`}
+                title={title}
                 allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowFullScreen
                 className="absolute inset-0 h-full w-full"
@@ -77,12 +110,12 @@ export function InstallVideoSection() {
                 onMouseEnter={warm}
                 onTouchStart={warm}
                 onFocus={warm}
-                aria-label="Play the install video, 40 seconds"
+                aria-label={`Play the install video, ${duration}`}
                 className="group absolute inset-0 h-full w-full cursor-pointer"
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={POSTER}
+                  src={poster}
                   alt=""
                   aria-hidden="true"
                   loading="lazy"
@@ -98,12 +131,15 @@ export function InstallVideoSection() {
                     </svg>
                   </span>
                   <span className="rounded-full border border-white/25 bg-black/45 px-3 py-1 text-label font-semibold uppercase tracking-[0.14em] text-white">
-                    40 sec
+                    {duration}
                   </span>
                 </span>
               </button>
             )}
           </div>
+          {caption && (
+            <p className="mt-3 text-center text-body-sm text-muted-foreground">{caption}</p>
+          )}
         </div>
       </div>
     </section>
