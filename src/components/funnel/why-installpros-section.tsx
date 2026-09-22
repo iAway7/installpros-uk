@@ -162,6 +162,38 @@ export const VEHICLE_FEATURES: Feature[] = [
   },
 ];
 
+/**
+ * Static caravans, park homes and lodges.
+ *
+ * Nothing here is about drilling, because none of the 175 static conversations
+ * mentions it (see static-fit-section.tsx). The four cards answer what this
+ * segment actually raises: what it is fixed to, what it looks like from the
+ * next pitch, the fact that the season stops and the plan can stop with it,
+ * and who picks the phone up in November.
+ */
+export const STATIC_FEATURES: Feature[] = [
+  {
+    t: "Mounted Without Touching the Unit",
+    d: "The old dish bracket, the aerial pole or its own post on the decking. Where a park home warranty forbids fixings, nothing goes near the structure.",
+    i: IconWrench,
+  },
+  {
+    t: "Neat From the Next Pitch",
+    d: "Sited where it shows least, cable clipped tight, nothing loose outside. Parks that are particular about how things look are the ones that refer us.",
+    i: IconShield,
+  },
+  {
+    t: "Stops When Your Season Does",
+    d: "A residential plan in your own Starlink account, billed every thirty days and paused from the app when you close the van up for winter.",
+    i: IconBolt,
+  },
+  {
+    t: "Someone Answers in November",
+    d: "UK support after the fitting, from the team that did it, whether you are on the park or at home six months later.",
+    i: IconHeadset,
+  },
+];
+
 /** "Engineered installs, not odd jobs." — the four capability cards, ported
  *  from the /starlink-installations landing. */
 export function WhyInstallProsSection(

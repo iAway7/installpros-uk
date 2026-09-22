@@ -381,6 +381,85 @@ export const VEHICLE_FAQS: FaqEntry[] = [
  * have to come from Will: deck entry, mast or arch mounting and 12 V on board
  * are not things to guess at on a public page.
  */
+/**
+ * Static caravan, park home and lodge landing FAQ.
+ *
+ * Written from the 175 static conversations of 1 July to 21 September 2026
+ * (superchat-analysis/statics-questions-for-will). Ordered by how many of the
+ * 175 raise each one. Every question is close to a customer's own words and
+ * the counts are in the comments, so the order can be checked rather than
+ * argued about.
+ *
+ * Four of the eight are Pricing, which is not padding: 61 of 175 walked away
+ * on price and 43 of those named the installation fee rather than the monthly.
+ * This is the segment's whole problem.
+ */
+export const STATIC_FAQS: FaqEntry[] = [
+  {
+    category: "Pricing",
+    // 91 of 175, the most asked question in the segment by a distance.
+    // "So how much for upfront cost then monthly payment".
+    q: "What does it cost in total, the fitting and the monthly?",
+    a: "Two payments. The fitting is a one-off to us: kit, mount, cabling, power and setup, and it can be spread. The plan is monthly to Starlink, in your own account, and you can pause it. Tell us your park and the unit and the fitting price comes back the same day.",
+  },
+  {
+    category: "Pricing",
+    // 58 of 175 push back on the install figure, 13 ask to spread it.
+    // "Oh wow didnt realise u had to pay the instalation", "Hi yes I just
+    // don't have the £880 upfront I'm afraid at the minute".
+    q: "Can I spread the installation cost?",
+    a: "Yes. In full, half now and half after the fitting, or three payments with no interest. Ask for the spread when you ask for the price.",
+  },
+  {
+    category: "Pricing",
+    // 22 of 175 are part-year and only 2 knew the word pause. One is already
+    // a paying customer: "is it possible that i could get it turned off from
+    // end september to march".
+    q: "I am only at the van part of the year. Can I turn it off?",
+    a: "Yes, and it is one tap. Starlink bills every thirty days and pauses from the app, so a seven month season costs seven months. The fitting stays on the unit and there is nothing to re-install.",
+  },
+  {
+    category: "Installation",
+    // 24 of 175 raise mounting. Nobody mentions drilling. "We are in a park
+    // home .we can't fix anything to the building as it will affect the
+    // builders warranty", "Whats the difference between the weight of your
+    // equipment and a satellite dish ?".
+    q: "Where does it go on a static caravan or a park home?",
+    a: "Usually on what is already there: the old Sky bracket, the aerial pole or the corner post. A Mini is lighter than the dish that was on it. Where a park home warranty forbids fixings, it goes on its own pole instead, clear of the unit.",
+  },
+  {
+    category: "Pricing",
+    // 18 of 175 arrive having seen an advert. "Saw advert saying no
+    // installation costs and £40 a month", "I am willing to pay £80 a month
+    // but on the website it says free installation".
+    q: "I saw free installation advertised somewhere cheaper.",
+    a: "That is usually a self-install kit, or an installation folded into a longer contract so you pay it monthly without seeing it. Ours is split on purpose: one fitting fee you can spread, and a plan you own and can pause.",
+  },
+  {
+    category: "Installation",
+    // 18 of 175 raise self-install. "A friend of mine installed his himself
+    // cant we do that?", "Install kit 20 quid temu and rest is free from
+    // starlink".
+    q: "Can I just buy the kit and fit it myself?",
+    a: "You can, and plenty do. What you pay us for is a mount that holds through a winter without marking the unit, a cable run that looks like it belongs, and somebody to call when it stops.",
+  },
+  {
+    category: "Coverage & WiFi",
+    // 24 of 175 ask whether it works at their pitch, almost always trees.
+    // "It's a huge sky up there we are surrounded by trees".
+    q: "There are trees around my pitch. Will it work?",
+    a: "Probably. Trees are the only thing that usually stops it, and what matters is the open sky above the unit rather than the height of the mount. Send a photo looking up from the pitch and we answer before anyone books.",
+  },
+  {
+    category: "Coverage & WiFi",
+    // 14 of 175 live in the unit or work from it. "It is a 52 week holiday
+    // park. I live here", "So it will be a static caravan and I work from
+    // home permanently".
+    q: "We live here, or work from the van. Is it up to that?",
+    a: "Yes, and a good part of this segment lives there rather than visiting. It runs video calls, a console and the cameras at once. Tell us which rooms need covering and that shapes where the router goes.",
+  },
+];
+
 export const ALL_FAQS: Faq[] = [
   ...RESIDENTIAL_FAQS.map((f) => ({ ...f, service: "Residential" as const })),
   ...COMMERCIAL_FAQS.map((f) => ({ ...f, service: "Commercial" as const })),

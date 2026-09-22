@@ -527,7 +527,10 @@
 }
 
 .theme-editorial .stat-xl {
-  font-size: clamp(44px, 4.2vw, 60px);
+  /* Capped at 48, not 60: at 60 a four-figure price filled half a card and
+     read as shouting rather than as a number. Shared with TrackRecordSection
+     and RoadPlansSection on the vehicle page, deliberately. */
+  font-size: clamp(36px, 4.2vw, 48px);
   font-weight: 200;
   letter-spacing: -0.04em;
   line-height: 1;
