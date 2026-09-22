@@ -20,16 +20,15 @@
  *  - The kit's strip under the hero is gone. The page passes the site's
  *    HeroTrustBar through `bar` instead (Google, Trustpilot, installs, The
  *    Times, Authorised Installer), pinned inside the hero like HeroSection.
- *  - `fetchPriority` on <img> is a React 19 prop. React 18 wants
- *    ReactDOM.preload instead, which is what HeroSection already does.
+ *  - The plates are the kit's graded finals, three widths each (960, 1280,
+ *    1600) served through srcset. Only the first scene is in the critical
+ *    path; see the img block at the foot of the file.
  *
  * Placeholders inherited from the kit, flagged in its README: the Connection
  * card figures (184 Mbps, 31 ms) and the copy claims (self-heating dish,
- * sealed roof entry, motorway-speed mount) are unconfirmed by Will. The plates
- * are 1264px wide; the kit expects 2K finals.
+ * sealed roof entry, motorway-speed mount) are unconfirmed by Will.
  */
 
-import ReactDOM from "react-dom";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { isValidUkPostcode, normalisePostcode } from "@/lib/utils";
 import { checkUkPostcode } from "@/lib/funnel/check-postcode";
@@ -44,6 +43,7 @@ export type SceneFx = {
 
 export type Scene = {
   src: string;
+  srcSet: string;
   alt: string;
   eyebrow: string;
   titleLines: [string, string];
@@ -61,15 +61,17 @@ const SWAP_MS = 420;
 export const VEHICLE_SCENES: Scene[] = [
   {
     src: "/hero/snow.webp",
+    srcSet: "/hero/snow-960.webp 960w, /hero/snow-1280.webp 1280w, /hero/snow.webp 1600w",
     alt: "4x4 with a roof-mounted Starlink dish climbing a snow-covered Lake District pass",
-    eyebrow: "Snow · Hardknott Pass",
+    eyebrow: "Snow · Kirkstone Pass",
     titleLines: ["Online in", "the snowfall."],
     lede: "The dish heats itself to shed snow and ice. Fitted properly to your campervan or 4x4, it keeps streaming while the valley below loses its signal.",
-    place: "Hardknott Pass",
+    place: "Kirkstone Pass",
     fx: { density: .85, angle: .10, speed: 150, length: .6, size: 2.7, sway: 24, swayFreq: .65, alpha: .85, gust: 0, gustT: 8, r: 255, g: 255, b: 255 },
   },
   {
     src: "/hero/storm.webp",
+    srcSet: "/hero/storm-960.webp 960w, /hero/storm-1280.webp 1280w, /hero/storm.webp 1600w",
     alt: "The same vehicle crossing wet Pennine moorland under storm clouds",
     eyebrow: "Storm · Pennine crossing",
     titleLines: ["Online through", "the storm."],
@@ -79,6 +81,7 @@ export const VEHICLE_SCENES: Scene[] = [
   },
   {
     src: "/hero/wind.webp",
+    srcSet: "/hero/wind-960.webp 960w, /hero/wind-1280.webp 1280w, /hero/wind.webp 1600w",
     alt: "The same vehicle on a single-track coastal road on the North Coast 500",
     eyebrow: "Crosswind · North Coast 500",
     titleLines: ["Online in", "the crosswind."],
@@ -109,9 +112,13 @@ export function WeatherHero({
    *  pins HeroTrustBar. Pass `<HeroTrustBar />` for the site's badges. */
   bar?: React.ReactNode;
 } = {}) {
-  // First plate is the LCP candidate. The rest are lazy; they sit at opacity 0
-  // in the viewport, so the browser still fetches them, just after first paint.
-  ReactDOM.preload(scenes[0].src, { as: "image", fetchPriority: "high" });
+  // No ReactDOM.preload here, unlike HeroSection. There the photo is a CSS
+  // background the preload scanner cannot see, so the link buys a round trip.
+  // This plate is an <img> in the HTML with fetchPriority="high", which the
+  // scanner already finds, and a preload keyed on the 1600px src alone would
+  // land on top of the 960px candidate srcset picks: two hero images on a
+  // phone. See the FCP note in hero-section.tsx for what a competing
+  // high-priority preload costs on a slow connection.
 
   const [index, setIndex] = useState(0);   // active scene (plate, tabs, fx)
   const [shown, setShown] = useState(0);   // scene whose copy is on screen
@@ -120,6 +127,19 @@ export function WeatherHero({
   const targetRef = useRef<SceneFx>(scenes[0].fx);
 
   targetRef.current = scenes[index].fx;
+
+  /* scenes 2 and 3 out of the critical path: no src until load + idle */
+  const [rest, setRest] = useState(false);
+  useEffect(() => {
+    const idle = (cb: () => void) =>
+      typeof window.requestIdleCallback === "function"
+        ? window.requestIdleCallback(cb)          // Safari only got this in 17
+        : window.setTimeout(cb, 200);
+    const arm = () => idle(() => setRest(true));
+    if (document.readyState === "complete") { arm(); return; }
+    window.addEventListener("load", arm, { once: true });
+    return () => window.removeEventListener("load", arm);
+  }, []);
 
   /* copy swap: 420ms out, then in */
   useEffect(() => {
@@ -256,18 +276,28 @@ export function WeatherHero({
 
   return (
     <section className={styles.hero} style={{ "--dwell": `${DWELL}ms` } as React.CSSProperties}>
-      {scenes.map((sc, i) => (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          key={sc.src}
-          className={styles.plate + (i === index ? " " + styles.isOn : "")}
-          src={sc.src}
-          alt={i === index ? sc.alt : ""}
-          aria-hidden={i === index ? undefined : true}
-          loading={i === 0 ? "eager" : "lazy"}
-          decoding={i === 0 ? "sync" : "async"}
-        />
-      ))}
+      {scenes.map((sc, i) => {
+        // The first plate is the LCP candidate and ships with the page. The
+        // other two sit in the viewport at opacity 0, where loading="lazy"
+        // postpones nothing, so they carry no src at all until load + idle —
+        // or until a tab click asks for one before that.
+        const load = i === 0 || rest || i === index;
+        return (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            key={sc.src}
+            className={styles.plate + (i === index ? " " + styles.isOn : "")}
+            src={load ? sc.src : undefined}
+            srcSet={load ? sc.srcSet : undefined}
+            sizes={load ? "100vw" : undefined}
+            alt={i === index ? sc.alt : ""}
+            aria-hidden={i === index ? undefined : true}
+            loading={i === 0 ? "eager" : undefined}
+            decoding={i === 0 ? "sync" : "async"}
+            fetchPriority={i === 0 ? "high" : undefined}
+          />
+        );
+      })}
       <canvas ref={canvasRef} className={styles.weather} aria-hidden="true" />
       <div className={styles.scrim} />
 
