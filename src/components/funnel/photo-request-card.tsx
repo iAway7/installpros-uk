@@ -5,7 +5,6 @@ import { CheckCircle2, Check, House, Images, Mail, Trees } from "lucide-react";
 import { WhatsAppIcon } from "./ui/whatsapp-icon";
 import { track, EVENTS } from "@/lib/analytics";
 import { mailtoUrl, photoRequestMessage, whatsappUrl } from "@/lib/funnel/contact";
-import { fireGoogleAdsConversion } from "@/lib/funnel/google-ads-conversion";
 
 interface LeadContext {
   name?: string;
@@ -73,11 +72,9 @@ export function PhotoRequestCard() {
     setLead(next);
 
     track(EVENTS.PAGE_VIEW, { cta_location: "thank_you_photos", lead_id: next.leadId });
-
-    // This page is now the first stop for a converted lead, so it owns the
-    // Google Ads conversion that used to fire on the upload step. The helper
-    // is once-per-session, so a lead who reaches both still counts once.
-    return fireGoogleAdsConversion();
+    // The Google Ads conversion used to fire here. It lives in GTM now, on the
+    // lead_created dataLayer event, and firing it from the page as well would
+    // count every lead twice. See google-ads-conversion-setup.md.
   }, []);
 
   const message = photoRequestMessage(lead);

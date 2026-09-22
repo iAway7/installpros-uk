@@ -239,7 +239,13 @@ export function ServiceQuoteForm({
       case 1: return formData.fullName.trim().length > 0;
       // Was `length === 14` — the width of the old US "(XXX) XXX-XXXX" mask.
       // No valid UK number is ever exactly 14 characters, so Next never enabled.
-      case 2: return isValidUkPhone(formData.phone);
+      // Was `isValidUkPhone(...)`, which made this the only step whose gate was
+      // the full validation. A wrong number left the button grey and nothing on
+      // screen said why, because validatePhone's message is only written by
+      // checkPhone(), and checkPhone() only runs on a click the disabled button
+      // could never receive. Same trap the consent note below describes. Now the
+      // gate is "they typed something" and the click explains the rest.
+      case 2: return formData.phone.trim().length > 0;
       case 3: return formData.email.includes("@");
       // See zip-availability-checker: gating on consent here disables the
       // button, which makes submit()'s consent error unreachable — the user is
@@ -339,7 +345,10 @@ export function ServiceQuoteForm({
           {step === 2 && (
             <StepField anim={anim} label={`Step 2 of ${lastStep}`} title="What's your phone number?" error={errors.phone} errorId="cta-err-phone">
               <div className="relative">
-                <Input ref={phoneRef} type="tel" value={formData.phone} onChange={onPhoneChange} placeholder="Enter phone number" inputSize="lg" aria-label="Phone number" state={errors.phone ? "error" : "default"} aria-describedby={errors.phone ? "cta-err-phone" : undefined} className="text-center text-body md:text-[22px]" />
+                <Input ref={phoneRef} type="tel" value={formData.phone} onChange={onPhoneChange}
+                  /* Ver zip-availability-checker: el error solo se veia al pulsar. */
+                  onBlur={() => { if (formData.phone.trim()) checkPhone(); }}
+                  placeholder="Enter phone number" inputSize="lg" aria-label="Phone number" state={errors.phone ? "error" : "default"} aria-describedby={errors.phone ? "cta-err-phone" : undefined} className="text-center text-body md:text-[22px]" />
                 {showPhoneCheck && <Check className="absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-success" />}
               </div>
             </StepField>

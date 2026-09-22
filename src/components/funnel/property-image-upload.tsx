@@ -8,7 +8,6 @@ import { Button } from "@/components/system/button";
 import { StepIndicator } from "./step-indicator";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { track, EVENTS } from "@/lib/analytics";
-import { fireGoogleAdsConversion } from "@/lib/funnel/google-ads-conversion";
 
 interface QuoteData {
   name?: string;
@@ -51,10 +50,9 @@ export function PropertyImageUpload() {
     }
 
     track(EVENTS.PAGE_VIEW, { cta_location: "upload_property_images" });
-
-    // Shared with the thank-you page: whichever a converted lead lands on
-    // records the conversion, and only the first one does.
-    return fireGoogleAdsConversion();
+    // The Google Ads conversion used to fire here. It lives in GTM now, on the
+    // lead_created dataLayer event, and firing it from the page as well would
+    // count every lead twice. See google-ads-conversion-setup.md.
   }, []);
 
   function onPick(e: React.ChangeEvent<HTMLInputElement>) {

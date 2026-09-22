@@ -26,6 +26,14 @@ function stripToNational(v: string): string {
   if (d.startsWith("+44")) d = "0" + d.slice(3);
   else if (d.startsWith("0044")) d = "0" + d.slice(4);
   else if (d.startsWith("44") && !d.startsWith("440")) d = "0" + d.slice(2);
+  // "+44 (0)7700 900123" is how a great many UK businesses print their own
+  // number, and it used to be rejected. Stripping the punctuation leaves
+  // "+4407700900123", the +44 branch above turns that into "007700900123",
+  // and twelve digits fails the 9-to-10 rule downstream. Collapsing a leading
+  // "00" fixes that form and the unbracketed "+44 0 7700 900123" with it.
+  // Safe by construction: 00 is the UK international dialling prefix, so no
+  // national number begins with it, and the 0044 case is already consumed.
+  if (d.startsWith("00")) d = d.slice(1);
   return d;
 }
 
