@@ -1,6 +1,7 @@
 "use client";
 
 import type { PostHog } from "posthog-js";
+import { analyticsConsented, onConsentChange } from "./consent";
 
 /**
  * Lazy loader for posthog-js.
@@ -25,6 +26,31 @@ let loading: Promise<PostHog | null> | null = null;
 const queue: Array<(ph: PostHog) => void> = [];
 
 /**
+ * The queue also holds calls made while consent is still absent, which may be
+ * the whole visit. Capped so a long session on a page that never gets consent
+ * cannot grow it without bound; the oldest are dropped, since the newest are
+ * the ones worth replaying if the visitor does accept later.
+ */
+const QUEUE_MAX = 50;
+
+let awaitingConsent = false;
+
+/**
+ * Start PostHog the moment the visitor accepts, without making them navigate.
+ * Registered once, the first time a load is refused for lack of consent.
+ */
+function loadWhenConsented(): void {
+  if (awaitingConsent) return;
+  awaitingConsent = true;
+  const stop = onConsentChange(() => {
+    if (!analyticsConsented()) return;
+    stop();
+    awaitingConsent = false;
+    void loadPostHog();
+  });
+}
+
+/**
  * Fetch + initialise PostHog. Idempotent: repeated calls share one promise, so
  * the chunk is requested once no matter how many components ask for it.
  */
@@ -33,6 +59,15 @@ export function loadPostHog(): Promise<PostHog | null> {
 
   const key = process.env.NEXT_PUBLIC_POSTHOG_KEY;
   if (typeof window === "undefined" || !key) return Promise.resolve(null);
+
+  // The consent gate, and it has to live here rather than in the provider:
+  // withPostHog() calls loadPostHog() itself, so gating only the provider
+  // would still let the first page_view pull the library in. Nothing is
+  // remembered by returning null, so a later call re-checks and can proceed.
+  if (!analyticsConsented()) {
+    loadWhenConsented();
+    return Promise.resolve(null);
+  }
 
   loading = import("posthog-js")
     .then(({ default: posthog }) => {
@@ -101,6 +136,7 @@ export function withPostHog(fn: (ph: PostHog) => void): void {
     return;
   }
 
+  if (queue.length >= QUEUE_MAX) queue.shift();
   queue.push(fn);
   void loadPostHog();
 }
