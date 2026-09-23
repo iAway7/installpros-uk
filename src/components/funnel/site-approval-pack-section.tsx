@@ -44,14 +44,32 @@ const PACK: PackItem[] = [
     detail: "Method statement and risk assessment, including work at height. The site specific version follows the survey",
   },
   {
-    title: "£10m insurance certificate",
-    detail: "Public liability, professional indemnity, employers' liability and cyber",
+    // Summary, not the scan. The signed certificate carries a policy number and
+    // the broker's details, which should not sit on a public URL; it goes out
+    // on request instead.
+    title: "Insurance summary",
+    detail: "£10m public liability, plus professional indemnity, employers' liability and cyber, with the renewal date. Signed certificate on request",
   },
   {
     title: "Asbestos note",
     detail: "When a survey is needed before we drill, and when it is not",
   },
+  {
+    // The first thing a managing agent checks, it costs nothing because it is
+    // already in the site footer, and without it the pack could be from anyone.
+    title: "Who you are dealing with",
+    detail: "Registered company name and number, VAT number and registered office",
+  },
 ];
+
+/**
+ * What we need back from the building owner (roof access and keys, the asbestos
+ * register on pre-2000 buildings, written permission to fix to the structure,
+ * parking and any permit to work) is deliberately NOT on this page. It is four
+ * more rows in a section that is already the longest on the landing, and the
+ * visitor here is the tenant, not the owner. It belongs inside the pack PDF,
+ * where the person who has to action it is the one reading.
+ */
 
 function IconDoc() {
   return (

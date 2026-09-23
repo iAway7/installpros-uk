@@ -17,10 +17,17 @@ type FitItem = {
  * Seven customers asked to see a finished install before deciding.
  *
  * Titles are the customer's fear answered, not the part named: "The mount"
- * became "No drilling, no suction cups" because that is the question ("Do you
- * need to drill a hole in the ceiling or will it be done by suction?"), and
- * the same for the rest. "The finish" was vague; the fear behind it is a white
- * dish on a black car and height on the van.
+ * became "No suction cups" because that is the question ("Do you need to drill
+ * a hole in the ceiling or will it be done by suction?"), and the same for the
+ * rest. "The finish" was vague; the fear behind it is a white dish on a black
+ * car and height on the van.
+ *
+ * That title read "No drilling, no suction cups" until Gus, 22 September: we
+ * do drill on some jobs, so the page cannot promise we never will. Suction we
+ * genuinely never fit, so that half stands and the other half is gone. The FAQ
+ * has always put it properly ("where a hole is genuinely the right answer we
+ * seal it properly and tell you before we start"); the heading was the only
+ * thing on the page contradicting it.
  *
  * So this section answers, in the order they ask them, the questions the team
  * currently answers one WhatsApp message at a time: what holds it on, where the
@@ -53,7 +60,7 @@ type FitItem = {
 const FIT: FitItem[] = [
   {
     icon: <Magnet className="h-5 w-5" />,
-    title: "No drilling, no suction cups",
+    title: "No suction cups",
     // "Do you need to drill a hole in the ceiling or will it be done by
     // suction?", "we do not have roof rails but would like it fixed". Will, in
     // the chat: "Suction is ill advised", "we used heavy duty magnets".

@@ -149,13 +149,12 @@ export default function StarlinkInstallationForCarsPage() {
               instead of a megabyte of Google before anyone presses play.
 
               CONFIRM WITH WILL, THEN CHANGE THE CAPTION. The footage opens on
-              a drill, forty lines above a heading that says "No drilling, no
-              suction cups". From the frames the bit goes into the mount's own
-              plate rather than the vehicle roof, which would make this film
-              the best proof of that claim on the page rather than a
-              contradiction of it. I cannot tell from frames alone, so the
-              caption below says only what is certain. Once Will confirms it,
-              the line to use is:
+              a drill. The mount section no longer claims we never drill, so
+              this is not a contradiction any more, but a reader who cannot see
+              what the bit is going into will assume it is their own roof. From
+              the frames it looks like the mount's own plate; I cannot tell for
+              certain, so the caption below says only what is certain. Once
+              Will confirms it, the line to use is:
                 "Mercedes Sprinter LWB. The bracket is drilled, not the roof." */}
           <InstallVideoSection
             videoId="Vcqw02BLmxo"

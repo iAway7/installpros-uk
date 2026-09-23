@@ -41,9 +41,8 @@ export function InstallVideoSection({
   /** Printed on the badge and read out in the play button's label. */
   duration = "40 sec",
   /** One line under the frame. Use it where the footage needs saying out loud:
-   *  the vehicle film shows a drill, on a page whose mount section says we do
-   *  not drill, and a reader who does not know what is being drilled will
-   *  believe their own eyes. */
+   *  the vehicle film shows a drill, and a reader who does not know what is
+   *  being drilled will assume it is their own roof. */
   caption,
   /** Distinguishes the plays in analytics. */
   location = "install_video",

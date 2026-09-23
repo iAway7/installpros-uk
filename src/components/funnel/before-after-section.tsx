@@ -604,12 +604,247 @@ function ContinuityVariant() {
   );
 }
 
+/** The only outage figure we have, and it is not ours: a logistics operator
+ *  told Will a day without their only line cost them £150,000. Everything the
+ *  cost variant puts on screen is derived from this one number, so if the
+ *  permission note below the panels ever comes back a no, the whole variant
+ *  goes with it. Nothing here is a claim about the visitor's own business. */
+const DAY_COST = 150_000;
+const COST_PER_SECOND = DAY_COST / 86_400; // ≈ £1.74
+
+/** Where the counter starts, same device as OUTAGE_START_SECONDS above and the
+ *  same honesty about it: any value works. 6,420 seconds is 1h 47m, which at
+ *  the rate above is a little over £11,000 — long enough to read as a fault
+ *  someone is waiting on an engineer for rather than a blip, and short enough
+ *  that it is still a fraction of the day's figure in the line underneath. */
+const COST_OUTAGE_START_SECONDS = 6_420;
+
+/** Deterministic thousands separators. toLocaleString would do this too, and
+ *  would also give the server and the client licence to disagree about the
+ *  grouping; this cannot. */
+const gbp = (n: number) =>
+  "£" + Math.floor(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+/** Revenue across the day, as a line.
+ *
+ *  Both sparklines share the first 140 units of the path, so the two cards are
+ *  the same business up to the moment the line drops and only differ after it.
+ *  That shared opening is what makes the flat half read as a loss rather than
+ *  as a different, worse company.
+ *
+ *  preserveAspectRatio="none" lets the line fill whatever width the card is;
+ *  vectorEffect keeps the stroke an even weight while it stretches. */
+const REVENUE_BEFORE = "M0,56 C 28,53 58,46 92,34 C 112,27 127,23 140,21";
+const REVENUE_AFTER = "C 170,15 202,8 240,2";
+/** Where the line drops, in viewBox units. */
+const BREAK_X = 140;
+const BREAK_Y = 21;
+
+function RevenueFlatline() {
+  return (
+    <svg viewBox="0 0 240 60" preserveAspectRatio="none" className="h-20 w-full" aria-hidden="true">
+      {/* The wedge between the day that was going to happen and the day that
+          did. It is the same quantity as the number above it, which is the
+          only reason it is on the card. */}
+      <path d={`M${BREAK_X},${BREAK_Y} ${REVENUE_AFTER} L240,${BREAK_Y} Z`} fill="hsl(var(--error) / 0.14)" />
+      <path
+        d={`M${BREAK_X},${BREAK_Y} ${REVENUE_AFTER}`}
+        fill="none"
+        stroke={VIZ.dim}
+        strokeWidth="1.5"
+        strokeDasharray="3 4"
+        vectorEffect="non-scaling-stroke"
+      />
+      {/* The moment it drops, marked. Without it the flat half reads as a
+          quiet afternoon rather than as a fault. */}
+      <line
+        x1={BREAK_X}
+        y1={BREAK_Y}
+        x2={BREAK_X}
+        y2="60"
+        stroke="hsl(var(--error) / 0.45)"
+        strokeWidth="1"
+        strokeDasharray="2 3"
+        vectorEffect="non-scaling-stroke"
+      />
+      <path
+        d={`${REVENUE_BEFORE} L240,${BREAK_Y}`}
+        fill="none"
+        stroke="hsl(var(--error))"
+        strokeWidth="2"
+        strokeLinecap="round"
+        vectorEffect="non-scaling-stroke"
+      />
+    </svg>
+  );
+}
+
+/** No area fill under this one, though the left card has its wedge.
+ *  EarthBackdrop's whole arrangement is that the photograph only shows through
+ *  the bottom right, where no text sits — which is exactly where a fill under a
+ *  rising line goes. Flat white read as a translucent box over the picture and
+ *  a vertical gradient still left an edge down the right of the chart. The
+ *  glowing line carries the rise on its own, and the photograph stays. */
+function RevenueUnbroken() {
+  return (
+    <svg viewBox="0 0 240 60" preserveAspectRatio="none" className="h-20 w-full" aria-hidden="true">
+      <path
+        d={`${REVENUE_BEFORE} ${REVENUE_AFTER}`}
+        fill="none"
+        stroke="#fff"
+        strokeWidth="2"
+        strokeLinecap="round"
+        vectorEffect="non-scaling-stroke"
+        style={{ filter: "drop-shadow(0 0 6px hsl(var(--brand-soft) / 0.8))" }}
+      />
+    </svg>
+  );
+}
+
+/**
+ * The commercial variant, on the axis the buyer actually signs off against.
+ *
+ * ContinuityVariant above argues minutes: one counter climbing, one at nought.
+ * It is the right argument for whoever has to run the site, and the wrong one
+ * for whoever has to approve the invoice, because minutes are not a budget
+ * line. This says the same thing in pounds, which is the form the decision is
+ * made in. Gus, 22 September, asked for exactly that swap.
+ *
+ * What is kept from the continuity variant, because it was right there:
+ *
+ * 1. One element moves. The left counter climbs; everything else on both cards
+ *    is still. Anyone landing at any moment sees both outcomes of the same
+ *    failure in the first frame, with no cycle to have missed.
+ *
+ * 2. Both sides carry the same unit. The left is money lost and climbing, the
+ *    right is £0 lost. Making the right a revenue figure climbing instead would
+ *    read better and would be invented: the £150,000 is what somebody lost, and
+ *    turning it round into money we say the visitor is still taking is a number
+ *    about their business that nobody has given us.
+ *
+ * 3. No speed test. Same reason as the continuity variant: a Mbps reading drags
+ *    the reader back onto the axis this page deliberately left.
+ *
+ * Server and client render the same first frame — the counter starts at a
+ * constant and the interval only starts in an effect — so there is no CLS.
+ */
+function CostVariant() {
+  const lostRef = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let s = COST_OUTAGE_START_SECONDS;
+    const id = window.setInterval(() => {
+      s += 1;
+      if (lostRef.current) lostRef.current.textContent = gbp(s * COST_PER_SECOND);
+    }, 1000);
+    return () => window.clearInterval(id);
+  }, []);
+
+  return (
+    <SectionShell
+      eyebrow="Cost of downtime"
+      heading="The line stops. The costs do not."
+      sub="Not how fast your line is. What the day costs you when it drops."
+    >
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        {/* ONE LINE (light) — the money going out */}
+        <div className="rounded-xl border border-border p-6 md:p-10" style={{ background: "var(--before-grad)" }}>
+          <span className="inline-block rounded-full border border-black/15 px-[15px] py-[7px] text-micro font-semibold uppercase tracking-[0.18em]" style={{ color: VIZ.ink }}>
+            One line
+          </span>
+
+          <div className="mt-8 text-caption tracking-[0.06em]" style={{ color: VIZ.ink }}>Trading lost, this outage</div>
+          <div className="mt-2.5 flex items-baseline gap-2">
+            <span ref={lostRef} className="tabular-nums" style={{ ...NUM, fontWeight: 200, color: "hsl(var(--error))" }}>
+              {gbp(COST_OUTAGE_START_SECONDS * COST_PER_SECOND)}
+            </span>
+            <span className="text-body" style={{ color: VIZ.dim }}>lost</span>
+          </div>
+
+          <div className="mt-4">
+            <RevenueFlatline />
+          </div>
+
+          <div className="mt-3 flex items-center gap-2 text-caption" style={{ color: VIZ.ink }}>
+            <span className="h-[7px] w-[7px] rounded-full motion-safe:animate-pulse" style={{ background: "hsl(var(--error))" }} />
+            No connection. Nothing to fall back to.
+          </div>
+          <div className="mt-5 text-caption leading-[1.7]" style={{ color: VIZ.ink }}>
+            Orders, tills and phones stop.
+            <br />
+            Wages, rent and stock do not.
+          </div>
+        </div>
+
+        {/* TWO LINES (dark) — the day carrying on */}
+        <div className="relative overflow-hidden rounded-xl p-6 md:p-10">
+          <EarthBackdrop />
+
+          <span
+            className="relative inline-block rounded-full px-[15px] py-[7px] text-micro font-semibold uppercase tracking-[0.18em]"
+            style={{ border: "1px solid hsl(var(--brand-soft) / 0.4)", color: VIZ.rose4, background: "rgba(60,5,5,.35)" }}
+          >
+            Two lines
+          </span>
+
+          <div className="relative mt-8 text-caption tracking-[0.06em]" style={{ color: VIZ.rose }}>Trading lost, same outage</div>
+          <div className="relative mt-2.5 flex items-baseline gap-2">
+            <span
+              className="tabular-nums"
+              style={{ ...NUM, fontWeight: 400, color: "#fff", textShadow: "0 0 40px hsl(var(--brand-soft) / 0.5)" }}
+            >
+              {gbp(0)}
+            </span>
+            <span className="text-body" style={{ color: VIZ.rose2 }}>lost</span>
+          </div>
+
+          <div className="relative mt-4">
+            <RevenueUnbroken />
+          </div>
+
+          <div className="relative mt-3 flex items-center gap-2 text-caption" style={{ color: VIZ.rose2 }}>
+            <span className="h-[7px] w-[7px] rounded-full bg-success-bright" style={{ boxShadow: "0 0 10px hsl(var(--success-bright) / 0.9)" }} />
+            Trading as normal, running on Starlink.
+          </div>
+          <div className="relative mt-5 text-caption leading-[1.7]" style={{ color: VIZ.rose3 }}>
+            Starlink is already running alongside your line, so the day carries
+            on: same orders, same tills, nobody on site doing anything.
+          </div>
+        </div>
+      </div>
+
+      {/* TODO(will): PERMISSION, and it matters more here than it did under the
+          continuity variant. There the £150,000 was a footnote you could delete
+          and still have a section; here it sets the rate the counter runs at,
+          so if he cannot publish it this variant has no number and the page
+          goes back to variant="continuity".
+
+          His words: "One logistics company we solved lost £150k per day just
+          coz their only source of internet died." The company is unnamed, which
+          needs no permission from them, but the figure is his customer's.
+
+          "Told us" on purpose, and the second sentence on purpose too. The
+          counter is arithmetic on somebody else's number, not a measurement of
+          the reader's business, and the line should not let anyone think
+          otherwise. */}
+      <p className="mt-6 text-center text-body-sm text-muted-foreground">
+        A logistics operator told us a day without their only line cost them{" "}
+        <strong className="font-semibold text-foreground">£150,000</strong>. The
+        counter runs at that rate.
+      </p>
+    </SectionShell>
+  );
+}
+
 /**
  * The section is on three landings. `speed` is the residential argument and is
- * unchanged; `continuity` is the commercial one. It is a prop rather than a
- * rewrite because the residential pages sell a faster connection to a house,
- * where failover, card machines and EPOS mean nothing.
+ * unchanged; `continuity` and `cost` are both the commercial one, one in
+ * minutes and one in pounds. It is a prop rather than a rewrite because the
+ * residential pages sell a faster connection to a house, where failover, card
+ * machines and EPOS mean nothing.
  */
-export function BeforeAfterSection({ variant = "speed" }: { variant?: "speed" | "continuity" } = {}) {
+export function BeforeAfterSection({ variant = "speed" }: { variant?: "speed" | "continuity" | "cost" } = {}) {
+  if (variant === "cost") return <CostVariant />;
   return variant === "continuity" ? <ContinuityVariant /> : <SpeedVariant />;
 }

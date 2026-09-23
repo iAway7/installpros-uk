@@ -136,10 +136,12 @@ export default function CommercialStarlinkInstallationPage() {
               house works against everything else this page says to someone
               buying for a depot. The slot stays empty until there is commercial
               footage. Both residential landings still show it. */}
-          {/* Continuity, not speed: on this page the speed comparison argues
-              against us the moment a visitor on good fibre runs the test. See
-              the component for the full reasoning. */}
-          <BeforeAfterSection variant="continuity" />
+          {/* Cost, not speed: on this page the speed comparison argues against
+              us the moment a visitor on good fibre runs the test, and minutes
+              of downtime are not a line anybody budgets against. Pounds are.
+              variant="continuity" is the same argument in minutes and is one
+              word away if this reads as too much. See the component. */}
+          <BeforeAfterSection variant="cost" />
           {/* Seven, not the shared three: it is the "under a week" Will has
               used himself, and it does not undercut the FAQ. */}
           <CoverageMapSection leadTime="7 days" />

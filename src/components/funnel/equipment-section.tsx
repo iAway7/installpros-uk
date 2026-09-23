@@ -56,11 +56,13 @@ const EQUIPMENT: EquipmentItem[] = [
  *  Will, 8 Sep 2026, asked whether Performance is really what we quote on
  *  commercial jobs: "depends on use case/requirements". So the card no longer
  *  promises a bigger dish on every job, it says the kit is specified to the
- *  site. The picture stays Performance because that is the upper end of what
- *  we fit, and the claim about a wider field of view is gone with the copy. */
+ *  site. The title is just "Starlink" for the same reason: naming a model
+ *  commits us to it before we have seen the site. The picture stays
+ *  Performance because that is the upper end of what we fit, and the claim
+ *  about a wider field of view is gone with the copy. */
 export const COMMERCIAL_EQUIPMENT: EquipmentItem[] = [
   {
-    t: "Starlink Performance",
+    t: "Starlink",
     badge: "Supply & Fit",
     d: "Specified to the site, not the same kit every time",
     img: "/funnel/starlink-performance.webp",

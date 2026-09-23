@@ -8,8 +8,8 @@ type FitItem = { icon: React.ReactNode; title: string; detail: string };
  * The headline difference from the vehicle page, and the reason this is not a
  * copy of VehicleFitSection: twenty four of the 175 static conversations raise
  * mounting and NOT ONE of the 175 mentions drilling, screws or damage to the
- * shell. On the vehicle page "No drilling, no suction cups" is the first thing
- * a prestige car owner says. Here nobody cares.
+ * shell. On the vehicle page that worry is the first thing a prestige car
+ * owner raises. Here nobody cares.
  *
  * What they worry about instead, in their words: whether it will look out of
  * place on a park where every unit is visible from every other one ("My site

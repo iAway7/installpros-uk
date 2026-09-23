@@ -32,10 +32,12 @@ const SelectTrigger = React.forwardRef<
   <SelectPrimitive.Trigger
     ref={ref}
     className={cn(
-      // text-foreground must follow text-entry: `field` is both a font-size
-      // token and a colour token, so `text-entry` also emits
-      // `color: hsl(var(--field))` (border grey). Without the explicit colour
-      // every closed Select reads as disabled.
+      // text-foreground is explicit here rather than inherited. The size token
+      // used to be called `field`, which was also a colour name, so text-field
+      // silently set the border grey as the text colour and every closed Select
+      // read as disabled. That collision is gone — the size is `entry` now and
+      // check-tokens.mjs fails the build if a size ever shares a colour's name
+      // again — but stating the colour on a control is right regardless.
       "flex h-control w-full items-center justify-between rounded-lg px-3 py-2 text-entry text-foreground",
       "border-[length:var(--border-field)] border-field bg-background",
       "focus-ring focus-visible:border-selection-border",

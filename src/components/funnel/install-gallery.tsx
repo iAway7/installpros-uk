@@ -60,10 +60,11 @@ type Shot = {
   alt?: string;
   vehicle: string;
   /** The mount, and nothing else. Three values, no free text: the page states
-   *  elsewhere that we fit neither suction cups nor a drilled mount unless a
-   *  hole is genuinely the right answer, so a badge reading "Drill" or
-   *  "Suction" would contradict the section it sits in. Roof mounts only;
-   *  a slide that is not one, such as the router, leaves it off. */
+   *  elsewhere that we do not fit suction mounts, so a badge reading "Suction"
+   *  would contradict the section it sits in, and these three are what the
+   *  photographs actually show. We do drill where a hole is the right answer,
+   *  so add "Drill" when a drilled install turns up in this rail. Roof mounts
+   *  only; a slide that is not one, such as the router, leaves it off. */
   fixing?: "Magnets" | "Clamp" | "Bonded plate";
   detail: string;
   /** The shot we are waiting on. Present means the card renders as a hole. */

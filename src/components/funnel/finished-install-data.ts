@@ -56,7 +56,9 @@ export const DOTS: Dot[] = [
     x: 46.1,
     y: 60.1,
     labelY: 72,
-    title: "No drilling, no suction cups",
+    // Was "No drilling, no suction cups"; dropped for the same reason as the
+    // matching card in vehicle-fit-section.tsx, and these two sit on one page.
+    title: "No suction cups",
     detail: "Bonded feet spread the load across the GRP roof.",
   },
 ];
