@@ -8,7 +8,7 @@ import { Input } from "@/components/system/input";
 import { AddressAutocomplete, type AddressSelection } from "./ui/address-autocomplete";
 import { Button } from "@/components/system/button";
 import { FormOption } from "@/components/system/form-option";
-import { ConsentCheckbox } from "./consent-checkbox";
+import { ConsentCheckbox, MarketingConsentLabel } from "./consent-checkbox";
 import { FormLegalNotice } from "./form-legal-notice";
 import { isValidUkPostcode, normalisePostcode } from "@/lib/utils";
 import { checkUkPostcode } from "@/lib/funnel/check-postcode";
@@ -477,7 +477,7 @@ export function ZipAvailabilityChecker(
                 onChange={setConsent}
                 tone="dark"
                 id="hero-marketing"
-                label={<>Keep me updated on offers and news from Install Pros <span className="text-white/50">(optional)</span>.</>}
+                label={<MarketingConsentLabel tone="dark" />}
               />
             </div>
           )}
@@ -505,7 +505,7 @@ export function ZipAvailabilityChecker(
                 onChange={setConsent}
                 tone="dark"
                 id="hero-marketing"
-                label={<>Keep me updated on offers and news from Install Pros <span className="text-white/50">(optional)</span>.</>}
+                label={<MarketingConsentLabel tone="dark" />}
               />
             </div>
           )}

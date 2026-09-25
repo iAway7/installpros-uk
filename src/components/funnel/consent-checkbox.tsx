@@ -12,6 +12,42 @@ import { cn } from "@/lib/utils";
  * Selection uses the neutral --selection token, never brand red: red is
  * reserved for the primary button.
  */
+/**
+ * The marketing opt-in wording, in one place.
+ *
+ * It was written inline at all four call sites — two steps of ServiceQuoteForm
+ * and two of ZipAvailabilityChecker — which is four copies of the one sentence
+ * the consent stands or falls on. Edit one and the other three become a
+ * different consent to the one the tick was given for, with nothing to show
+ * which wording a given row in `leads` actually agreed to.
+ *
+ * Two things in here are PECR rather than copywriting, so they do not come out
+ * to save a line:
+ *
+ * 1. The channels are named. Consent for electronic marketing has to be
+ *    specific, and the form takes an email address and a phone number, so
+ *    "keep me updated" does not say what was agreed to. If a channel is ever
+ *    added — post, a calling campaign — it belongs in this sentence first.
+ *
+ * 2. Nothing here makes the tick a condition of anything. The box is optional
+ *    at every call site and the submit path ignores it; see submit-lead.ts,
+ *    which records it and moves on.
+ *
+ * STILL MISSING, and it is one sentence: Article 7(3) wants the right to
+ * withdraw stated BEFORE consent is given, not only in the privacy policy
+ * afterwards. "You can unsubscribe at any time." on the end closes it. Left
+ * out here because the wording is Will's call, not ours.
+ */
+export function MarketingConsentLabel({ tone = "light" }: { tone?: "light" | "dark" }) {
+  return (
+    <>
+      Keep me updated on offers and news from Install Pros by email, SMS or
+      WhatsApp{" "}
+      <span className={tone === "dark" ? "text-white/50" : "text-muted-foreground/60"}>(optional)</span>.
+    </>
+  );
+}
+
 export function ConsentCheckbox({
   checked,
   onChange,

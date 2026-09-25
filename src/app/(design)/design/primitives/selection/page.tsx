@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Home, Ship, Building2, Caravan } from "lucide-react";
 import { FormOption } from "@/components/system/form-option";
-import { ConsentCheckbox } from "@/components/funnel/consent-checkbox";
+import { ConsentCheckbox, MarketingConsentLabel } from "@/components/funnel/consent-checkbox";
 import { PageHeader, Section, Preview, Code, Rule, Mono, BestPractices } from "../../_components/docs";
 
 const OPTIONS = [
@@ -67,13 +67,34 @@ export default function SelectionPage() {
       </Section>
 
       <Section title="Consent checkbox" note="Shown on the final step of both lead forms.">
+        {/* The live wording first, because this is the only page where it can
+            be read without walking a funnel to its last step, and it is legal
+            copy: the channels named in it are what PECR asks for, and the
+            leads table records a tick against this sentence and no other. */}
         <Preview className="!flex-col !items-stretch">
-          <ConsentCheckbox checked={consent} onChange={setConsent} id="docs-consent" />
+          <ConsentCheckbox
+            checked={consent}
+            onChange={setConsent}
+            id="docs-consent-marketing"
+            label={<MarketingConsentLabel />}
+          />
         </Preview>
 
         <div className="mt-4">
+          <Preview className="!flex-col !items-stretch">
+            <ConsentCheckbox checked={consent} onChange={setConsent} id="docs-consent" />
+          </Preview>
+        </div>
+
+        <div className="mt-4">
           <Preview dark className="!flex-col !items-stretch">
-            <ConsentCheckbox checked={consentDark} onChange={setConsentDark} tone="dark" id="docs-consent-dark" />
+            <ConsentCheckbox
+              checked={consentDark}
+              onChange={setConsentDark}
+              tone="dark"
+              id="docs-consent-dark"
+              label={<MarketingConsentLabel tone="dark" />}
+            />
           </Preview>
         </div>
 
@@ -92,8 +113,11 @@ export default function SelectionPage() {
       <Section title="Two rules you cannot break here">
         <div className="space-y-4">
           <Rule>
-            <strong>Never pre-checked.</strong> Consent initialises to <Mono>false</Mono> and the submit is blocked until
-            it is ticked. A pre-ticked GDPR box is not consent.
+            <strong>Never pre-checked, and never required.</strong> Consent initialises to <Mono>false</Mono>, and
+            submit does not wait for it: the tick is recorded and the form goes through either way. This page used to
+            say the submit was blocked until it was ticked, which was true of an older form and is the opposite of
+            what the rule protects — consent that is a condition of getting the quote is not freely given, and a
+            pre-ticked box is not consent at all.
           </Rule>
           <Rule>
             <strong>Selection is neutral, never brand red.</strong> Checked boxes and selected cards use{" "}

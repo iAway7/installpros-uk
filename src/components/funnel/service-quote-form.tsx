@@ -9,7 +9,7 @@ import { AddressAutocomplete, type AddressSelection } from "./ui/address-autocom
 import { Button } from "@/components/system/button";
 import { FormOption } from "@/components/system/form-option";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/system/select";
-import { ConsentCheckbox } from "./consent-checkbox";
+import { ConsentCheckbox, MarketingConsentLabel } from "./consent-checkbox";
 import { FormLegalNotice } from "./form-legal-notice";
 import { SERVICE_OPTIONS } from "@/lib/funnel/states";
 import { isValidUkPostcode, normalisePostcode } from "@/lib/utils";
@@ -371,7 +371,7 @@ export function ServiceQuoteForm({
                 onChange={setConsent}
                 tone="light"
                 id="cta-marketing"
-                label={<>Keep me updated on offers and news from Install Pros <span className="text-muted-foreground/60">(optional)</span>.</>}
+                label={<MarketingConsentLabel tone="light" />}
               />
             </div>
           )}
@@ -423,7 +423,7 @@ export function ServiceQuoteForm({
                 onChange={setConsent}
                 tone="light"
                 id="cta-marketing"
-                label={<>Keep me updated on offers and news from Install Pros <span className="text-muted-foreground/60">(optional)</span>.</>}
+                label={<MarketingConsentLabel tone="light" />}
               />
             </div>
           )}
