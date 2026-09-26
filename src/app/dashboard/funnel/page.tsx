@@ -3,11 +3,13 @@ import { Filter, AlertTriangle, ExternalLink } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/system/card";
 import {
   fetchDailyRates,
+  fetchFormQuestionFunnel,
   fetchFunnel,
   fetchFunnelPrevious,
   fetchSources,
   posthogConfigured,
   FUNNEL_PAGES,
+  type FunnelStepResult,
 } from "@/lib/posthog/query";
 
 export const dynamic = "force-dynamic";
@@ -51,9 +53,10 @@ export default async function FunnelPage({ searchParams }: { searchParams: Searc
     );
   }
 
-  const [funnel, prev, daily, sources] = await Promise.all([
+  const [funnel, prev, questions, daily, sources] = await Promise.all([
     fetchFunnel(filter),
     fetchFunnelPrevious(filter),
+    fetchFormQuestionFunnel(filter),
     fetchDailyRates(filter),
     fetchSources(days),
   ]);
@@ -70,8 +73,6 @@ export default async function FunnelPage({ searchParams }: { searchParams: Searc
     );
   }
 
-  const maxUsers = Math.max(...funnel.steps.map((s) => s.users), 1);
-
   return (
     <Shell days={days} device={device} source={source} page={page} sources={sources}>
       {/* Funnel bars */}
@@ -83,36 +84,27 @@ export default async function FunnelPage({ searchParams }: { searchParams: Searc
               No events in this period{device || source ? " for this segment" : ""}. Events flow in once the site has traffic.
             </p>
           ) : (
-            funnel.steps.map((s, i) => {
-              const prevUsers = prev[i] ?? null;
-              const dropped =
-                prevUsers !== null && prevUsers > 0 && s.users < prevUsers * 0.8;
-              return (
-                <div key={s.label} className="space-y-1">
-                  <div className="flex items-baseline justify-between gap-2 text-body-sm">
-                    <span className="flex items-center gap-2 font-medium">
-                      {s.label}
-                      {dropped && (
-                        <span className="inline-flex items-center gap-1 rounded-full bg-destructive/10 px-2 py-0.5 text-[11px] font-semibold text-destructive">
-                          <AlertTriangle className="h-3 w-3" />
-                          −{Math.round((1 - s.users / (prevUsers as number)) * 100)}% vs prev. period
-                        </span>
-                      )}
-                    </span>
-                    <span className="tabular-nums text-muted-foreground">
-                      {s.users.toLocaleString("en-GB")}
-                      {i > 0 && <span className="ml-2 text-label">({Math.round(s.stepConversion * 100)}% of prev · {Math.round(s.totalConversion * 100)}% total)</span>}
-                    </span>
-                  </div>
-                  <div className="h-6 overflow-hidden rounded-md bg-secondary">
-                    <div
-                      className={`h-full rounded-md ${dropped ? "bg-destructive/60" : "bg-primary"}`}
-                      style={{ width: `${(s.users / maxUsers) * 100}%` }}
-                    />
-                  </div>
-                </div>
-              );
-            })
+            <FunnelBars steps={funnel.steps} prev={prev} />
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Per-question drop-off: breaks down "Started form" → "Submitted form" */}
+      <Card>
+        <CardHeader><CardTitle>Drop-off by question</CardTitle></CardHeader>
+        <CardContent className="space-y-3">
+          <p className="text-body-sm text-muted-foreground">
+            Which question people leave on. A row is counted when the visitor reaches that step in either the hero or the footer form.
+            The service question is only asked on landings that do not fix the service up front (none of the live ones), so it shows as a side note and only when someone saw it.
+          </p>
+          {!questions.ok ? (
+            <p className="py-6 text-center text-body-sm text-destructive">
+              Couldn&apos;t load per-question data{questions.error ? `: ${questions.error}` : ""}.
+            </p>
+          ) : questions.steps.every((s) => s.users === 0) ? (
+            <p className="py-6 text-center text-body-sm text-muted-foreground">No form starts in this period.</p>
+          ) : (
+            <FunnelBars steps={questions.steps} />
           )}
         </CardContent>
       </Card>
@@ -132,7 +124,7 @@ export default async function FunnelPage({ searchParams }: { searchParams: Searc
       <Card>
         <CardContent className="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-body-sm text-muted-foreground">
-            Need session replays or step-level form drop-off? That still lives in PostHog.
+            Need session replays or a breakdown by device per question? That still lives in PostHog.
           </p>
           <a
             href={process.env.NEXT_PUBLIC_POSTHOG_HOST?.replace("://eu.i.", "://eu.") || "https://eu.posthog.com"}
@@ -145,6 +137,45 @@ export default async function FunnelPage({ searchParams }: { searchParams: Searc
         </CardContent>
       </Card>
     </Shell>
+  );
+}
+
+/** Horizontal bars, one per step. `prev` (previous period counts, same order)
+ *  flags steps that fell by more than 20%; omit it for funnels without one. */
+function FunnelBars({ steps, prev = [] }: { steps: FunnelStepResult[]; prev?: number[] }) {
+  const maxUsers = Math.max(...steps.map((s) => s.users), 1);
+  return (
+    <>
+      {steps.map((s, i) => {
+        const prevUsers = prev[i] ?? null;
+        const dropped = prevUsers !== null && prevUsers > 0 && s.users < prevUsers * 0.8;
+        return (
+          <div key={s.label} className={`space-y-1 ${s.aside ? "opacity-70" : ""}`}>
+            <div className="flex items-baseline justify-between gap-2 text-body-sm">
+              <span className={`flex items-center gap-2 ${s.aside ? "italic" : "font-medium"}`}>
+                {s.label}
+                {dropped && (
+                  <span className="inline-flex items-center gap-1 rounded-full bg-destructive/10 px-2 py-0.5 text-[11px] font-semibold text-destructive">
+                    <AlertTriangle className="h-3 w-3" />
+                    −{Math.round((1 - s.users / (prevUsers as number)) * 100)}% vs prev. period
+                  </span>
+                )}
+              </span>
+              <span className="tabular-nums text-muted-foreground">
+                {s.users.toLocaleString("en-GB")}
+                {i > 0 && !s.aside && <span className="ml-2 text-label">({Math.round(s.stepConversion * 100)}% of prev · {Math.round(s.totalConversion * 100)}% total)</span>}
+              </span>
+            </div>
+            <div className="h-6 overflow-hidden rounded-md bg-secondary">
+              <div
+                className={`h-full rounded-md ${dropped ? "bg-destructive/60" : s.aside ? "bg-muted-foreground/40" : "bg-primary"}`}
+                style={{ width: `${(s.users / maxUsers) * 100}%` }}
+              />
+            </div>
+          </div>
+        );
+      })}
+    </>
   );
 }
 
@@ -176,7 +207,7 @@ function Shell({
         <FilterSelect
           name="page"
           value={page ?? ""}
-          options={[["", "Both landing pages"], ...FUNNEL_PAGES.map((p): [string, string] => [p, p])]}
+          options={[["", "All landing pages"], ...FUNNEL_PAGES.map((p): [string, string] => [p, p])]}
         />
         <button type="submit" className="rounded-md bg-primary px-4 py-2 text-body-sm font-semibold text-primary-foreground">
           Apply

@@ -32,13 +32,17 @@ Build each insight below (Product analytics → New insight), then **Add to dash
 
 ## 1. Funnel Analysis (step-by-step drop-off — the Paperform view)
 
+> The same per-question view now lives in the app at `/dashboard/funnel`
+> ("Drop-off by question" card). Build the PostHog insight only when you need
+> the device breakdown or a conversion window.
+
 New insight → **Funnel**. Add these steps in order:
 1. `page_view`
 2. `form_step_viewed` → add property filter **`step_name = postcode`**
 3. `form_step_viewed` → **`step_name = name`**
 4. `form_step_viewed` → **`step_name = phone`**
 5. `form_step_viewed` → **`step_name = email`**
-6. `form_step_viewed` → **`step_name = install_type`**
+6. `form_step_viewed` → **`step_name = install_type`** (or `service` in the footer form; only on landings that ask — every live landing skips it)
 7. `lead_created`
 
 - Set the conversion window to ~30 minutes.

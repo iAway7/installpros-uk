@@ -70,6 +70,9 @@ export interface FunnelStepResult {
   stepConversion: number;
   /** Conversion from the first step. */
   totalConversion: number;
+  /** Shown outside the chain: counted for information but not a step every
+   *  visitor passes through, so no conversion is computed against or from it. */
+  aside?: boolean;
 }
 
 export interface SegmentFilter {
@@ -88,13 +91,16 @@ export const FUNNEL_PAGES = [
   "/install-quote",
   "/starlink-installation",
   "/commercial-starlink-installation",
+  "/starlink-installation-for-cars",
+  "/starlink-installation-for-cars-2",
+  "/starlink-installation-for-static-caravans",
 ] as const;
 
 function segmentWhere(f: SegmentFilter): string {
   const parts = [`timestamp >= now() - interval ${Math.max(1, Math.min(365, f.days))} day`];
   if (f.device) parts.push(`properties.device_type = '${f.device.replace(/'/g, "")}'`);
   if (f.source) parts.push(`properties.traffic_source = '${f.source.replace(/'/g, "")}'`);
-  if (f.page) parts.push(`properties.page_path = '${f.page.replace(/'/g, "")}'`);
+  if (f.page) parts.push(`trim(TRAILING '/' FROM properties.page_path) = '${f.page.replace(/'/g, "")}'`);
   return parts.join(" AND ");
 }
 
@@ -122,6 +128,58 @@ export async function fetchFunnel(f: SegmentFilter): Promise<{ steps: FunnelStep
   return { steps, ok: true, configured: true };
 }
 
+/** Per-question form funnel. Each row is a `form_step_viewed` step_name,
+ *  bracketed by quote_started (touched the first field) and quote_submitted,
+ *  so the drop-off between "Started form" and "Submitted form" in the main
+ *  funnel is broken down question by question.
+ *
+ *  `aside` rows exist only on landings that do not fix the service up front.
+ *  Every live landing passes skipServiceStep, so the question is never shown
+ *  there and the count is legacy traffic from before that change. It is
+ *  reported as a side note, not as a link in the chain: otherwise "Submitted"
+ *  would read as several hundred percent of the previous step. It is dropped
+ *  entirely when nobody saw it. The two form components name that step
+ *  differently (install_type / service), so both are matched. */
+export const FORM_QUESTION_STEPS: Array<{ label: string; where: string; aside?: boolean }> = [
+  { label: "Started form (postcode)", where: `event = 'quote_started'` },
+  { label: "Reached: name", where: `event = 'form_step_viewed' AND properties.step_name = 'name'` },
+  { label: "Reached: phone", where: `event = 'form_step_viewed' AND properties.step_name = 'phone'` },
+  { label: "Reached: email", where: `event = 'form_step_viewed' AND properties.step_name = 'email'` },
+  {
+    label: "Also saw: service question (legacy landings only)",
+    where: `event = 'form_step_viewed' AND properties.step_name IN ('service', 'install_type')`,
+    aside: true,
+  },
+  { label: "Submitted form", where: `event = 'quote_submitted'` },
+];
+
+/** Unique users per form question (single HogQL round-trip). */
+export async function fetchFormQuestionFunnel(f: SegmentFilter): Promise<{ steps: FunnelStepResult[]; ok: boolean; error?: string }> {
+  const where = segmentWhere(f);
+  const selects = FORM_QUESTION_STEPS.map(
+    (s, i) => `count(DISTINCT if(${s.where}, distinct_id, NULL)) AS step_${i}`,
+  ).join(", ");
+  const r = await hogql(`SELECT ${selects} FROM events WHERE ${where}`);
+  if (!r.ok || !r.results.length) return { steps: [], ok: r.ok, error: r.error };
+
+  const row = (r.results[0] as number[]).map((n) => Number(n) || 0);
+  const kept = FORM_QUESTION_STEPS.map((s, i) => ({ ...s, users: row[i] })).filter((s) => !s.aside || s.users > 0);
+  const first = kept[0]?.users ?? 0;
+  let prevChain = first;
+  const steps: FunnelStepResult[] = kept.map((s, i) => {
+    if (s.aside) return { label: s.label, users: s.users, stepConversion: 0, totalConversion: 0, aside: true };
+    const prev = i === 0 ? s.users : prevChain;
+    prevChain = s.users;
+    return {
+      label: s.label,
+      users: s.users,
+      stepConversion: i === 0 ? 1 : prev ? s.users / prev : 0,
+      totalConversion: first ? s.users / first : 0,
+    };
+  });
+  return { steps, ok: true };
+}
+
 /** Same funnel for the preceding period, to flag >20% step drops. */
 export async function fetchFunnelPrevious(f: SegmentFilter): Promise<number[]> {
   const days = Math.max(1, Math.min(365, f.days));
@@ -131,7 +189,7 @@ export async function fetchFunnelPrevious(f: SegmentFilter): Promise<number[]> {
   ];
   if (f.device) parts.push(`properties.device_type = '${f.device.replace(/'/g, "")}'`);
   if (f.source) parts.push(`properties.traffic_source = '${f.source.replace(/'/g, "")}'`);
-  if (f.page) parts.push(`properties.page_path = '${f.page.replace(/'/g, "")}'`);
+  if (f.page) parts.push(`trim(TRAILING '/' FROM properties.page_path) = '${f.page.replace(/'/g, "")}'`);
   const selects = FUNNEL_STEPS.map(
     (s, i) => `count(DISTINCT if(event = '${s.event}', distinct_id, NULL)) AS step_${i}`,
   ).join(", ");
