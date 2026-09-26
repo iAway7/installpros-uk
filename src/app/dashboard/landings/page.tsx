@@ -17,6 +17,7 @@ export default async function LandingsPage({
   let query = supabase
     .from("leads")
     .select("landing_page, lead_score, gclid, traffic_source, device_type, status, created_at")
+    .eq("is_test", false)
     .order("created_at", { ascending: false });
 
   if (range.days > 0) {

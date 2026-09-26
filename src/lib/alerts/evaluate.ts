@@ -38,6 +38,7 @@ export async function evaluateAlerts(): Promise<void> {
     const { data } = await supabase
       .from("leads")
       .select("id, name, postcode, status, created_at")
+      .eq("is_test", false)
       .gte("created_at", since14d);
     const leads = (data as { id: string; name: string; postcode: string; status: LeadStatus; created_at: string }[] | null) ?? [];
 

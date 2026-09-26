@@ -52,7 +52,7 @@ export default async function MapPage({ searchParams }: { searchParams: { view?:
   const view: View = (VIEWS.some((v) => v.key === searchParams.view) ? searchParams.view : "leads") as View;
 
   const supabase = createClient();
-  const { data, error } = await supabase.from("leads").select("postcode, status");
+  const { data, error } = await supabase.from("leads").select("postcode, status").eq("is_test", false);
   const leads = ((data as { postcode: string; status: LeadStatus }[] | null) ?? []);
 
   const locations = error ? {} : await lookupLocations(leads.map((l) => l.postcode));

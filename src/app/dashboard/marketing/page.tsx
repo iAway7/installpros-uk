@@ -4,7 +4,7 @@ import { getSearchConsole } from "@/lib/google/search-console";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/system/card";
 import { SearchConsoleChart } from "@/components/dashboard/search-console-chart";
 import { ConversionChart } from "@/components/dashboard/conversion-chart";
-import { type LeadStatus } from "@/lib/dashboard/leads";
+import { type LeadStatus, realLeads } from "@/lib/dashboard/leads";
 import { getVisitorLeadRate, fmtRate, fmtDelta } from "@/lib/dashboard/conversion";
 
 export const dynamic = "force-dynamic";
@@ -12,11 +12,11 @@ export const dynamic = "force-dynamic";
 export default async function MarketingPage() {
   const supabase = createClient();
   const [{ data: leadRows }, sc] = await Promise.all([
-    supabase.from("leads").select("id, created_at, status"),
+    supabase.from("leads").select("id, created_at, status, is_test"),
     getSearchConsole(28),
   ]);
 
-  const leads = (leadRows as { id: string; created_at: string; status: LeadStatus }[] | null) ?? [];
+  const leads = realLeads((leadRows as { id: string; created_at: string; status: LeadStatus; is_test?: boolean }[] | null) ?? []);
   const totalLeads = leads.length;
   // Landing-page conversion: leads (Supabase) / unique visitors (PostHog). Same maths as the Overview.
   const conv = await getVisitorLeadRate(leads.map((l) => l.created_at));

@@ -10,12 +10,13 @@ import {
   serviceOf,
 } from "@/lib/dashboard/leads";
 import { getVisitorLeadRate, fmtRate, fmtDelta } from "@/lib/dashboard/conversion";
+import { realLeads } from "@/lib/dashboard/leads";
 
 export const dynamic = "force-dynamic";
 
 type Row = Pick<
   Lead,
-  "id" | "created_at" | "status" | "traffic_source" | "service" | "notes" | "estimated_value" | "contacted_at" | "quoted_at"
+  "id" | "created_at" | "status" | "traffic_source" | "service" | "notes" | "estimated_value" | "contacted_at" | "quoted_at" | "is_test"
 >;
 
 const DAY = 864e5;
@@ -43,10 +44,11 @@ export default async function OverviewPage() {
   const supabase = createClient();
   const { data, error } = await supabase
     .from("leads")
-    .select("id, created_at, status, traffic_source, service, notes, estimated_value, contacted_at, quoted_at")
+    .select("id, created_at, status, traffic_source, service, notes, estimated_value, contacted_at, quoted_at, is_test")
     .order("created_at", { ascending: false });
 
-  const leads = ((data as Row[] | null) ?? []);
+  // Test submissions are flagged, not deleted; they never count here.
+  const leads = realLeads((data as Row[] | null) ?? []);
   // Landing-page conversion (leads / unique visitors, PostHog). Null-safe: shows "—" when PostHog is off.
   const conv = await getVisitorLeadRate(leads.map((l) => l.created_at));
   const convDelta = fmtDelta(conv.deltaPoints, conv.windowDays);

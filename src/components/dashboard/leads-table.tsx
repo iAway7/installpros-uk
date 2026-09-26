@@ -158,6 +158,23 @@ export function LeadsTable({
     }
   }
 
+  async function updateTest(id: string, isTest: boolean) {
+    const prev = leads;
+    setLeads((ls) => ls.map((l) => (l.id === id ? { ...l, is_test: isTest } : l)));
+    try {
+      const res = await fetch(`/api/leads/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ is_test: isTest }),
+      });
+      if (!res.ok) throw new Error();
+      toast.success(isTest ? "Marked as a test — excluded from metrics" : "Marked as a real lead");
+    } catch {
+      setLeads(prev);
+      toast.error("Couldn't update the test flag. Try again.");
+    }
+  }
+
   async function updateStatus(id: string, status: LeadStatus) {
     const prev = leads;
     setLeads((ls) => ls.map((l) => (l.id === id ? { ...l, status } : l)));
@@ -305,6 +322,7 @@ export function LeadsTable({
                       <TableCell className="font-medium">
                         <span className="flex items-center gap-1.5">
                           {l.name}
+                          {l.is_test && <TestBadge />}
                           {(photos[l.id]?.length ?? 0) > 0 && (
                             <span className="inline-flex items-center gap-0.5 text-label text-muted-foreground" title={`${photos[l.id].length} photo(s) sent`}>
                               <Camera className="h-3.5 w-3.5" />{photos[l.id].length}
@@ -342,7 +360,7 @@ export function LeadsTable({
                 <CardContent className="space-y-3 p-4">
                   <div className="flex items-start justify-between gap-2">
                     <div>
-                      <p className="flex items-center gap-2 font-semibold">{l.name} <ScoreBadge score={l.lead_score} /></p>
+                      <p className="flex items-center gap-2 font-semibold">{l.name} {l.is_test && <TestBadge />} <ScoreBadge score={l.lead_score} /></p>
                       <p className="text-label text-muted-foreground">{formatDateTime(l.created_at)} · {l.traffic_source || "direct"}</p>
                     </div>
                     <div onClick={(e) => e.stopPropagation()}>
@@ -367,6 +385,7 @@ export function LeadsTable({
           location={locations[openLead.postcode.trim().toUpperCase()]}
           onClose={() => setOpenId(null)}
           onSaveValue={(v) => updateValue(openLead.id, v)}
+          onToggleTest={(v) => updateTest(openLead.id, v)}
           intel={intel[openLead.id]}
           photos={photos[openLead.id]}
           statusPicker={
@@ -375,6 +394,14 @@ export function LeadsTable({
         />
       )}
     </div>
+  );
+}
+
+function TestBadge() {
+  return (
+    <span className="rounded-full bg-amber-500/10 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-amber-600" title="Test submission — excluded from metrics">
+      Test
+    </span>
   );
 }
 

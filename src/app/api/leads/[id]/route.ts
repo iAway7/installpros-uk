@@ -13,7 +13,7 @@ const QUOTED_OR_LATER: LeadStatus[] = ["quoted", "booked", "installed"];
  * session with the user's own client, then write with the service client
  * (RLS reserves direct writes for admins, but working leads is a team task).
  *
- * Accepts: { status?, estimated_value? }
+ * Accepts: { status?, estimated_value?, is_test? }
  * Side effect: first transition into contacted/quoted (or beyond) stamps
  * contacted_at / quoted_at — powering the time-to-contact/quote KPIs.
  */
@@ -22,7 +22,7 @@ export async function PATCH(request: Request, { params }: { params: { id: string
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
 
-  let body: { status?: string; estimated_value?: number | null };
+  let body: { status?: string; estimated_value?: number | null; is_test?: boolean };
   try {
     body = await request.json();
   } catch {
@@ -45,6 +45,13 @@ export async function PATCH(request: Request, { params }: { params: { id: string
       return NextResponse.json({ error: "invalid_value" }, { status: 422 });
     }
     update.estimated_value = v;
+  }
+
+  if (body.is_test !== undefined) {
+    if (typeof body.is_test !== "boolean") {
+      return NextResponse.json({ error: "invalid_is_test" }, { status: 422 });
+    }
+    update.is_test = body.is_test;
   }
 
   if (Object.keys(update).length === 0) {

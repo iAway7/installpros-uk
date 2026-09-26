@@ -43,6 +43,14 @@ export interface Lead {
   contacted_at: string | null;
   quoted_at: string | null;
   lead_score: number | null;
+  /** Submitted by the team to test the form. Excluded from every metric;
+   *  still listed on the Leads page. Optional until migration 0020 is applied. */
+  is_test?: boolean;
+}
+
+/** Drops test submissions from any lead list used for metrics. */
+export function realLeads<T extends { is_test?: boolean | null }>(leads: T[]): T[] {
+  return leads.filter((l) => !l.is_test);
 }
 
 /** Tailwind classes for the 1-10 lead-score badge. */

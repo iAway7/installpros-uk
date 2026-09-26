@@ -24,12 +24,13 @@ interface Props {
   onClose: () => void;
   statusPicker: React.ReactNode;
   onSaveValue?: (value: number | null) => void;
+  onToggleTest?: (isTest: boolean) => void;
   intel?: LeadIntel;
   photos?: string[];
 }
 
 /** Slide-in panel with the full detail of one lead. */
-export function LeadDetailPanel({ lead, location, onClose, statusPicker, onSaveValue, intel, photos }: Props) {
+export function LeadDetailPanel({ lead, location, onClose, statusPicker, onSaveValue, onToggleTest, intel, photos }: Props) {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
     window.addEventListener("keydown", onKey);
@@ -159,6 +160,23 @@ export function LeadDetailPanel({ lead, location, onClose, statusPicker, onSaveV
                 source="Set by the team"
               >
                 {statusPicker}
+              </Field>
+              <Field
+                label="Test submission"
+                align="end"
+                tip="Tick this for form submissions made by the team. The lead stays in this list but is left out of every metric: totals, conversion rate, landings, map and alerts. Nothing is deleted."
+                source="Set by the team"
+              >
+                <label className="flex cursor-pointer items-center gap-2 text-body-sm">
+                  <input
+                    type="checkbox"
+                    className="h-4 w-4 accent-primary"
+                    checked={Boolean(lead.is_test)}
+                    onChange={(e) => onToggleTest?.(e.target.checked)}
+                    disabled={!onToggleTest}
+                  />
+                  <span className="text-muted-foreground">{lead.is_test ? "Excluded from metrics" : "Counts as a real lead"}</span>
+                </label>
               </Field>
             </div>
           </Section>
