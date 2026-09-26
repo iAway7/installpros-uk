@@ -7,9 +7,9 @@ import {
   LEAD_STATUSES,
   STATUS_LABEL,
   STATUS_STYLE,
-  WON_STATUSES,
   serviceOf,
 } from "@/lib/dashboard/leads";
+import { getVisitorLeadRate, fmtRate, fmtDelta } from "@/lib/dashboard/conversion";
 
 export const dynamic = "force-dynamic";
 
@@ -47,6 +47,9 @@ export default async function OverviewPage() {
     .order("created_at", { ascending: false });
 
   const leads = ((data as Row[] | null) ?? []);
+  // Landing-page conversion (leads / unique visitors, PostHog). Null-safe: shows "—" when PostHog is off.
+  const conv = await getVisitorLeadRate(leads.map((l) => l.created_at));
+  const convDelta = fmtDelta(conv.deltaPoints, conv.windowDays);
 
   const now = new Date();
   const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
@@ -64,8 +67,6 @@ export default async function OverviewPage() {
   const weekDelta = lastWeek ? Math.round(((thisWeek - lastWeek) / lastWeek) * 100) : null;
 
   const newCount = leads.filter((l) => l.status === "new").length;
-  const won = leads.filter((l) => WON_STATUSES.includes(l.status)).length;
-  const convRate = total ? Math.round((won / total) * 1000) / 10 : 0;
 
   // Revenue still in play: everything not lost and not yet installed.
   const pipelineValue = leads
@@ -151,7 +152,12 @@ export default async function OverviewPage() {
             <Kpi icon={<CalendarClock className="h-5 w-5" />} label="Today" value={today} />
             <Kpi icon={<Users className="h-5 w-5" />} label="This month" value={thisMonth} />
             <Kpi icon={<Sparkles className="h-5 w-5" />} label="New / unworked" value={newCount} accent />
-            <Kpi icon={<TrendingUp className="h-5 w-5" />} label="Conversion rate" value={`${convRate}%`} />
+            <Kpi
+              icon={<TrendingUp className="h-5 w-5" />}
+              label={`Visitor → lead rate (${conv.windowDays}d)`}
+              value={fmtRate(conv.rate)}
+              sub={convDelta ? { text: convDelta.text, up: convDelta.up } : conv.ok ? undefined : { text: "Connect PostHog", up: true, muted: true }}
+            />
           </div>
 
           <div className="grid gap-4 sm:grid-cols-3">
@@ -239,16 +245,34 @@ function Sparkline({ values }: { values: number[] }) {
   );
 }
 
-function Kpi({ icon, label, value, accent }: { icon: React.ReactNode; label: string; value: string | number; accent?: boolean }) {
+function Kpi({
+  icon,
+  label,
+  value,
+  accent,
+  sub,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: string | number;
+  accent?: boolean;
+  /** Small caption under the label, e.g. a period-over-period delta. */
+  sub?: { text: string; up: boolean; muted?: boolean };
+}) {
   return (
     <Card>
       <CardContent className="flex items-center gap-4 p-5">
         <div className={`flex h-11 w-11 items-center justify-center rounded-xl ${accent ? "bg-primary text-primary-foreground" : "bg-secondary text-foreground"}`}>
           {icon}
         </div>
-        <div>
+        <div className="min-w-0">
           <div className="text-2xl font-bold tabular-nums">{value}</div>
-          <div className="text-label text-muted-foreground">{label}</div>
+          <div className="truncate text-label text-muted-foreground">{label}</div>
+          {sub && (
+            <div className={`text-[11px] font-semibold ${sub.muted ? "text-muted-foreground" : sub.up ? "text-success" : "text-destructive"}`}>
+              {sub.text}
+            </div>
+          )}
         </div>
       </CardContent>
     </Card>

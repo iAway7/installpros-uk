@@ -3,7 +3,9 @@ import { createClient } from "@/lib/supabase/server";
 import { getSearchConsole } from "@/lib/google/search-console";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/system/card";
 import { SearchConsoleChart } from "@/components/dashboard/search-console-chart";
-import { WON_STATUSES, type LeadStatus } from "@/lib/dashboard/leads";
+import { ConversionChart } from "@/components/dashboard/conversion-chart";
+import { type LeadStatus } from "@/lib/dashboard/leads";
+import { getVisitorLeadRate, fmtRate, fmtDelta } from "@/lib/dashboard/conversion";
 
 export const dynamic = "force-dynamic";
 
@@ -16,8 +18,9 @@ export default async function MarketingPage() {
 
   const leads = (leadRows as { id: string; created_at: string; status: LeadStatus }[] | null) ?? [];
   const totalLeads = leads.length;
-  const won = leads.filter((l) => WON_STATUSES.includes(l.status)).length;
-  const convRate = totalLeads ? Math.round((won / totalLeads) * 1000) / 10 : 0;
+  // Landing-page conversion: leads (Supabase) / unique visitors (PostHog). Same maths as the Overview.
+  const conv = await getVisitorLeadRate(leads.map((l) => l.created_at));
+  const convDelta = fmtDelta(conv.deltaPoints, conv.windowDays);
 
   return (
     <div className="mx-auto max-w-6xl space-y-8">
@@ -29,7 +32,13 @@ export default async function MarketingPage() {
       {/* Blended overview */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Kpi icon={<Users className="h-5 w-5" />} label="Total leads" value={totalLeads} />
-        <Kpi icon={<TrendingUp className="h-5 w-5" />} label="Conversion rate" value={`${convRate}%`} />
+        <Kpi
+          icon={<TrendingUp className="h-5 w-5" />}
+          label={`Visitor → lead rate (${conv.windowDays}d)`}
+          value={fmtRate(conv.rate)}
+          hint={conv.ok ? undefined : "Connect PostHog"}
+          sub={convDelta ? convDelta : undefined}
+        />
         <Kpi
           icon={<Search className="h-5 w-5" />}
           label="Search clicks (28d)"
@@ -42,6 +51,44 @@ export default async function MarketingPage() {
           hint="Connect Google Ads"
         />
       </div>
+
+      {/* Landing-page conversion (CRO) */}
+      <section className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-semibold">Landing page conversion</h2>
+          {conv.ok ? (
+            <span className="text-label text-muted-foreground">
+              {conv.leads} leads / {conv.visitors.toLocaleString("en-GB")} visitors · last {conv.windowDays} days
+            </span>
+          ) : null}
+        </div>
+
+        {!conv.configured ? (
+          <ConnectCard
+            title="Connect PostHog"
+            body="Add a PostHog personal API key and project id so the dashboard can count unique visitors. Leads are already counted; this adds the denominator."
+            doc="POSTHOG_PERSONAL_API_KEY and POSTHOG_PROJECT_ID — see POSTHOG-DASHBOARDS.md."
+          />
+        ) : !conv.ok ? (
+          <Card>
+            <CardContent className="text-body-sm text-destructive">
+              Couldn&apos;t load visitor counts from PostHog{conv.error ? `: ${conv.error}` : ""}.
+            </CardContent>
+          </Card>
+        ) : (
+          <Card>
+            <CardHeader><CardTitle>Weekly visitor → lead rate</CardTitle></CardHeader>
+            <CardContent className="space-y-3">
+              {conv.weekly.some((w) => w.visitors > 0) ? <ConversionChart data={conv.weekly} /> : <Empty>No visitors recorded yet.</Empty>}
+              <p className="text-label text-muted-foreground">
+                Leads come from the form submissions in Supabase (every one is counted). Visitors come from PostHog, which
+                only sees people who accepted analytics cookies, so the rate reads a little high. It is measured the same
+                way every week, which is what makes before/after comparisons fair. The last point is the current, partial week.
+              </p>
+            </CardContent>
+          </Card>
+        )}
+      </section>
 
       {/* Search Console */}
       <section className="space-y-4">
@@ -110,7 +157,20 @@ export default async function MarketingPage() {
   );
 }
 
-function Kpi({ icon, label, value, hint }: { icon: React.ReactNode; label: string; value: string | number; hint?: string }) {
+function Kpi({
+  icon,
+  label,
+  value,
+  hint,
+  sub,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: string | number;
+  hint?: string;
+  /** Small caption under the label, e.g. a period-over-period delta. */
+  sub?: { text: string; up: boolean };
+}) {
   return (
     <Card>
       <CardContent className="flex items-center gap-4 p-5">
@@ -118,6 +178,7 @@ function Kpi({ icon, label, value, hint }: { icon: React.ReactNode; label: strin
         <div className="min-w-0">
           <div className="text-2xl font-bold tabular-nums">{value}</div>
           <div className="truncate text-label text-muted-foreground">{hint ?? label}</div>
+          {sub && <div className={`text-[11px] font-semibold ${sub.up ? "text-success" : "text-destructive"}`}>{sub.text}</div>}
         </div>
       </CardContent>
     </Card>

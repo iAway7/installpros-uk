@@ -168,3 +168,66 @@ export async function fetchSources(days: number): Promise<string[]> {
   if (!r.ok) return [];
   return (r.results as [string, number][]).map(([s]) => String(s)).filter(Boolean);
 }
+
+// ── Landing-page conversion (visitor → lead) ──────────────────────────────
+
+/** Paths that are not "the landing page": the internal dashboard, auth, and
+ *  the pages a visitor only reaches after submitting. Counting those would
+ *  inflate the denominator with our own team and with already-converted leads. */
+const NON_LANDING_PREFIXES = ["/dashboard", "/auth", "/thank-you", "/upload-property-images"] as const;
+
+function landingWhere(): string {
+  const excl = NON_LANDING_PREFIXES.map((p) => `NOT startsWith(properties.page_path, '${p}')`).join(" AND ");
+  return `event = 'page_view' AND ${excl}`;
+}
+
+export interface VisitorCounts {
+  ok: boolean;
+  configured: boolean;
+  error?: string;
+  /** Unique visitors in the last `days` days. */
+  current: number;
+  /** Unique visitors in the `days` days before that. */
+  previous: number;
+  /** Unique visitors per ISO week (Monday start, UTC), oldest → newest. `week` is YYYY-MM-DD. */
+  weekly: Array<{ week: string; visitors: number }>;
+}
+
+/**
+ * Unique landing-page visitors for the conversion-rate maths: a current vs
+ * previous window, plus a weekly series. Two HogQL round-trips run in parallel.
+ * Only counts people who accepted analytics cookies (PostHog never sees the
+ * rest), so the resulting rate reads slightly high; it is consistent over
+ * time, which is what matters for a before/after comparison.
+ */
+export async function fetchVisitorCounts(days: number, weeks: number): Promise<VisitorCounts> {
+  const d = Math.max(1, Math.min(365, days));
+  const w = Math.max(1, Math.min(52, weeks));
+  const where = landingWhere();
+  const [win, wk] = await Promise.all([
+    hogql(
+      `SELECT count(DISTINCT if(timestamp >= now() - interval ${d} day, distinct_id, NULL)) AS current,
+              count(DISTINCT if(timestamp <  now() - interval ${d} day, distinct_id, NULL)) AS previous
+       FROM events WHERE ${where} AND timestamp >= now() - interval ${d * 2} day`,
+    ),
+    hogql(
+      `SELECT toMonday(timestamp) AS week, count(DISTINCT distinct_id) AS visitors
+       FROM events WHERE ${where} AND timestamp >= toMonday(now() - interval ${w - 1} week)
+       GROUP BY week ORDER BY week`,
+    ),
+  ]);
+  if (!win.ok || !wk.ok) {
+    return { ok: false, configured: win.configured && wk.configured, error: win.error ?? wk.error, current: 0, previous: 0, weekly: [] };
+  }
+  const row = (win.results[0] as number[] | undefined) ?? [0, 0];
+  return {
+    ok: true,
+    configured: true,
+    current: Number(row[0]) || 0,
+    previous: Number(row[1]) || 0,
+    weekly: (wk.results as [string, number][]).map(([week, visitors]) => ({
+      week: String(week).slice(0, 10),
+      visitors: Number(visitors) || 0,
+    })),
+  };
+}
