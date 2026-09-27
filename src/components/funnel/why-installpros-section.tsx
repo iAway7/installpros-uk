@@ -194,6 +194,43 @@ export const STATIC_FEATURES: Feature[] = [
   },
 ];
 
+/**
+ * Boats: narrowboats, houseboats, motor cruisers and yachts, moored or on
+ * the canals.
+ *
+ * MarineFitSection two blocks below already answers the technical gates the
+ * twelve marine conversations raise (no drilling, 12 volts, cable entry,
+ * marina access: superchat-analysis/marine-questions-for-will). A first draft
+ * of this set repeated them and the page said the same four things twice in
+ * a row. So these four are about the service rather than the fitting: one
+ * visit, a price without a drive to the boat, tested at the berth, and who
+ * answers afterwards. The lost sale in the corpus was lost on the speed of a
+ * quote, not on any of the technical points, which is why the second card is
+ * here at all.
+ */
+export const MARINE_FEATURES: Feature[] = [
+  {
+    t: "One Engineer, One Visit",
+    d: "Mount, power, cable run, router and the Starlink account, done at the berth in a single visit. Nobody comes back to finish.",
+    i: IconWrench,
+  },
+  {
+    t: "Priced From Two Photos",
+    d: "No survey trip and no waiting on one. You may be hours from the boat; the photos are enough for a firm price the same day.",
+    i: IconBolt,
+  },
+  {
+    t: "Tested Before We Leave",
+    d: "Speed-tested at the berth, your devices connected, the pause button shown. Fully insured, on the water as on land.",
+    i: IconCheck,
+  },
+  {
+    t: "Someone Answers When It's Laid Up",
+    d: "UK support after the fitting, from the team that did it, whether the boat is in the water or on the hard for winter.",
+    i: IconHeadset,
+  },
+];
+
 /** "Engineered installs, not odd jobs." — the four capability cards, ported
  *  from the /starlink-installations landing. */
 export function WhyInstallProsSection(

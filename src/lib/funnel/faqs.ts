@@ -460,6 +460,98 @@ export const STATIC_FAQS: FaqEntry[] = [
   },
 ];
 
+/**
+ * Marine landing FAQ: narrowboats, houseboats, motor cruisers and yachts.
+ *
+ * Written on 27 September 2026 from the twelve marine conversations of 1 July
+ * to 21 September 2026 (superchat-analysis/marine-questions-for-will). Twelve
+ * is a small base and the report says so on every page, so the comments here
+ * give counts out of twelve as directions, never as percentages.
+ *
+ * The order is the order they ask: mooring status first (8 of 12 volunteer it
+ * before anyone asks), then price and monthly (4 of 12, and the two questions
+ * asked first in every priced thread), then the technical gates in the order
+ * they were raised: 12 volts, the roof, the cable, access, coverage inside.
+ *
+ * Two answers touch things only Will can confirm and are written to be true
+ * without them: the payment terms (copied from the vehicle analysis) and the
+ * same-day price. Nothing claims use on a moving boat or at sea; the evidence
+ * is canals, marinas and moorings.
+ */
+export const MARINE_FAQS: FaqEntry[] = [
+  {
+    category: "Installation",
+    // 8 of 12 say it unprompted. "I'm permanently moored here. Don't move."
+    // "It is a 58ft narrowboat and we do go cruising on the canals".
+    q: "The boat is moored and never moves. Does that change anything?",
+    a: "It makes it simpler. A permanently moored boat gets a residential plan and is fitted like a home that floats: router where you sit, shore power if you have it. If you go out for a few days at a time, the same fitting holds and the plan can be paused. If you cruise the canals, you want a Roam plan on 12 V. Tell us which you are and we price for it.",
+  },
+  {
+    category: "Pricing",
+    // 4 of 12, and first in every priced thread. "we would like to know much
+    // for installation and monthly costs". 2 of 4 priced walked on cost.
+    q: "How much is the installation, and how much a month?",
+    a: "Two payments. The fitting is a one-off to us: kit, mount, cabling, power and setup at the berth, and it can be spread. The plan is monthly to Starlink, in your own account, residential or Roam depending on whether the boat moves, and you can pause it. Send two photos of the boat and the fitting price comes back the same day.",
+  },
+  {
+    category: "Pricing",
+    // The houseboat at Cuxton: "we just wanted to look at our options on the
+    // financing". It bought.
+    q: "Can I spread the cost or get finance?",
+    a: "Yes. In full, half now and half after the fitting, or three payments with no interest. Ask for the spread when you ask for the price.",
+  },
+  {
+    category: "Installation",
+    // 4 of 12, asked as a gate. "please confirm can work off 12 volt system".
+    // "Victron, 2 x solar panels and 4 batteries". "We have both 12 and 24
+    // volts".
+    q: "Will it run off 12 volts?",
+    a: "Yes. A fused feed from the leisure batteries, 12 V or 24 V, working alongside your solar and Victron setup. On the bank with hook-up it can run from 240 V instead, or from both, switching with the boat.",
+  },
+  {
+    category: "Installation",
+    // 4 of 12, most arriving with their own answer. "best to put as few holes
+    // in roof as possible Magnetic?" "The kit would fit in the dummy dome".
+    q: "Do you have to drill the roof?",
+    a: "No. On a steel roof it goes on a magnetic mount; on GRP, a pole or rail mount; and if you have a dummy radar dome, the dish can sit inside it. Nothing is bolted through the cabin top, and a boat that has to be turned in its berth for cleaning is fine.",
+  },
+  {
+    category: "Installation",
+    // The one question in the corpus nobody answered. "Would it cause much
+    // damage to the roof as and when I need to remove the Starlink?"
+    q: "What happens to the roof when the Starlink comes off?",
+    a: "A magnetic or clamped mount lifts off and leaves the roof as it was. There are no holes to fill. If you sell the boat, the kit and the account go with you.",
+  },
+  {
+    category: "Installation",
+    // 4 of 12, reasoned from what is already there. "All cables will go the
+    // vent on frunt of boat as WiFi does now". "SKY put there cable through
+    // the window with connectors".
+    q: "How does the cable get inside the boat?",
+    a: "The way your last one did. Through the existing vent, a deck gland or the window with connectors, sealed where it enters. If the router is better inside than in the dish housing, we quote for that.",
+  },
+  {
+    category: "Installation",
+    // 3 of 12. The Tattenhall buyer sent his barrier code unprompted. The
+    // Fairline owner was 2.5 hours from his boat.
+    q: "Can the engineer get to the boat at the marina?",
+    a: "Yes, that is where we fit it. Barriers, pontoons and gate codes are normal; tell us the marina and the berth and how to get in. You do not need to be there for the price, only for the fitting, and we arrange a day the boat is.",
+  },
+  {
+    category: "Coverage & WiFi",
+    // 3 of 12. "We have 6 rooms ... we only really need internet in 4."
+    // "Throughout the boat please".
+    q: "Will the wifi reach every cabin?",
+    a: "A steel hull blocks wifi between cabins more than a house wall does. Tell us which cabins you use and we site the router for those; on a long narrowboat or a boat with six rooms we add a second access point rather than promise the first reaches.",
+  },
+  {
+    category: "Coverage & WiFi",
+    // Not one of the 12 reports use on a moving boat. Written to be honest.
+    q: "Does it work while the boat is moving?",
+    a: "On a Roam plan, on rivers and canals, yes. What we fit and what our customers use it for is moored boats and inland cruising. We do not fit for use offshore or under way at sea.",
+  },
+];
+
 export const ALL_FAQS: Faq[] = [
   ...RESIDENTIAL_FAQS.map((f) => ({ ...f, service: "Residential" as const })),
   ...COMMERCIAL_FAQS.map((f) => ({ ...f, service: "Commercial" as const })),
