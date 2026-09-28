@@ -217,14 +217,33 @@ export async function fetchDailyRates(f: SegmentFilter): Promise<Array<{ day: st
 }
 
 /** Distinct traffic sources seen recently (for the filter dropdown). */
+/** Sources that only appear while developing or testing tags: local dev,
+ *  Vercel previews and Google Tag Assistant. Never real traffic. */
+const DEV_SOURCE = /^(localhost(:\d+)?|vercel\.com|tagassistant\.google\.com)$|\.vercel\.app$/;
+
+/** RE2 pattern (HogQL `match`) for search-engine referrers, i.e. organic
+ *  search. Paid Google traffic is recorded as plain "google" (gclid or
+ *  utm_source), so it never matches this. */
+export const ORGANIC_SOURCE_PATTERN = "^(www[.])?(google|bing|duckduckgo|yahoo|ecosia|yandex)[.][a-z.]+$"; // [.] not \. — HogQL strings reject that escape
+/** Virtual source value meaning "every organic search referrer". */
+export const ORGANIC_SOURCE = "organic";
+export function isOrganicSource(s: string | null | undefined): boolean {
+  return Boolean(s) && new RegExp(ORGANIC_SOURCE_PATTERN).test(s as string);
+}
+
+function sourceCondition(source: string): string {
+  if (source === ORGANIC_SOURCE) return `match(properties.traffic_source, '${ORGANIC_SOURCE_PATTERN}')`;
+  return `properties.traffic_source = '${source.replace(/'/g, "")}'`;
+}
+
 export async function fetchSources(days: number): Promise<string[]> {
   const r = await hogql(
     `SELECT properties.traffic_source AS s, count() FROM events
      WHERE timestamp >= now() - interval ${Math.max(1, Math.min(365, days))} day AND notEmpty(properties.traffic_source)
-     GROUP BY s ORDER BY count() DESC LIMIT 10`,
+     GROUP BY s ORDER BY count() DESC LIMIT 20`,
   );
   if (!r.ok) return [];
-  return (r.results as [string, number][]).map(([s]) => String(s)).filter(Boolean);
+  return (r.results as [string, number][]).map(([s]) => String(s)).filter((s) => s && !DEV_SOURCE.test(s));
 }
 
 // ── Landing-page conversion (visitor → lead) ──────────────────────────────
@@ -287,5 +306,47 @@ export async function fetchVisitorCounts(days: number, weeks: number): Promise<V
       week: String(week).slice(0, 10),
       visitors: Number(visitors) || 0,
     })),
+  };
+}
+
+// ── Targets page ──────────────────────────────────────────────────────────
+
+export interface TargetCounts {
+  ok: boolean;
+  configured: boolean;
+  error?: string;
+  /** Unique visitors and form starts per device_type (mobile/tablet/desktop). */
+  byDevice: Array<{ device: string; visitors: number; starts: number }>;
+  /** Unique people who tapped WhatsApp on the thank-you page, i.e. after
+   *  submitting. Reported beside the funnel, never added to it. */
+  whatsappAfterLead: number;
+}
+
+/** Visitors and form starts since a date, for one landing and one traffic
+ *  source, split by device. One HogQL round-trip. The page filter applies to
+ *  the landing events only, so the thank-you WhatsApp count still comes
+ *  through; the source filter applies to everything. */
+export async function fetchTargetCounts(f: { since: string; page?: string; source?: string }): Promise<TargetCounts> {
+  const since = f.since.replace(/[^0-9-]/g, "");
+  const onPage = f.page ? ` AND trim(TRAILING '/' FROM properties.page_path) = '${f.page.replace(/'/g, "")}'` : "";
+  const where = [`toDate(timestamp) >= '${since}'`];
+  if (f.source) where.push(sourceCondition(f.source));
+  const r = await hogql(
+    `SELECT properties.device_type AS device,
+            count(DISTINCT if(event = 'page_view'${onPage}, distinct_id, NULL)) AS visitors,
+            count(DISTINCT if(event = 'quote_started'${onPage}, distinct_id, NULL)) AS starts,
+            count(DISTINCT if(event = 'whatsapp_clicked' AND startsWith(properties.page_path, '/thank-you'), distinct_id, NULL)) AS wa
+     FROM events WHERE ${where.join(" AND ")}
+     GROUP BY device`,
+  );
+  if (!r.ok) return { ok: false, configured: r.configured, error: r.error, byDevice: [], whatsappAfterLead: 0 };
+  const rows = r.results as [string | null, number, number, number][];
+  return {
+    ok: true,
+    configured: true,
+    byDevice: rows
+      .filter(([d]) => d)
+      .map(([device, visitors, starts]) => ({ device: String(device), visitors: Number(visitors) || 0, starts: Number(starts) || 0 })),
+    whatsappAfterLead: rows.reduce((n, [, , , wa]) => n + (Number(wa) || 0), 0),
   };
 }
