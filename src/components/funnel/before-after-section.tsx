@@ -725,6 +725,28 @@ function RevenueUnbroken() {
  * 3. No speed test. Same reason as the continuity variant: a Mbps reading drags
  *    the reader back onto the axis this page deliberately left.
  *
+ * On the wording, because the two halves of it look inconsistent and are not.
+ * Will, 28 September, asked to drop "line": it names the physical circuit, and
+ * a reader who thinks of the thing as "the internet" has to translate. The
+ * pills carry the full "internet connection" and the heading does not, and that
+ * split is deliberate. This section is built to be understood by scanning the
+ * two cards — ONE … against £11,255 lost, TWO … against £0 — so the pill has to
+ * explain itself with nothing around it, and the extra word earns its place
+ * there. In the heading it does not: "The internet connection stops. The costs
+ * do not." runs past one line on desktop and breaks with "The" left hanging at
+ * the end of the first, which is how that heading lost its snap. "Your internet
+ * stops. Your costs do not." says it in one line and gains a parallel.
+ *
+ * "Provider" was the other candidate and is the wrong noun. Two providers can
+ * resell the same Openreach circuit, which is one point of failure with two
+ * bills, and this section's own claim is that there is no second way out of the
+ * building. That is about the route, not the company.
+ *
+ * ContinuityVariant above is untouched and still says "line" throughout,
+ * including in its heading, which is built on the word ("One line is one point
+ * of failure."). It is the fallback if the £150,000 permission comes back a no,
+ * so if it is ever switched back on it needs this same pass first.
+ *
  * Server and client render the same first frame — the counter starts at a
  * constant and the interval only starts in an effect — so there is no CLS.
  */
@@ -744,14 +766,14 @@ function CostVariant() {
   return (
     <SectionShell
       eyebrow="Cost of downtime"
-      heading="The line stops. The costs do not."
-      sub="Not how fast your line is. What the day costs you when it drops."
+      heading="Your internet stops. Your costs do not."
+      sub="Not how fast your connection is. What the day costs you when it drops."
     >
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {/* ONE LINE (light) — the money going out */}
         <div className="rounded-xl border border-border p-6 md:p-10" style={{ background: "var(--before-grad)" }}>
           <span className="inline-block rounded-full border border-black/15 px-[15px] py-[7px] text-micro font-semibold uppercase tracking-[0.18em]" style={{ color: VIZ.ink }}>
-            One line
+            One internet connection
           </span>
 
           <div className="mt-8 text-caption tracking-[0.06em]" style={{ color: VIZ.ink }}>Trading lost, this outage</div>
@@ -785,7 +807,7 @@ function CostVariant() {
             className="relative inline-block rounded-full px-[15px] py-[7px] text-micro font-semibold uppercase tracking-[0.18em]"
             style={{ border: "1px solid hsl(var(--brand-soft) / 0.4)", color: VIZ.rose4, background: "rgba(60,5,5,.35)" }}
           >
-            Two lines
+            Two internet connections
           </span>
 
           <div className="relative mt-8 text-caption tracking-[0.06em]" style={{ color: VIZ.rose }}>Trading lost, same outage</div>
@@ -808,8 +830,8 @@ function CostVariant() {
             Trading as normal, running on Starlink.
           </div>
           <div className="relative mt-5 text-caption leading-[1.7]" style={{ color: VIZ.rose3 }}>
-            Starlink is already running alongside your line, so the day carries
-            on: same orders, same tills, nobody on site doing anything.
+            Starlink is already running alongside your existing connection, so
+            the day carries on: same orders, same tills, nobody doing anything.
           </div>
         </div>
       </div>
@@ -829,7 +851,8 @@ function CostVariant() {
           the reader's business, and the line should not let anyone think
           otherwise. */}
       <p className="mt-6 text-center text-body-sm text-muted-foreground">
-        A logistics operator told us a day without their only line cost them{" "}
+        A logistics operator told us a day without their only internet
+        connection cost them{" "}
         <strong className="font-semibold text-foreground">£150,000</strong>. The
         counter runs at that rate.
       </p>
