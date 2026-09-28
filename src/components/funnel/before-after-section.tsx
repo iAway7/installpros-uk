@@ -725,22 +725,28 @@ function RevenueUnbroken() {
  * 3. No speed test. Same reason as the continuity variant: a Mbps reading drags
  *    the reader back onto the axis this page deliberately left.
  *
- * On the wording, because the two halves of it look inconsistent and are not.
- * Will, 28 September, asked to drop "line": it names the physical circuit, and
- * a reader who thinks of the thing as "the internet" has to translate. The
- * pills carry the full "internet connection" and the heading does not, and that
- * split is deliberate. This section is built to be understood by scanning the
- * two cards — ONE … against £11,255 lost, TWO … against £0 — so the pill has to
- * explain itself with nothing around it, and the extra word earns its place
- * there. In the heading it does not: "The internet connection stops. The costs
- * do not." runs past one line on desktop and breaks with "The" left hanging at
- * the end of the first, which is how that heading lost its snap. "Your internet
- * stops. Your costs do not." says it in one line and gains a parallel.
+ * On the wording. Will, 28 September, asked to drop "line": it names the
+ * physical circuit, and a reader who thinks of the thing as "the internet" has
+ * to translate. "Provider" was his other candidate and is the wrong noun — two
+ * providers can resell the same Openreach circuit, which is one point of
+ * failure with two bills, and this section's claim is that there is no second
+ * way out of the building. That is about the route, not the company.
  *
- * "Provider" was the other candidate and is the wrong noun. Two providers can
- * resell the same Openreach circuit, which is one point of failure with two
- * bills, and this section's own claim is that there is no second way out of the
- * building. That is about the route, not the company.
+ * The pills shipped as "One internet connection" / "Two internet connections"
+ * and came straight back: "a bit too wordy". He is right, and the reason is
+ * worth keeping. The pill is not carrying the noun on its own — the heading
+ * sits directly above it saying "Your internet stops", so by the time anyone
+ * reads the badge the subject is established and "internet" is the reader
+ * being told twice. Short is also what a badge is for: it is a tag, and at
+ * 242px of a 295px card on a phone it had stopped looking like one.
+ *
+ * The heading never took the long form, for a different reason: "The internet
+ * connection stops. The costs do not." runs past one line on desktop and breaks
+ * with "The" left hanging at the end of the first. "Your internet stops. Your
+ * costs do not." fits on one line and gains a parallel.
+ *
+ * So the long form survives only in prose, where nothing is competing with it:
+ * the footnote and the dark card's last line.
  *
  * ContinuityVariant above is untouched and still says "line" throughout,
  * including in its heading, which is built on the word ("One line is one point
@@ -773,7 +779,7 @@ function CostVariant() {
         {/* ONE LINE (light) — the money going out */}
         <div className="rounded-xl border border-border p-6 md:p-10" style={{ background: "var(--before-grad)" }}>
           <span className="inline-block rounded-full border border-black/15 px-[15px] py-[7px] text-micro font-semibold uppercase tracking-[0.18em]" style={{ color: VIZ.ink }}>
-            One internet connection
+            One connection
           </span>
 
           <div className="mt-8 text-caption tracking-[0.06em]" style={{ color: VIZ.ink }}>Trading lost, this outage</div>
@@ -807,7 +813,7 @@ function CostVariant() {
             className="relative inline-block rounded-full px-[15px] py-[7px] text-micro font-semibold uppercase tracking-[0.18em]"
             style={{ border: "1px solid hsl(var(--brand-soft) / 0.4)", color: VIZ.rose4, background: "rgba(60,5,5,.35)" }}
           >
-            Two internet connections
+            Two connections
           </span>
 
           <div className="relative mt-8 text-caption tracking-[0.06em]" style={{ color: VIZ.rose }}>Trading lost, same outage</div>
