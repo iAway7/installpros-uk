@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { LayoutDashboard, Users, BarChart3, FlaskConical, Filter, Map, Settings, Satellite, LogOut, LayoutTemplate } from "lucide-react";
+import { LayoutDashboard, Users, BarChart3, FlaskConical, Filter, Target, Map, Settings, Satellite, LogOut, LayoutTemplate } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { siteConfig } from "@/lib/site-config";
 import { evaluateAlerts } from "@/lib/alerts/evaluate";
@@ -39,6 +39,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
           <NavItem href="/dashboard" icon={<LayoutDashboard className="h-4 w-4" />} label="Overview" />
           <NavItem href="/dashboard/leads" icon={<Users className="h-4 w-4" />} label="Leads" />
           <NavItem href="/dashboard/funnel" icon={<Filter className="h-4 w-4" />} label="Funnel" />
+          <NavItem href="/dashboard/targets" icon={<Target className="h-4 w-4" />} label="Targets" />
           <NavItem href="/dashboard/map" icon={<Map className="h-4 w-4" />} label="Map" />
           <NavItem href="/dashboard/landings" icon={<LayoutTemplate className="h-4 w-4" />} label="Landings" />
           <NavItem href="/dashboard/marketing" icon={<BarChart3 className="h-4 w-4" />} label="Marketing" />

@@ -289,3 +289,45 @@ export async function fetchVisitorCounts(days: number, weeks: number): Promise<V
     })),
   };
 }
+
+// ── Targets page ──────────────────────────────────────────────────────────
+
+export interface TargetCounts {
+  ok: boolean;
+  configured: boolean;
+  error?: string;
+  /** Unique visitors and form starts per device_type (mobile/tablet/desktop). */
+  byDevice: Array<{ device: string; visitors: number; starts: number }>;
+  /** Unique people who tapped WhatsApp on the thank-you page, i.e. after
+   *  submitting. Reported beside the funnel, never added to it. */
+  whatsappAfterLead: number;
+}
+
+/** Visitors and form starts since a date, for one landing and one traffic
+ *  source, split by device. One HogQL round-trip. The page filter applies to
+ *  the landing events only, so the thank-you WhatsApp count still comes
+ *  through; the source filter applies to everything. */
+export async function fetchTargetCounts(f: { since: string; page?: string; source?: string }): Promise<TargetCounts> {
+  const since = f.since.replace(/[^0-9-]/g, "");
+  const onPage = f.page ? ` AND trim(TRAILING '/' FROM properties.page_path) = '${f.page.replace(/'/g, "")}'` : "";
+  const where = [`toDate(timestamp) >= '${since}'`];
+  if (f.source) where.push(`properties.traffic_source = '${f.source.replace(/'/g, "")}'`);
+  const r = await hogql(
+    `SELECT properties.device_type AS device,
+            count(DISTINCT if(event = 'page_view'${onPage}, distinct_id, NULL)) AS visitors,
+            count(DISTINCT if(event = 'quote_started'${onPage}, distinct_id, NULL)) AS starts,
+            count(DISTINCT if(event = 'whatsapp_clicked' AND startsWith(properties.page_path, '/thank-you'), distinct_id, NULL)) AS wa
+     FROM events WHERE ${where.join(" AND ")}
+     GROUP BY device`,
+  );
+  if (!r.ok) return { ok: false, configured: r.configured, error: r.error, byDevice: [], whatsappAfterLead: 0 };
+  const rows = r.results as [string | null, number, number, number][];
+  return {
+    ok: true,
+    configured: true,
+    byDevice: rows
+      .filter(([d]) => d)
+      .map(([device, visitors, starts]) => ({ device: String(device), visitors: Number(visitors) || 0, starts: Number(starts) || 0 })),
+    whatsappAfterLead: rows.reduce((n, [, , , wa]) => n + (Number(wa) || 0), 0),
+  };
+}
