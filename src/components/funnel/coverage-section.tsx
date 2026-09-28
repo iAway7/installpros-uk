@@ -1,8 +1,7 @@
 import { MapPin, CalendarCheck, Boxes } from "lucide-react";
 import { WhatsAppIcon } from "./ui/whatsapp-icon";
 import { Button } from "@/components/system/button";
-
-const WHATSAPP_URL = "https://wa.me/447446112343";
+import { WhatsAppCtaLink } from "./whatsapp-cta-link";
 
 const FEATURES = [
   {
@@ -72,10 +71,10 @@ export function CoverageSection() {
             <a href="#quote">Check Availability</a>
           </Button>
           <Button asChild variant="outline">
-            <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
+            <WhatsAppCtaLink ctaLocation="coverage">
               <WhatsAppIcon className="h-5 w-5 text-whatsapp" />
               Talk on WhatsApp
-            </a>
+            </WhatsAppCtaLink>
           </Button>
         </div>
       </div>

@@ -3,9 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import { WhatsAppIcon } from "./ui/whatsapp-icon";
 import { Button } from "@/components/system/button";
+import { WhatsAppCtaLink } from "./whatsapp-cta-link";
 import { getStarlinkCountryStats } from "@/lib/funnel/starlink-country-stats";
-
-const WHATSAPP_URL = "https://wa.me/447446112343";
 
 /** Cloudflare datacenter (colo) codes → friendly city names. UK + Western
  *  Europe covered; anything else falls back to the raw code. */
@@ -126,10 +125,10 @@ function SectionShell({
             <a href="#quote">Check Availability</a>
           </Button>
           <Button asChild variant="outline">
-            <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
+            <WhatsAppCtaLink ctaLocation="before_after">
               <WhatsAppIcon className="h-5 w-5 text-whatsapp" />
               Talk on WhatsApp
-            </a>
+            </WhatsAppCtaLink>
           </Button>
         </div>
       </div>
