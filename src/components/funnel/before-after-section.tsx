@@ -748,6 +748,25 @@ function RevenueUnbroken() {
  * So the long form survives only in prose, where nothing is competing with it:
  * the footnote and the dark card's last line.
  *
+ * THREE, not two, and it rests on a promise made further up this page. Will
+ * gave the stack a minute after approving the badge wording: 1st the leased
+ * line (fibre or copper), 2nd Starlink, 3rd 4G/5G. He was explaining what
+ * counts as one connection rather than asking for a bigger number, but two was
+ * undercounting either way, and the hero already sells all three — "Starlink
+ * installed and managed, with 5G failover alongside your existing line", and
+ * the "Always A Second Line" card under it. A badge saying two contradicted
+ * them, in our own disfavour.
+ *
+ * The dark card's last line had to move with it. It named Starlink only, so a
+ * reader who counted the badge against the copy came up one short.
+ *
+ * OPEN, AND THIS BADGE DEPENDS ON IT: whether 4G/5G is standard on a
+ * commercial install or an extra. Will wrote "3rd Connection WOULD BE 5G", and
+ * that conditional is the whole question. If it is an extra, the problem is not
+ * this badge but the hero promising it unconditionally, and both come down
+ * together. Same trap as the equipment card, which promised a Performance dish
+ * on every job until he said "depends on use case/requirements".
+ *
  * ContinuityVariant above is untouched and still says "line" throughout,
  * including in its heading, which is built on the word ("One line is one point
  * of failure."). It is the fallback if the £150,000 permission comes back a no,
@@ -813,7 +832,7 @@ function CostVariant() {
             className="relative inline-block rounded-full px-[15px] py-[7px] text-micro font-semibold uppercase tracking-[0.18em]"
             style={{ border: "1px solid hsl(var(--brand-soft) / 0.4)", color: VIZ.rose4, background: "rgba(60,5,5,.35)" }}
           >
-            Two connections
+            Three connections
           </span>
 
           <div className="relative mt-8 text-caption tracking-[0.06em]" style={{ color: VIZ.rose }}>Trading lost, same outage</div>
@@ -836,8 +855,8 @@ function CostVariant() {
             Trading as normal, running on Starlink.
           </div>
           <div className="relative mt-5 text-caption leading-[1.7]" style={{ color: VIZ.rose3 }}>
-            Starlink is already running alongside your existing connection, so
-            the day carries on: same orders, same tills, nobody doing anything.
+            Starlink and 4G/5G sit behind your existing connection, already
+            running, so the day carries on and nobody on site has to do anything.
           </div>
         </div>
       </div>
