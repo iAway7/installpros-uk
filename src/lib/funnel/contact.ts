@@ -7,7 +7,7 @@
  * is a one-line edit rather than a grep.
  */
 export const WHATSAPP_NUMBER = "447446112343";
-export const SUPPORT_EMAIL = "admin@installpros.co.uk";
+export const SUPPORT_EMAIL = "sales@installpros.co.uk";
 export const SUPPORT_PHONE = "020 3397 7003";
 export const SUPPORT_PHONE_HREF = "tel:02033977003";
 
