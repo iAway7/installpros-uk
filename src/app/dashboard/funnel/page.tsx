@@ -14,7 +14,11 @@ import {
 
 export const dynamic = "force-dynamic";
 
-const DAY_OPTIONS = [7, 14, 28, 90];
+const DAY_OPTIONS = [0, 7, 14, 28, 90]; // 0 = today
+
+function periodLabel(days: number): string {
+  return days === 0 ? "today" : `last ${days} days`;
+}
 const DEVICES = ["mobile", "tablet", "desktop"];
 
 interface SearchParams {
@@ -77,7 +81,7 @@ export default async function FunnelPage({ searchParams }: { searchParams: Searc
     <Shell days={days} device={device} source={source} page={page} sources={sources}>
       {/* Funnel bars */}
       <Card>
-        <CardHeader><CardTitle>Funnel: last {days} days{page ? ` · ${page}` : ""}{device ? ` · ${device}` : ""}{source ? ` · ${source}` : ""}</CardTitle></CardHeader>
+        <CardHeader><CardTitle>Funnel: {periodLabel(days)}{page ? ` · ${page}` : ""}{device ? ` · ${device}` : ""}{source ? ` · ${source}` : ""}</CardTitle></CardHeader>
         <CardContent className="space-y-3">
           {funnel.steps.every((s) => s.users === 0) ? (
             <p className="py-6 text-center text-body-sm text-muted-foreground">
@@ -193,7 +197,7 @@ function Shell({
       </div>
 
       <form method="get" className="flex flex-wrap items-center gap-2">
-        <FilterSelect name="days" value={String(days)} options={DAY_OPTIONS.map((d) => [String(d), `Last ${d} days`])} />
+        <FilterSelect name="days" value={String(days)} options={DAY_OPTIONS.map((d): [string, string] => [String(d), d === 0 ? "Today" : `Last ${d} days`])} />
         <FilterSelect
           name="device"
           value={device ?? ""}

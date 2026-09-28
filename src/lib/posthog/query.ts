@@ -82,6 +82,7 @@ export interface SegmentFilter {
    *  apart: without it the two variants are summed into one funnel and the
    *  experiment cannot be measured at all. */
   page?: string;
+  /** Rolling window in days; 0 means today (the calendar day, not the last 24 h). */
   days: number;
 }
 
@@ -97,7 +98,7 @@ export const FUNNEL_PAGES = [
 ] as const;
 
 function segmentWhere(f: SegmentFilter): string {
-  const parts = [`timestamp >= now() - interval ${Math.max(1, Math.min(365, f.days))} day`];
+  const parts = [f.days === 0 ? `toDate(timestamp) = today()` : `timestamp >= now() - interval ${Math.max(1, Math.min(365, f.days))} day`];
   if (f.device) parts.push(`properties.device_type = '${f.device.replace(/'/g, "")}'`);
   if (f.source) parts.push(`properties.traffic_source = '${f.source.replace(/'/g, "")}'`);
   if (f.page) parts.push(`trim(TRAILING '/' FROM properties.page_path) = '${f.page.replace(/'/g, "")}'`);
@@ -183,10 +184,10 @@ export async function fetchFormQuestionFunnel(f: SegmentFilter): Promise<{ steps
 /** Same funnel for the preceding period, to flag >20% step drops. */
 export async function fetchFunnelPrevious(f: SegmentFilter): Promise<number[]> {
   const days = Math.max(1, Math.min(365, f.days));
-  const parts = [
-    `timestamp >= now() - interval ${days * 2} day`,
-    `timestamp < now() - interval ${days} day`,
-  ];
+  // "Today" compares against yesterday, whole day to whole day.
+  const parts = f.days === 0
+    ? [`toDate(timestamp) = yesterday()`]
+    : [`timestamp >= now() - interval ${days * 2} day`, `timestamp < now() - interval ${days} day`];
   if (f.device) parts.push(`properties.device_type = '${f.device.replace(/'/g, "")}'`);
   if (f.source) parts.push(`properties.traffic_source = '${f.source.replace(/'/g, "")}'`);
   if (f.page) parts.push(`trim(TRAILING '/' FROM properties.page_path) = '${f.page.replace(/'/g, "")}'`);
@@ -322,14 +323,17 @@ export interface TargetCounts {
   whatsappAfterLead: number;
 }
 
-/** Visitors and form starts since a date, for one landing and one traffic
- *  source, split by device. One HogQL round-trip. The page filter applies to
- *  the landing events only, so the thank-you WhatsApp count still comes
- *  through; the source filter applies to everything. */
-export async function fetchTargetCounts(f: { since: string; page?: string; source?: string }): Promise<TargetCounts> {
+/** Visitors and form starts over a date range, for one landing and one
+ *  traffic source, split by device. One HogQL round-trip. `until` is
+ *  inclusive and optional: without it the range runs to now. The page filter
+ *  applies to the landing events only, so the thank-you WhatsApp count still
+ *  comes through; the source filter applies to everything. */
+export async function fetchTargetCounts(f: { since: string; until?: string; page?: string; source?: string }): Promise<TargetCounts> {
   const since = f.since.replace(/[^0-9-]/g, "");
+  const until = (f.until ?? "").replace(/[^0-9-]/g, "");
   const onPage = f.page ? ` AND trim(TRAILING '/' FROM properties.page_path) = '${f.page.replace(/'/g, "")}'` : "";
   const where = [`toDate(timestamp) >= '${since}'`];
+  if (until) where.push(`toDate(timestamp) <= '${until}'`);
   if (f.source) where.push(sourceCondition(f.source));
   const r = await hogql(
     `SELECT properties.device_type AS device,
