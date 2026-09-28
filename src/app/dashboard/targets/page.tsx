@@ -3,13 +3,37 @@ import { Filter } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/system/card";
 import { createClient } from "@/lib/supabase/server";
 import { realLeads } from "@/lib/dashboard/leads";
-import { fetchSources, fetchTargetCounts, posthogConfigured, FUNNEL_PAGES } from "@/lib/posthog/query";
+import { fetchSources, fetchTargetCounts, isOrganicSource, posthogConfigured, FUNNEL_PAGES, ORGANIC_SOURCE } from "@/lib/posthog/query";
 import { buildTargetsReport, pct, LAUNCH_DATE, type TargetStatus, type TargetsReport } from "@/lib/dashboard/targets";
 
 export const dynamic = "force-dynamic";
 
 const DEFAULT_PAGE = "/install-quote";
 const DEFAULT_SOURCE = "google";
+
+/** The sources people actually reason about, in the order they should
+ *  appear. Anything else PostHog has seen is listed after these by name. */
+const NAMED_SOURCES: [string, string][] = [
+  ["google", "Google Ads (paid)"],
+  [ORGANIC_SOURCE, "Organic search"],
+  ["direct", "Direct / unknown"],
+];
+
+function sourceOptions(seen: string[], current: string): [string, string][] {
+  const named = new Set(NAMED_SOURCES.map(([v]) => v));
+  const rest = seen.filter((s) => !named.has(s) && !isOrganicSource(s));
+  if (!named.has(current) && !rest.includes(current)) rest.push(current);
+  return [...NAMED_SOURCES, ...rest.map((s): [string, string] => [s, s])];
+}
+
+function sourceLabel(source: string): string {
+  return NAMED_SOURCES.find(([v]) => v === source)?.[1] ?? source;
+}
+
+function matchesSource(lead: { traffic_source: string | null }, source: string): boolean {
+  if (source === ORGANIC_SOURCE) return isOrganicSource(lead.traffic_source);
+  return (lead.traffic_source ?? "") === source;
+}
 
 interface SearchParams {
   since?: string;
@@ -63,11 +87,11 @@ export default async function TargetsPage({ searchParams }: { searchParams: Sear
       .select("id, created_at, device_type, landing_page, traffic_source, is_test")
       .gte("created_at", since),
   ]);
-  const sourceOptions = Array.from(new Set([DEFAULT_SOURCE, ...sources, source]));
+  const options = sourceOptions(sources, source);
 
   if (!counts.ok) {
     return (
-      <Shell filters={filters} sources={sourceOptions}>
+      <Shell filters={filters} sources={options}>
         <Card>
           <CardContent className="text-body-sm text-destructive">
             Couldn&apos;t query PostHog{counts.error ? `: ${counts.error}` : ""}. Check the API key, project id and host.
@@ -78,7 +102,7 @@ export default async function TargetsPage({ searchParams }: { searchParams: Sear
   }
   if (leadsResult.error) {
     return (
-      <Shell filters={filters} sources={sourceOptions}>
+      <Shell filters={filters} sources={options}>
         <Card>
           <CardContent className="text-body-sm text-destructive">Couldn&apos;t load leads: {leadsResult.error.message}</CardContent>
         </Card>
@@ -87,17 +111,17 @@ export default async function TargetsPage({ searchParams }: { searchParams: Sear
   }
 
   const leads = realLeads(leadsResult.data ?? []).filter(
-    (l) => stripSlash(l.landing_page) === stripSlash(page) && (l.traffic_source ?? "") === source,
+    (l) => stripSlash(l.landing_page) === stripSlash(page) && matchesSource(l, source),
   );
   const report = buildTargetsReport(counts, leads);
 
   return (
-    <Shell filters={filters} sources={sourceOptions}>
+    <Shell filters={filters} sources={options}>
       <p className="text-body-sm text-muted-foreground">
         <span className="font-semibold text-foreground tabular-nums">{report.visitors.toLocaleString("en-GB")}</span> visitors ·{" "}
         <span className="font-semibold text-foreground tabular-nums">{report.starts.toLocaleString("en-GB")}</span> form starts ·{" "}
         <span className="font-semibold text-foreground tabular-nums">{report.leads.toLocaleString("en-GB")}</span> leads since {since}.
-        Visitors and form starts are unique people in PostHog on {page} from {source}; leads are real submissions in the database for the same landing and source.
+        Visitors and form starts are unique people in PostHog on {page} from {sourceLabel(source)}; leads are real submissions in the database for the same landing and source.
       </p>
 
       <TargetsTable report={report} />
@@ -201,7 +225,7 @@ function StatusBadge({ status }: { status: TargetStatus }) {
   return <span className={`inline-block whitespace-nowrap rounded-full px-2 py-0.5 text-label font-medium ${cls}`}>{label}</span>;
 }
 
-function Shell({ filters, sources, children }: { filters: Filters; sources: string[]; children: React.ReactNode }) {
+function Shell({ filters, sources, children }: { filters: Filters; sources: [string, string][]; children: React.ReactNode }) {
   const { since, page, source } = filters;
   const isDefault = since === LAUNCH_DATE && page === DEFAULT_PAGE && source === DEFAULT_SOURCE;
   return (
@@ -213,21 +237,30 @@ function Shell({ filters, sources, children }: { filters: Filters; sources: stri
         </p>
       </div>
 
-      <form method="get" className="flex flex-wrap items-center gap-2">
-        <input
-          type="date"
-          name="since"
-          defaultValue={since}
-          min={LAUNCH_DATE}
-          className="h-9 rounded-md border border-border bg-background px-3 text-body-sm"
-        />
-        <FilterSelect name="page" value={page} options={FUNNEL_PAGES.map((p): [string, string] => [p, p])} />
-        <FilterSelect name="source" value={source} options={sources.map((s): [string, string] => [s, s])} />
-        <button type="submit" className="rounded-md bg-primary px-4 py-2 text-body-sm font-semibold text-primary-foreground">
+      <form method="get" className="flex flex-wrap items-end gap-3">
+        <label className="flex flex-col gap-1 text-label text-muted-foreground">
+          Since
+          <input
+            type="date"
+            name="since"
+            defaultValue={since}
+            min={LAUNCH_DATE}
+            className="h-9 rounded-md border border-border bg-background px-3 text-body-sm text-foreground"
+          />
+        </label>
+        <label className="flex flex-col gap-1 text-label text-muted-foreground">
+          Landing page
+          <FilterSelect name="page" value={page} options={FUNNEL_PAGES.map((p): [string, string] => [p, p])} />
+        </label>
+        <label className="flex flex-col gap-1 text-label text-muted-foreground">
+          Traffic source
+          <FilterSelect name="source" value={source} options={sources} />
+        </label>
+        <button type="submit" className="h-9 rounded-md bg-primary px-4 text-body-sm font-semibold text-primary-foreground">
           Apply
         </button>
         {!isDefault && (
-          <Link href="/dashboard/targets" className="text-body-sm text-muted-foreground hover:text-foreground hover:underline">
+          <Link href="/dashboard/targets" className="pb-2 text-body-sm text-muted-foreground hover:text-foreground hover:underline">
             Reset
           </Link>
         )}
@@ -240,7 +273,7 @@ function Shell({ filters, sources, children }: { filters: Filters; sources: stri
 
 function FilterSelect({ name, value, options }: { name: string; value: string; options: [string, string][] }) {
   return (
-    <select name={name} defaultValue={value} className="h-9 rounded-md border border-border bg-background px-3 text-body-sm">
+    <select name={name} defaultValue={value} className="h-9 rounded-md border border-border bg-background px-3 text-body-sm text-foreground">
       {options.map(([v, label]) => (
         <option key={v} value={v}>{label}</option>
       ))}

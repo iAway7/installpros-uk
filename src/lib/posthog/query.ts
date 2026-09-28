@@ -217,14 +217,33 @@ export async function fetchDailyRates(f: SegmentFilter): Promise<Array<{ day: st
 }
 
 /** Distinct traffic sources seen recently (for the filter dropdown). */
+/** Sources that only appear while developing or testing tags: local dev,
+ *  Vercel previews and Google Tag Assistant. Never real traffic. */
+const DEV_SOURCE = /^(localhost(:\d+)?|vercel\.com|tagassistant\.google\.com)$|\.vercel\.app$/;
+
+/** RE2 pattern (HogQL `match`) for search-engine referrers, i.e. organic
+ *  search. Paid Google traffic is recorded as plain "google" (gclid or
+ *  utm_source), so it never matches this. */
+export const ORGANIC_SOURCE_PATTERN = "^(www[.])?(google|bing|duckduckgo|yahoo|ecosia|yandex)[.][a-z.]+$"; // [.] not \. — HogQL strings reject that escape
+/** Virtual source value meaning "every organic search referrer". */
+export const ORGANIC_SOURCE = "organic";
+export function isOrganicSource(s: string | null | undefined): boolean {
+  return Boolean(s) && new RegExp(ORGANIC_SOURCE_PATTERN).test(s as string);
+}
+
+function sourceCondition(source: string): string {
+  if (source === ORGANIC_SOURCE) return `match(properties.traffic_source, '${ORGANIC_SOURCE_PATTERN}')`;
+  return `properties.traffic_source = '${source.replace(/'/g, "")}'`;
+}
+
 export async function fetchSources(days: number): Promise<string[]> {
   const r = await hogql(
     `SELECT properties.traffic_source AS s, count() FROM events
      WHERE timestamp >= now() - interval ${Math.max(1, Math.min(365, days))} day AND notEmpty(properties.traffic_source)
-     GROUP BY s ORDER BY count() DESC LIMIT 10`,
+     GROUP BY s ORDER BY count() DESC LIMIT 20`,
   );
   if (!r.ok) return [];
-  return (r.results as [string, number][]).map(([s]) => String(s)).filter(Boolean);
+  return (r.results as [string, number][]).map(([s]) => String(s)).filter((s) => s && !DEV_SOURCE.test(s));
 }
 
 // ── Landing-page conversion (visitor → lead) ──────────────────────────────
@@ -311,7 +330,7 @@ export async function fetchTargetCounts(f: { since: string; page?: string; sourc
   const since = f.since.replace(/[^0-9-]/g, "");
   const onPage = f.page ? ` AND trim(TRAILING '/' FROM properties.page_path) = '${f.page.replace(/'/g, "")}'` : "";
   const where = [`toDate(timestamp) >= '${since}'`];
-  if (f.source) where.push(`properties.traffic_source = '${f.source.replace(/'/g, "")}'`);
+  if (f.source) where.push(sourceCondition(f.source));
   const r = await hogql(
     `SELECT properties.device_type AS device,
             count(DISTINCT if(event = 'page_view'${onPage}, distinct_id, NULL)) AS visitors,
