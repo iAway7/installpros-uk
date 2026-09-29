@@ -112,8 +112,19 @@ const FIT: FitItem[] = [
     // drive. Advertised as Cheltenham"). Replaced the boats item on 14
     // September; boats get their own Marine landing.
     title: "Bring it to us, or we come to you",
+    // The only item on this grid that used to assert something with nothing
+    // behind it. Will's partner list (2026-09-29, 36 firms) types each one
+    // Fixed, Mobile or both: 15 fixed, 17 mobile, 4 both. So 19 have premises
+    // you can drive to and 21 will travel, and the two halves of this title
+    // finally have a number each.
+    //
+    // Counts, never the firms. The list is a supplier network with names,
+    // mobile numbers and personal email addresses, it is not in this repo, and
+    // it does not go on a page: a competitor reads it as a shopping list.
+    //
+    // RE-CHECK BEFORE ANY CAMPAIGN. These drift as partners join and leave.
     detail:
-      "Motorhomes, campervans and cars usually come to us. Fleets and anything off the road, we come to. Any travel charge is in the quote.",
+      "Nineteen workshops to drive to and twenty-one mobile teams. Most vehicles come to us; anything off the road, we come to you. Any travel charge is in the quote.",
   },
 ];
 
