@@ -19,7 +19,7 @@ import { ExperimentProvider } from "@/components/experiments/experiment-provider
 /**
  * Static caravans, park homes and holiday lodges. Units that stay put.
  *
- * Cloned from /starlink-installation-for-cars and then rebuilt section by
+ * Cloned from /starlink-installation-for-vehicles and then rebuilt section by
  * section from the 175 static conversations of 1 July to 21 September 2026
  * (superchat-analysis/statics-questions-for-will). It keeps that page's shell
  * and almost none of its argument, because the two segments want opposite

@@ -130,6 +130,17 @@ const nextConfig = {
   async redirects() {
     return [
       { source: "/", destination: "/install-quote", permanent: false },
+      // The vehicle landing was /starlink-installation-for-cars until Will
+      // asked for a slug that matched what the page actually covers. No ad
+      // ever pointed here — /install-quote is the live Ads landing — so these
+      // catch bookmarks, anything Will has pasted into a chat, and the old
+      // path in our own notes. The trailing-slash twins are here because
+      // skipTrailingSlashRedirect is on below, so nothing normalises them for
+      // us and Will's own site links with a trailing slash.
+      { source: "/starlink-installation-for-cars-2", destination: "/starlink-installation-for-vehicles-2", permanent: true },
+      { source: "/starlink-installation-for-cars-2/", destination: "/starlink-installation-for-vehicles-2", permanent: true },
+      { source: "/starlink-installation-for-cars", destination: "/starlink-installation-for-vehicles", permanent: true },
+      { source: "/starlink-installation-for-cars/", destination: "/starlink-installation-for-vehicles", permanent: true },
     ];
   },
   // Proxy PostHog through our domain to avoid ad-blockers and keep events first-party.

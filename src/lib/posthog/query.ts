@@ -92,16 +92,38 @@ export const FUNNEL_PAGES = [
   "/install-quote",
   "/starlink-installation",
   "/commercial-starlink-installation",
-  "/starlink-installation-for-cars",
-  "/starlink-installation-for-cars-2",
+  "/starlink-installation-for-vehicles",
+  "/starlink-installation-for-vehicles-2",
   "/starlink-installation-for-static-caravans",
 ] as const;
+
+/** A landing page that changed slug still has every pageview before the rename
+ *  filed under the old path. Each entry maps the CURRENT path to the ones it
+ *  replaced, and every page filter below matches the whole set, so the
+ *  visitor-to-lead series carries across the rename instead of restarting on
+ *  the day of it — which is the one number this dashboard exists to show.
+ *
+ *  Keeping the old paths in FUNNEL_PAGES instead would not do this: the filter
+ *  is an equality, so they would show up as two separate options, one holding
+ *  the history and one holding everything since. */
+const PAGE_ALIASES: Record<string, readonly string[]> = {
+  "/starlink-installation-for-vehicles": ["/starlink-installation-for-cars"],
+  "/starlink-installation-for-vehicles-2": ["/starlink-installation-for-cars-2"],
+};
+
+/** SQL for "this landing page", folding in any path it used to live at. */
+function pageWhere(page: string): string {
+  const paths = [page, ...(PAGE_ALIASES[page] ?? [])]
+    .map((p) => `'${p.replace(/'/g, "")}'`)
+    .join(", ");
+  return `trim(TRAILING '/' FROM properties.page_path) IN (${paths})`;
+}
 
 function segmentWhere(f: SegmentFilter): string {
   const parts = [f.days === 0 ? `toDate(timestamp) = today()` : `timestamp >= now() - interval ${Math.max(1, Math.min(365, f.days))} day`];
   if (f.device) parts.push(`properties.device_type = '${f.device.replace(/'/g, "")}'`);
   if (f.source) parts.push(`properties.traffic_source = '${f.source.replace(/'/g, "")}'`);
-  if (f.page) parts.push(`trim(TRAILING '/' FROM properties.page_path) = '${f.page.replace(/'/g, "")}'`);
+  if (f.page) parts.push(pageWhere(f.page));
   return parts.join(" AND ");
 }
 
@@ -190,7 +212,7 @@ export async function fetchFunnelPrevious(f: SegmentFilter): Promise<number[]> {
     : [`timestamp >= now() - interval ${days * 2} day`, `timestamp < now() - interval ${days} day`];
   if (f.device) parts.push(`properties.device_type = '${f.device.replace(/'/g, "")}'`);
   if (f.source) parts.push(`properties.traffic_source = '${f.source.replace(/'/g, "")}'`);
-  if (f.page) parts.push(`trim(TRAILING '/' FROM properties.page_path) = '${f.page.replace(/'/g, "")}'`);
+  if (f.page) parts.push(pageWhere(f.page));
   const selects = FUNNEL_STEPS.map(
     (s, i) => `count(DISTINCT if(event = '${s.event}', distinct_id, NULL)) AS step_${i}`,
   ).join(", ");
@@ -331,7 +353,7 @@ export interface TargetCounts {
 export async function fetchTargetCounts(f: { since: string; until?: string; page?: string; source?: string }): Promise<TargetCounts> {
   const since = f.since.replace(/[^0-9-]/g, "");
   const until = (f.until ?? "").replace(/[^0-9-]/g, "");
-  const onPage = f.page ? ` AND trim(TRAILING '/' FROM properties.page_path) = '${f.page.replace(/'/g, "")}'` : "";
+  const onPage = f.page ? ` AND ${pageWhere(f.page)}` : "";
   const where = [`toDate(timestamp) >= '${since}'`];
   if (until) where.push(`toDate(timestamp) <= '${until}'`);
   if (f.source) where.push(sourceCondition(f.source));

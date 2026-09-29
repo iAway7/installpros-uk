@@ -18,9 +18,9 @@ import { FunnelFooter } from "@/components/funnel/funnel-footer";
 import { ExperimentProvider } from "@/components/experiments/experiment-provider";
 
 /**
- * /starlink-installation-for-cars-2: the vehicle landing with the weather
+ * /starlink-installation-for-vehicles-2: the vehicle landing with the weather
  * hero from weather-hero-kit in place of HeroSection. Everything below the
- * hero is a straight copy of /starlink-installation-for-cars; read that
+ * hero is a straight copy of /starlink-installation-for-vehicles; read that
  * page's header comment for the reasoning behind each section. Keep the two
  * in step until one of them wins.
  *
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     title: "Starlink Installation for Cars, Motorhomes & Campervans | UK",
     description:
       "Starlink Mini fitted to your motorhome, campervan, car or van. Low-profile mount, 12 V power, fixed quote from two photos.",
-    url: "/starlink-installation-for-cars-2",
+    url: "/starlink-installation-for-vehicles-2",
   },
 };
 

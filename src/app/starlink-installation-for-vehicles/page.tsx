@@ -44,6 +44,24 @@ import { ExperimentProvider } from "@/components/experiments/experiment-provider
  * /starlink-installation-for-campervan/, and this subdomain exists to receive
  * paid clicks, not to compete with them. Do NOT add it to sitemap.ts while
  * this stands, and no canonical for the same reason as its parent.
+ *
+ * THE SLUG SAYS VEHICLES, AND IT USED TO SAY CARS. Renamed on Will's ask, and
+ * the reason is conversion rather than tidiness: a motorhome owner clicking a
+ * motorhome ad and landing on a URL reading /for-cars spends half a second
+ * wondering whether this is the right page. It also collided with Will's own
+ * taxonomy, where /starlink-installation-for-cars/ and
+ * /for-campervan/ are two separate pages and this one merges both segments.
+ *
+ * "Vehicles" is our category word, not a customer's — nobody says "I have a
+ * vehicle" — and on an indexed page that would be the wrong trade. Here it is
+ * fine precisely because the page is noindex: the slug chases no search term,
+ * it only has to avoid contradicting the ad that was just clicked.
+ *
+ * Both old paths 308 from next.config. PAGE_ALIASES in lib/posthog/query.ts
+ * folds the old path into the new one for every page filter, so the
+ * visitor-to-lead series carries across the rename rather than restarting on
+ * the day of it. There was little history to lose here, since no ad ever
+ * pointed at this page, but the mechanism is what makes the next rename free.
  */
 
 export const metadata: Metadata = {
@@ -55,7 +73,7 @@ export const metadata: Metadata = {
     title: "Starlink Installation for Cars, Motorhomes & Campervans | UK",
     description:
       "Starlink Mini fitted to your motorhome, campervan, car or van. Low-profile mount, 12 V power, fixed quote from two photos.",
-    url: "/starlink-installation-for-cars",
+    url: "/starlink-installation-for-vehicles",
   },
 };
 
