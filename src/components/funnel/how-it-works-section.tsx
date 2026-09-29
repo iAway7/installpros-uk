@@ -86,31 +86,69 @@ const STEPS: Step[] = [
 export function HowItWorksSection() {
   return (
     <section id="how-it-works" className="w-full scroll-mt-28 bg-background py-16 md:py-24">
+      {/* Vertical stepper, not a row of four.
+          A row made every step as tall as the wordiest one and put the
+          imbalance on show: step one ran to four lines when it started asking
+          for the interior photo while the others sat at two. Stacked, a long
+          step costs its own height and nothing else, so the copy can say what
+          it needs to instead of being trimmed to fit a column.
+          Heading and CTA take the left half, which also lifts the button off
+          the bottom of the section where it was easy to scroll past. */}
       <div className="container mx-auto">
-        <div className="mb-12 max-w-2xl">
-          <p className="eyebrow">How it works</p>
-          <h2 className="mt-4 h2-section text-foreground">Quoted from photos. Fitted in a day.</h2>
-        </div>
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[0.85fr_1fr] lg:gap-16">
+          <div className="lg:col-start-1 lg:row-start-1">
+            <p className="eyebrow">How it works</p>
+            <h2 className="mt-4 h2-section text-foreground">Quoted from photos. Fitted in a day.</h2>
+          </div>
 
-        <ol className="grid grid-cols-1 gap-x-8 gap-y-10 md:grid-cols-2 lg:grid-cols-4">
-          {STEPS.map((s, i) => (
-            <li key={s.title} className="border-t border-border pt-6">
-              <span className="stat-xl tabular-nums text-brand-icon" aria-hidden="true">
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <h3 className="mt-4 text-lead font-semibold text-foreground">{s.title}</h3>
-              <p className="mt-2 text-body-sm leading-[1.65] text-muted-foreground">{s.detail}</p>
-            </li>
-          ))}
-        </ol>
+          {/* Spans both left-hand rows so the steps run the full height beside
+              the heading and the button. */}
+          <ol className="lg:col-start-2 lg:row-start-1 lg:row-span-2">
+            {STEPS.map((s, i) => (
+              <li key={s.title} className="relative flex gap-5 pb-10 last:pb-0">
+                {/* Hairline from this circle to the next. Not rendered on the
+                    last step, or it would trail off into the gap below. */}
+                {i < STEPS.length - 1 && (
+                  <span
+                    aria-hidden="true"
+                    className="absolute bottom-0 left-7 top-14 w-px -translate-x-1/2 bg-border"
+                  />
+                )}
+                {/* Step one is filled because it is the one the reader has to
+                    do, and it is what the button beside it does. The rest are
+                    outlined: they happen to them, not by them. */}
+                <span
+                  aria-hidden="true"
+                  className={`relative z-10 flex h-14 w-14 shrink-0 items-center justify-center rounded-full text-body-sm font-semibold tabular-nums ${
+                    i === 0
+                      ? "bg-brand-icon text-white"
+                      : "border border-brand-icon bg-background text-brand-icon"
+                  }`}
+                >
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                {/* 14px puts the title's own centre line level with the middle
+                    of the 56px circle. */}
+                <div className="pt-[14px]">
+                  <h3 className="text-lead font-semibold text-foreground">{s.title}</h3>
+                  <p className="mt-2 text-body-sm leading-[1.65] text-muted-foreground">{s.detail}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
 
-        <div className="mt-12">
-          <Button asChild>
-            <a href={PHOTO_QUOTE_URL} target="_blank" rel="noopener noreferrer">
-              <WhatsAppIcon className="h-5 w-5 text-whatsapp" />
-              Send us your photos
-            </a>
-          </Button>
+          {/* Its own grid child rather than part of the heading block: on a
+              phone that keeps the source order heading, steps, button, which
+              is the order the old layout had. From lg it moves under the
+              heading. */}
+          <div className="lg:col-start-1 lg:row-start-2 lg:self-start">
+            <Button asChild>
+              <a href={PHOTO_QUOTE_URL} target="_blank" rel="noopener noreferrer">
+                <WhatsAppIcon className="h-5 w-5 text-whatsapp" />
+                Send us your photos
+              </a>
+            </Button>
+          </div>
         </div>
       </div>
     </section>
