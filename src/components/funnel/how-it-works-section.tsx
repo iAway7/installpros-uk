@@ -110,21 +110,13 @@ export function HowItWorksSection() {
                 /* Marker size lives here and nowhere else: the circle and the
                    connector both derive from it. */
                 style={{ ["--marker" as string]: "3.5rem" }}
-                /* Grid, so the marker and the title sit in one row and centre
-                   against each other. There is NO padding anywhere in here and
-                   there must not be: the title used to be pushed down by a
-                   hand-written pt-[14px], then by a calc of the same thing, and
-                   both were a value that has to be recomputed by hand whenever
-                   the marker or the type scale moves. `self-center` on two items
-                   in a shared row is the browser doing it, permanently.
-                   self-START, not self-center: the title's top sits on the
-                   marker's top. Centring it dropped the title 14px, which is
-                   what the padding used to do and what was being read as the
-                   padding still being there after it was removed.
-                   content-start because min-h would otherwise stretch the two
-                   rows to fill it, which pulled the detail 4px further from
-                   its title on the short steps than on the long ones. */
-                className="relative grid min-h-[8.5rem] grid-cols-[var(--marker)_1fr] content-start gap-x-5 pb-10 last:min-h-0 last:pb-0"
+                /* Flex row: marker, then a text block. The text block has NO
+                   padding, so the title's top is the li's top, which is the
+                   marker's top. A grid version put the detail in its own row and
+                   the marker's 56px row height left a 29px hole under every
+                   title; a padded version pushed the title down 14px to centre
+                   it. Both were read, correctly, as misaligned. */
+                className="relative flex min-h-[8.5rem] items-start gap-5 pb-10 last:min-h-0 last:pb-0"
               >
                 {/* Hairline from this marker to the next. Not rendered on the
                     last step, or it would trail off into the gap below. */}
@@ -139,7 +131,7 @@ export function HowItWorksSection() {
                     outlined: they happen to them, not by them. */}
                 <span
                   aria-hidden="true"
-                  className={`relative z-10 col-start-1 row-start-1 flex h-[var(--marker)] w-[var(--marker)] items-center justify-center self-start rounded-full text-body-sm font-semibold ${
+                  className={`relative z-10 flex h-[var(--marker)] w-[var(--marker)] shrink-0 items-center justify-center rounded-full text-body-sm font-semibold ${
                     i === 0
                       ? "bg-brand-icon text-white"
                       : "border border-brand-icon bg-background text-brand-icon"
@@ -163,12 +155,14 @@ export function HowItWorksSection() {
                       </span>
                     ))}
                 </span>
-                <h3 className="col-start-2 row-start-1 self-start text-lead font-semibold text-foreground">
-                  {s.title}
-                </h3>
-                <p className="col-start-2 row-start-2 text-body-sm leading-[1.65] text-muted-foreground">
-                  {s.detail}
-                </p>
+                {/* Title and detail share one block so the detail follows the
+                    title at a normal 8px, instead of waiting for the marker's
+                    row to end. No padding on the block: its top is the li's
+                    top, which is the marker's top. */}
+                <div>
+                  <h3 className="text-lead font-semibold text-foreground">{s.title}</h3>
+                  <p className="mt-2 text-body-sm leading-[1.65] text-muted-foreground">{s.detail}</p>
+                </div>
               </li>
             ))}
           </ol>
