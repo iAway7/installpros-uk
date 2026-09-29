@@ -66,7 +66,7 @@ const OPTIONS: Option[] = [
 
 export function PermanentOrRemovable() {
   return (
-    <div className="mt-16 md:mt-20">
+    <div className="mt-20 md:mt-28">
       <div className="max-w-2xl">
         <p className="eyebrow">Permanent or removable?</p>
         <h3 className="mt-3 h2-form text-foreground">Permanent, unless you have a reason not to.</h3>
