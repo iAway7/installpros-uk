@@ -16,11 +16,6 @@ export type Dot = {
   /** Marker position, as a percentage of the photograph. */
   x: number;
   y: number;
-  /** Where this callout's number, its hairline and its leader line all sit,
-   *  as a percentage of the photograph's height. Desktop only. Keep them in
-   *  the same order as `y` and at least 25 points apart: closer and the label
-   *  blocks touch, out of order and the leader lines cross. */
-  labelY: number;
   title: string;
   detail: string;
 };
@@ -37,7 +32,6 @@ export const DOTS: Dot[] = [
   {
     x: 41.7,
     y: 28.0,
-    labelY: 18,
     title: "It shares the roof",
     // Roof space is contested on a motorhome: solar, rooflight, aerial, vent.
     // The frame answers "will it even fit up there" without being asked.
@@ -48,14 +42,12 @@ export const DOTS: Dot[] = [
     // On the grey edge band, not on the white face above it: the whole point
     // of this callout is the slab you can see the thickness of.
     y: 55.5,
-    labelY: 45,
     title: "Low profile",
     detail: "A few centimetres proud of the roof, fixed in place. Nothing to fold away before you drive.",
   },
   {
     x: 46.1,
     y: 60.1,
-    labelY: 72,
     // Was "No drilling, no suction cups"; dropped for the same reason as the
     // matching card in vehicle-fit-section.tsx, and these two sit on one page.
     title: "No suction cups",

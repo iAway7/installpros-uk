@@ -24,17 +24,31 @@
  * the cable: it leaves the dish and runs to the roof trim, but the entry point
  * is out of shot.
  *
- * No JavaScript in the figure: every label is visible at once, desktop draws
- * the leader lines and the phone numbers the markers and repeats them as a
- * list underneath. A Motion version that zoomed the frame to each callout
- * briefly shipped here and was pulled; it survives, unused, as
- * finished-install-figure.tsx.
+ * ── NO LEADER LINES, AND THAT WAS A DECISION ────────────────────────────────
+ * The number does the binding. The same numbered marker sits on the photograph
+ * and beside its label, which is the ordinary convention for a keyed figure and
+ * needs no measuring to survive a re-crop or a narrow screen.
+ *
+ * Desktop used to draw a straight line from each label to its dot. It was
+ * pulled: three diagonals raking across the subject is noise over a photograph
+ * whose only job is evidence, and callouts 2 and 3 converged from 27 points
+ * apart to under 7 near the dish, which reads as a tangle even though they
+ * never actually cross. The real cost was structural, though. The lines forced
+ * every label to sit at its own point's height, so the column could not be
+ * spaced typographically and a re-crop meant re-tuning three more numbers.
+ * Without them the labels space evenly down the photograph and a re-crop moves
+ * only the markers. Do not put them back.
+ * ────────────────────────────────────────────────────────────────────────────
+ *
+ * No JavaScript in the figure: every label is visible at once, at every width.
+ * A Motion version that zoomed the frame to each callout briefly shipped here
+ * and was pulled; it survives, unused, as finished-install-figure.tsx.
  *
  * Coordinates are percentages of the photograph, so a re-crop that keeps the
  * subject keeps the callouts. Change the photo, change three pairs of numbers.
  *
  * ── PENDING, BEFORE THIS GOES ANYWHERE NEAR PAID TRAFFIC ────────────────────
- 1. CONFIRM WITH WILL WHAT THE FEET ARE. The photograph and its callouts live
+ * 1. CONFIRM WITH WILL WHAT THE FEET ARE. The photograph and its callouts live
  *    in finished-install-data.ts; the note is on DOTS[2] there.
  * 2. The photograph carries phone portrait-mode blur, which softens the
  *    workshop full of motorhomes behind it — the part that quietly says this
@@ -59,9 +73,8 @@ export function FinishedInstallSection() {
         </div>
 
         {/* One <figure> as the grid, so the caption stays a figcaption and the
-            first row is exactly as tall as the photograph. `labelY` is a
-            percentage of that row, and the labels only line up with their
-            leader lines while nothing else shares it. */}
+            first row is exactly as tall as the photograph. The label column
+            stretches to that row and spreads its three entries down it. */}
         <figure className="m-0 lg:grid lg:grid-cols-[34%_66%] lg:grid-rows-[auto_auto]">
           <div className="relative aspect-[16/9] overflow-hidden rounded-lg border border-border bg-border lg:col-start-2 lg:row-start-1">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -75,44 +88,16 @@ export function FinishedInstallSection() {
               className="h-full w-full object-cover"
             />
 
-            {/* One straight line per callout, from the photo edge at the
-                label's own height to its dot. The previous version ran a
-                horizontal segment and then turned, which put a kink in the
-                middle of the picture and made two of the three cross near the
-                dish. Straight lines cannot cross here because the labels are
-                in the same vertical order as the points they name.
-
-                The viewBox is the photograph's own 16:9, so a percentage maps
-                to x*16 / y*9 and the markers land on the same point. Two
-                strokes: a dark one to survive the white roof, a white one to
-                survive the shadows. */}
-            <svg
-              aria-hidden="true"
-              viewBox="0 0 1600 900"
-              preserveAspectRatio="none"
-              className="absolute inset-0 hidden h-full w-full lg:block"
-            >
-              {DOTS.map((d) => {
-                const line = `0,${d.labelY * 9} ${d.x * 16},${d.y * 9}`;
-                return (
-                  <g key={d.title}>
-                    <polyline points={line} fill="none" stroke="rgba(20,17,15,.35)" strokeWidth={3} vectorEffect="non-scaling-stroke" />
-                    <polyline points={line} fill="none" stroke="rgba(255,255,255,.92)" strokeWidth={1.25} vectorEffect="non-scaling-stroke" />
-                  </g>
-                );
-              })}
-            </svg>
-
-            {/* Numbered at every width now. The number does the binding between
-                a label and its point, which leaves the line free to be quiet
-                instead of load-bearing. Markers in HTML, not SVG, so the digit
-                is real text at a real size. Neutral, never brand red. */}
+            {/* The marker is the whole binding now, so it keeps one size at
+                every width instead of shrinking politely on desktop. In HTML
+                rather than SVG, so the digit is real text at a real size.
+                Neutral, never brand red: the red is the primary action's. */}
             {DOTS.map((d, i) => (
               <span
                 key={d.title}
                 aria-hidden="true"
                 style={{ left: `${d.x}%`, top: `${d.y}%` }}
-                className="absolute flex h-7 w-7 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-[rgba(20,17,15,.35)] bg-white text-[13px] font-semibold tabular-nums text-foreground shadow-[0_1px_4px_rgba(20,17,15,.3)] lg:h-6 lg:w-6 lg:text-[12px]"
+                className="absolute flex h-7 w-7 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-[rgba(20,17,15,.35)] bg-white text-[13px] font-semibold tabular-nums text-foreground shadow-[0_1px_4px_rgba(20,17,15,.3)]"
               >
                 {i + 1}
               </span>
@@ -123,17 +108,16 @@ export function FinishedInstallSection() {
             {PHOTO.caption}
           </figcaption>
 
-          <ol className="relative mt-8 space-y-8 lg:col-start-1 lg:row-start-1 lg:mt-0 lg:space-y-0">
+          {/* Centred as a group against the photograph, with one even gap.
+              justify-between was tried first and pushed the three entries to
+              the extremes of a 446px column, roughly 95px apart, which read as
+              three unrelated blocks instead of one key. */}
+          <ol className="mt-8 space-y-8 lg:col-start-1 lg:row-start-1 lg:mt-0 lg:flex lg:h-full lg:flex-col lg:justify-center lg:gap-8 lg:space-y-0">
             {DOTS.map((d, i) => (
-              <li
-                key={d.title}
-                style={{ ["--y" as string]: `${d.labelY}%` }}
-                /* -14px, half the 28px number, so it is the NUMBER that sits on
-                   `labelY` and not the top of the block. That is what puts the
-                   hairline, the number and the leader line on one axis. */
-                className="lg:absolute lg:left-0 lg:top-[var(--y)] lg:w-full lg:-translate-y-[14px]"
-              >
+              <li key={d.title} className="lg:pr-8">
                 <div className="flex items-center gap-3">
+                  {/* Same size and weight as the marker on the photograph, so
+                      the two read as one object in two places. */}
                   <span
                     aria-hidden="true"
                     className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-border bg-background text-[13px] font-semibold tabular-nums text-foreground"
@@ -141,13 +125,8 @@ export function FinishedInstallSection() {
                     {i + 1}
                   </span>
                   <h3 className="text-lead font-semibold text-foreground">{d.title}</h3>
-                  {/* Leaves the title and runs to the photo edge, where the
-                      line picks it up. Only as long as the space left over, so
-                      it reads as a leader rather than a divider between two
-                      labels, which is how the old full-width rule read. */}
-                  <span aria-hidden="true" className="hidden h-px flex-1 bg-foreground/15 lg:block" />
                 </div>
-                <p className="mt-2 pl-10 text-body-sm leading-[1.65] text-muted-foreground lg:pr-6">
+                <p className="mt-2 pl-10 text-body-sm leading-[1.65] text-muted-foreground">
                   {d.detail}
                 </p>
               </li>
