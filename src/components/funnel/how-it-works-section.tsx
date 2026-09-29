@@ -105,7 +105,16 @@ export function HowItWorksSection() {
               the heading and the button. */}
           <ol className="lg:col-start-2 lg:row-start-1 lg:row-span-2">
             {STEPS.map((s, i) => (
-              <li key={s.title} className="relative flex gap-5 pb-10 last:pb-0">
+              <li
+                key={s.title}
+                /* min-h, not just padding. Spacing came from the content, so a
+                   step whose detail ran to two lines pushed its marker 135px
+                   from the one above while the one-line steps sat 112 apart,
+                   and a column of markers at irregular intervals reads as a
+                   mistake. The minimum sets the rhythm; a step longer than it
+                   still pushes, which is the point of stacking them. */
+                className="relative flex min-h-[8.5rem] gap-5 pb-10 last:min-h-0 last:pb-0"
+              >
                 {/* Hairline from this circle to the next. Not rendered on the
                     last step, or it would trail off into the gap below. */}
                 {i < STEPS.length - 1 && (
