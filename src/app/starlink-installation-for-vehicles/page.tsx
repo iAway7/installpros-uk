@@ -10,7 +10,7 @@ import { InstallVideoSection } from "@/components/funnel/install-video-section";
 import { VehicleFitSection } from "@/components/funnel/vehicle-fit-section";
 import { HowItWorksSection } from "@/components/funnel/how-it-works-section";
 import { RoadPlansSection } from "@/components/funnel/road-plans-section";
-import { CoverageMapSection } from "@/components/funnel/coverage-map-section";
+import { VehicleCoverageMapSection } from "@/components/funnel/vehicle-coverage-map-section";
 import { TrackRecordSection } from "@/components/funnel/track-record-section";
 import { FaqSectionAlt } from "@/components/funnel/faq-section-alt";
 import { VEHICLE_FAQS } from "@/lib/funnel/faqs";
@@ -230,7 +230,7 @@ export default function StarlinkInstallationForCarsPage() {
           {/* Seven days is what the existing cars page on installpros.co.uk
               already promises ("Installed within 7 days"). Keep the two in
               step. */}
-          <CoverageMapSection leadTime="7 days" />
+          <VehicleCoverageMapSection leadTime="7 days" />
           <TrackRecordSection />
           <FaqSectionAlt faqs={VEHICLE_FAQS} />
           <CtaSection addressMode defaultService="mobile_rv" skipServiceStep formName="starlink_vehicle" />
