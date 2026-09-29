@@ -113,6 +113,10 @@ export function HowItWorksSection() {
                    and a column of markers at irregular intervals reads as a
                    mistake. The minimum sets the rhythm; a step longer than it
                    still pushes, which is the point of stacking them. */
+                /* Marker size lives here and nowhere else. The circle, the
+                   connector's x and the title's optical offset are all derived
+                   from it, so changing it moves the three together. */
+                style={{ ["--marker" as string]: "3.5rem" }}
                 className="relative flex min-h-[8.5rem] gap-5 pb-10 last:min-h-0 last:pb-0"
               >
                 {/* Hairline from this circle to the next. Not rendered on the
@@ -120,7 +124,7 @@ export function HowItWorksSection() {
                 {i < STEPS.length - 1 && (
                   <span
                     aria-hidden="true"
-                    className="absolute bottom-0 left-7 top-14 w-px -translate-x-1/2 bg-border"
+                    className="absolute bottom-0 left-[calc(var(--marker)/2)] top-[var(--marker)] w-px -translate-x-1/2 bg-border"
                   />
                 )}
                 {/* Step one is filled because it is the one the reader has to
@@ -128,7 +132,7 @@ export function HowItWorksSection() {
                     outlined: they happen to them, not by them. */}
                 <span
                   aria-hidden="true"
-                  className={`relative z-10 flex h-14 w-14 shrink-0 items-center justify-center rounded-full text-body-sm font-semibold ${
+                  className={`relative z-10 flex h-[var(--marker)] w-[var(--marker)] shrink-0 items-center justify-center rounded-full text-body-sm font-semibold ${
                     i === 0
                       ? "bg-brand-icon text-white"
                       : "border border-brand-icon bg-background text-brand-icon"
@@ -157,10 +161,22 @@ export function HowItWorksSection() {
                       </span>
                     ))}
                 </span>
-                {/* 14px puts the title's own centre line level with the middle
-                    of the 56px circle. */}
-                <div className="pt-[14px]">
-                  <h3 className="text-lead font-semibold text-foreground">{s.title}</h3>
+                <div>
+                  {/* Optical centring, computed rather than guessed. It was a
+                      hand-written pt-[14px]: (56 - 27) / 2 for today's marker
+                      and today's line height, and silently wrong the moment
+                      either changes.
+
+                      The padding sits on the H3 and not on this wrapper for a
+                      reason worth keeping. `1lh` resolves against the element's
+                      OWN computed line height, and the wrapper inherits the
+                      body's 24px while the title sets 27px, so on the wrapper
+                      the same calc returned 16px and dropped the title 1.5px
+                      below the marker's centre. On the h3 it returns 14.5px,
+                      which is the number the hand-written one was approximating. */}
+                  <h3 className="pt-[calc((var(--marker)_-_1lh)/2)] text-lead font-semibold text-foreground">
+                    {s.title}
+                  </h3>
                   <p className="mt-2 text-body-sm leading-[1.65] text-muted-foreground">{s.detail}</p>
                 </div>
               </li>
