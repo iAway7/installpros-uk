@@ -117,6 +117,10 @@ export function HowItWorksSection() {
                    both were a value that has to be recomputed by hand whenever
                    the marker or the type scale moves. `self-center` on two items
                    in a shared row is the browser doing it, permanently.
+                   self-START, not self-center: the title's top sits on the
+                   marker's top. Centring it dropped the title 14px, which is
+                   what the padding used to do and what was being read as the
+                   padding still being there after it was removed.
                    content-start because min-h would otherwise stretch the two
                    rows to fill it, which pulled the detail 4px further from
                    its title on the short steps than on the long ones. */
@@ -135,7 +139,7 @@ export function HowItWorksSection() {
                     outlined: they happen to them, not by them. */}
                 <span
                   aria-hidden="true"
-                  className={`relative z-10 col-start-1 row-start-1 flex h-[var(--marker)] w-[var(--marker)] items-center justify-center self-center rounded-full text-body-sm font-semibold ${
+                  className={`relative z-10 col-start-1 row-start-1 flex h-[var(--marker)] w-[var(--marker)] items-center justify-center self-start rounded-full text-body-sm font-semibold ${
                     i === 0
                       ? "bg-brand-icon text-white"
                       : "border border-brand-icon bg-background text-brand-icon"
@@ -159,7 +163,7 @@ export function HowItWorksSection() {
                       </span>
                     ))}
                 </span>
-                <h3 className="col-start-2 row-start-1 self-center text-lead font-semibold text-foreground">
+                <h3 className="col-start-2 row-start-1 self-start text-lead font-semibold text-foreground">
                   {s.title}
                 </h3>
                 <p className="col-start-2 row-start-2 text-body-sm leading-[1.65] text-muted-foreground">
