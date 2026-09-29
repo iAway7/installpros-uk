@@ -128,13 +128,34 @@ export function HowItWorksSection() {
                     outlined: they happen to them, not by them. */}
                 <span
                   aria-hidden="true"
-                  className={`relative z-10 flex h-14 w-14 shrink-0 items-center justify-center rounded-full text-body-sm font-semibold tabular-nums ${
+                  className={`relative z-10 flex h-14 w-14 shrink-0 items-center justify-center rounded-full text-body-sm font-semibold ${
                     i === 0
                       ? "bg-brand-icon text-white"
                       : "border border-brand-icon bg-background text-brand-icon"
                   }`}
                 >
-                  {String(i + 1).padStart(2, "0")}
+                  {/* One fixed-width cell per digit, because BE VIETNAM PRO HAS
+                      NO TABULAR FIGURES. `tabular-nums` was on this span and did
+                      nothing: measured, font-variant-numeric and
+                      font-feature-settings:"tnum" both give byte-identical
+                      widths to no setting at all. Its digits are proportional,
+                      and "1" is 5.81px against "4" at 10.03px, so "01" came out
+                      15.5px wide against 19.72px for "04". Centred, that put
+                      each leading zero at a different x and the column of
+                      numbers read as crooked.
+
+                      0.72em is the widest digit. Every cell is that wide and
+                      centres its own glyph, so the digits stack whatever the
+                      number. Do not put `tabular-nums` back unless the typeface
+                      changes to one that has them. */}
+                  {String(i + 1)
+                    .padStart(2, "0")
+                    .split("")
+                    .map((d, j) => (
+                      <span key={j} className="w-[0.72em] text-center">
+                        {d}
+                      </span>
+                    ))}
                 </span>
                 {/* 14px puts the title's own centre line level with the middle
                     of the 56px circle. */}
