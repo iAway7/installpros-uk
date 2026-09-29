@@ -8,26 +8,14 @@
  * autoplay anywhere. A gallery that moves on its own while someone is reading
  * a caption is the hero-carousel mistake in a smaller frame.
  *
- * ── THE SLIDES ARE MOSTLY EMPTY ON PURPOSE ──────────────────────────────────
- * The first two are real photographs and lead the rail for that reason. The
- * rest are marked "Photo pending" and
- * carry the shot they are waiting for, because this section's whole job is
- * proof: a stock photo of someone else's roof in a rail titled "others we have
- * fitted" is the exact lie it exists to kill, and it is the kind of thing that
- * survives a launch by accident.
- *
- * So the placeholders double as the brief. The four are the segment the corpus
- * actually shows (32 vehicles in four weeks: motorhomes first, then campers and
- * vans, four cars and a taxi) crossed with what Will has said the team has
- * already done, "a number of Klassen Mercedes Benz and Private hire vehicles".
- *
- * PENDING CARDS DO NOT SHIP. Before this page goes live, every slide still
- * carrying `pending` comes out, down to a minimum of three. A dashed hole in a
- * rail titled "Others we have fitted" reads as having fitted nothing, which is
- * worse than a shorter rail.
- *
- * When a real photograph arrives, drop it in `src`/`srcSet`, write a real
- * `alt`, and delete the `pending` line. Nothing else changes.
+ * ── EVERY SLIDE IS A REAL INSTALL, AND THAT IS THE RULE ─────────────────────
+ * It launched with two photographs and four dashed holes carrying the shot
+ * they were waiting for. Will sent the other two on 28 September and the holes
+ * came out the same day. They do not come back: a rail titled "Others we have
+ * fitted" with a placeholder in it says we have fitted nothing, and a stock
+ * photograph of somebody else's roof is the exact lie this section exists to
+ * kill. There is no `pending` field any more, so the rule is structural rather
+ * than something to remember. Shots still wanted are briefed above SHOTS.
  * ────────────────────────────────────────────────────────────────────────────
  *
  * ── WRITING A CAPTION ───────────────────────────────────────────────────────
@@ -54,10 +42,9 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 const GAP = 14; // px, matches gap-3.5
 
 type Shot = {
-  /** Present once there is a real photograph. */
-  src?: string;
-  srcSet?: string;
-  alt?: string;
+  src: string;
+  srcSet: string;
+  alt: string;
   vehicle: string;
   /** The mount, and nothing else. Three values, no free text: the page states
    *  elsewhere that we do not fit suction mounts, so a badge reading "Suction"
@@ -67,8 +54,6 @@ type Shot = {
    *  only; a slide that is not one, such as the router, leaves it off. */
   fixing?: "Magnets" | "Clamp" | "Bonded plate";
   detail: string;
-  /** The shot we are waiting on. Present means the card renders as a hole. */
-  pending?: string;
   /** For a slide that HAS its photograph but is missing a fact. It renders
    *  nothing; it is here so the question travels with the slide instead of
    *  living in somebody's head. Clear it when the answer lands. */
@@ -76,11 +61,24 @@ type Shot = {
 };
 
 /* THE NUMBER THAT IS MISSING. Twelve of the 48 enquiries ask about height and
-   roof clearance and not one caption below answers it, because nobody has
-   measured the added height on a fitted vehicle. Do not estimate it from a
-   photograph. Once it is measured, it goes into captions 1 and 4 as a plain
-   clause, "Adds N cm above the roof line", and it is the single highest value
-   thing missing from this rail. */
+   roof clearance and no caption below answers it, because nobody has measured
+   the added height on a fitted vehicle. Do not estimate it from a photograph.
+   Once it is measured it goes into the profile captions as a plain clause,
+   "Adds N cm above the roof line", and it is the single highest value thing
+   missing from this rail.
+
+   STILL WANTED FROM WILL, in rough order of what they would unlock. These used
+   to sit in the rail as "Photo pending" cards and came out when the fourth real
+   photograph landed: a rail titled "Others we have fitted" with holes in it
+   says we have fitted nothing, so the briefs live here instead.
+     - The router where it ends up, with the cable run visible. Nothing on this
+       page shows the inside of a vehicle.
+     - A pop-top campervan, top down, showing the clamp on the seam. It is the
+       one mount type with no photograph and the only one that has to survive a
+       roof that lifts.
+     - Any roof with the mount OPEN, before the enclosure goes on. Every
+       photograph we have hides the fixing, which is why only the motorhome
+       carries a fixing badge. */
 const SHOTS: Shot[] = [
   {
     src: "/funnel/install-motorhome-roof.webp",
@@ -93,49 +91,44 @@ const SHOTS: Shot[] = [
       "Bonded to the GRP roof between the solar panel and the rooflight. Nothing drilled, nothing overhanging the edge.",
   },
   {
+    src: "/funnel/install-street.webp",
+    srcSet:
+      "/funnel/install-street-960.webp 960w, /funnel/install-street-1280.webp 1280w, /funnel/install-street.webp 1600w",
+    alt: "A low-profile Starlink Mini enclosure on the factory roof rails of a dark vehicle, parked at a house",
+    // Cropped from the bottom of the frame rather than the middle: the original
+    // has the customer's street sign legible in the top left corner.
+    vehicle: "Fitted at the address",
+    detail: "On the factory roof rails, black on black, at a house rather than a workshop.",
+    confirm: "Which vehicle is this one, and what is under the enclosure?",
+  },
+  {
+    src: "/funnel/install-cable-entry.webp",
+    srcSet:
+      "/funnel/install-cable-entry-960.webp 960w, /funnel/install-cable-entry-1280.webp 1280w, /funnel/install-cable-entry.webp 1600w",
+    alt: "The cable leaving a Starlink enclosure, clipped flat across the roof and into a sealed gland screwed to the panel",
+    // The one the rail was missing. VehicleFitSection promises "Hidden cable,
+    // no leaks" and the annotated photograph above cannot show it: the cable
+    // leaves the dish and disappears behind the trim. This frame is the entry
+    // itself, gland and all, and it pairs with the FAQ line about a hole being
+    // the right answer sometimes and being sealed when it is.
+    vehicle: "Where the cable goes in",
+    detail: "Through a sealed gland, with the cable clipped flat to the roof.",
+    confirm: "Which vehicle is this, and is this the standard gland on a metal roof?",
+  },
+  {
     src: "/funnel/install-roof-profile.webp",
     srcSet:
       "/funnel/install-roof-profile-960.webp 960w, /funnel/install-roof-profile-1280.webp 1280w, /funnel/install-roof-profile.webp 1920w",
     alt: "A low-profile Starlink Mini enclosure fitted flat to a dark vehicle roof, beside the roof bars and a roof box, outside the workshop",
     // No `fixing` badge: the enclosure is closed in this frame, so no magnet,
-    // clamp or plate is visible and a badge would be asserting something the
-    // photograph does not show.
+    // clamp or plate is visible and a badge would assert what the photograph
+    // does not show. Same for the two above.
     vehicle: "Fitted between the rails",
-    // Shot side on, which no other photograph we have is. 12 of the 48 vehicle
-    // enquiries ask how much height it adds and this is the frame that can
-    // answer it: the roof bar beside it gives the scale. The number goes in
-    // this caption the day it is measured.
+    // Shot side on. 12 of the 48 vehicle enquiries ask how much height it adds
+    // and this is the frame that can answer it: the roof bar gives the scale.
     detail: "Sits this proud of the roof, alongside the bars and the box that were already there.",
     confirm:
       "Which vehicle is it, what is holding it on under the enclosure, and how many centimetres does it stand above the roof line?",
-  },
-  {
-    vehicle: "Mercedes V-Class",
-    fixing: "Magnets",
-    detail:
-      "Black mount on black paint, magnets on the steel roof. Cable in through the boot seal, no hole anywhere.",
-    pending:
-      "Roof three-quarter from a step, mount and dish both in frame. Measure the height above the roof line.",
-  },
-  {
-    vehicle: "Pop-top campervan",
-    fixing: "Clamp",
-    detail:
-      "Clamped to the seam so the roof still lifts. No rails needed, nothing to move before you pitch.",
-    pending: "Roof with the top down, showing the clamp on the seam.",
-  },
-  {
-    vehicle: "Panel van",
-    fixing: "Magnets",
-    detail:
-      "Magnets on the steel roof, fused feed off the leisure battery. Works with the engine off.",
-    pending:
-      "Roof from above, plus a detail of the magnetic base. Measure the height above the roof line.",
-  },
-  {
-    vehicle: "Inside",
-    detail: "Router out of the way on a fused feed, cable run hidden the whole way.",
-    pending: "The router where it ends up, with the cable run visible.",
   },
 ];
 
@@ -180,25 +173,16 @@ export function InstallGallery() {
               className="m-0 shrink-0 basis-[90%] snap-start sm:basis-[66%] lg:basis-[40%]"
             >
               <div className="relative aspect-[16/9] overflow-hidden rounded-lg bg-secondary">
-                {s.src ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={s.src}
-                    srcSet={s.srcSet}
-                    sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 86vw"
-                    alt={s.alt ?? ""}
-                    loading="lazy"
-                    decoding="async"
-                    className="h-full w-full object-cover"
-                  />
-                ) : (
-                  <div className="flex h-full w-full flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-muted-foreground/40 px-6 text-center">
-                    <span className="text-caption font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                      Photo pending
-                    </span>
-                    <span className="text-body-sm leading-[1.5] text-muted-foreground">{s.pending}</span>
-                  </div>
-                )}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={s.src}
+                  srcSet={s.srcSet}
+                  sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 86vw"
+                  alt={s.alt}
+                  loading="lazy"
+                  decoding="async"
+                  className="h-full w-full object-cover"
+                />
               </div>
               <figcaption className="mt-3">
                 {/* Beside the vehicle name, not over the photograph. These
