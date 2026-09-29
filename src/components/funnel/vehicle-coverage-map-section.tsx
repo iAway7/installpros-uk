@@ -44,7 +44,27 @@ import { UkCoverageMap } from "./uk-coverage-map";
  */
 
 const STATS = [
-  { value: "4", label: "Nations covered" },
+  // Replaces "4 Nations covered", which said the same thing as the 225+ below
+  // it: both were breadth. This is capacity, which is new information and the
+  // thing a vehicle owner actually wants to know, because it decides whether
+  // there is anywhere near them to take the van.
+  //
+  // 36 is Will's own figure, read off the InstallPros Partner Network map he
+  // sent on 2026-09-29 ("36 shown / 36 total"), the same message where he
+  // wrote "This is currently where we have approved workshops".
+  //
+  // THE LABEL SAYS PARTNERS, NOT WORKSHOPS, ON PURPOSE. His app types each one
+  // Fixed, Mobile, or Fixed & Mobile, and a mobile fitter is not a workshop.
+  // Calling all 36 workshops would overclaim for a subset of unknown size.
+  // "Partner" is the word his own map uses and it is true of all 36. Once he
+  // gives the split, this can sharpen: either "N approved workshops" on the
+  // Fixed count, or two stats, which would also back the "bring it to us, or
+  // we come to you" line in vehicle-fit-section with a number.
+  //
+  // It is an exact count rather than "30+" because 36 is precise today and
+  // precision reads as true. It will drift. Re-check it against the map before
+  // any campaign, and drop to "30+" if keeping it current becomes a chore.
+  { value: "36", label: "Approved partners" },
   // 225 is the count of Will's major-towns list (27 Aug 2026). That list is a
   // COVERAGE list, not our install record, which is why the label says covered
   // and not served: we can stand behind travelling to all of them, we cannot
