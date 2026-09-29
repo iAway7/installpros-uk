@@ -10,7 +10,7 @@ import { Button } from "@/components/system/button";
  */
 const PHOTO_QUOTE_URL =
   "https://wa.me/447446112343?text=" +
-  encodeURIComponent("Hi, I'd like a quote for Starlink on my vehicle. Photo of the roof to follow.");
+  encodeURIComponent("Hi, I'd like a quote for Starlink on my vehicle. Photos of the roof and inside to follow.");
 
 type Step = { title: string; detail: string };
 
@@ -27,10 +27,22 @@ type Step = { title: string; detail: string };
  */
 const STEPS: Step[] = [
   {
-    title: "Send a photo of the roof",
-    // What the engineers ask for first in every vehicle conversation. Rails,
-    // seams and skylights decide the mount, so one photo answers most of it.
-    detail: "From a step or from above, with the make and model.",
+    title: "Send photos of the roof and inside",
+    // Rails, seams and skylights decide the mount, so the roof shot answers
+    // most of it. The inside was added on Will's ask (2026-09-29): "We need a
+    // photo of the roof and the interior of the vehicle too. If it's a camper
+    // van, a photo of the electrics/batteries etc is a huge bonus." The cable
+    // run and where the router lands are quoted off that, and a campervan's
+    // 12 V setup decides the power side.
+    //
+    // KNOWN TENSION, LEFT IN DELIBERATELY: this step is already where the
+    // segment stalls. Fifteen of the thirty-six vehicle conversations were
+    // open waiting on a photo, and this asks for more of them. Will needs
+    // them to quote without a second round trip, and a quote that has to be
+    // revised later costs more than a slower first message. If the step keeps
+    // losing people, shrink what is REQUIRED here rather than dropping the
+    // ask: roof and inside, with the campervan electrics as the bonus it is.
+    detail: "The roof from a step or above, and the inside, with the make and model. On a campervan, the electrics and batteries as well.",
   },
   {
     title: "Get a fixed quote back",
@@ -71,7 +83,7 @@ export function HowItWorksSection() {
       <div className="container mx-auto">
         <div className="mb-12 max-w-2xl">
           <p className="eyebrow">How it works</p>
-          <h2 className="mt-4 h2-section text-foreground">Quoted from a photo. Fitted in a day.</h2>
+          <h2 className="mt-4 h2-section text-foreground">Quoted from photos. Fitted in a day.</h2>
         </div>
 
         <ol className="grid grid-cols-1 gap-x-8 gap-y-10 md:grid-cols-2 lg:grid-cols-4">
@@ -90,7 +102,7 @@ export function HowItWorksSection() {
           <Button asChild>
             <a href={PHOTO_QUOTE_URL} target="_blank" rel="noopener noreferrer">
               <WhatsAppIcon className="h-5 w-5 text-whatsapp" />
-              Send us a photo of the roof
+              Send us your photos
             </a>
           </Button>
         </div>
