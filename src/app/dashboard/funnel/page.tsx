@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Filter, AlertTriangle, ExternalLink } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/system/card";
 import { TrendChart } from "@/components/dashboard/trend-chart";
+import { SelectFilter } from "@/components/dashboard/filters";
 import {
   fetchDailyRates,
   fetchFormQuestionFunnel,
@@ -203,49 +204,36 @@ function Shell({
         <p className="text-muted-foreground">Where visitors drop off on the way to becoming leads.</p>
       </div>
 
-      <form method="get" className="flex flex-wrap items-center gap-2">
-        <FilterSelect name="days" value={String(days)} options={DAY_OPTIONS.map((d): [string, string] => [String(d), d === 0 ? "Today" : `Last ${d} days`])} />
-        <FilterSelect
+      <div className="flex flex-wrap items-end gap-3">
+        <SelectFilter name="days" label="Period" value={String(days)} options={DAY_OPTIONS.map((d): [string, string] => [String(d), d === 0 ? "Today" : `Last ${d} days`])} />
+        <SelectFilter
           name="device"
+          label="Device"
           value={device ?? ""}
           options={[["", "All devices"], ...DEVICES.map((d): [string, string] => [d, d[0].toUpperCase() + d.slice(1)])]}
         />
-        <FilterSelect
+        <SelectFilter
           name="source"
+          label="Traffic source"
           value={source ?? ""}
           options={[["", "All sources"], ...sources.map((s): [string, string] => [s, s])]}
         />
-        <FilterSelect
+        <SelectFilter
           name="page"
+          label="Landing page"
           value={page ?? ""}
           options={[["", "All landing pages"], ...FUNNEL_PAGES.map((p): [string, string] => [p, p])]}
         />
-        <button type="submit" className="rounded-md bg-primary px-4 py-2 text-body-sm font-semibold text-primary-foreground">
-          Apply
-        </button>
         {(device || source || page) && (
-          <Link href="/dashboard/funnel" className="text-body-sm text-muted-foreground hover:text-foreground hover:underline">
+          <Link href="/dashboard/funnel" className="pb-2 text-body-sm text-muted-foreground hover:text-foreground hover:underline">
             Clear
           </Link>
         )}
-      </form>
+      </div>
 
       {children}
     </div>
   );
 }
 
-function FilterSelect({ name, value, options }: { name: string; value: string; options: [string, string][] }) {
-  return (
-    <select
-      name={name}
-      defaultValue={value}
-      className="h-9 rounded-md border border-border bg-background px-3 text-body-sm"
-    >
-      {options.map(([v, label]) => (
-        <option key={v} value={v}>{label}</option>
-      ))}
-    </select>
-  );
-}
 

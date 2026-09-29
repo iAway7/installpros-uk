@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Filter } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/system/card";
+import { DateFilter, SelectFilter } from "@/components/dashboard/filters";
 import { createClient } from "@/lib/supabase/server";
 import { realLeads } from "@/lib/dashboard/leads";
 import { fetchSources, fetchTargetCounts, isOrganicSource, posthogConfigured, FUNNEL_PAGES, ORGANIC_SOURCE } from "@/lib/posthog/query";
@@ -37,12 +38,15 @@ function matchesSource(lead: { traffic_source: string | null }, source: string):
 
 interface SearchParams {
   since?: string;
+  until?: string;
   page?: string;
   source?: string;
 }
 
 interface Filters {
   since: string;
+  /** Inclusive end of the range. Empty means "up to now". */
+  until: string;
   page: string;
   source: string;
 }
@@ -51,11 +55,24 @@ function stripSlash(p: string | null | undefined): string {
   return (p ?? "").replace(/\/+$/, "") || "/";
 }
 
+const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
+
+/** `until` is inclusive, but created_at is a timestamp, so the Supabase
+ *  filter needs the day after it as an exclusive bound. */
+function dayAfter(date: string): string {
+  const d = new Date(`${date}T00:00:00Z`);
+  d.setUTCDate(d.getUTCDate() + 1);
+  return d.toISOString().slice(0, 10);
+}
+
 export default async function TargetsPage({ searchParams }: { searchParams: SearchParams }) {
-  const since = /^\d{4}-\d{2}-\d{2}$/.test(searchParams.since ?? "") ? (searchParams.since as string) : LAUNCH_DATE;
+  const since = ISO_DATE.test(searchParams.since ?? "") ? (searchParams.since as string) : LAUNCH_DATE;
+  const untilParam = ISO_DATE.test(searchParams.until ?? "") ? (searchParams.until as string) : "";
+  // An end before the start would silently report zeroes; treat it as open-ended.
+  const until = untilParam && untilParam < since ? "" : untilParam;
   const page = (FUNNEL_PAGES as readonly string[]).includes(searchParams.page ?? "") ? (searchParams.page as string) : DEFAULT_PAGE;
   const source = searchParams.source?.slice(0, 60) || DEFAULT_SOURCE;
-  const filters: Filters = { since, page, source };
+  const filters: Filters = { since, until, page, source };
 
   if (!posthogConfigured()) {
     return (
@@ -79,13 +96,15 @@ export default async function TargetsPage({ searchParams }: { searchParams: Sear
   // purpose. PostHog loses roughly a tenth of people to blockers, the DB
   // has every submission.
   const supabase = createClient();
+  let leadsQuery = supabase
+    .from("leads")
+    .select("id, created_at, device_type, landing_page, traffic_source, is_test")
+    .gte("created_at", since);
+  if (until) leadsQuery = leadsQuery.lt("created_at", dayAfter(until));
   const [counts, sources, leadsResult] = await Promise.all([
-    fetchTargetCounts({ since, page, source }),
+    fetchTargetCounts({ since, until, page, source }),
     fetchSources(365),
-    supabase
-      .from("leads")
-      .select("id, created_at, device_type, landing_page, traffic_source, is_test")
-      .gte("created_at", since),
+    leadsQuery,
   ]);
   const options = sourceOptions(sources, source);
 
@@ -120,7 +139,8 @@ export default async function TargetsPage({ searchParams }: { searchParams: Sear
       <p className="text-body-sm text-muted-foreground">
         <span className="font-semibold text-foreground tabular-nums">{report.visitors.toLocaleString("en-GB")}</span> visitors ·{" "}
         <span className="font-semibold text-foreground tabular-nums">{report.starts.toLocaleString("en-GB")}</span> form starts ·{" "}
-        <span className="font-semibold text-foreground tabular-nums">{report.leads.toLocaleString("en-GB")}</span> leads since {since}.
+        <span className="font-semibold text-foreground tabular-nums">{report.leads.toLocaleString("en-GB")}</span>{" "}
+        leads {until ? `from ${since} to ${until}` : `since ${since}`}.
         Visitors and form starts are unique people in PostHog on {page} from {sourceLabel(source)}; leads are real submissions in the database for the same landing and source.
       </p>
 
@@ -226,8 +246,8 @@ function StatusBadge({ status }: { status: TargetStatus }) {
 }
 
 function Shell({ filters, sources, children }: { filters: Filters; sources: [string, string][]; children: React.ReactNode }) {
-  const { since, page, source } = filters;
-  const isDefault = since === LAUNCH_DATE && page === DEFAULT_PAGE && source === DEFAULT_SOURCE;
+  const { since, until, page, source } = filters;
+  const isDefault = since === LAUNCH_DATE && !until && page === DEFAULT_PAGE && source === DEFAULT_SOURCE;
   return (
     <div className="mx-auto max-w-6xl space-y-6">
       <div>
@@ -237,46 +257,20 @@ function Shell({ filters, sources, children }: { filters: Filters; sources: [str
         </p>
       </div>
 
-      <form method="get" className="flex flex-wrap items-end gap-3">
-        <label className="flex flex-col gap-1 text-label text-muted-foreground">
-          Since
-          <input
-            type="date"
-            name="since"
-            defaultValue={since}
-            min={LAUNCH_DATE}
-            className="h-9 rounded-md border border-border bg-background px-3 text-body-sm text-foreground"
-          />
-        </label>
-        <label className="flex flex-col gap-1 text-label text-muted-foreground">
-          Landing page
-          <FilterSelect name="page" value={page} options={FUNNEL_PAGES.map((p): [string, string] => [p, p])} />
-        </label>
-        <label className="flex flex-col gap-1 text-label text-muted-foreground">
-          Traffic source
-          <FilterSelect name="source" value={source} options={sources} />
-        </label>
-        <button type="submit" className="h-9 rounded-md bg-primary px-4 text-body-sm font-semibold text-primary-foreground">
-          Apply
-        </button>
+      <div className="flex flex-wrap items-end gap-3">
+        <DateFilter name="since" label="From" value={since} min={LAUNCH_DATE} placeholder={LAUNCH_DATE} />
+        <DateFilter name="until" label="To" value={until} min={since} placeholder="Up to now" clearable />
+        <SelectFilter name="page" label="Landing page" value={page} options={FUNNEL_PAGES.map((p): [string, string] => [p, p])} />
+        <SelectFilter name="source" label="Traffic source" value={source} options={sources} />
         {!isDefault && (
           <Link href="/dashboard/targets" className="pb-2 text-body-sm text-muted-foreground hover:text-foreground hover:underline">
             Reset
           </Link>
         )}
-      </form>
+      </div>
 
       {children}
     </div>
   );
 }
 
-function FilterSelect({ name, value, options }: { name: string; value: string; options: [string, string][] }) {
-  return (
-    <select name={name} defaultValue={value} className="h-9 rounded-md border border-border bg-background px-3 text-body-sm text-foreground">
-      {options.map(([v, label]) => (
-        <option key={v} value={v}>{label}</option>
-      ))}
-    </select>
-  );
-}
