@@ -1,5 +1,6 @@
 import { Users, Sparkles, CalendarClock, TrendingUp, PoundSterling, Timer, FileClock } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
+import { TrendChart } from "@/components/dashboard/trend-chart";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/system/card";
 import {
   type Lead,
@@ -78,10 +79,13 @@ export default async function OverviewPage() {
   const timeToContact = avgHours(leads, (l) => l.contacted_at);
   const timeToQuote = avgHours(leads, (l) => l.quoted_at);
 
-  // Daily counts, last 14 days (oldest → newest) for the trend line.
-  const daily: number[] = Array.from({ length: 14 }, (_, i) => {
+  // Daily counts, last 14 days (oldest → newest) for the trend chart.
+  const daily = Array.from({ length: 14 }, (_, i) => {
     const dayStart = startOfToday - (13 - i) * DAY;
-    return leads.filter((l) => ts(l) >= dayStart && ts(l) < dayStart + DAY).length;
+    return {
+      date: localIsoDate(new Date(dayStart)),
+      leads: leads.filter((l) => ts(l) >= dayStart && ts(l) < dayStart + DAY).length,
+    };
   });
 
   const byStatus = LEAD_STATUSES.map((s) => ({ status: s, count: leads.filter((l) => l.status === s).length }));
@@ -144,7 +148,7 @@ export default async function OverviewPage() {
                 </div>
               </div>
               <div className="min-w-0 flex-1">
-                <Sparkline values={daily} />
+                <TrendChart data={daily} series={[{ key: "leads", name: "Leads" }]} height={140} />
                 <p className="mt-1 text-right text-[11px] text-muted-foreground">Daily leads · last 14 days</p>
               </div>
             </CardContent>
@@ -226,25 +230,11 @@ export default async function OverviewPage() {
   );
 }
 
-/** Server-rendered SVG trend line — no client JS needed. */
-function Sparkline({ values }: { values: number[] }) {
-  const w = 600;
-  const h = 80;
-  const pad = 4;
-  const max = Math.max(...values, 1);
-  const step = (w - pad * 2) / (values.length - 1);
-  const y = (v: number) => h - pad - (v / max) * (h - pad * 2);
-  const points = values.map((v, i) => `${pad + i * step},${y(v)}`).join(" ");
-  const area = `${pad},${h - pad} ${points} ${w - pad},${h - pad}`;
-  return (
-    <svg viewBox={`0 0 ${w} ${h}`} className="h-20 w-full" preserveAspectRatio="none" aria-hidden>
-      <polygon points={area} className="fill-primary/10" />
-      <polyline points={points} className="fill-none stroke-primary" strokeWidth={2} strokeLinejoin="round" strokeLinecap="round" />
-      {values.map((v, i) => (
-        <circle key={i} cx={pad + i * step} cy={y(v)} r={2.5} className="fill-primary" />
-      ))}
-    </svg>
-  );
+/** YYYY-MM-DD in the server's local zone, not UTC, so the day boundaries
+ *  match `startOfToday` above. */
+function localIsoDate(d: Date): string {
+  const p = (n: number) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
 }
 
 function Kpi({

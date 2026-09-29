@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Filter, AlertTriangle, ExternalLink } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/system/card";
+import { TrendChart } from "@/components/dashboard/trend-chart";
 import {
   fetchDailyRates,
   fetchFormQuestionFunnel,
@@ -120,7 +121,13 @@ export default async function FunnelPage({ searchParams }: { searchParams: Searc
           {daily.length === 0 ? (
             <p className="py-6 text-center text-body-sm text-muted-foreground">No data in this period.</p>
           ) : (
-            <TrendChart data={daily} />
+            <TrendChart
+              data={daily.map((d) => ({ date: d.day, visitors: d.visitors, submits: d.submits }))}
+              series={[
+                { key: "submits", name: "Form submits" },
+                { key: "visitors", name: "Visitors", rightAxis: true },
+              ]}
+            />
           )}
         </CardContent>
       </Card>
@@ -242,27 +249,3 @@ function FilterSelect({ name, value, options }: { name: string; value: string; o
   );
 }
 
-/** Server-rendered SVG: visitors line + submits line. */
-function TrendChart({ data }: { data: Array<{ day: string; visitors: number; submits: number }> }) {
-  const w = 640;
-  const h = 160;
-  const pad = 8;
-  const max = Math.max(...data.map((d) => d.visitors), 1);
-  const step = data.length > 1 ? (w - pad * 2) / (data.length - 1) : 0;
-  const y = (v: number) => h - pad - (v / max) * (h - pad * 2);
-  const line = (pick: (d: { visitors: number; submits: number }) => number) =>
-    data.map((d, i) => `${pad + i * step},${y(pick(d))}`).join(" ");
-  return (
-    <div>
-      <svg viewBox={`0 0 ${w} ${h}`} className="h-40 w-full" preserveAspectRatio="none" aria-hidden>
-        <polyline points={line((d) => d.visitors)} className="fill-none stroke-muted-foreground/50" strokeWidth={1.5} />
-        <polyline points={line((d) => d.submits)} className="fill-none stroke-primary" strokeWidth={2} />
-      </svg>
-      <div className="mt-2 flex items-center gap-4 text-label text-muted-foreground">
-        <span className="flex items-center gap-1.5"><span className="h-0.5 w-4 bg-muted-foreground/50" /> Visitors</span>
-        <span className="flex items-center gap-1.5"><span className="h-0.5 w-4 bg-primary" /> Form submits</span>
-        <span className="ml-auto">{data[0]?.day} → {data[data.length - 1]?.day}</span>
-      </div>
-    </div>
-  );
-}
