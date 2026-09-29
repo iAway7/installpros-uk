@@ -76,14 +76,18 @@ export function PermanentOrRemovable() {
         </p>
       </div>
 
-      <div className="mt-8 grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-border bg-border md:grid-cols-2">
+      {/* Two separate cards, not one box with a rule down it. The old layout
+          was a gap-px grid over a bg-border parent, which is the house trick for
+          a hairline divider, and it made the pair read as a single table of two
+          columns rather than a choice between two things. */}
+      <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
         {OPTIONS.map((o) => (
-          <div key={o.name} className="bg-background p-6 md:p-8">
+          <div key={o.name} className="rounded-xl border border-border bg-background p-6 md:p-8">
             <div className="flex flex-wrap items-center gap-3">
               <h4 className="text-lead font-semibold text-foreground">{o.name}</h4>
               {o.recommended && (
                 <span className="rounded-full border border-brand-icon px-2.5 py-0.5 text-micro font-semibold uppercase tracking-[0.14em] text-brand-icon">
-                  What we recommend
+                  Recommended
                 </span>
               )}
             </div>
