@@ -107,19 +107,22 @@ export function HowItWorksSection() {
             {STEPS.map((s, i) => (
               <li
                 key={s.title}
-                /* min-h, not just padding. Spacing came from the content, so a
-                   step whose detail ran to two lines pushed its marker 135px
-                   from the one above while the one-line steps sat 112 apart,
-                   and a column of markers at irregular intervals reads as a
-                   mistake. The minimum sets the rhythm; a step longer than it
-                   still pushes, which is the point of stacking them. */
-                /* Marker size lives here and nowhere else. The circle, the
-                   connector's x and the title's optical offset are all derived
-                   from it, so changing it moves the three together. */
+                /* Marker size lives here and nowhere else: the circle and the
+                   connector both derive from it. */
                 style={{ ["--marker" as string]: "3.5rem" }}
-                className="relative flex min-h-[8.5rem] gap-5 pb-10 last:min-h-0 last:pb-0"
+                /* Grid, so the marker and the title sit in one row and centre
+                   against each other. There is NO padding anywhere in here and
+                   there must not be: the title used to be pushed down by a
+                   hand-written pt-[14px], then by a calc of the same thing, and
+                   both were a value that has to be recomputed by hand whenever
+                   the marker or the type scale moves. `self-center` on two items
+                   in a shared row is the browser doing it, permanently.
+                   content-start because min-h would otherwise stretch the two
+                   rows to fill it, which pulled the detail 4px further from
+                   its title on the short steps than on the long ones. */
+                className="relative grid min-h-[8.5rem] grid-cols-[var(--marker)_1fr] content-start gap-x-5 pb-10 last:min-h-0 last:pb-0"
               >
-                {/* Hairline from this circle to the next. Not rendered on the
+                {/* Hairline from this marker to the next. Not rendered on the
                     last step, or it would trail off into the gap below. */}
                 {i < STEPS.length - 1 && (
                   <span
@@ -132,7 +135,7 @@ export function HowItWorksSection() {
                     outlined: they happen to them, not by them. */}
                 <span
                   aria-hidden="true"
-                  className={`relative z-10 flex h-[var(--marker)] w-[var(--marker)] shrink-0 items-center justify-center rounded-full text-body-sm font-semibold ${
+                  className={`relative z-10 col-start-1 row-start-1 flex h-[var(--marker)] w-[var(--marker)] items-center justify-center self-center rounded-full text-body-sm font-semibold ${
                     i === 0
                       ? "bg-brand-icon text-white"
                       : "border border-brand-icon bg-background text-brand-icon"
@@ -141,17 +144,12 @@ export function HowItWorksSection() {
                   {/* One fixed-width cell per digit, because BE VIETNAM PRO HAS
                       NO TABULAR FIGURES. `tabular-nums` was on this span and did
                       nothing: measured, font-variant-numeric and
-                      font-feature-settings:"tnum" both give byte-identical
-                      widths to no setting at all. Its digits are proportional,
-                      and "1" is 5.81px against "4" at 10.03px, so "01" came out
-                      15.5px wide against 19.72px for "04". Centred, that put
-                      each leading zero at a different x and the column of
-                      numbers read as crooked.
-
-                      0.72em is the widest digit. Every cell is that wide and
-                      centres its own glyph, so the digits stack whatever the
-                      number. Do not put `tabular-nums` back unless the typeface
-                      changes to one that has them. */}
+                      font-feature-settings:"tnum" both give widths identical to
+                      no setting at all. Its digits are proportional and "1" is
+                      5.81px against "4" at 10.03px, so centring put every
+                      leading zero at a different x. 0.72em is the widest digit;
+                      each cell is that wide and centres its own glyph. Do not
+                      put `tabular-nums` back unless the typeface changes. */}
                   {String(i + 1)
                     .padStart(2, "0")
                     .split("")
@@ -161,24 +159,12 @@ export function HowItWorksSection() {
                       </span>
                     ))}
                 </span>
-                <div>
-                  {/* Optical centring, computed rather than guessed. It was a
-                      hand-written pt-[14px]: (56 - 27) / 2 for today's marker
-                      and today's line height, and silently wrong the moment
-                      either changes.
-
-                      The padding sits on the H3 and not on this wrapper for a
-                      reason worth keeping. `1lh` resolves against the element's
-                      OWN computed line height, and the wrapper inherits the
-                      body's 24px while the title sets 27px, so on the wrapper
-                      the same calc returned 16px and dropped the title 1.5px
-                      below the marker's centre. On the h3 it returns 14.5px,
-                      which is the number the hand-written one was approximating. */}
-                  <h3 className="pt-[calc((var(--marker)_-_1lh)/2)] text-lead font-semibold text-foreground">
-                    {s.title}
-                  </h3>
-                  <p className="mt-2 text-body-sm leading-[1.65] text-muted-foreground">{s.detail}</p>
-                </div>
+                <h3 className="col-start-2 row-start-1 self-center text-lead font-semibold text-foreground">
+                  {s.title}
+                </h3>
+                <p className="col-start-2 row-start-2 text-body-sm leading-[1.65] text-muted-foreground">
+                  {s.detail}
+                </p>
               </li>
             ))}
           </ol>
