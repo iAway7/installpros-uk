@@ -99,6 +99,10 @@ const FIT: FitItem[] = [
     title: "Nothing to fold away to drive",
     // "Can it be retractable when driving?", "Also want to just pull up at a
     // destination and it does all the work of finding g signal".
+    // The last sentence admits the one gap. The answer to it, a 4G/5G backup
+    // on Will's framing, lives in VEHICLE_FAQS ("Does it drop under trees or
+    // in a tunnel"), not here: this detail is at the three-line cap and the
+    // "pull up and it has found the sky" line answers a quoted worry.
     detail:
       "Fixed in place and working while you drive on a Roam plan. Pull up and it has found the sky. Tunnels, car parks and dense trees cut it.",
   },

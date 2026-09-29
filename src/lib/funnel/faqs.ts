@@ -369,6 +369,24 @@ export const VEHICLE_FAQS: FaqEntry[] = [
     q: "Which plan for touring, does it work abroad, and can I pause it?",
     a: "Starlink Roam. It works on the move, across the UK and for up to two months at a time abroad, and it renews every 30 days with no minimum term. Starlink's current UK pricing is £50 a month for 50 GB or £96 a month unlimited, and you can pause it from the app for any month you are not touring and restart it when you are. You pay Starlink for the plan; you pay us once for the fitting.",
   },
+  {
+    category: "Coverage & WiFi",
+    // Will, 2026-09-29, asked for a mention of fitting 5G and then framed it
+    // when asked whether it competes with Starlink: "4G 5G is a backup. The
+    // page says Starlink won't work under a tree so we need to be sure that
+    // people want 100% uptime then 5g is a great additional." So it goes here,
+    // on the one weakness this page already admits (VehicleFitSection: tunnels,
+    // car parks and dense trees cut it), as an option and never as an
+    // alternative. Put the other way round it would undercut the Starlink
+    // pitch the rest of the page makes.
+    //
+    // CONFIRM WITH WILL: whether the changeover is automatic on a vehicle fit.
+    // The commercial FAQ says the changeover is set up and tested at the
+    // install; that is a fixed site with its own router. This answer says
+    // "stays connected" and leaves the mechanism out until he confirms.
+    q: "Does it drop under trees or in a tunnel, and can I stop that?",
+    a: "Yes, it drops. Starlink needs open sky, so a tunnel, a multi-storey car park or dense tree cover will cut it, and it picks up again as soon as the sky is back. If you need the connection never to drop, we can add a 4G/5G backup alongside it, so the vehicle stays connected while Starlink has no sky. It is an option on the quote, not part of the standard fit.",
+  },
 ];
 
 /**
