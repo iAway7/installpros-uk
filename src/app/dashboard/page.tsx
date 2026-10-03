@@ -149,7 +149,7 @@ export default async function OverviewPage() {
               </div>
               <div className="min-w-0 flex-1">
                 <TrendChart data={daily} series={[{ key: "leads", name: "Leads" }]} height={140} />
-                <p className="mt-1 text-right text-[11px] text-muted-foreground">Daily leads · last 14 days</p>
+                <p className="mt-1 text-right text-label text-muted-foreground">Daily leads · last 14 days</p>
               </div>
             </CardContent>
           </Card>
@@ -261,7 +261,7 @@ function Kpi({
           <div className="text-2xl font-bold tabular-nums">{value}</div>
           <div className="truncate text-label text-muted-foreground">{label}</div>
           {sub && (
-            <div className={`text-[11px] font-semibold ${sub.muted ? "text-muted-foreground" : sub.up ? "text-success" : "text-destructive"}`}>
+            <div className={`text-label font-semibold ${sub.muted ? "text-muted-foreground" : sub.up ? "text-success" : "text-destructive"}`}>
               {sub.text}
             </div>
           )}

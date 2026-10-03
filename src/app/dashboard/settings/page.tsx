@@ -22,7 +22,7 @@ const HEALTH_META: Record<ApiHealth, { label: string; icon: React.ReactNode; pil
   pending: {
     label: "Pending approval",
     icon: <Clock3 className="h-4 w-4" />,
-    pill: "bg-amber-500/10 text-amber-600",
+    pill: "bg-warning/10 text-warning",
   },
   not_configured: {
     label: "Not connected",

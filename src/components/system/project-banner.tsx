@@ -15,7 +15,7 @@ const TONE: Record<Variant, string> = {
 const ICON_TONE: Record<Variant, string> = {
   gray: "text-muted-foreground",
   success: "text-success",
-  warning: "text-gold",
+  warning: "text-warning",
   error: "text-error",
 };
 

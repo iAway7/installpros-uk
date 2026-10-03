@@ -25,7 +25,7 @@ function timeAgo(iso: string): string {
 
 const SEVERITY_ICON = {
   critical: <CircleAlert className="h-4 w-4 shrink-0 text-destructive" />,
-  warning: <TriangleAlert className="h-4 w-4 shrink-0 text-amber-500" />,
+  warning: <TriangleAlert className="h-4 w-4 shrink-0 text-warning" />,
   info: <Info className="h-4 w-4 shrink-0 text-primary" />,
 };
 

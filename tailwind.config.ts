@@ -91,6 +91,18 @@ const config: Config = {
           // Lighter green for dark surfaces (the hero). .theme-editorial-v2 only.
           bright: "hsl(var(--success-bright))",
         },
+        warning: {
+          DEFAULT: "hsl(var(--warning))",
+          foreground: "hsl(var(--warning-foreground))",
+        },
+        // Recharts takes colours as props, so the charts read these as
+        // hsl(var(--chart-*)) strings; the classes exist for legends and docs.
+        chart: {
+          1: "hsl(var(--chart-1))",
+          2: "hsl(var(--chart-2))",
+          accent: "hsl(var(--chart-accent))",
+          grid: "hsl(var(--chart-grid))",
+        },
         // ── Tokens introduced by .theme-editorial-v2 ───────────────────────────
         // Additive: these resolve to nothing outside that scope, so the
         // Phase-1 (`:root`), admin and v1 funnel themes are untouched.

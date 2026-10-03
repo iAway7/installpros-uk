@@ -589,8 +589,8 @@ function PlanningConstraints({ constraints }: { constraints?: PlanningConstraint
   }
 
   return (
-    <div className="rounded-lg border border-amber-500/30 bg-amber-500/5 p-3">
-      <p className="mb-1 flex items-center gap-1 text-label font-bold uppercase tracking-wide text-amber-600">
+    <div className="rounded-lg border border-warning/30 bg-warning/5 p-3">
+      <p className="mb-1 flex items-center gap-1 text-label font-bold uppercase tracking-wide text-warning">
         Install constraints
         <InfoTip
           align="end"

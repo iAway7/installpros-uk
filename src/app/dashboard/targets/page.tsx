@@ -236,7 +236,7 @@ function DeviceTable({ report }: { report: TargetsReport }) {
 
 const STATUS_STYLE: Record<TargetStatus, [string, string]> = {
   beaten: ["Beaten", "bg-success/15 text-success"],
-  below: ["Below target", "bg-amber-500/10 text-amber-600"],
+  below: ["Below target", "bg-warning/10 text-warning"],
   insufficient: ["Not enough data", "bg-muted text-muted-foreground"],
 };
 

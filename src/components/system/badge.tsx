@@ -6,7 +6,7 @@ const TONE: Record<Variant, string> = {
   brand:   "border-brand-soft/25 text-brand-icon",
   neutral: "border-border text-muted-foreground",
   success: "border-success/30 text-success",
-  warning: "border-gold/40 text-gold",
+  warning: "border-warning/30 text-warning",
   error:   "border-error/30 text-error",
 };
 
@@ -14,7 +14,7 @@ const FILLED: Record<Variant, string> = {
   brand:   "bg-primary text-primary-foreground border-transparent",
   neutral: "bg-secondary text-foreground border-transparent",
   success: "bg-success text-success-foreground border-transparent",
-  warning: "bg-gold text-foreground border-transparent",
+  warning: "bg-warning text-warning-foreground border-transparent",
   error:   "bg-error text-error-foreground border-transparent",
 };
 
@@ -64,7 +64,7 @@ export function Pill({
     brand: "bg-primary",
     neutral: "bg-muted-foreground",
     success: "bg-success",
-    warning: "bg-gold",
+    warning: "bg-warning",
     error: "bg-error",
   };
   return (

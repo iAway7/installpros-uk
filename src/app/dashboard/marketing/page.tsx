@@ -178,7 +178,7 @@ function Kpi({
         <div className="min-w-0">
           <div className="text-2xl font-bold tabular-nums">{value}</div>
           <div className="truncate text-label text-muted-foreground">{hint ?? label}</div>
-          {sub && <div className={`text-[11px] font-semibold ${sub.up ? "text-success" : "text-destructive"}`}>{sub.text}</div>}
+          {sub && <div className={`text-label font-semibold ${sub.up ? "text-success" : "text-destructive"}`}>{sub.text}</div>}
         </div>
       </CardContent>
     </Card>

@@ -11,6 +11,7 @@ import { Label } from "@/components/system/label";
 import { TESTABLE_PAGES } from "@/lib/experiments/pages";
 import { DEFAULT_HERO_HEADLINE } from "@/lib/funnel/defaults";
 import type { Experiment, ExperimentStatus, VariantResult } from "@/lib/experiments/types";
+import { CHART } from "@/components/system/chart-theme";
 
 /** Small hover/focus tooltip for explaining a field. */
 function InfoHint({ text }: { text: string }) {
@@ -37,7 +38,7 @@ export interface ExperimentWithResults {
 const STATUS_STYLE: Record<ExperimentStatus, string> = {
   draft: "bg-muted text-muted-foreground",
   running: "bg-success/10 text-success",
-  paused: "bg-amber-500/10 text-amber-600",
+  paused: "bg-warning/10 text-warning",
   complete: "bg-primary/10 text-primary",
 };
 
@@ -296,12 +297,13 @@ function ForestPlot({ r }: { r: VariantResult }) {
   const midY = H / 2;
   const x = (v: number) => ((v + bound) / (2 * bound)) * W;
   const crossesZero = ciLowPct <= 0 && ciHighPct >= 0;
-  const color = crossesZero ? "#9ca3af" : diffPct > 0 ? "#15803d" : "#dc2626";
+  // Not significant reads as context (--chart-2); a real lift or drop takes the status colour.
+  const color = crossesZero ? CHART.series2 : diffPct > 0 ? "hsl(var(--success))" : "hsl(var(--error))";
 
   return (
     <svg viewBox={`0 0 ${W} ${H}`} className="h-7 w-full" role="img" aria-label="Confidence interval of lift">
       {/* zero reference */}
-      <line x1={x(0)} y1={3} x2={x(0)} y2={H - 3} stroke="#d1d5db" strokeWidth={1} strokeDasharray="3 3" />
+      <line x1={x(0)} y1={3} x2={x(0)} y2={H - 3} stroke="hsl(var(--field))" strokeWidth={1} strokeDasharray="3 3" />
       {/* CI whisker */}
       <line x1={x(ciLowPct)} y1={midY} x2={x(ciHighPct)} y2={midY} stroke={color} strokeWidth={2} />
       <line x1={x(ciLowPct)} y1={midY - 5} x2={x(ciLowPct)} y2={midY + 5} stroke={color} strokeWidth={1.5} />
@@ -326,7 +328,7 @@ function VariantDetail({
 }) {
   const conf = r.confidencePct ?? 0;
   const sig = r.isSignificant;
-  const meterColor = sig ? "bg-success" : "bg-amber-500";
+  const meterColor = sig ? "bg-success" : "bg-warning";
 
   return (
     <div className="space-y-3 rounded-lg border border-border p-3">
