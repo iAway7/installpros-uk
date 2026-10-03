@@ -6,13 +6,14 @@
  * border, for the same three states. Nobody would ever notice side by side,
  * which is exactly why it drifts.
  *
- * The gap between families IS deliberate and stays: --gold sits at L* 80 while
- * --error and --success are near L* 47, so the same opacity reads far weaker on
- * the light one. Warning therefore carries a heavier fill and border.
+ * Warning used to borrow --gold, the review-star yellow, and carried a heavier
+ * 40% / 8% to make up for it sitting at L* 80. That was compensating for the
+ * wrong colour: as text gold was 1.7:1. It has its own --warning now (amber-800,
+ * near the same lightness as error and success), so all three share one recipe.
  */
 export const STATUS_TINT = {
   success: { border: "border-success/30", fill: "bg-success/[0.06]", ink: "text-success" },
-  warning: { border: "border-gold/40", fill: "bg-gold/[0.08]", ink: "text-gold" },
+  warning: { border: "border-warning/30", fill: "bg-warning/[0.06]", ink: "text-warning" },
   error: { border: "border-error/30", fill: "bg-error/[0.06]", ink: "text-error" },
 } as const;
 

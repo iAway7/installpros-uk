@@ -6,7 +6,7 @@ const TONE: Record<State, string> = {
   neutral: "bg-muted-foreground",
   active:  "bg-primary",
   success: "bg-success",
-  warning: "bg-gold",
+  warning: "bg-warning",
   error:   "bg-error",
 };
 

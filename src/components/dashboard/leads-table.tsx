@@ -399,7 +399,7 @@ export function LeadsTable({
 
 function TestBadge() {
   return (
-    <span className="rounded-full bg-amber-500/10 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-amber-600" title="Test submission — excluded from metrics">
+    <span className="rounded-full bg-warning/10 px-2 py-0.5 text-label font-semibold uppercase tracking-wide text-warning" title="Test submission — excluded from metrics">
       Test
     </span>
   );

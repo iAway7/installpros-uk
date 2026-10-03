@@ -197,7 +197,7 @@ export default async function MapPage({ searchParams }: { searchParams: { view?:
                             <td className="px-4 py-2">
                               {d.name}
                               {gap && (
-                                <span className="ml-2 rounded-full bg-amber-500/10 px-2 py-0.5 text-[10px] font-semibold uppercase text-amber-600">
+                                <span className="ml-2 rounded-full bg-warning/10 px-2 py-0.5 text-micro font-semibold uppercase text-warning">
                                   gap
                                 </span>
                               )}
@@ -294,7 +294,7 @@ export default async function MapPage({ searchParams }: { searchParams: { view?:
                             <td className="px-4 py-2 font-medium">
                               {g.outcode}
                               {g.leads === 0 && (
-                                <span className="ml-2 rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-semibold uppercase text-primary">
+                                <span className="ml-2 rounded-full bg-primary/10 px-2 py-0.5 text-micro font-semibold uppercase text-primary">
                                   untapped
                                 </span>
                               )}

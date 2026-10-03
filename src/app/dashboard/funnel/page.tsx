@@ -167,7 +167,7 @@ function FunnelBars({ steps, prev = [] }: { steps: FunnelStepResult[]; prev?: nu
               <span className={`flex items-center gap-2 ${s.aside ? "italic" : "font-medium"}`}>
                 {s.label}
                 {dropped && (
-                  <span className="inline-flex items-center gap-1 rounded-full bg-destructive/10 px-2 py-0.5 text-[11px] font-semibold text-destructive">
+                  <span className="inline-flex items-center gap-1 rounded-full bg-destructive/10 px-2 py-0.5 text-label font-semibold text-destructive">
                     <AlertTriangle className="h-3 w-3" />
                     −{Math.round((1 - s.users / (prevUsers as number)) * 100)}% vs prev. period
                   </span>
