@@ -8,6 +8,7 @@ import { Button } from "@/components/system/button";
 import { Input } from "@/components/system/input";
 import { Card, CardContent } from "@/components/system/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/system/select";
+import { Table, TableHead, TableBody, TableRow, TableHeaderCell, TableCell } from "@/components/system/table";
 import type { TeamMember } from "@/app/api/settings/users/route";
 
 const ROLE_LABEL: Record<string, string> = { admin: "Admin", team_member: "Team member" };
@@ -83,27 +84,27 @@ export function TeamTable({ users, currentUserId }: { users: TeamMember[]; curre
     <div className="space-y-6">
       <Card>
         <CardContent className="p-0">
-          <table className="w-full text-body-sm">
-            <thead>
-              <tr className="border-b border-border text-label uppercase tracking-wide text-muted-foreground">
-                <th className="px-4 py-3 text-left font-medium">Name</th>
-                <th className="px-4 py-3 text-left font-medium">Email</th>
-                <th className="px-4 py-3 text-left font-medium">Role</th>
-                <th className="px-4 py-3 text-left font-medium">Last sign-in</th>
-                <th className="px-4 py-3" />
-              </tr>
-            </thead>
-            <tbody>
+          <Table density="default">
+            <TableHead>
+              <TableRow>
+                <TableHeaderCell>Name</TableHeaderCell>
+                <TableHeaderCell>Email</TableHeaderCell>
+                <TableHeaderCell>Role</TableHeaderCell>
+                <TableHeaderCell>Last sign-in</TableHeaderCell>
+                <TableHeaderCell />
+              </TableRow>
+            </TableHead>
+            <TableBody>
               {users.map((u) => {
                 const isSelf = u.id === currentUserId;
                 return (
-                  <tr key={u.id} className="border-b border-border last:border-0">
-                    <td className="px-4 py-3 font-medium">
+                  <TableRow key={u.id}>
+                    <TableCell className="font-medium">
                       {u.full_name || "—"}
                       {isSelf && <span className="ml-2 rounded bg-secondary px-1.5 py-0.5 text-micro uppercase">You</span>}
-                    </td>
-                    <td className="px-4 py-3 text-muted-foreground">{u.email}</td>
-                    <td className="px-4 py-3">
+                    </TableCell>
+                    <TableCell className="text-muted-foreground">{u.email}</TableCell>
+                    <TableCell>
                       {isSelf ? (
                         <span className="text-muted-foreground">{ROLE_LABEL[u.role]}</span>
                       ) : (
@@ -115,9 +116,9 @@ export function TeamTable({ users, currentUserId }: { users: TeamMember[]; curre
                           </SelectContent>
                         </Select>
                       )}
-                    </td>
-                    <td className="px-4 py-3 text-muted-foreground">{when(u.last_sign_in_at)}</td>
-                    <td className="px-4 py-3 text-right">
+                    </TableCell>
+                    <TableCell className="text-muted-foreground">{when(u.last_sign_in_at)}</TableCell>
+                    <TableCell className="text-right">
                       {!isSelf && (
                         <button
                           onClick={() => remove(u)}
@@ -128,12 +129,12 @@ export function TeamTable({ users, currentUserId }: { users: TeamMember[]; curre
                           {busy === u.id ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
                         </button>
                       )}
-                    </td>
-                  </tr>
+                    </TableCell>
+                  </TableRow>
                 );
               })}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </CardContent>
       </Card>
 

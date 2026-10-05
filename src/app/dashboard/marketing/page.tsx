@@ -2,6 +2,7 @@ import { MousePointerClick, Eye, Percent, TrendingUp, Users, PoundSterling, Sear
 import { createClient } from "@/lib/supabase/server";
 import { getSearchConsole } from "@/lib/google/search-console";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/system/card";
+import { Table, TableHead, TableBody, TableRow, TableHeaderCell, TableCell } from "@/components/system/table";
 import { SearchConsoleChart } from "@/components/dashboard/search-console-chart";
 import { ConversionChart } from "@/components/dashboard/conversion-chart";
 import { type LeadStatus, realLeads } from "@/lib/dashboard/leads";
@@ -179,28 +180,28 @@ function RowTable({ title, rows, pageStyle }: { title: string; rows: { key: stri
           <EmptyState variant="inline" description="No data yet." />
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-body-sm">
-              <thead className="border-y border-border bg-secondary/40 text-left text-label uppercase text-muted-foreground">
-                <tr>
-                  <th className="px-4 py-2 font-medium">{pageStyle ? "Page" : "Query"}</th>
-                  <th className="px-3 py-2 text-right font-medium">Clicks</th>
-                  <th className="px-3 py-2 text-right font-medium">Impr.</th>
-                  <th className="px-3 py-2 text-right font-medium">Pos.</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border">
+            <Table density="compact">
+              <TableHead>
+                <TableRow>
+                  <TableHeaderCell>{pageStyle ? "Page" : "Query"}</TableHeaderCell>
+                  <TableHeaderCell numeric>Clicks</TableHeaderCell>
+                  <TableHeaderCell numeric>Impr.</TableHeaderCell>
+                  <TableHeaderCell numeric>Pos.</TableHeaderCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
                 {rows.map((r) => (
-                  <tr key={r.key}>
-                    <td className="max-w-[220px] truncate px-4 py-2" title={r.key}>
+                  <TableRow key={r.key}>
+                    <TableCell className="max-w-[220px] truncate" title={r.key}>
                       {pageStyle ? r.key.replace(/^https?:\/\/[^/]+/, "") || "/" : r.key}
-                    </td>
-                    <td className="px-3 py-2 text-right tabular-nums">{r.clicks.toLocaleString("en-GB")}</td>
-                    <td className="px-3 py-2 text-right tabular-nums text-muted-foreground">{r.impressions.toLocaleString("en-GB")}</td>
-                    <td className="px-3 py-2 text-right tabular-nums text-muted-foreground">{r.position.toFixed(1)}</td>
-                  </tr>
+                    </TableCell>
+                    <TableCell numeric>{r.clicks.toLocaleString("en-GB")}</TableCell>
+                    <TableCell numeric className="text-muted-foreground">{r.impressions.toLocaleString("en-GB")}</TableCell>
+                    <TableCell numeric className="text-muted-foreground">{r.position.toFixed(1)}</TableCell>
+                  </TableRow>
                 ))}
-              </tbody>
-            </table>
+              </TableBody>
+            </Table>
           </div>
         )}
       </CardContent>

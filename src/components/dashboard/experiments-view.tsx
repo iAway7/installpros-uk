@@ -8,12 +8,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/system/ca
 import { Button } from "@/components/system/button";
 import { Input } from "@/components/system/input";
 import { Label } from "@/components/system/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/system/select";
 import { TESTABLE_PAGES } from "@/lib/experiments/pages";
 import { DEFAULT_HERO_HEADLINE } from "@/lib/funnel/defaults";
 import type { Experiment, ExperimentStatus, VariantResult } from "@/lib/experiments/types";
 import { CHART } from "@/components/system/chart-theme";
 import { EmptyState } from "@/components/system/empty-state";
 import { Pill, type PillVariant } from "@/components/system/badge";
+import { Table, TableHead, TableBody, TableRow, TableHeaderCell, TableCell } from "@/components/system/table";
 
 /** Small hover/focus tooltip for explaining a field. */
 function InfoHint({ text }: { text: string }) {
@@ -187,22 +189,22 @@ function ExperimentCard({ data, isAdmin }: { data: ExperimentWithResults; isAdmi
 
       <CardContent className="p-0">
         <div className="overflow-x-auto">
-          <table className="w-full text-body-sm">
-            <thead className="border-y border-border bg-secondary/40 text-left text-label uppercase text-muted-foreground">
-              <tr>
-                <th className="px-4 py-2 font-medium">Variant</th>
-                <th className="px-3 py-2 text-right font-medium">Split</th>
-                <th className="px-3 py-2 text-right font-medium">Visitors</th>
-                <th className="px-3 py-2 text-right font-medium">Conv.</th>
-                <th className="px-3 py-2 text-right font-medium">Rate</th>
-                <th className="px-3 py-2 text-right font-medium">Uplift</th>
-                <th className="px-3 py-2 text-right font-medium">Confidence</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border">
+          <Table density="compact">
+            <TableHead>
+              <TableRow>
+                <TableHeaderCell>Variant</TableHeaderCell>
+                <TableHeaderCell numeric>Split</TableHeaderCell>
+                <TableHeaderCell numeric>Visitors</TableHeaderCell>
+                <TableHeaderCell numeric>Conv.</TableHeaderCell>
+                <TableHeaderCell numeric>Rate</TableHeaderCell>
+                <TableHeaderCell numeric>Uplift</TableHeaderCell>
+                <TableHeaderCell numeric>Confidence</TableHeaderCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
               {results.map((r) => (
-                <tr key={r.variant.id} className={r.isWinner ? "bg-success/5" : undefined}>
-                  <td className="px-4 py-3">
+                <TableRow key={r.variant.id} className={r.isWinner ? "bg-success/5" : undefined}>
+                  <TableCell>
                     <div className="flex items-center gap-2 font-medium">
                       {r.variant.name}
                       {r.variant.is_control && (
@@ -226,21 +228,21 @@ function ExperimentCard({ data, isAdmin }: { data: ExperimentWithResults; isAdmi
                         “{r.variant.config.headline}”
                       </p>
                     ) : null}
-                  </td>
-                  <td className="px-3 py-3 text-right tabular-nums text-muted-foreground">{Math.round(r.variant.allocation * 100)}%</td>
-                  <td className="px-3 py-3 text-right tabular-nums">{r.visitors.toLocaleString("en-GB")}</td>
-                  <td className="px-3 py-3 text-right tabular-nums">{r.conversions.toLocaleString("en-GB")}</td>
-                  <td className="px-3 py-3 text-right font-semibold tabular-nums">{(r.rate * 100).toFixed(1)}%</td>
-                  <td className={`px-3 py-3 text-right tabular-nums ${r.upliftPct == null ? "text-muted-foreground" : r.upliftPct >= 0 ? "text-success" : "text-destructive"}`}>
+                  </TableCell>
+                  <TableCell numeric className="text-muted-foreground">{Math.round(r.variant.allocation * 100)}%</TableCell>
+                  <TableCell numeric>{r.visitors.toLocaleString("en-GB")}</TableCell>
+                  <TableCell numeric>{r.conversions.toLocaleString("en-GB")}</TableCell>
+                  <TableCell numeric className="font-semibold">{(r.rate * 100).toFixed(1)}%</TableCell>
+                  <TableCell numeric className={r.upliftPct == null ? "text-muted-foreground" : r.upliftPct >= 0 ? "text-success" : "text-destructive"}>
                     {r.upliftPct == null ? "—" : `${r.upliftPct >= 0 ? "+" : ""}${r.upliftPct.toFixed(1)}%`}
-                  </td>
-                  <td className="px-3 py-3 text-right tabular-nums text-muted-foreground">
+                  </TableCell>
+                  <TableCell numeric className="text-muted-foreground">
                     {r.confidencePct == null ? "—" : `${r.confidencePct.toFixed(0)}%`}
-                  </td>
-                </tr>
+                  </TableCell>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div>
 
         {totalVisitors > 0 && (
@@ -531,15 +533,15 @@ function CreateForm({ onDone }: { onDone: () => void }) {
             <Label htmlFor="exp-metric" className="flex items-center gap-1.5">
               Primary metric <InfoHint text="The success event compared between variants. lead_created = someone completed the quote form." />
             </Label>
-            <select
-              id="exp-metric"
-              value={metric}
-              onChange={(e) => setMetric(e.target.value)}
-              className="flex h-11 w-full rounded-lg border border-input bg-background px-3 text-body"
-            >
-              <option value="lead_created">lead_created (form submitted)</option>
-              <option value="quote_submitted">quote_submitted</option>
-            </select>
+            <Select value={metric} onValueChange={setMetric}>
+              <SelectTrigger id="exp-metric">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="lead_created">lead_created (form submitted)</SelectItem>
+                <SelectItem value="quote_submitted">quote_submitted</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
 
           {/* 3. Variants */}
@@ -568,17 +570,18 @@ function CreateForm({ onDone }: { onDone: () => void }) {
                       <span className="flex items-center gap-1 text-label text-muted-foreground">
                         Page <InfoHint text="The page this variant shows. Pages come from the app's registry. Add more in lib/experiments/pages.ts." />
                       </span>
-                      <select
-                        value={v.path}
-                        onChange={(e) => updateVariant(i, { path: e.target.value })}
-                        className="flex h-11 w-full rounded-lg border border-input bg-background px-3 text-body-sm"
-                      >
-                        {TESTABLE_PAGES.map((p) => (
-                          <option key={p.slug} value={p.slug}>
-                            {p.label} ({p.slug})
-                          </option>
-                        ))}
-                      </select>
+                      <Select value={v.path} onValueChange={(path) => updateVariant(i, { path })}>
+                        <SelectTrigger aria-label="Page" className="text-body-sm">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {TESTABLE_PAGES.map((p) => (
+                            <SelectItem key={p.slug} value={p.slug}>
+                              {p.label} ({p.slug})
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     </div>
                   ) : v.is_control ? (
                     <div className="space-y-1">
@@ -586,7 +589,7 @@ function CreateForm({ onDone }: { onDone: () => void }) {
                         Current headline <InfoHint text="The original is what's live now, shown here for reference and left unchanged. Your variants are tested against this." />
                       </span>
                       <div
-                        className="flex h-11 w-full items-center truncate rounded-lg border border-dashed border-input bg-muted/40 px-3 text-body-sm text-muted-foreground"
+                        className="flex h-control w-full items-center truncate rounded-lg border-[length:var(--border-field)] border-dashed border-field bg-muted/40 px-3 text-body-sm text-muted-foreground"
                         title={DEFAULT_HERO_HEADLINE}
                       >
                         {DEFAULT_HERO_HEADLINE}

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Filter } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/system/card";
+import { Table, TableHead, TableBody, TableRow, TableHeaderCell, TableCell } from "@/components/system/table";
 import { DateFilter, SelectFilter } from "@/components/system/filters";
 import { createClient } from "@/lib/supabase/server";
 import { realLeads } from "@/lib/dashboard/leads";
@@ -159,40 +160,40 @@ function TargetsTable({ report }: { report: TargetsReport }) {
       <CardHeader><CardTitle>Targets</CardTitle></CardHeader>
       <CardContent className="p-0">
         <div className="overflow-x-auto">
-          <table className="w-full text-body-sm">
-            <thead className="border-y border-border bg-secondary/40 text-left text-label uppercase text-muted-foreground">
-              <tr>
-                <th className="px-4 py-2 font-medium">Metric</th>
-                <th className="px-3 py-2 text-right font-medium">Baseline</th>
-                <th className="px-3 py-2 text-right font-medium">Target</th>
-                <th className="px-3 py-2 text-right font-medium">Actual</th>
-                <th className="px-3 py-2 text-right font-medium">Status</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border">
+          <Table density="compact">
+            <TableHead>
+              <TableRow>
+                <TableHeaderCell>Metric</TableHeaderCell>
+                <TableHeaderCell numeric>Baseline</TableHeaderCell>
+                <TableHeaderCell numeric>Target</TableHeaderCell>
+                <TableHeaderCell numeric>Actual</TableHeaderCell>
+                <TableHeaderCell className="text-right">Status</TableHeaderCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
               {report.rows.map((r) => (
-                <tr key={r.metric}>
-                  <td className="px-4 py-2">
+                <TableRow key={r.metric}>
+                  <TableCell>
                     <div className="font-medium">{r.metric}</div>
                     <div className="text-label text-muted-foreground">{r.detail}</div>
-                  </td>
-                  <td className="px-3 py-2 text-right tabular-nums text-muted-foreground">{pct(r.baseline)}</td>
-                  <td className="px-3 py-2 text-right tabular-nums text-muted-foreground">{pct(r.target)}{r.hold ? " (hold)" : ""}</td>
-                  <td className="px-3 py-2 text-right font-semibold tabular-nums">{pct(r.actual)}</td>
-                  <td className="px-3 py-2 text-right"><StatusBadge status={r.status} /></td>
-                </tr>
+                  </TableCell>
+                  <TableCell numeric className="text-muted-foreground">{pct(r.baseline)}</TableCell>
+                  <TableCell numeric className="text-muted-foreground">{pct(r.target)}{r.hold ? " (hold)" : ""}</TableCell>
+                  <TableCell numeric className="font-semibold">{pct(r.actual)}</TableCell>
+                  <TableCell className="text-right"><StatusBadge status={r.status} /></TableCell>
+                </TableRow>
               ))}
-              <tr className="bg-secondary/20">
-                <td className="px-4 py-2" colSpan={3}>
+              <TableRow className="bg-secondary/20">
+                <TableCell colSpan={3}>
                   <div className="font-medium">WhatsApp after lead</div>
                   <div className="text-label text-muted-foreground">tapped WhatsApp on the thank-you page; not added to conversion</div>
-                </td>
-                <td className="px-3 py-2 text-right tabular-nums" colSpan={2}>
+                </TableCell>
+                <TableCell numeric colSpan={2}>
                   {report.whatsappAfterLead} of {report.leads} leads
-                </td>
-              </tr>
-            </tbody>
-          </table>
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
         </div>
       </CardContent>
     </Card>
@@ -208,28 +209,28 @@ function DeviceTable({ report }: { report: TargetsReport }) {
           <EmptyState variant="inline" description="No visitors or leads in this period." />
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-body-sm">
-              <thead className="border-y border-border bg-secondary/40 text-left text-label uppercase text-muted-foreground">
-                <tr>
-                  <th className="px-4 py-2 font-medium">Device</th>
-                  <th className="px-3 py-2 text-right font-medium">Visitors</th>
-                  <th className="px-3 py-2 text-right font-medium">Form starts</th>
-                  <th className="px-3 py-2 text-right font-medium">Leads</th>
-                  <th className="px-3 py-2 text-right font-medium">Visitor → lead</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border">
+            <Table density="compact">
+              <TableHead>
+                <TableRow>
+                  <TableHeaderCell>Device</TableHeaderCell>
+                  <TableHeaderCell numeric>Visitors</TableHeaderCell>
+                  <TableHeaderCell numeric>Form starts</TableHeaderCell>
+                  <TableHeaderCell numeric>Leads</TableHeaderCell>
+                  <TableHeaderCell numeric>Visitor → lead</TableHeaderCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
                 {report.devices.map((d) => (
-                  <tr key={d.device}>
-                    <td className="px-4 py-2 capitalize">{d.device}</td>
-                    <td className="px-3 py-2 text-right tabular-nums">{d.visitors.toLocaleString("en-GB")}</td>
-                    <td className="px-3 py-2 text-right tabular-nums text-muted-foreground">{d.starts.toLocaleString("en-GB")}</td>
-                    <td className="px-3 py-2 text-right tabular-nums">{d.leads.toLocaleString("en-GB")}</td>
-                    <td className="px-3 py-2 text-right font-semibold tabular-nums">{pct(d.rate)}</td>
-                  </tr>
+                  <TableRow key={d.device}>
+                    <TableCell className="capitalize">{d.device}</TableCell>
+                    <TableCell numeric>{d.visitors.toLocaleString("en-GB")}</TableCell>
+                    <TableCell numeric className="text-muted-foreground">{d.starts.toLocaleString("en-GB")}</TableCell>
+                    <TableCell numeric>{d.leads.toLocaleString("en-GB")}</TableCell>
+                    <TableCell numeric className="font-semibold">{pct(d.rate)}</TableCell>
+                  </TableRow>
                 ))}
-              </tbody>
-            </table>
+              </TableBody>
+            </Table>
           </div>
         )}
       </CardContent>

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { Card, CardContent } from "@/components/system/card";
+import { Table, TableHead, TableBody, TableRow, TableHeaderCell, TableCell } from "@/components/system/table";
 import { aggregateLandings, totals, RANGES, type LandingLeadRow } from "@/lib/dashboard/landings";
 import { Stat } from "@/components/system/stat";
 import { EmptyState } from "@/components/system/empty-state";
@@ -69,37 +70,37 @@ export default async function LandingsPage({
       ) : (
         <Card>
           <CardContent className="overflow-x-auto p-0">
-            <table className="w-full text-body-sm">
-              <thead className="border-b border-border/50 text-label uppercase text-muted-foreground">
-                <tr>
-                  <th className="px-4 py-3 text-left font-semibold">Landing page</th>
-                  <th className="px-4 py-3 text-right font-semibold">Leads</th>
-                  <th className="px-4 py-3 text-right font-semibold">Google Ads</th>
-                  <th className="px-4 py-3 text-right font-semibold">Qualified 8+</th>
-                  <th className="px-4 py-3 text-right font-semibold">Avg score</th>
-                  <th className="px-4 py-3 text-right font-semibold">Mobile</th>
-                  <th className="px-4 py-3 text-right font-semibold">Won</th>
-                </tr>
-              </thead>
-              <tbody>
+            <Table density="default">
+              <TableHead>
+                <TableRow>
+                  <TableHeaderCell>Landing page</TableHeaderCell>
+                  <TableHeaderCell numeric>Leads</TableHeaderCell>
+                  <TableHeaderCell numeric>Google Ads</TableHeaderCell>
+                  <TableHeaderCell numeric>Qualified 8+</TableHeaderCell>
+                  <TableHeaderCell numeric>Avg score</TableHeaderCell>
+                  <TableHeaderCell numeric>Mobile</TableHeaderCell>
+                  <TableHeaderCell numeric>Won</TableHeaderCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
                 {stats.map((s) => (
-                  <tr key={s.page} className="border-b border-border/30 last:border-0">
-                    <td className="px-4 py-3 font-mono">{s.page}</td>
-                    <td className="px-4 py-3 text-right font-semibold">{s.leads}</td>
-                    <td className="px-4 py-3 text-right">{s.paidLeads}</td>
-                    <td className="px-4 py-3 text-right">
+                  <TableRow key={s.page}>
+                    <TableCell className="font-mono">{s.page}</TableCell>
+                    <TableCell numeric className="font-semibold">{s.leads}</TableCell>
+                    <TableCell numeric>{s.paidLeads}</TableCell>
+                    <TableCell numeric>
                       {s.qualified}
                       <span className="ml-1 text-muted-foreground">
                         ({s.leads ? Math.round((s.qualified / s.leads) * 100) : 0}%)
                       </span>
-                    </td>
-                    <td className="px-4 py-3 text-right">{s.avgScore ?? "—"}</td>
-                    <td className="px-4 py-3 text-right">{s.mobileShare != null ? `${s.mobileShare}%` : "—"}</td>
-                    <td className="px-4 py-3 text-right">{s.won}</td>
-                  </tr>
+                    </TableCell>
+                    <TableCell numeric>{s.avgScore ?? "—"}</TableCell>
+                    <TableCell numeric>{s.mobileShare != null ? `${s.mobileShare}%` : "—"}</TableCell>
+                    <TableCell numeric>{s.won}</TableCell>
+                  </TableRow>
                 ))}
-              </tbody>
-            </table>
+              </TableBody>
+            </Table>
           </CardContent>
         </Card>
       )}
