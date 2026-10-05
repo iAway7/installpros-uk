@@ -71,9 +71,10 @@ export default function DensityPage() {
 
       <Section title="Two that deliberately do not move">
         <Rule>
-          <Mono>--text-entry</Mono> stays at 16px in both. Below 16px, iOS Safari zooms the page when
-          a field takes focus, and a denser dashboard is not worth that. Everything else in Product
-          steps down one rung; a form field does not.
+          <Mono>--text-entry</Mono> stays at 16px on touch screens in both. Below 16px, iOS Safari
+          zooms the page when a field takes focus, and a denser dashboard is not worth that. With a
+          mouse there is no zoom, so Product fields drop to body size (14px) and stop reading a size
+          louder than the table they filter. Editorial fields are 16px everywhere.
         </Rule>
         <Rule>
           The border widths are shared too. A field is 1.5px and a selectable control is 2px in both

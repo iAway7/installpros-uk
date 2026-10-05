@@ -404,7 +404,8 @@
   --chart-accent: var(--zinc-900);           /* the series stay blue; only the neutrals move to zinc */
   --chart-grid: var(--zinc-200);
 
-  /* Product density. --text-entry stays at 16px on purpose. */
+  /* Product density. --text-entry stays at 16px here on purpose; it drops to
+     body size only with a mouse (see the media query after this block). */
   --text-micro: 10px;
   --text-label: 11px;
   --text-caption: 12px;
@@ -424,9 +425,9 @@
     --leading-body: 1.42;
 
 
-  /* Product density. 44px is the floor for the default control: --text-entry
-     cannot go below 16px (iOS zooms on focus), and 16px inside a 40px box is
-     tighter than it should be. */
+  /* Product density. 44px is the floor for the default control: on touch
+     --text-entry cannot go below 16px (iOS zooms on focus), and 16px inside a
+     40px box is tighter than it should be. */
   --control-sm: 36px;
   --control-aux: 40px;
   --control: 44px;
@@ -464,6 +465,16 @@
   --success-bright: var(--green-400);
   --gold: var(--amber-500);
   --whatsapp: var(--whatsapp-brand);
+}
+
+/* --text-entry holds 16px because iOS zooms the page when a field under 16px
+   takes focus. That only happens on touch. With a mouse, a 16px field in a
+   14px dashboard is the one control a size too big — the filter bar over the
+   leads table read louder than the table — so Product fields step down with
+   everything else there. Touch keeps 16px. Editorial is untouched: its body
+   is 16px anyway. */
+@media (hover: hover) and (pointer: fine) {
+  .theme-product { --text-entry: var(--text-body); }
 }
 
 /* Webapp type scale — data-dense UI wants smaller text than marketing pages.
