@@ -61,9 +61,9 @@ const MOORINGS: Mooring[] = [
 
 export function MarineMooringSection() {
   return (
-    <section id="moored-or-cruising" className="w-full scroll-mt-28 bg-background py-16 md:py-24">
+    <section id="moored-or-cruising" className="w-full scroll-mt-28 bg-background py-20 md:py-32">
       <div className="container mx-auto">
-        <div className="mb-12 max-w-2xl">
+        <div className="mb-16 max-w-2xl">
           <p className="eyebrow">Start here</p>
           <h2 className="mt-4 h2-section text-foreground">Does the boat move? That decides most of it.</h2>
           <p className="mt-5 text-body text-muted-foreground md:text-lg" style={{ lineHeight: "1.6" }}>
@@ -71,9 +71,9 @@ export function MarineMooringSection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-x-14 gap-y-14 md:grid-cols-3">
           {MOORINGS.map((m) => (
-            <div key={m.title} className="border-t border-border pt-6">
+            <div key={m.title}>
               <span className="text-brand-icon" aria-hidden="true">{m.icon}</span>
               <h3 className="mt-4 text-lead font-semibold text-foreground">{m.title}</h3>
               <p className="mt-1 text-body-sm font-medium text-foreground">{m.who}</p>
