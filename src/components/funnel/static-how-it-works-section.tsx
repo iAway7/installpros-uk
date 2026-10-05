@@ -61,9 +61,9 @@ const STEPS: Step[] = [
 
 export function StaticHowItWorksSection() {
   return (
-    <section id="how-it-works" className="w-full scroll-mt-28 bg-background py-16 md:py-24">
+    <section id="how-it-works" className="w-full scroll-mt-28 bg-background py-20 md:py-32">
       <div className="container mx-auto">
-        <div className="mb-12 max-w-2xl">
+        <div className="mb-16 max-w-2xl">
           <p className="eyebrow">How it works</p>
           <h2 className="mt-4 h2-section text-foreground">
             A price without a trip to the van.
@@ -73,9 +73,9 @@ export function StaticHowItWorksSection() {
           </p>
         </div>
 
-        <ol className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+        <ol className="grid grid-cols-1 gap-x-14 gap-y-14 md:grid-cols-2 lg:grid-cols-4">
           {STEPS.map((s, i) => (
-            <li key={s.title} className="border-t border-border pt-6">
+            <li key={s.title}>
               <span className="text-label font-semibold uppercase tracking-[0.14em] text-muted-foreground tabular-nums">
                 Step {i + 1}
               </span>
