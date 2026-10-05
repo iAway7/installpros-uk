@@ -200,13 +200,15 @@ export function LeadsTable({
 
   return (
     <div className="space-y-4">
+      {/* One height for the whole bar: control-sm, like the Filters toolbar on the
+          other pages. The fields used to be 44px next to a 36px CSV button. */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
         <div className="relative flex-1">
           <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <Input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search name, email, city…" className="pl-9" />
+          <Input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search name, email, city…" inputSize="sm" className="pl-9" />
         </div>
         <Select value={filter} onValueChange={(v) => setFilter(v as typeof filter)}>
-          <SelectTrigger className="sm:w-44"><SelectValue /></SelectTrigger>
+          <SelectTrigger className="h-control-sm rounded-md sm:w-44"><SelectValue /></SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All statuses</SelectItem>
             {LEAD_STATUSES.map((s) => (
@@ -215,7 +217,7 @@ export function LeadsTable({
           </SelectContent>
         </Select>
         <Select value={service} onValueChange={setService}>
-          <SelectTrigger className="sm:w-44"><SelectValue /></SelectTrigger>
+          <SelectTrigger className="h-control-sm rounded-md sm:w-44"><SelectValue /></SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All services</SelectItem>
             {services.map((s) => (
@@ -224,7 +226,7 @@ export function LeadsTable({
           </SelectContent>
         </Select>
         <Select value={dateRange} onValueChange={(v) => setDateRange(v as DateRange)}>
-          <SelectTrigger className="sm:w-44"><SelectValue /></SelectTrigger>
+          <SelectTrigger className="h-control-sm rounded-md sm:w-44"><SelectValue /></SelectTrigger>
           <SelectContent>
             {DATE_RANGES.map((r) => (
               <SelectItem key={r.value} value={r.value}>{r.label}</SelectItem>
@@ -232,7 +234,7 @@ export function LeadsTable({
           </SelectContent>
         </Select>
         <Select value={sortBy} onValueChange={(v) => setSortBy(v as typeof sortBy)}>
-          <SelectTrigger className="sm:w-40"><SelectValue /></SelectTrigger>
+          <SelectTrigger className="h-control-sm rounded-md sm:w-40"><SelectValue /></SelectTrigger>
           <SelectContent>
             <SelectItem value="newest">Newest first</SelectItem>
             <SelectItem value="score">Highest score</SelectItem>
@@ -253,6 +255,7 @@ export function LeadsTable({
               value={customFrom}
               max={customTo || undefined}
               onChange={(e) => setCustomFrom(e.target.value)}
+              inputSize="sm"
               className="w-auto"
             />
           </div>
@@ -264,6 +267,7 @@ export function LeadsTable({
               value={customTo}
               min={customFrom || undefined}
               onChange={(e) => setCustomTo(e.target.value)}
+              inputSize="sm"
               className="w-auto"
             />
           </div>
