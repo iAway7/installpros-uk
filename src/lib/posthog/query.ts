@@ -95,6 +95,7 @@ export const FUNNEL_PAGES = [
   "/starlink-installation-for-vehicles",
   "/starlink-installation-for-vehicles-2",
   "/starlink-installation-for-static-caravans",
+  "/starlink-installation-for-boats",
 ] as const;
 
 /** A landing page that changed slug still has every pageview before the rename
