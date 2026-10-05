@@ -49,7 +49,7 @@ export default function InfoTipPage() {
 
       <Section title="Info tip or Note">
         <Rule>
-          A Note is persistent and owns its row — use it when everyone needs to read the thing. An
+          A Note is persistent and owns its row. Use it when everyone needs to read the thing. An
           info tip is an aside that appears on demand and adds no height, which is why it suits a
           dense two-column panel. If the information is important enough that you would be unhappy
           for someone to miss it, it is a Note.
@@ -67,7 +67,7 @@ export default function InfoTipPage() {
         ]}
         content={[
           "One sentence. If it needs two, the label is probably wrong.",
-          "Name the source when the value came from somewhere — 'Ofcom Connected Nations', 'Propalt'. A number with a named source is worth more than the same number alone.",
+          "Name the source when the value came from somewhere: 'Ofcom Connected Nations', 'Propalt'. A number with a named source is worth more than the same number alone.",
         ]}
         accessibility={[
           "The marker is a real button with an aria-label that includes the source, so it is reachable and announced without opening it.",

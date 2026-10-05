@@ -30,7 +30,7 @@ export function Section({ title, note, children }: { title: string; note?: strin
 
 /**
  * Live component preview. Children render inside `.theme-editorial`, so what you
- * see is the production component with the production tokens — not a copy.
+ * see is the production component with the production tokens, not a copy.
  */
 export function Preview({
   children,
@@ -95,7 +95,7 @@ export function Rule({ children }: { children: ReactNode }) {
     // Neutral, not brand red: a red rule on a pink tint is how an error reads,
     // and these are the page's reasoning, not a warning. Square on the ruled
     // side so the rule is a straight line rather than a bracket, and spaced
-    // from whatever comes before it — two Rules in a row used to touch.
+    // from whatever comes before it; two Rules in a row used to touch.
     <div className="rounded-r-lg border-l-2 border-neutral-300 bg-neutral-50 px-5 py-4 text-[15px] leading-[1.6] text-neutral-700 [&:not(:first-child)]:mt-4">
       {children}
     </div>

@@ -46,7 +46,7 @@ export default function BadgePage() {
 
       <Section
         title="Lead statuses"
-        note="The leads pipeline, rendered from STATUS_TONE — the same map the dashboard reads, so this cannot drift from it."
+        note="The leads pipeline, rendered from STATUS_TONE, the same map the dashboard reads, so this cannot drift from it."
       >
         <Preview>
           <div className="theme-product flex flex-wrap gap-2">
@@ -59,8 +59,8 @@ export default function BadgePage() {
         </Preview>
         <Rule>
           The word keeps the text colour and only the dot carries the hue. The dashboard&apos;s own pills
-          used to tint both — success and error text on a 10% tint of themselves measure 4.44 and
-          4.13:1, under AA — and <Mono>contacted</Mono> sat on <Mono>--accent</Mono>, which vanished
+          used to tint both (success and error text on a 10% tint of themselves measure 4.44 and
+          4.13:1, under AA), and <Mono>contacted</Mono> sat on <Mono>--accent</Mono>, which vanished
           when Product&apos;s accent became the soft hover grey. <Mono>muted</Mono> is for what is over
           or not started: lost, draft, not enough data.
         </Rule>

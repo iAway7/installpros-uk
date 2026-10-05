@@ -32,18 +32,18 @@ export default function AccessibilityPage() {
       </Section>
 
       <Section title="Focus" note="Two utilities, 25 controls, nothing hand-written.">
-        <Code>{`.focus-ring        /* 20 uses — the default */
-.focus-ring-solid  /* 5 uses — small controls on a plain background */`}</Code>
+        <Code>{`.focus-ring        /* 20 uses: the default */
+.focus-ring-solid  /* 5 uses: small controls on a plain background */`}</Code>
         <p className="mt-4 max-w-2xl text-[15px] leading-[1.6] text-neutral-500">
           These used to be written out by hand in eleven files, and not identically: some rings were
           2px and some 1px, some at 15% opacity and some at 40%, with the offset varying too. That
           matters more than it sounds. A keyboard user needs the indicator to be the same shape on
-          every control, or the pattern stops being recognisable — and copied by hand it meant
+          every control, or the pattern stops being recognisable, and copied by hand it meant
           changing focus was an eleven-file job that could miss one.
         </p>
         <p className="mt-3 max-w-2xl text-[15px] leading-[1.6] text-neutral-500">
           <Mono>.focus-ring</Mono> is the default: a soft ring at 15% that sits on the control&apos;s
-          own border. <Mono>.focus-ring-solid</Mono> is for small controls — a radio, a checkbox —
+          own border. <Mono>.focus-ring-solid</Mono> is for small controls (a radio, a checkbox)
           where a soft ring on a 20px circle is too faint to find; it uses the full colour and steps
           the ring off the control so it stays visible.
         </p>

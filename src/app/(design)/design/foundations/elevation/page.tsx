@@ -7,7 +7,7 @@ const LAYERS = [
     name: "Resting",
     token: "shadow-sm",
     role: "cards, buttons, tabs",
-    note: "One hairline. Not really an elevation step — it keeps a white surface from disappearing into a white page.",
+    note: "One hairline. Not really an elevation step: it keeps a white surface from disappearing into a white page.",
     cls: "shadow-sm",
   },
   {
@@ -91,8 +91,8 @@ export default function ElevationPage() {
 border-[length:var(--border-control)]   /* radio, checkbox, choicebox */
 border                                  /* cards, panels, rules */`}</Code>
         <Rule>
-          The arbitrary-value syntax is ugly and deliberate. The natural names —{" "}
-          <Mono>border-field</Mono>, <Mono>border-input</Mono> — are already colour tokens.
+          The arbitrary-value syntax is ugly and deliberate. The natural names (
+          <Mono>border-field</Mono>, <Mono>border-input</Mono>) are already colour tokens.
           Registering them as widths too would make Tailwind emit two different rules under one class
           name, and <Mono>border-field</Mono> would mean a colour and a thickness at the same time.
         </Rule>

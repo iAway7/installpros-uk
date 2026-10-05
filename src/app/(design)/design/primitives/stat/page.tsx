@@ -46,21 +46,21 @@ export default function StatPage() {
               value="2.1h"
               delta={{ text: "−40 min", direction: "down", good: "down" }}
             />
-            <Stat label="Cost / lead" value="—" hint="Connect Google Ads" />
+            <Stat label="Cost / lead" value="No data" hint="Connect Google Ads" />
           </div>
         </Preview>
         <Table
           head={["direction", "good", "Reads as"]}
           rows={[
             [<Mono key="a">up</Mono>, <Mono key="b">up</Mono>, "Green, arrow up"],
-            [<Mono key="a">down</Mono>, <Mono key="b">down</Mono>, "Green, arrow down — less was better"],
+            [<Mono key="a">down</Mono>, <Mono key="b">down</Mono>, "Green, arrow down: less was better"],
             [<Mono key="a">down</Mono>, <Mono key="b">up</Mono>, "Red, arrow down"],
-            [<Mono key="a">flat</Mono>, "—", "Grey, a dash"],
+            [<Mono key="a">flat</Mono>, "Either", "Grey, a flat line"],
           ]}
         />
         <Rule>
           A delta is never colour alone: it carries an arrow, and its text says the number. That is
-          also why <Mono>good</Mono> exists — time to first contact going down is the good news, and
+          also why <Mono>good</Mono> exists: time to first contact going down is the good news, and
           a red down-arrow would tell the team the opposite of what happened.
         </Rule>
       </Section>
@@ -73,12 +73,12 @@ export default function StatPage() {
             ["Label", <Mono key="t">text-body-sm</Mono>, "13px", "14px"],
             ["Delta, hint", <Mono key="t">text-label</Mono>, "11px", "12px"],
             ["Surface", <Mono key="t">Card</Mono>, "radius 10px + 4", "radius 12px + 4"],
-            ["Figures", <Mono key="t">tabular-nums</Mono>, "—", "—"],
+            ["Figures", <Mono key="t">tabular-nums</Mono>, "Same", "Same"],
           ]}
         />
         <Rule>
-          The number was Tailwind&apos;s <Mono>text-2xl</Mono> in three hand-written copies — Kpi on
-          Overview, another Kpi on Marketing, Stat on Landings — outside the type scale.{" "}
+          The number was Tailwind&apos;s <Mono>text-2xl</Mono> in three hand-written copies (Kpi on
+          Overview, another Kpi on Marketing, Stat on Landings), outside the type scale.{" "}
           <Mono>text-metric</Mono> is the step above <Mono>text-title</Mono>, with its own tight
           leading, because a figure is not a sentence.
         </Rule>
@@ -88,12 +88,12 @@ export default function StatPage() {
         when={[
           "A single figure someone checks at a glance: today&apos;s leads, the conversion rate, revenue in the pipeline.",
           "In a row of three or four, so the eye compares like with like. A lone Stat on a page is usually a sentence.",
-          "Not for a series over time — that is a chart. Stat says where it is; the chart says how it got there.",
+          "Not for a series over time; that is a chart. Stat says where it is; the chart says how it got there.",
         ]}
         behavior={[
           "Figures use tabular numerals, so a value that refreshes does not shift sideways.",
           "<code>attention</code> puts a dot by the label for figures that ask for action. Use it once per row at most, or it stops meaning anything.",
-          "When the data is missing, show <code>—</code> and say why in <code>hint</code> (&ldquo;Connect PostHog&rdquo;), rather than a zero that looks real.",
+          "When the data is missing, say so in the value (&ldquo;No data&rdquo;) and why in <code>hint</code> (&ldquo;Connect PostHog&rdquo;), rather than a zero that looks real.",
         ]}
         content={[
           "Label in sentence case, naming the figure and its window: &ldquo;Visitor → lead rate (30d)&rdquo;.",
@@ -101,7 +101,7 @@ export default function StatPage() {
         ]}
         accessibility={[
           "The label comes before the number in reading order; the icon is <code>aria-hidden</code>.",
-          "<code>attention</code> adds &ldquo;(needs action)&rdquo; for screen readers — the dot alone is invisible to them.",
+          "<code>attention</code> adds &ldquo;(needs action)&rdquo; for screen readers; the dot alone is invisible to them.",
           "The delta is outlined rather than tinted on purpose: on a 10% tint of themselves, success and error text measure 4.44 and 4.13:1, under AA; on the card&apos;s white they are 5.08 and 4.80.",
         ]}
       />

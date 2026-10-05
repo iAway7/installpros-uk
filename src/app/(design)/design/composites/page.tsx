@@ -85,13 +85,13 @@ hover    -5px, border --brand-soft/35, 450ms ease-ds`}</Code>
         <Table
           head={["Composite", "In code", "In Figma"]}
           rows={[
-            ["Feature card", "✅", "—"],
-            ["Equipment card", "✅", "—"],
-            ["Review card", "✅", "—"],
-            ["Accordion item", "✅", "—"],
-            ["Stat block", "✅", "—"],
-            ["Trust bar item", "✅", "—"],
-            ["Badge", "✅", "—"],
+            ["Feature card", "✅", "Not yet"],
+            ["Equipment card", "✅", "Not yet"],
+            ["Review card", "✅", "Not yet"],
+            ["Accordion item", "✅", "Not yet"],
+            ["Stat block", "✅", "Not yet"],
+            ["Trust bar item", "✅", "Not yet"],
+            ["Badge", "✅", "Not yet"],
           ]}
         />
         <div className="mt-6">

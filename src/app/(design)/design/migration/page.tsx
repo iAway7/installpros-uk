@@ -20,7 +20,7 @@ function Phase({
       </div>
       <p className="mt-2 text-[14px] leading-[1.6] text-neutral-500">{goal}</p>
       <ul className="mt-4 space-y-1.5 text-[14px] leading-[1.6] text-neutral-600">
-        {items.map((i) => <li key={i} className="flex gap-2"><span className="text-neutral-300">—</span>{i}</li>)}
+        {items.map((i) => <li key={i} className="flex gap-2"><span className="text-neutral-300">•</span>{i}</li>)}
       </ul>
     </div>
   );

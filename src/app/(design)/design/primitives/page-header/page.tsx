@@ -53,7 +53,7 @@ export default function PageHeaderPage() {
         />
         <Rule>
           Twelve pages wrote this by hand, identically, with the title at Tailwind&apos;s{" "}
-          <Mono>text-2xl font-bold</Mono> — outside the scale. <Mono>text-heading</Mono> is its own
+          <Mono>text-2xl font-bold</Mono>, outside the scale. <Mono>text-heading</Mono> is its own
           step above <Mono>text-title</Mono>, and the weight drops to semibold: in Product the size
           does the work, as it does in every shadcn-style app.
         </Rule>

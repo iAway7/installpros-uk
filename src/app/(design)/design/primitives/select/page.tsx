@@ -12,7 +12,7 @@ export default function SelectPage() {
     <>
       <PageHeader
         title="Select"
-        lead="Picks one value from a short list. The plain picker — for anything long enough to need searching, reach for Combobox instead."
+        lead="Picks one value from a short list. The plain picker. For anything long enough to need searching, reach for Combobox instead."
       />
 
       <Section title="Default" note="Editorial density: 48px trigger, 16px text.">
@@ -61,7 +61,7 @@ export default function SelectPage() {
 
       <Section title="Select or Combobox">
         <Rule>
-          Select for a list you can read at a glance — two to about eight options. Combobox filters
+          Select for a list you can read at a glance, two to about eight options. Combobox filters
           as you type, which earns its keep on a long list and gets in the way on four. Picking the
           wrong one is the most common mistake with both: a search box over four options is friction,
           and a plain picker over two hundred is a scroll.
@@ -79,12 +79,12 @@ export default function SelectPage() {
           "The menu shadow is shadow-popover, the layer for dropdowns with nothing behind them. It is the only thing separating the menu from the page.",
         ]}
         content={[
-          "Options read as values, not instructions. 'Newest first', not 'Sort by newest first' — the trigger already says what it is.",
+          "Options read as values, not instructions. 'Newest first', not 'Sort by newest first'. The trigger already says what it is.",
           "Keep labels short enough not to truncate at the trigger width.",
         ]}
         accessibility={[
           "The focus ring appears on keyboard focus only, matching every other control. Clicking does not draw it.",
-          "A Select needs a Label or an aria-label. The current value is not a name — it changes.",
+          "A Select needs a Label or an aria-label. The current value is not a name; it changes.",
           "Arrow keys move, Enter picks, Escape closes, and typing a letter jumps. That comes from Radix; do not intercept those keys.",
         ]}
       />

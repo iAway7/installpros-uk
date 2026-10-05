@@ -8,7 +8,7 @@ import { FLAT } from "./nav";
 
 /**
  * Was-this-helpful plus prev/next. Uses our own Feedback component rather than
- * a bespoke widget — the docs site eating its own dog food is the point.
+ * a bespoke widget: the docs site eating its own dog food is the point.
  */
 export function DocsFooter() {
   const path = usePathname();

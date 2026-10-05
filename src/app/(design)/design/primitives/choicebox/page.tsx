@@ -19,7 +19,7 @@ export default function ChoiceboxPage() {
       <Section title="How the indicator reads">
         <Rule>
           Round means pick one. Square means pick several. The tick only says which one is chosen,
-          and it is the same tick in all three places — FormOption, this component&apos;s radio, and
+          and it is the same tick in all three places: FormOption, this component&apos;s radio, and
           this component&apos;s checkbox.
         </Rule>
         <Rule>
@@ -36,13 +36,13 @@ export default function ChoiceboxPage() {
           row with a visible radio or checkbox, a title and room for a line of description.
         </Rule>
         <Rule>
-          So: FormOption when the icon carries the meaning and the labels are one or two words —
+          So: FormOption when the icon carries the meaning and the labels are one or two words;
           the install-type step on a phone is read at a glance, not read. Choicebox when an option
           needs explaining, or when more than one can be picked, which FormOption cannot do.
         </Rule>
         <Rule>
           Its first real use is in the dashboard: the experiment type, two pages or same page,
-          in Experiments. Those were two buttons with <Mono>aria-pressed</Mono> — the same mistake
+          in Experiments. Those were two buttons with <Mono>aria-pressed</Mono>, the same mistake
           FormOption used to make, two independent toggles to a screen reader for a pick-one
           question. They are Choiceboxes now, radios sharing a name, each with an icon (the
           optional <Mono>icon</Mono> prop) and a sentence explaining it. FormOption still runs the

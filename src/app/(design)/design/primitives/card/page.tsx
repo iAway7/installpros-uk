@@ -81,14 +81,14 @@ export default function CardPage() {
           "Not for a whole page. A card inside a card inside a card means the hierarchy is being drawn with borders instead of spacing.",
         ]}
         behavior={[
-          "CardContent pads itself correctly with or without a header. Do not write p-6 back onto it — that was a workaround for a bug that is fixed.",
+          "CardContent pads itself correctly with or without a header. Do not write p-6 back onto it. That was a workaround for a bug that is fixed.",
           "Use p-0 when the content should reach the border, like a table or a map.",
           "Keep 24px of padding. The 16px radius is calibrated against it; changing one without the other looks wrong.",
           "There is no CardFooter. It had zero uses across 37 cards and was deleted.",
         ]}
         content={[
           "CardTitle is a title, not a sentence. If it needs a full stop it belongs in CardDescription.",
-          "Do not set a size on CardTitle or CardDescription — both resolve per density already.",
+          "Do not set a size on CardTitle or CardDescription. Both resolve per density already.",
         ]}
         accessibility={[
           "CardTitle renders a div, not a heading. If the card is a landmark on the page, pass the heading yourself rather than relying on the visual weight.",

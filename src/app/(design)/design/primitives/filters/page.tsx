@@ -12,7 +12,7 @@ export default function FiltersPage() {
         lead="URL-backed controls for a read-only view. Each one writes to the query string, so there is no Apply button and every filtered view is a link you can send."
       />
 
-      <Section title="A filter row" note="Targets: a date window and a traffic source. Try them — this page's URL changes.">
+      <Section title="A filter row" note="Targets: a date window and a traffic source. Try them: this page's URL changes.">
         <Preview>
           {/* useSearchParams needs a Suspense boundary, or the static build of this page fails. */}
           <Suspense>
@@ -41,8 +41,8 @@ export default function FiltersPage() {
   options={[["", "All sources"], ["paid", "Google Ads"], ["organic", "Organic search"]]}
 />`}</Code>
         <Rule>
-          Both are the small field — <Mono>h-control-sm</Mono>, <Mono>rounded-md</Mono>, the 1.5px{" "}
-          <Mono>border-field</Mono> — because they sit side by side. The date trigger used to be a 1px{" "}
+          Both are the small field (<Mono>h-control-sm</Mono>, <Mono>rounded-md</Mono>, the 1.5px{" "}
+          <Mono>border-field</Mono>) because they sit side by side. The date trigger used to be a 1px{" "}
           <Mono>border-border</Mono> box at <Mono>rounded-md</Mono> next to a Select at{" "}
           <Mono>rounded-lg</Mono>. The calendar opens in <Mono>Popover</Mono>, also in{" "}
           <Mono>system/</Mono> now: shadcn&apos;s, pasted and put on the tokens.

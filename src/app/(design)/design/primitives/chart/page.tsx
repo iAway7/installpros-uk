@@ -98,7 +98,7 @@ export default function ChartPage() {
           ]}
         />
         <Rule>
-          <Mono>chart-1</Mono> is under the 3:1 WCAG 1.4.11 asks of a graphical object — taken
+          <Mono>chart-1</Mono> is under the 3:1 WCAG 1.4.11 asks of a graphical object, taken
           knowingly, for the look. It only ever carries a context series, which always has a legend
           entry and its values in the tooltip, so nothing is told by that colour alone.
         </Rule>
@@ -107,7 +107,7 @@ export default function ChartPage() {
       <BestPractices
         when={[
           "How something moved over time. Where it is now is a Stat; the two sit together.",
-          "<code>area</code> for counts that accumulate — leads, visitors, clicks. <code>line</code> for rates and averages.",
+          "<code>area</code> for counts that accumulate: leads, visitors, clicks. <code>line</code> for rates and averages.",
           "A second series only as context for the first, on its own axis when the scales differ by an order of magnitude.",
         ]}
         behavior={[

@@ -19,7 +19,7 @@ export default function BreadcrumbsPage() {
   items={[
     { label: "Home", href: "/" },
     { label: "FAQs", href: "/faqs" },
-    { label: "Installation" },   // no href — this is the current page
+    { label: "Installation" },   // no href: this is the current page
   ]}
 />`}</Code>
       </Section>

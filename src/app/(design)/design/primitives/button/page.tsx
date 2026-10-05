@@ -92,13 +92,13 @@ export default function ButtonPage() {
         <Table
           head={["Addition", "What", "For"]}
           rows={[
-            [<Mono key="a">size=&quot;icon-sm&quot;</Mono>, "control-sm square, 36px", "Close, remove, notifications — inside rows and panel headers, where the 40px icon size would lift the row."],
+            [<Mono key="a">size=&quot;icon-sm&quot;</Mono>, "control-sm square, 36px", "Close, remove, notifications. Inside rows and panel headers, where the 40px icon size would lift the row."],
             [<Mono key="a">variant=&quot;link&quot;</Mono>, "text-primary, underline on hover", "An action that reads as text: Replace, Clear, Mark all read."],
             [<Mono key="a">size=&quot;inline&quot;</Mono>, "no height, no padding", "A link-variant button inside a line of text."],
           ]}
         />
         <Rule>
-          These replaced fourteen hand-written <Mono>&lt;button&gt;</Mono>s in the dashboard — a filled
+          These replaced fourteen hand-written <Mono>&lt;button&gt;</Mono>s in the dashboard: a filled
           Refresh, an outlined CSV export, three icon buttons and nine underlined text actions, each
           with its own padding. Added as new keys only: every existing variant and size produces the
           same classes it did, checked combination by combination, so the funnel&apos;s buttons do not move.

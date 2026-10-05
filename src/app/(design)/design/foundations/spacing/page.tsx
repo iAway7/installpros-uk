@@ -3,7 +3,7 @@ import { PageHeader, Section, Table, Mono, Rule } from "../../_components/docs";
 export const metadata = { title: "Spacing & radius" };
 
 const RADII = [
-  { token: "radius/sm", px: 8, use: "—" },
+  { token: "radius/sm", px: 8, use: "Not used yet" },
   { token: "radius/md", px: 10, use: "Input, checkbox" },
   { token: "radius/lg", px: 12, use: "Button, FormOption, the base radius" },
   { token: "radius/xl", px: 16, use: "Review card" },

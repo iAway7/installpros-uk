@@ -50,7 +50,7 @@ export default function SelectionPage() {
 />`}</Code>
         <p className="mt-4 max-w-2xl text-[15px] leading-[1.6] text-neutral-500">
           It is a real radio group. It used to be a <Mono>&lt;button&gt;</Mono> with{" "}
-          <Mono>aria-pressed</Mono>, which is toggle semantics — this thing is on or off,
+          <Mono>aria-pressed</Mono>, which is toggle semantics: this thing is on or off,
           independently of its neighbours. Every use is a pick-one question, so a screen reader was
           announcing four unrelated switches where only one can be on. Arrow keys now move between
           options and the set is announced as a set.
@@ -61,8 +61,8 @@ export default function SelectionPage() {
         </p>
         <p className="mt-3 max-w-2xl text-[15px] leading-[1.6] text-neutral-500">
           The indicator is round with a tick. The shape is what tells someone whether they can pick
-          one or several — round here and on Choicebox&apos;s radio, square on Choicebox&apos;s
-          checkbox — so the tick is free to mean nothing more than &ldquo;this is the one&rdquo;.
+          one or several (round here and on Choicebox&apos;s radio, square on Choicebox&apos;s
+          checkbox), so the tick is free to mean nothing more than &ldquo;this is the one&rdquo;.
         </p>
       </Section>
 
@@ -116,7 +116,7 @@ export default function SelectionPage() {
             <strong>Never pre-checked, and never required.</strong> Consent initialises to <Mono>false</Mono>, and
             submit does not wait for it: the tick is recorded and the form goes through either way. This page used to
             say the submit was blocked until it was ticked, which was true of an older form and is the opposite of
-            what the rule protects — consent that is a condition of getting the quote is not freely given, and a
+            what the rule protects: consent that is a condition of getting the quote is not freely given, and a
             pre-ticked box is not consent at all.
           </Rule>
           <Rule>
@@ -145,7 +145,7 @@ export default function SelectionPage() {
         ]}
         accessibility={[
           "<code>FormOption</code> is a real radio group and <code>name</code> is required. It used to be a <code>&lt;button&gt;</code> with <code>aria-pressed</code>, which announced four unrelated on/off switches for a question where only one can be on.",
-          "Two radio groups on one page must not share a <code>name</code> — choosing in either would clear the other.",
+          "Two radio groups on one page must not share a <code>name</code>. Choosing in either would clear the other.",
           "The consent checkbox sets <code>aria-invalid</code> and <code>aria-describedby</code> when it errors, and the message carries <code>role=\"alert\"</code>.",
           "The whole label row is the click target, so the real target is 44px+ even though the box itself is 20px.",
           "Selected state is a border plus a ring plus a filled indicator, never colour alone.",

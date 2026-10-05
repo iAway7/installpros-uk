@@ -42,7 +42,7 @@ export default function InputPage() {
         <Table
           head={["State", "Border", "Ring"]}
           rows={[
-            ["Default", <Mono key="a">--field</Mono>, "—"],
+            ["Default", <Mono key="a">--field</Mono>, "None"],
             ["Focus", <Mono key="b">--selection-border</Mono>, "2px --selection / 15%"],
             ["Error", <Mono key="c">--error</Mono>, "2px --error / 20%"],
           ]}

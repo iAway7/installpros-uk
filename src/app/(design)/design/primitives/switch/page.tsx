@@ -17,7 +17,7 @@ export default function SwitchPage() {
         </Preview>
         <Code>{`<Switch checked={on} onCheckedChange={save} aria-label="WhatsApp follow-up" />`}</Code>
         <Rule>
-          Radix&apos;s API — <Mono>checked</Mono>, <Mono>onCheckedChange</Mono> — without the package: the
+          Radix&apos;s API (<Mono>checked</Mono>, <Mono>onCheckedChange</Mono>) without the package: the
           dashboard had two of these hand-rolled on a native <Mono>role=&quot;switch&quot;</Mono> button,
           which is all Radix renders. What the copies got wrong is what the component fixes. One had
           no accessible name at all; the other made its state its name (&ldquo;Active&rdquo; /
@@ -29,7 +29,7 @@ export default function SwitchPage() {
       <BestPractices
         when={[
           "A setting that applies immediately and is safe to undo by flipping it back: pause an endpoint, turn a follow-up on.",
-          "Not inside a form with a Save button — there a Checkbox is the honest control, because nothing happens until submit.",
+          "Not inside a form with a Save button. There a Checkbox is the honest control, because nothing happens until submit.",
         ]}
         behavior={[
           "The change is optimistic: the switch moves at once, and moves back with a toast if the save fails.",

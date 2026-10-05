@@ -73,7 +73,7 @@ export default function EmptyStatePage() {
           "Not for errors. A failed load is a different message with a different fix, and should say so.",
         ]}
         behavior={[
-          "One action at most, and only when it resolves the emptiness — &ldquo;Create experiment&rdquo;, &ldquo;Clear filters&rdquo;.",
+          "One action at most, and only when it resolves the emptiness, like &ldquo;Create experiment&rdquo;, &ldquo;Clear filters&rdquo;.",
           "A filter that matches nothing names the filter as the reason, so the way out is obvious.",
         ]}
         content={[
