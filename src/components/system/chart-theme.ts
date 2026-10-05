@@ -8,10 +8,10 @@
  * which colour live next to the tokens in globals.css.
  */
 export const CHART = {
-  /** The series the chart is about. */
-  series1: "hsl(var(--chart-1))",
-  /** Context behind it. */
-  series2: "hsl(var(--chart-2))",
+  /** The series the chart is about — the mid blue, slot chart-2. */
+  series1: "hsl(var(--chart-2))",
+  /** Context behind it — the light blue, slot chart-1 (1.81:1, legend + tooltip always carry it). */
+  series2: "hsl(var(--chart-1))",
   /** The one point to look at. Never a whole series. */
   accent: "hsl(var(--chart-accent))",
   grid: "hsl(var(--chart-grid))",

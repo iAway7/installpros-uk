@@ -111,12 +111,14 @@
      the recognition is the point of the button. */
   --whatsapp-brand: 142.4 70.2% 48.6%;/* #25D366 */
 
-  /* The one accent the charts are allowed. A single step, not a ramp: nothing
-     else in the system is blue, and a ramp of unused steps is how a palette
-     starts growing without anyone deciding it. Same hue the charts already
-     drew in, so the dashboard does not change colour, it just stops spelling
-     it out by hand. 5.17:1 on white. */
-  --blue-600: 221.2 83.2% 53.3%;  /* #2563EB */
+  /* Blue — the charts, and only the charts. shadcn's blue chart ramp
+     (Tailwind v4 blue 300/500/600/700/800), converted from oklch; every value
+     round-trips to the preset's hex. Nothing else in the system is blue. */
+  --blue-300: 210.7 100% 77.8%;   /* #8EC5FF, 1.81:1 on white */
+  --blue-500: 216.3 100% 58.4%;   /* #2B7FFF, 3.76:1 */
+  --blue-600: 221.3 97.1% 53.5%;  /* #155DFC, 5.26:1 */
+  --blue-700: 225.3 84.1% 49%;    /* #1447E6, 6.82:1 */
+  --blue-800: 226.8 76.1% 41%;  /* #193CB8, 8.84:1 */
 
   /* Zinc — Product's neutrals. The gray ramp above is hue 0, a true grey; zinc
      carries a faint 240 hue, which is most of what makes a dashboard read as
@@ -169,22 +171,29 @@
     --ring: var(--gray-900);
 
     /* ── TIER 2 · data viz ────────────────────────────────────────────────
-       Monochrome plus one accent, because Product is monochrome: a chart in
-       four blues was the only colour on a dashboard that otherwise has none.
+       shadcn's blue chart ramp, slot for slot (chart-1 lightest → chart-5
+       darkest), because the data is the one place colour earns its keep on a
+       dashboard that is otherwise monochrome. (Monochrome plus one blue accent
+       was tried on 2026-10-04 and read as disabled; replaced 2026-10-05.)
 
-       chart-1      the series the chart is about — near-black, like the text
-       chart-2      context series (visitors behind submits, impressions behind
-                    clicks). gray-500, not lighter: a line is a graphical
-                    object and needs 3:1 (WCAG 1.4.11); gray-400 is 2.38:1
-       chart-accent the one thing to look at — the hovered point today, a target
-                    or comparison line when one exists. Never a whole series
-       chart-grid   the rules behind the data, the same hairline as --border
+       How a chart uses the slots — system/chart-theme.ts holds the mapping:
+       the series the chart is about   chart-2  #2B7FFF  3.76:1
+       the context behind it           chart-1  #8EC5FF  1.81:1
+       chart-3…5                       breakdowns (by source, by status)
+       chart-accent                    the hovered point — near-black, so it
+                                       stands off the blues. Never a series
+       chart-grid                      the rules behind the data, = --border
 
-       More than two series on one chart is the wrong chart, not a reason for
-       a third token. */
-    --chart-1: var(--gray-900);
-    --chart-2: var(--gray-500);
-    --chart-accent: var(--blue-600);
+       Recorded, not hidden: chart-1 is under the 3:1 WCAG 1.4.11 asks of a
+       graphical object. Taken knowingly for the look. It only ever carries a
+       context series, which always has a legend entry and its values in the
+       tooltip, so nothing is told by that colour alone. */
+    --chart-1: var(--blue-300);
+    --chart-2: var(--blue-500);
+    --chart-3: var(--blue-600);
+    --chart-4: var(--blue-700);
+    --chart-5: var(--blue-800);
+    --chart-accent: var(--gray-900);
     --chart-grid: var(--gray-100);
 
 
@@ -383,8 +392,7 @@
   --input: var(--zinc-200);
   --ring: var(--zinc-900);
   --sidebar: var(--zinc-50);                 /* the nav column, one step off the canvas */
-  --chart-1: var(--zinc-900);
-  --chart-2: var(--zinc-500);                /* 4.83:1, clears 3:1 for a line */
+  --chart-accent: var(--zinc-900);           /* the series stay blue; only the neutrals move to zinc */
   --chart-grid: var(--zinc-200);
 
   /* Product density. --text-entry stays at 16px on purpose. */

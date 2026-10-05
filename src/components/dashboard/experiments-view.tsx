@@ -297,8 +297,8 @@ function ForestPlot({ r }: { r: VariantResult }) {
   const midY = H / 2;
   const x = (v: number) => ((v + bound) / (2 * bound)) * W;
   const crossesZero = ciLowPct <= 0 && ciHighPct >= 0;
-  // Not significant reads as context (--chart-2); a real lift or drop takes the status colour.
-  const color = crossesZero ? CHART.series2 : diffPct > 0 ? "hsl(var(--success))" : "hsl(var(--error))";
+  // Not significant reads as no result (the muted grey); a real lift or drop takes the status colour.
+  const color = crossesZero ? CHART.axis : diffPct > 0 ? "hsl(var(--success))" : "hsl(var(--error))";
 
   return (
     <svg viewBox={`0 0 ${W} ${H}`} className="h-7 w-full" role="img" aria-label="Confidence interval of lift">

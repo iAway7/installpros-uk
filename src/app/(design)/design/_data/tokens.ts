@@ -331,10 +331,34 @@ export const PRIMITIVES: Primitive[] = [
     "note": "#25D366"
   },
   {
+    "name": "--blue-300",
+    "value": "210.7 100% 77.8%",
+    "hex": "#8EC5FF",
+    "note": "#8EC5FF, 1.81:1 on white"
+  },
+  {
+    "name": "--blue-500",
+    "value": "216.3 100% 58.4%",
+    "hex": "#2B7FFF",
+    "note": "#2B7FFF, 3.76:1"
+  },
+  {
     "name": "--blue-600",
-    "value": "221.2 83.2% 53.3%",
-    "hex": "#2563EB",
-    "note": "#2563EB"
+    "value": "221.3 97.1% 53.5%",
+    "hex": "#155DFC",
+    "note": "#155DFC, 5.26:1"
+  },
+  {
+    "name": "--blue-700",
+    "value": "225.3 84.1% 49%",
+    "hex": "#1447E6",
+    "note": "#1447E6, 6.82:1"
+  },
+  {
+    "name": "--blue-800",
+    "value": "226.8 76.1% 41%",
+    "hex": "#193CB8",
+    "note": "#193CB8, 8.84:1"
   },
   {
     "name": "--zinc-50",
@@ -836,36 +860,69 @@ export const THEME_TOKENS: Token[] = [
   },
   {
     "name": "--chart-1",
+    "value": "var(--blue-300)",
+    "ref": "--blue-300",
+    "hex": "#8EC5FF",
+    "note": null,
+    "productValue": "var(--blue-300)",
+    "productRef": "--blue-300",
+    "productHex": "#8EC5FF",
+    "differs": false
+  },
+  {
+    "name": "--chart-2",
+    "value": "var(--blue-500)",
+    "ref": "--blue-500",
+    "hex": "#2B7FFF",
+    "note": null,
+    "productValue": "var(--blue-500)",
+    "productRef": "--blue-500",
+    "productHex": "#2B7FFF",
+    "differs": false
+  },
+  {
+    "name": "--chart-3",
+    "value": "var(--blue-600)",
+    "ref": "--blue-600",
+    "hex": "#155DFC",
+    "note": null,
+    "productValue": "var(--blue-600)",
+    "productRef": "--blue-600",
+    "productHex": "#155DFC",
+    "differs": false
+  },
+  {
+    "name": "--chart-4",
+    "value": "var(--blue-700)",
+    "ref": "--blue-700",
+    "hex": "#1447E6",
+    "note": null,
+    "productValue": "var(--blue-700)",
+    "productRef": "--blue-700",
+    "productHex": "#1447E6",
+    "differs": false
+  },
+  {
+    "name": "--chart-5",
+    "value": "var(--blue-800)",
+    "ref": "--blue-800",
+    "hex": "#193CB8",
+    "note": null,
+    "productValue": "var(--blue-800)",
+    "productRef": "--blue-800",
+    "productHex": "#193CB8",
+    "differs": false
+  },
+  {
+    "name": "--chart-accent",
     "value": "var(--gray-900)",
     "ref": "--gray-900",
     "hex": "#171717",
-    "note": null,
+    "note": "the series stay blue; only the neutrals move to zinc",
     "productValue": "var(--zinc-900)",
     "productRef": "--zinc-900",
     "productHex": "#18181B",
     "differs": true
-  },
-  {
-    "name": "--chart-2",
-    "value": "var(--gray-500)",
-    "ref": "--gray-500",
-    "hex": "#8F8F8F",
-    "note": "4.83:1, clears 3:1 for a line",
-    "productValue": "var(--zinc-500)",
-    "productRef": "--zinc-500",
-    "productHex": "#71717B",
-    "differs": true
-  },
-  {
-    "name": "--chart-accent",
-    "value": "var(--blue-600)",
-    "ref": "--blue-600",
-    "hex": "#2563EB",
-    "note": null,
-    "productValue": "var(--blue-600)",
-    "productRef": "--blue-600",
-    "productHex": "#2563EB",
-    "differs": false
   },
   {
     "name": "--chart-grid",
