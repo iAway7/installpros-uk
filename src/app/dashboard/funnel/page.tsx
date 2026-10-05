@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Filter, AlertTriangle, ExternalLink } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/system/card";
-import { TrendChart } from "@/components/dashboard/trend-chart";
+import { TrendChart } from "@/components/system/chart";
 import { SelectFilter } from "@/components/dashboard/filters";
 import {
   fetchDailyRates,

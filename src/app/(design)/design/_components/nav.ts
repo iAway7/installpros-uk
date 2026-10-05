@@ -26,6 +26,7 @@ export const NAV: NavGroup[] = [
       { href: "/design/primitives/button", label: "Button" },
       { href: "/design/primitives/calendar", label: "Calendar" },
       { href: "/design/primitives/card", label: "Card" },
+      { href: "/design/primitives/chart", label: "Chart" },
       { href: "/design/primitives/choicebox", label: "Choicebox" },
       { href: "/design/primitives/combobox", label: "Combobox" },
       { href: "/design/primitives/copy-button", label: "Copy button" },

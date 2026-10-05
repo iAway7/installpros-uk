@@ -1,6 +1,6 @@
 import { Users, Sparkles, CalendarClock, TrendingUp, PoundSterling, Timer, FileClock } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
-import { TrendChart } from "@/components/dashboard/trend-chart";
+import { TrendChart } from "@/components/system/chart";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/system/card";
 import {
   type Lead,
