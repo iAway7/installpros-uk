@@ -118,6 +118,22 @@
      it out by hand. 5.17:1 on white. */
   --blue-600: 221.2 83.2% 53.3%;  /* #2563EB */
 
+  /* Zinc — Product's neutrals. The gray ramp above is hue 0, a true grey; zinc
+     carries a faint 240 hue, which is most of what makes a dashboard read as
+     current rather than flat. Taken from shadcn's zinc preset (2026-10-05),
+     converted from oklch to the HSL this file uses so bg-x/10 keeps working;
+     every value round-trips to the preset's hex exactly. Editorial does not use
+     these — the funnel keeps its grays. Only the steps Product points at. */
+  --zinc-50: 0 0% 98%;            /* #FAFAFA */
+  --zinc-100: 240 4.8% 95.9%;     /* #F4F4F5 */
+  --zinc-200: 240 5.9% 90%;       /* #E4E4E7 */
+  --zinc-300: 240 4.9% 83.9%;     /* #D4D4D8 */
+  --zinc-500: 240 4.2% 46.3%;     /* #71717B */
+  --zinc-600: 240 5.7% 34.1%;     /* #52525C */
+  --zinc-800: 240 3.7% 15.9%;     /* #27272A */
+  --zinc-900: 240 5.9% 10%;       /* #18181B */
+  --zinc-950: 240 10% 3.9%;       /* #09090B */
+
     --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 
     /* ── TIER 2 · default semantics ───────────────────────────────────────
@@ -333,21 +349,38 @@
 .theme-product {
   font-family: var(--font-sans);
   font-size: 14px;
+  /* Neutrals on zinc, from shadcn's zinc preset — taken by hand, value by value,
+     rather than by running `shadcn apply`. Run in a throwaway copy, apply also
+     rewrote :root (the funnel's red), swapped the root font, imported a
+     Tailwind v4 stylesheet this v3 build cannot resolve, and replaced
+     lib/utils.ts outright — deleting safeNextPath and the postcode validators.
+
+     Two of the preset's values were left out on purpose:
+       --ring        preset #9F9FA9 is 2.63:1; a focus ring needs 3:1. Kept dark.
+       --destructive status keeps one hue in both densities: --error stays coral.
+
+     --accent changes meaning here: it is the soft hover surface (shadcn's
+     sense), not a second near-black. The two places that used bg-accent as a
+     solid fill now say what they mean (chart-1, primary). */
   --background: var(--white);
-  --foreground: var(--gray-900);
+  --foreground: var(--zinc-950);
   --card: var(--white);
-  --card-foreground: var(--gray-900);
-  --primary: var(--gray-900);
+  --card-foreground: var(--zinc-950);
+  --primary: var(--zinc-900);
   --primary-foreground: var(--white);
-  --secondary: var(--gray-50);
-  --secondary-foreground: var(--gray-900);
-  --muted: var(--gray-50);
-  --muted-foreground: var(--gray-700);
-  --accent: var(--gray-900);
-  --accent-foreground: var(--white);
-  --border: var(--gray-100);
-  --input: var(--gray-100);
-  --ring: var(--gray-900);
+  --secondary: var(--zinc-100);
+  --secondary-foreground: var(--zinc-900);
+  --muted: var(--zinc-100);
+  --muted-foreground: var(--zinc-500);       /* 4.83:1 on white ✓ AA */
+  --accent: var(--zinc-100);
+  --accent-foreground: var(--zinc-900);
+  --border: var(--zinc-200);
+  --input: var(--zinc-200);
+  --ring: var(--zinc-900);
+  --sidebar: var(--zinc-50);                 /* the nav column, one step off the canvas */
+  --chart-1: var(--zinc-900);
+  --chart-2: var(--zinc-500);                /* 4.83:1, clears 3:1 for a line */
+  --chart-grid: var(--zinc-200);
 
   /* Product density. --text-entry stays at 16px on purpose. */
   --text-micro: 10px;
@@ -381,21 +414,25 @@
   --button-weight: 600;
   --button-tracking: 0;
 
-  --radius: 0.75rem;
+  /* 10px, the preset's, down from 12. Every radius derives from this one, so
+     cards, fields and buttons in the dashboard all tighten by 2px together and
+     the funnel's 12px is untouched. */
+  --radius: 0.625rem;
 
   /* ---- Shared system tokens ------------------------------------------------
      The same semantic names the funnel uses, so a primitive from
      components/system renders correctly in both themes. Values are the admin's
      own: monochrome, because there is no brand red in here. Status keeps its
-     hue — an error is red wherever it appears. */
-  --field: var(--gray-200);
-  --field-hover: var(--gray-500);
-  --selection: var(--gray-900);
-  --selection-border: var(--gray-800);
-  --brand-hover: var(--gray-800);
-  --brand-icon: var(--gray-700);
-  --brand-soft: var(--gray-200);
-  --brand-deep: var(--gray-800);
+     hue — an error is red wherever it appears. Each zinc step sits at the
+     lightness of the gray step it replaces. */
+  --field: var(--zinc-300);
+  --field-hover: var(--zinc-500);
+  --selection: var(--zinc-900);
+  --selection-border: var(--zinc-800);
+  --brand-hover: var(--zinc-800);
+  --brand-icon: var(--zinc-600);
+  --brand-soft: var(--zinc-200);
+  --brand-deep: var(--zinc-800);
   --error: var(--coral-600);
   --error-foreground: var(--white);
   --success: var(--green-600);

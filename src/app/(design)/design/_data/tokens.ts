@@ -2,7 +2,8 @@
 // Source of truth: src/app/globals.css
 export interface Primitive { name: string; value: string; hex: string | null; note: string | null }
 export interface Token {
-  name: string; value: string; ref: string | null; hex: string | null; note: string | null;
+  /** null when only Product defines the token (e.g. --sidebar). */
+  name: string; value: string | null; ref: string | null; hex: string | null; note: string | null;
   /** The same token under .theme-product. null when Product cannot resolve it (Editorial-only, e.g. the hero overlays). */
   productValue: string | null; productRef: string | null; productHex: string | null;
   /** True when the two densities resolve to different colours. */
@@ -334,6 +335,60 @@ export const PRIMITIVES: Primitive[] = [
     "value": "221.2 83.2% 53.3%",
     "hex": "#2563EB",
     "note": "#2563EB"
+  },
+  {
+    "name": "--zinc-50",
+    "value": "0 0% 98%",
+    "hex": "#FAFAFA",
+    "note": "#FAFAFA"
+  },
+  {
+    "name": "--zinc-100",
+    "value": "240 4.8% 95.9%",
+    "hex": "#F4F4F5",
+    "note": "#F4F4F5"
+  },
+  {
+    "name": "--zinc-200",
+    "value": "240 5.9% 90%",
+    "hex": "#E4E4E7",
+    "note": "#E4E4E7"
+  },
+  {
+    "name": "--zinc-300",
+    "value": "240 4.9% 83.9%",
+    "hex": "#D4D4D8",
+    "note": "#D4D4D8"
+  },
+  {
+    "name": "--zinc-500",
+    "value": "240 4.2% 46.3%",
+    "hex": "#71717B",
+    "note": "#71717B"
+  },
+  {
+    "name": "--zinc-600",
+    "value": "240 5.7% 34.1%",
+    "hex": "#52525C",
+    "note": "#52525C"
+  },
+  {
+    "name": "--zinc-800",
+    "value": "240 3.7% 15.9%",
+    "hex": "#27272A",
+    "note": "#27272A"
+  },
+  {
+    "name": "--zinc-900",
+    "value": "240 5.9% 10%",
+    "hex": "#18181B",
+    "note": "#18181B"
+  },
+  {
+    "name": "--zinc-950",
+    "value": "240 10% 3.9%",
+    "hex": "#09090B",
+    "note": "#09090B"
   }
 ];
 
@@ -356,10 +411,10 @@ export const THEME_TOKENS: Token[] = [
     "ref": "--gray-900",
     "hex": "#171717",
     "note": "#171717, matches the DS --primary",
-    "productValue": "var(--gray-900)",
-    "productRef": "--gray-900",
-    "productHex": "#171717",
-    "differs": false
+    "productValue": "var(--zinc-950)",
+    "productRef": "--zinc-950",
+    "productHex": "#09090B",
+    "differs": true
   },
   {
     "name": "--card",
@@ -378,10 +433,10 @@ export const THEME_TOKENS: Token[] = [
     "ref": "--gray-900",
     "hex": "#171717",
     "note": null,
-    "productValue": "var(--gray-900)",
-    "productRef": "--gray-900",
-    "productHex": "#171717",
-    "differs": false
+    "productValue": "var(--zinc-950)",
+    "productRef": "--zinc-950",
+    "productHex": "#09090B",
+    "differs": true
   },
   {
     "name": "--secondary",
@@ -389,9 +444,9 @@ export const THEME_TOKENS: Token[] = [
     "ref": "--slate-50",
     "hex": "#F9FAFB",
     "note": "#F9FAFB, cool off-white, not a pure grey",
-    "productValue": "var(--gray-50)",
-    "productRef": "--gray-50",
-    "productHex": "#F2F2F2",
+    "productValue": "var(--zinc-100)",
+    "productRef": "--zinc-100",
+    "productHex": "#F4F4F5",
     "differs": true
   },
   {
@@ -400,10 +455,10 @@ export const THEME_TOKENS: Token[] = [
     "ref": "--gray-900",
     "hex": "#171717",
     "note": null,
-    "productValue": "var(--gray-900)",
-    "productRef": "--gray-900",
-    "productHex": "#171717",
-    "differs": false
+    "productValue": "var(--zinc-900)",
+    "productRef": "--zinc-900",
+    "productHex": "#18181B",
+    "differs": true
   },
   {
     "name": "--muted",
@@ -411,9 +466,9 @@ export const THEME_TOKENS: Token[] = [
     "ref": "--slate-50",
     "hex": "#F9FAFB",
     "note": null,
-    "productValue": "var(--gray-50)",
-    "productRef": "--gray-50",
-    "productHex": "#F2F2F2",
+    "productValue": "var(--zinc-100)",
+    "productRef": "--zinc-100",
+    "productHex": "#F4F4F5",
     "differs": true
   },
   {
@@ -422,10 +477,10 @@ export const THEME_TOKENS: Token[] = [
     "ref": "--gray-700",
     "hex": "#666666",
     "note": "#666666, matches the DS --secondary",
-    "productValue": "var(--gray-700)",
-    "productRef": "--gray-700",
-    "productHex": "#666666",
-    "differs": false
+    "productValue": "var(--zinc-500)",
+    "productRef": "--zinc-500",
+    "productHex": "#71717B",
+    "differs": true
   },
   {
     "name": "--border",
@@ -433,10 +488,10 @@ export const THEME_TOKENS: Token[] = [
     "ref": "--gray-100",
     "hex": "#EBEBEB",
     "note": "#EBEBEB",
-    "productValue": "var(--gray-100)",
-    "productRef": "--gray-100",
-    "productHex": "#EBEBEB",
-    "differs": false
+    "productValue": "var(--zinc-200)",
+    "productRef": "--zinc-200",
+    "productHex": "#E4E4E7",
+    "differs": true
   },
   {
     "name": "--input",
@@ -444,10 +499,10 @@ export const THEME_TOKENS: Token[] = [
     "ref": "--gray-100",
     "hex": "#EBEBEB",
     "note": null,
-    "productValue": "var(--gray-100)",
-    "productRef": "--gray-100",
-    "productHex": "#EBEBEB",
-    "differs": false
+    "productValue": "var(--zinc-200)",
+    "productRef": "--zinc-200",
+    "productHex": "#E4E4E7",
+    "differs": true
   },
   {
     "name": "--radius",
@@ -455,10 +510,10 @@ export const THEME_TOKENS: Token[] = [
     "ref": null,
     "hex": null,
     "note": null,
-    "productValue": "0.75rem",
+    "productValue": "0.625rem",
     "productRef": null,
     "productHex": null,
-    "differs": false
+    "differs": true
   },
   {
     "name": "--primary",
@@ -466,9 +521,9 @@ export const THEME_TOKENS: Token[] = [
     "ref": "--red-600",
     "hex": "#C70505",
     "note": "#C70505, button fill, eyebrow labels",
-    "productValue": "var(--gray-900)",
-    "productRef": "--gray-900",
-    "productHex": "#171717",
+    "productValue": "var(--zinc-900)",
+    "productRef": "--zinc-900",
+    "productHex": "#18181B",
     "differs": true
   },
   {
@@ -488,9 +543,9 @@ export const THEME_TOKENS: Token[] = [
     "ref": "--red-600",
     "hex": "#C70505",
     "note": null,
-    "productValue": "var(--gray-900)",
-    "productRef": "--gray-900",
-    "productHex": "#171717",
+    "productValue": "var(--zinc-100)",
+    "productRef": "--zinc-100",
+    "productHex": "#F4F4F5",
     "differs": true
   },
   {
@@ -499,10 +554,10 @@ export const THEME_TOKENS: Token[] = [
     "ref": "--white",
     "hex": "#FFFFFF",
     "note": null,
-    "productValue": "var(--white)",
-    "productRef": "--white",
-    "productHex": "#FFFFFF",
-    "differs": false
+    "productValue": "var(--zinc-900)",
+    "productRef": "--zinc-900",
+    "productHex": "#18181B",
+    "differs": true
   },
   {
     "name": "--brand-hover",
@@ -510,9 +565,9 @@ export const THEME_TOKENS: Token[] = [
     "ref": "--red-700",
     "hex": "#AA0909",
     "note": "#9E0404, darkens on hover (from the DS)",
-    "productValue": "var(--gray-800)",
-    "productRef": "--gray-800",
-    "productHex": "#4D4D4D",
+    "productValue": "var(--zinc-800)",
+    "productRef": "--zinc-800",
+    "productHex": "#27272A",
     "differs": true
   },
   {
@@ -521,9 +576,9 @@ export const THEME_TOKENS: Token[] = [
     "ref": "--coral-500",
     "hex": "#E5484D",
     "note": "#E5484D, card icon glyphs",
-    "productValue": "var(--gray-700)",
-    "productRef": "--gray-700",
-    "productHex": "#666666",
+    "productValue": "var(--zinc-600)",
+    "productRef": "--zinc-600",
+    "productHex": "#52525C",
     "differs": true
   },
   {
@@ -532,9 +587,9 @@ export const THEME_TOKENS: Token[] = [
     "ref": "--red-400",
     "hex": "#FF5C5C",
     "note": "#FF5A5A, decorative borders/glows ONLY",
-    "productValue": "var(--gray-200)",
-    "productRef": "--gray-200",
-    "productHex": "#D4D4D4",
+    "productValue": "var(--zinc-200)",
+    "productRef": "--zinc-200",
+    "productHex": "#E4E4E7",
     "differs": true
   },
   {
@@ -543,9 +598,9 @@ export const THEME_TOKENS: Token[] = [
     "ref": "--red-700",
     "hex": "#AA0909",
     "note": null,
-    "productValue": "var(--gray-800)",
-    "productRef": "--gray-800",
-    "productHex": "#4D4D4D",
+    "productValue": "var(--zinc-800)",
+    "productRef": "--zinc-800",
+    "productHex": "#27272A",
     "differs": true
   },
   {
@@ -554,10 +609,10 @@ export const THEME_TOKENS: Token[] = [
     "ref": "--gray-900",
     "hex": "#171717",
     "note": null,
-    "productValue": "var(--gray-900)",
-    "productRef": "--gray-900",
-    "productHex": "#171717",
-    "differs": false
+    "productValue": "var(--zinc-900)",
+    "productRef": "--zinc-900",
+    "productHex": "#18181B",
+    "differs": true
   },
   {
     "name": "--selection-border",
@@ -565,10 +620,10 @@ export const THEME_TOKENS: Token[] = [
     "ref": "--gray-800",
     "hex": "#4D4D4D",
     "note": "#404040, input border on focus",
-    "productValue": "var(--gray-800)",
-    "productRef": "--gray-800",
-    "productHex": "#4D4D4D",
-    "differs": false
+    "productValue": "var(--zinc-800)",
+    "productRef": "--zinc-800",
+    "productHex": "#27272A",
+    "differs": true
   },
   {
     "name": "--field",
@@ -576,10 +631,10 @@ export const THEME_TOKENS: Token[] = [
     "ref": "--gray-200",
     "hex": "#D4D4D4",
     "note": "#D4D4D4, input/option border at rest",
-    "productValue": "var(--gray-200)",
-    "productRef": "--gray-200",
-    "productHex": "#D4D4D4",
-    "differs": false
+    "productValue": "var(--zinc-300)",
+    "productRef": "--zinc-300",
+    "productHex": "#D4D4D8",
+    "differs": true
   },
   {
     "name": "--field-hover",
@@ -587,9 +642,9 @@ export const THEME_TOKENS: Token[] = [
     "ref": "--gray-600",
     "hex": "#7D7D7D",
     "note": "#737373, border on hover",
-    "productValue": "var(--gray-500)",
-    "productRef": "--gray-500",
-    "productHex": "#8F8F8F",
+    "productValue": "var(--zinc-500)",
+    "productRef": "--zinc-500",
+    "productHex": "#71717B",
     "differs": true
   },
   {
@@ -598,10 +653,10 @@ export const THEME_TOKENS: Token[] = [
     "ref": "--gray-900",
     "hex": "#171717",
     "note": "focus ring = selection, not red",
-    "productValue": "var(--gray-900)",
-    "productRef": "--gray-900",
-    "productHex": "#171717",
-    "differs": false
+    "productValue": "var(--zinc-900)",
+    "productRef": "--zinc-900",
+    "productHex": "#18181B",
+    "differs": true
   },
   {
     "name": "--error",
@@ -785,21 +840,21 @@ export const THEME_TOKENS: Token[] = [
     "ref": "--gray-900",
     "hex": "#171717",
     "note": null,
-    "productValue": "var(--gray-900)",
-    "productRef": "--gray-900",
-    "productHex": "#171717",
-    "differs": false
+    "productValue": "var(--zinc-900)",
+    "productRef": "--zinc-900",
+    "productHex": "#18181B",
+    "differs": true
   },
   {
     "name": "--chart-2",
     "value": "var(--gray-500)",
     "ref": "--gray-500",
     "hex": "#8F8F8F",
-    "note": null,
-    "productValue": "var(--gray-500)",
-    "productRef": "--gray-500",
-    "productHex": "#8F8F8F",
-    "differs": false
+    "note": "4.83:1, clears 3:1 for a line",
+    "productValue": "var(--zinc-500)",
+    "productRef": "--zinc-500",
+    "productHex": "#71717B",
+    "differs": true
   },
   {
     "name": "--chart-accent",
@@ -818,10 +873,21 @@ export const THEME_TOKENS: Token[] = [
     "ref": "--gray-100",
     "hex": "#EBEBEB",
     "note": null,
-    "productValue": "var(--gray-100)",
-    "productRef": "--gray-100",
-    "productHex": "#EBEBEB",
-    "differs": false
+    "productValue": "var(--zinc-200)",
+    "productRef": "--zinc-200",
+    "productHex": "#E4E4E7",
+    "differs": true
+  },
+  {
+    "name": "--sidebar",
+    "value": null,
+    "ref": null,
+    "hex": null,
+    "note": "the nav column, one step off the canvas",
+    "productValue": "var(--zinc-50)",
+    "productRef": "--zinc-50",
+    "productHex": "#FAFAFA",
+    "differs": true
   }
 ];
 
@@ -998,8 +1064,8 @@ export const SCALES: Scale[] = [
       {
         "name": "--radius",
         "editorial": "0.75rem",
-        "product": "0.75rem",
-        "differs": false
+        "product": "0.625rem",
+        "differs": true
       }
     ]
   }

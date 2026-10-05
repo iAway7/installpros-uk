@@ -214,7 +214,7 @@ function ExperimentCard({ data, isAdmin }: { data: ExperimentWithResults; isAdmi
                         </span>
                       )}
                       {!r.isWinner && r.isSignificant && (
-                        <span className="rounded bg-accent/10 px-1.5 py-0.5 text-label font-semibold text-accent">Significant</span>
+                        <span className="rounded bg-primary/10 px-1.5 py-0.5 text-label font-semibold text-primary">Significant</span>
                       )}
                     </div>
                     {typeof r.variant.config?.path === "string" ? (

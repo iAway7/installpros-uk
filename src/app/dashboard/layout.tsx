@@ -28,7 +28,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
   return (
     <div className="theme-product flex min-h-dvh bg-secondary/30">
       {/* Sidebar (desktop) */}
-      <aside className="hidden w-60 shrink-0 flex-col border-r border-border bg-background md:flex">
+      <aside className="hidden w-60 shrink-0 flex-col border-r border-border bg-sidebar md:flex">
         <div className="flex h-16 items-center gap-2 border-b border-border px-5 font-bold">
           <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
             <Satellite className="h-4 w-4" />

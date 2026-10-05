@@ -91,6 +91,8 @@ const config: Config = {
           // Lighter green for dark surfaces (the hero). .theme-editorial-v2 only.
           bright: "hsl(var(--success-bright))",
         },
+        // Product only: the nav column's surface. Undefined outside .theme-product.
+        sidebar: "hsl(var(--sidebar))",
         warning: {
           DEFAULT: "hsl(var(--warning))",
           foreground: "hsl(var(--warning-foreground))",

@@ -217,7 +217,7 @@ export default async function OverviewPage() {
                 <div key={source} className="flex items-center gap-3">
                   <span className="w-28 truncate text-body-sm capitalize">{source}</span>
                   <div className="h-2 flex-1 overflow-hidden rounded-full bg-secondary">
-                    <div className="h-full rounded-full bg-accent" style={{ width: `${total ? (count / total) * 100 : 0}%` }} />
+                    <div className="h-full rounded-full bg-chart-1" style={{ width: `${total ? (count / total) * 100 : 0}%` }} />
                   </div>
                   <span className="w-8 text-right text-body-sm font-medium tabular-nums">{count}</span>
                 </div>
