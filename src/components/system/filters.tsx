@@ -9,11 +9,16 @@ import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 import { cn } from "@/lib/utils";
 
 /**
- * URL-backed filters for the dashboard pages. Each control writes its value
- * into the query string and re-renders the server page, so there is no
- * Apply button and every view stays linkable.
+ * URL-backed filters. Each control writes its value into the query string and
+ * re-renders the server page, so there is no Apply button and every view
+ * stays linkable: a filtered Targets page is a URL you can send.
  *
- * Dashboard only: the landing forms keep their own controls.
+ * Both controls are the small field: control-sm tall, radius md, the 1.5px
+ * field border. They used to disagree side by side — the date trigger was a
+ * 1px border-border box at rounded-md next to a Select at rounded-lg.
+ *
+ * For dashboards and other read-only views. A form that submits keeps its own
+ * controls; these push to the URL on every change.
  */
 
 function useSetParam() {
@@ -63,7 +68,7 @@ export function SelectFilter({
   return (
     <FilterField label={label}>
       <Select value={value || EMPTY} onValueChange={(v) => set(name, v === EMPTY ? "" : v)} disabled={pending}>
-        <SelectTrigger className={cn("h-9 min-w-[10rem] text-body-sm", className)} aria-label={label}>
+        <SelectTrigger className={cn("h-control-sm min-w-40 rounded-md px-3 text-body-sm", className)} aria-label={label}>
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
@@ -111,7 +116,7 @@ export function DateFilter({
               disabled={pending}
               aria-label={label}
               className={cn(
-                "flex h-9 min-w-[10rem] items-center gap-2 rounded-md border border-border bg-background px-3 text-body-sm text-foreground focus-ring",
+                "flex h-control-sm min-w-40 items-center gap-2 rounded-md border-[length:var(--border-field)] border-field bg-background px-3 text-body-sm text-foreground transition-colors duration-quick hover:border-field-hover focus-visible:border-selection-border focus-ring",
                 !value && "text-muted-foreground",
               )}
             >
@@ -133,7 +138,7 @@ export function DateFilter({
             type="button"
             onClick={() => set(name, "")}
             aria-label={`Clear ${label}`}
-            className="flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground hover:bg-secondary hover:text-foreground focus-ring"
+            className="flex h-control-sm w-control-sm items-center justify-center rounded-md text-muted-foreground hover:bg-secondary hover:text-foreground focus-ring"
           >
             <X className="h-4 w-4" />
           </button>

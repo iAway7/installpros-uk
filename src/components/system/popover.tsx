@@ -4,7 +4,12 @@ import * as React from "react";
 import * as PopoverPrimitive from "@radix-ui/react-popover";
 import { cn } from "@/lib/utils";
 
-/** shadcn's Popover on this project's tokens. Dashboard only. */
+/**
+ * shadcn's Popover, pasted and put on this project's tokens: surface card,
+ * border, Elevation/popover — the layer for floating content with no backdrop
+ * behind it. Radix portals it into <body>; ProductBodyTheme is why it still
+ * resolves Product's tokens and font from there.
+ */
 const Popover = PopoverPrimitive.Root;
 const PopoverTrigger = PopoverPrimitive.Trigger;
 

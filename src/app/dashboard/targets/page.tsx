@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Filter } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/system/card";
-import { DateFilter, SelectFilter } from "@/components/dashboard/filters";
+import { DateFilter, SelectFilter } from "@/components/system/filters";
 import { createClient } from "@/lib/supabase/server";
 import { realLeads } from "@/lib/dashboard/leads";
 import { fetchSources, fetchTargetCounts, isOrganicSource, posthogConfigured, FUNNEL_PAGES, ORGANIC_SOURCE } from "@/lib/posthog/query";

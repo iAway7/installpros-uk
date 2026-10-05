@@ -34,6 +34,7 @@ export const NAV: NavGroup[] = [
       { href: "/design/primitives/error", label: "Error" },
       { href: "/design/primitives/feedback", label: "Feedback" },
       { href: "/design/primitives/fieldset", label: "Fieldset" },
+      { href: "/design/primitives/filters", label: "Filters" },
       { href: "/design/primitives/info-tip", label: "Info tip" },
       { href: "/design/primitives/input", label: "Input" },
       { href: "/design/primitives/label", label: "Label" },
