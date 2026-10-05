@@ -76,32 +76,30 @@ export default function ColorPage() {
 
       <Section
         title="Opacity"
-        note="Conventions, not a scale. 159 uses across 16 values — these are the ones that already agree."
+        note="Not a scale, just the values most of the site already uses. Start here before picking your own."
       >
         <Table
-          head={["Use", "Value", "Agreement"]}
+          head={["Use", "Value", "Already using it"]}
           rows={[
             ["Soft brand or status tint on light", <Mono key="a">/10</Mono>, "23 of 30"],
             ["Brand border, resting", <Mono key="b">/25</Mono>, "5 of 7"],
             ["Brand border, hover", <Mono key="c">/35</Mono>, "6 of 6"],
-            ["Modal and drawer scrim", <Mono key="d">bg-black/40</Mono>, "2 of 2"],
+            ["Dark overlay behind a modal or drawer", <Mono key="d">bg-black/40</Mono>, "2 of 2"],
           ]}
         />
         <Rule>
-          Reach for these before inventing a number. Most of the variation that exists is one person
-          writing what looked right without comparing it to the element beside it.
+          Use these first. Most of the other values exist because someone picked what looked right
+          without checking the element next to it.
         </Rule>
         <Rule>
-          Some of the variation is doing work and should stay. <Mono>text-white</Mono> runs 50 through
-          95 on the dark hero because that is a text hierarchy, not five attempts at one value.
+          Some differences are on purpose. White text on the dark hero goes from 50% to 95% because
+          it is a hierarchy: the headline is brighter than the small print.
         </Rule>
         <Rule>
-          There is deliberately no five-step scale to snap everything to. Moving an opacity by five
-          points on a saturated colour is a ΔE of about 5 — comfortably visible, not a rounding
-          error. Sweeping 159 values into a scale would repaint the site element by element without
-          anyone having decided to. The measured drift that remains — <Mono>border-white</Mono> at
-          six values across eleven uses, <Mono>text-muted-foreground</Mono> at four — is recorded in
-          the audit rather than quietly fixed.
+          Why not round everything to steps of 5? Because 5 points of opacity is already a visible
+          change on a strong colour. Rounding all 159 values would quietly change how the site looks,
+          one element at a time, without anyone deciding to. The leftovers that still disagree are
+          listed in the audit instead.
         </Rule>
       </Section>
     </>
