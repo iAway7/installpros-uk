@@ -101,7 +101,6 @@ export default async function FunnelPage({ searchParams }: { searchParams: Searc
         <CardContent className="space-y-3">
           <p className="text-body-sm text-muted-foreground">
             Which question people leave on. A row is counted when the visitor reaches that step in either the hero or the footer form.
-            The service question is only asked on landings that do not fix the service up front (none of the live ones), so it shows as a side note and only when someone saw it.
           </p>
           {!questions.ok ? (
             <p className="py-6 text-center text-body-sm text-destructive">
@@ -162,9 +161,9 @@ function FunnelBars({ steps, prev = [] }: { steps: FunnelStepResult[]; prev?: nu
         const prevUsers = prev[i] ?? null;
         const dropped = prevUsers !== null && prevUsers > 0 && s.users < prevUsers * 0.8;
         return (
-          <div key={s.label} className={`space-y-1 ${s.aside ? "opacity-70" : ""}`}>
+          <div key={s.label} className="space-y-1">
             <div className="flex items-baseline justify-between gap-2 text-body-sm">
-              <span className={`flex items-center gap-2 ${s.aside ? "italic" : "font-medium"}`}>
+              <span className="flex items-center gap-2 font-medium">
                 {s.label}
                 {dropped && (
                   <span className="inline-flex items-center gap-1 rounded-full bg-destructive/10 px-2 py-0.5 text-label font-semibold text-destructive">
@@ -175,12 +174,12 @@ function FunnelBars({ steps, prev = [] }: { steps: FunnelStepResult[]; prev?: nu
               </span>
               <span className="tabular-nums text-muted-foreground">
                 {s.users.toLocaleString("en-GB")}
-                {i > 0 && !s.aside && <span className="ml-2 text-label">({Math.round(s.stepConversion * 100)}% of prev · {Math.round(s.totalConversion * 100)}% total)</span>}
+                {i > 0 && <span className="ml-2 text-label">({Math.round(s.stepConversion * 100)}% of prev · {Math.round(s.totalConversion * 100)}% total)</span>}
               </span>
             </div>
             <div className="h-6 overflow-hidden rounded-md bg-secondary">
               <div
-                className={`h-full rounded-md ${dropped ? "bg-destructive/60" : s.aside ? "bg-muted-foreground/40" : "bg-primary"}`}
+                className={`h-full rounded-md ${dropped ? "bg-destructive/60" : "bg-primary"}`}
                 style={{ width: `${(s.users / maxUsers) * 100}%` }}
               />
             </div>

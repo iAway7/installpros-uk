@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { MapPin } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/system/card";
@@ -9,13 +8,6 @@ import { InfoTip } from "@/components/system/info-tip";
 import { worstServedOutcodes, releaseLabel } from "@/lib/broadband/outcode-coverage";
 
 export const dynamic = "force-dynamic";
-
-type View = "leads" | "quoted" | "won";
-const VIEWS: Array<{ key: View; label: string }> = [
-  { key: "leads", label: "All leads" },
-  { key: "quoted", label: "Quoted+" },
-  { key: "won", label: "Won" },
-];
 
 const QUOTED_OR_LATER: LeadStatus[] = ["quoted", "booked", "installed"];
 
@@ -48,9 +40,7 @@ interface DistrictStats {
   won: number;
 }
 
-export default async function MapPage({ searchParams }: { searchParams: { view?: string } }) {
-  const view: View = (VIEWS.some((v) => v.key === searchParams.view) ? searchParams.view : "leads") as View;
-
+export default async function MapPage() {
   const supabase = createClient();
   const { data, error } = await supabase.from("leads").select("postcode, status").eq("is_test", false);
   const leads = ((data as { postcode: string; status: LeadStatus }[] | null) ?? []);
@@ -77,8 +67,6 @@ export default async function MapPage({ searchParams }: { searchParams: { view?:
   const regionIndex = new Map<string, string>(); // norm(name) -> svg key
   for (const [key, region] of Object.entries(ukMap)) regionIndex.set(norm(region.name), key);
 
-  const countFor = (d: DistrictStats) => (view === "won" ? d.won : view === "quoted" ? d.quoted : d.leads);
-
   const regionCounts = new Map<string, { count: number; label: string }>();
   const unmatchedDistricts: string[] = [];
   districts.forEach((d) => {
@@ -87,12 +75,12 @@ export default async function MapPage({ searchParams }: { searchParams: { view?:
       // partial match: "Cornwall" in "Cornwall and Isles of Scilly" etc.
       Array.from(regionIndex.entries()).find(([n]) => n.includes(norm(d.name)) || norm(d.name).includes(n))?.[1];
     if (!key) {
-      if (countFor(d) > 0) unmatchedDistricts.push(d.name);
+      if (d.leads > 0) unmatchedDistricts.push(d.name);
       return;
     }
     const existing = regionCounts.get(key);
     regionCounts.set(key, {
-      count: (existing?.count ?? 0) + countFor(d),
+      count: (existing?.count ?? 0) + d.leads,
       label: d.name,
     });
   });
@@ -121,20 +109,6 @@ export default async function MapPage({ searchParams }: { searchParams: { view?:
         <p className="text-muted-foreground">Where your leads come from, and where you close.</p>
       </div>
 
-      <div className="flex gap-1 rounded-lg bg-secondary p-1 w-fit">
-        {VIEWS.map((v) => (
-          <Link
-            key={v.key}
-            href={`/dashboard/map?view=${v.key}`}
-            className={`rounded-md px-4 py-1.5 text-body-sm font-medium ${
-              view === v.key ? "bg-background shadow-sm" : "text-muted-foreground hover:text-foreground"
-            }`}
-          >
-            {v.label}
-          </Link>
-        ))}
-      </div>
-
       {error ? (
         <Card><CardContent className="text-body-sm text-destructive">Couldn&apos;t load leads ({error.message}).</CardContent></Card>
       ) : leads.length === 0 ? (
@@ -145,10 +119,10 @@ export default async function MapPage({ searchParams }: { searchParams: { view?:
           </CardContent>
         </Card>
       ) : (
-        <div className="grid gap-6 lg:grid-cols-[1.2fr_1fr]">
+        <div className="space-y-6">
           <Card>
-            <CardContent className="p-4">
-              <svg viewBox={UK_MAP_VIEWBOX} className="w-full" role="img" aria-label="UK lead density map">
+            <CardContent className="flex flex-col items-center p-4">
+              <svg viewBox={UK_MAP_VIEWBOX} className="w-full max-w-xl" role="img" aria-label="UK lead density map">
                 {Object.entries(ukMap).map(([key, region]) => {
                   const hit = regionCounts.get(key);
                   const intensity = hit ? 0.25 + 0.75 * (hit.count / max) : 0;
@@ -169,12 +143,12 @@ export default async function MapPage({ searchParams }: { searchParams: { view?:
                 <span>0</span>
                 <div className="h-2 w-32 rounded-full bg-gradient-to-r from-secondary via-primary/40 to-primary" />
                 <span>{max}</span>
-                <span className="ml-2">{VIEWS.find((v) => v.key === view)?.label} per area</span>
+                <span className="ml-2">Leads per area</span>
               </div>
             </CardContent>
           </Card>
 
-          <div className="space-y-4">
+          <div className="space-y-6">
             <Card>
               <CardHeader><CardTitle>By district</CardTitle></CardHeader>
               <CardContent className="p-0">
