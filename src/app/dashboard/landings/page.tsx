@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { Card, CardContent } from "@/components/system/card";
 import { aggregateLandings, totals, RANGES, type LandingLeadRow } from "@/lib/dashboard/landings";
 import { Stat } from "@/components/system/stat";
+import { EmptyState } from "@/components/system/empty-state";
 
 export const dynamic = "force-dynamic";
 
@@ -65,11 +66,7 @@ export default async function LandingsPage({
       </div>
 
       {stats.length === 0 ? (
-        <Card>
-          <CardContent className="p-6 text-center text-body-sm text-muted-foreground">
-            No leads in this range yet.
-          </CardContent>
-        </Card>
+        <EmptyState title="No leads in this range yet" description="Widen the date range, or check back once traffic has come in." />
       ) : (
         <Card>
           <CardContent className="overflow-x-auto p-0">

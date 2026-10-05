@@ -12,6 +12,7 @@ import { TESTABLE_PAGES } from "@/lib/experiments/pages";
 import { DEFAULT_HERO_HEADLINE } from "@/lib/funnel/defaults";
 import type { Experiment, ExperimentStatus, VariantResult } from "@/lib/experiments/types";
 import { CHART } from "@/components/system/chart-theme";
+import { EmptyState } from "@/components/system/empty-state";
 
 /** Small hover/focus tooltip for explaining a field. */
 function InfoHint({ text }: { text: string }) {
@@ -66,17 +67,15 @@ export function ExperimentsView({ experiments, isAdmin }: { experiments: Experim
       {creating && <CreateForm onDone={() => setCreating(false)} />}
 
       {experiments.length === 0 ? (
-        <Card>
-          <CardContent className="flex flex-col items-center gap-2 p-12 text-center">
-            <FlaskConical className="h-10 w-10 text-muted-foreground" />
-            <h3 className="text-lg font-semibold">No experiments yet</h3>
-            <p className="max-w-sm text-body-sm text-muted-foreground">
-              {isAdmin
-                ? "Create your first A/B test, for example two hero headlines, then set it running."
-                : "An admin can create A/B tests here."}
-            </p>
-          </CardContent>
-        </Card>
+        <EmptyState
+          icon={<FlaskConical />}
+          title="No experiments yet"
+          description={
+            isAdmin
+              ? "Create your first A/B test, for example two hero headlines, then set it running."
+              : "An admin can create A/B tests here."
+          }
+        />
       ) : (
         experiments.map((x) => <ExperimentCard key={x.experiment.id} data={x} isAdmin={isAdmin} />)
       )}

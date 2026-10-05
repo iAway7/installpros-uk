@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 import { realLeads } from "@/lib/dashboard/leads";
 import { fetchSources, fetchTargetCounts, isOrganicSource, posthogConfigured, FUNNEL_PAGES, ORGANIC_SOURCE } from "@/lib/posthog/query";
 import { buildTargetsReport, pct, LAUNCH_DATE, type TargetStatus, type TargetsReport } from "@/lib/dashboard/targets";
+import { EmptyState } from "@/components/system/empty-state";
 
 export const dynamic = "force-dynamic";
 
@@ -202,7 +203,7 @@ function DeviceTable({ report }: { report: TargetsReport }) {
       <CardHeader><CardTitle>By device</CardTitle></CardHeader>
       <CardContent className="p-0">
         {report.devices.length === 0 ? (
-          <p className="py-6 text-center text-body-sm text-muted-foreground">No visitors or leads in this period.</p>
+          <EmptyState variant="inline" description="No visitors or leads in this period." />
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-body-sm">

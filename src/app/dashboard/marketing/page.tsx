@@ -7,6 +7,7 @@ import { ConversionChart } from "@/components/dashboard/conversion-chart";
 import { type LeadStatus, realLeads } from "@/lib/dashboard/leads";
 import { getVisitorLeadRate, fmtRate, fmtDelta } from "@/lib/dashboard/conversion";
 import { Stat } from "@/components/system/stat";
+import { EmptyState } from "@/components/system/empty-state";
 
 export const dynamic = "force-dynamic";
 
@@ -80,7 +81,7 @@ export default async function MarketingPage() {
           <Card>
             <CardHeader><CardTitle>Weekly visitor → lead rate</CardTitle></CardHeader>
             <CardContent className="space-y-3">
-              {conv.weekly.some((w) => w.visitors > 0) ? <ConversionChart data={conv.weekly} /> : <Empty>No visitors recorded yet.</Empty>}
+              {conv.weekly.some((w) => w.visitors > 0) ? <ConversionChart data={conv.weekly} /> : <EmptyState variant="inline" description="No visitors recorded yet." />}
               <p className="text-label text-muted-foreground">
                 Leads come from the form submissions in Supabase (every one is counted). Visitors come from PostHog, which
                 only sees people who accepted analytics cookies, so the rate reads a little high. It is measured the same
@@ -123,7 +124,7 @@ export default async function MarketingPage() {
             <Card>
               <CardHeader><CardTitle>Clicks &amp; impressions</CardTitle></CardHeader>
               <CardContent>
-                {sc.byDate.length ? <SearchConsoleChart data={sc.byDate} /> : <Empty>No data in this period.</Empty>}
+                {sc.byDate.length ? <SearchConsoleChart data={sc.byDate} /> : <EmptyState variant="inline" description="No data in this period." />}
               </CardContent>
             </Card>
 
@@ -171,17 +172,13 @@ function ConnectCard({ title, body, doc }: { title: string; body: string; doc: s
   );
 }
 
-function Empty({ children }: { children: React.ReactNode }) {
-  return <p className="py-8 text-center text-body-sm text-muted-foreground">{children}</p>;
-}
-
 function RowTable({ title, rows, pageStyle }: { title: string; rows: { key: string; clicks: number; impressions: number; ctr: number; position: number }[]; pageStyle?: boolean }) {
   return (
     <Card>
       <CardHeader><CardTitle>{title}</CardTitle></CardHeader>
       <CardContent className="p-0">
         {rows.length === 0 ? (
-          <Empty>No data yet.</Empty>
+          <EmptyState variant="inline" description="No data yet." />
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-body-sm">

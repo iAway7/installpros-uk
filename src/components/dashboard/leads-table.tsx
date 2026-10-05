@@ -20,6 +20,7 @@ import {
   formatDateTime,
 } from "@/lib/dashboard/leads";
 import type { LeadIntel } from "@/lib/intel/types";
+import { EmptyState } from "@/components/system/empty-state";
 
 /** Escape one CSV cell per RFC 4180. */
 function csvCell(v: unknown): string {
@@ -285,15 +286,11 @@ export function LeadsTable({
       </p>
 
       {filtered.length === 0 ? (
-        <Card>
-          <CardContent className="flex flex-col items-center gap-2 p-12 text-center">
-            <Inbox className="h-10 w-10 text-muted-foreground" />
-            <p className="font-medium">No matching leads</p>
-            <p className="text-body-sm text-muted-foreground">
-              {leads.length === 0 ? "New quote requests will appear here." : "Try clearing your search or filter."}
-            </p>
-          </CardContent>
-        </Card>
+        <EmptyState
+          icon={<Inbox />}
+          title={leads.length === 0 ? "No leads yet" : "No matching leads"}
+          description={leads.length === 0 ? "New quote requests will appear here." : "Try clearing your search or filter."}
+        />
       ) : (
         <>
           {/* Desktop table */}

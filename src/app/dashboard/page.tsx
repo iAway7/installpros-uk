@@ -13,6 +13,7 @@ import {
 import { getVisitorLeadRate, fmtRate, fmtDelta } from "@/lib/dashboard/conversion";
 import { realLeads } from "@/lib/dashboard/leads";
 import { Stat } from "@/components/system/stat";
+import { EmptyState } from "@/components/system/empty-state";
 
 export const dynamic = "force-dynamic";
 
@@ -123,15 +124,11 @@ export default async function OverviewPage() {
           </CardContent>
         </Card>
       ) : total === 0 ? (
-        <Card>
-          <CardContent className="flex flex-col items-center gap-2 p-12 text-center">
-            <Users className="h-10 w-10 text-muted-foreground" />
-            <h3 className="text-lg font-semibold">No leads yet</h3>
-            <p className="max-w-sm text-body-sm text-muted-foreground">
-              As soon as someone completes the form on your landing page, they&apos;ll show up here.
-            </p>
-          </CardContent>
-        </Card>
+        <EmptyState
+          icon={<Users />}
+          title="No leads yet"
+          description="As soon as someone completes the form on your landing page, they'll show up here."
+        />
       ) : (
         <>
           {/* The number that matters: this week vs last week + trend */}

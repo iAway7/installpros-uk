@@ -29,6 +29,7 @@ export const NAV: NavGroup[] = [
       { href: "/design/primitives/choicebox", label: "Choicebox" },
       { href: "/design/primitives/combobox", label: "Combobox" },
       { href: "/design/primitives/copy-button", label: "Copy button" },
+      { href: "/design/primitives/empty-state", label: "Empty state" },
       { href: "/design/primitives/error", label: "Error" },
       { href: "/design/primitives/feedback", label: "Feedback" },
       { href: "/design/primitives/fieldset", label: "Fieldset" },

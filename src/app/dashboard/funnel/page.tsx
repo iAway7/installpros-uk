@@ -13,6 +13,7 @@ import {
   FUNNEL_PAGES,
   type FunnelStepResult,
 } from "@/lib/posthog/query";
+import { EmptyState } from "@/components/system/empty-state";
 
 export const dynamic = "force-dynamic";
 
@@ -107,7 +108,7 @@ export default async function FunnelPage({ searchParams }: { searchParams: Searc
               Couldn&apos;t load per-question data{questions.error ? `: ${questions.error}` : ""}.
             </p>
           ) : questions.steps.every((s) => s.users === 0) ? (
-            <p className="py-6 text-center text-body-sm text-muted-foreground">No form starts in this period.</p>
+            <EmptyState variant="inline" description="No form starts in this period." />
           ) : (
             <FunnelBars steps={questions.steps} />
           )}
@@ -119,7 +120,7 @@ export default async function FunnelPage({ searchParams }: { searchParams: Searc
         <CardHeader><CardTitle>Visitors vs form submits (daily)</CardTitle></CardHeader>
         <CardContent>
           {daily.length === 0 ? (
-            <p className="py-6 text-center text-body-sm text-muted-foreground">No data in this period.</p>
+            <EmptyState variant="inline" description="No data in this period." />
           ) : (
             <TrendChart
               data={daily.map((d) => ({ date: d.day, visitors: d.visitors, submits: d.submits }))}

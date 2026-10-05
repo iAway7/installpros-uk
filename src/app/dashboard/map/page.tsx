@@ -6,6 +6,7 @@ import { WON_STATUSES, type LeadStatus } from "@/lib/dashboard/leads";
 import { ukMap, UK_MAP_VIEWBOX } from "@/lib/funnel/uk-map";
 import { InfoTip } from "@/components/system/info-tip";
 import { worstServedOutcodes, releaseLabel } from "@/lib/broadband/outcode-coverage";
+import { EmptyState } from "@/components/system/empty-state";
 
 export const dynamic = "force-dynamic";
 
@@ -112,12 +113,11 @@ export default async function MapPage() {
       {error ? (
         <Card><CardContent className="text-body-sm text-destructive">Couldn&apos;t load leads ({error.message}).</CardContent></Card>
       ) : leads.length === 0 ? (
-        <Card>
-          <CardContent className="flex flex-col items-center gap-2 p-12 text-center">
-            <MapPin className="h-10 w-10 text-muted-foreground" />
-            <p className="font-medium">No leads to map yet</p>
-          </CardContent>
-        </Card>
+        <EmptyState
+          icon={<MapPin />}
+          title="No leads to map yet"
+          description="Each lead lands on its postcode area as it comes in."
+        />
       ) : (
         <div className="space-y-6">
           <Card>
