@@ -12,6 +12,7 @@ import {
 } from "@/lib/dashboard/leads";
 import { getVisitorLeadRate, fmtRate, fmtDelta } from "@/lib/dashboard/conversion";
 import { realLeads } from "@/lib/dashboard/leads";
+import { Stat } from "@/components/system/stat";
 
 export const dynamic = "force-dynamic";
 
@@ -155,25 +156,26 @@ export default async function OverviewPage() {
           </Card>
 
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <Kpi icon={<CalendarClock className="h-5 w-5" />} label="Today" value={today} />
-            <Kpi icon={<Users className="h-5 w-5" />} label="This month" value={thisMonth} />
-            <Kpi icon={<Sparkles className="h-5 w-5" />} label="New / unworked" value={newCount} accent />
-            <Kpi
-              icon={<TrendingUp className="h-5 w-5" />}
+            <Stat icon={<CalendarClock />} label="Today" value={today} />
+            <Stat icon={<Users />} label="This month" value={thisMonth} />
+            <Stat icon={<Sparkles />} label="New / unworked" value={newCount} attention />
+            <Stat
+              icon={<TrendingUp />}
               label={`Visitor → lead rate (${conv.windowDays}d)`}
               value={fmtRate(conv.rate)}
-              sub={convDelta ? { text: convDelta.text, up: convDelta.up } : conv.ok ? undefined : { text: "Connect PostHog", up: true, muted: true }}
+              delta={convDelta ? { text: convDelta.text, direction: convDelta.up ? "up" : "down" } : undefined}
+              hint={conv.ok ? undefined : "Connect PostHog"}
             />
           </div>
 
           <div className="grid gap-4 sm:grid-cols-3">
-            <Kpi
-              icon={<PoundSterling className="h-5 w-5" />}
+            <Stat
+              icon={<PoundSterling />}
               label="Revenue in pipeline"
               value={pipelineValue ? `£${pipelineValue.toLocaleString("en-GB")}` : "—"}
             />
-            <Kpi icon={<Timer className="h-5 w-5" />} label="Avg time to first contact" value={fmtHours(timeToContact)} />
-            <Kpi icon={<FileClock className="h-5 w-5" />} label="Avg time to quote" value={fmtHours(timeToQuote)} />
+            <Stat icon={<Timer />} label="Avg time to first contact" value={fmtHours(timeToContact)} />
+            <Stat icon={<FileClock />} label="Avg time to quote" value={fmtHours(timeToQuote)} />
           </div>
 
           <div className="grid gap-4 lg:grid-cols-2">
@@ -237,36 +239,3 @@ function localIsoDate(d: Date): string {
   return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
 }
 
-function Kpi({
-  icon,
-  label,
-  value,
-  accent,
-  sub,
-}: {
-  icon: React.ReactNode;
-  label: string;
-  value: string | number;
-  accent?: boolean;
-  /** Small caption under the label, e.g. a period-over-period delta. */
-  sub?: { text: string; up: boolean; muted?: boolean };
-}) {
-  return (
-    <Card>
-      <CardContent className="flex items-center gap-4 p-5">
-        <div className={`flex h-11 w-11 items-center justify-center rounded-xl ${accent ? "bg-primary text-primary-foreground" : "bg-secondary text-foreground"}`}>
-          {icon}
-        </div>
-        <div className="min-w-0">
-          <div className="text-2xl font-bold tabular-nums">{value}</div>
-          <div className="truncate text-label text-muted-foreground">{label}</div>
-          {sub && (
-            <div className={`text-label font-semibold ${sub.muted ? "text-muted-foreground" : sub.up ? "text-success" : "text-destructive"}`}>
-              {sub.text}
-            </div>
-          )}
-        </div>
-      </CardContent>
-    </Card>
-  );
-}

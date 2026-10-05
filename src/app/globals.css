@@ -213,6 +213,10 @@
                                below 16px iOS Safari zooms the page on focus. */
     --text-lead: 18px;      /* accordion content, modal title */
     --text-title: 20px;     /* accordion trigger, feedback title */
+    --text-metric: 28px;    /* the number on a Stat. Above the reading scale,
+                               so it carries its own tight leading. It was
+                               Tailwind's text-2xl, three times, outside the
+                               scale. */
 
 
     /* ── TIER 2 · control heights ─────────────────────────────────────────
@@ -358,9 +362,10 @@
 .theme-product {
   /* Geist, the preset's face, for Product only. Loaded by the dashboard and
      auth layouts (package `geist`: next/font in 14.2 predates Geist on Google
-     Fonts), so the funnel neither downloads it nor preloads it. Inter stays as
-     the first fallback, which is what renders if the variable is missing. */
-  --font-sans: var(--font-geist-sans), var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+     Fonts), so the funnel neither downloads it nor preloads it. The fallback is
+     inside the var(): a bare var(--font-geist-sans) on a page that did not load
+     Geist makes the whole font-family invalid, not just skips to the next face. */
+  --font-sans: var(--font-geist-sans, var(--font-inter)), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   font-family: var(--font-sans);
   font-size: 14px;
   /* Neutrals on zinc, from shadcn's zinc preset — taken by hand, value by value,
@@ -403,6 +408,7 @@
   --text-body: 14px;
   --text-lead: 16px;
   --text-title: 18px;
+  --text-metric: 24px;
     --button-size: 13px;
 
     /* Product ran ~1.42 line-height, not Editorial's 1.5 — the three legacy

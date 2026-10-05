@@ -51,6 +51,8 @@ const config: Config = {
         entry: ["var(--text-entry)", { lineHeight: "var(--leading-body)" }],
         lead: ["var(--text-lead)", { lineHeight: "var(--leading-body)" }],
         title: ["var(--text-title)", { lineHeight: "var(--leading-body)" }],
+        // A figure, not a sentence: tight leading of its own, not --leading-body.
+        metric: ["var(--text-metric)", { lineHeight: "1.15", letterSpacing: "-0.01em" }],
         // Not part of the reading scale: the button's size is a voice token
         // alongside case, weight and tracking. 12px in Editorial, 13px in Product.
         button: ["var(--button-size)", { lineHeight: "1.3" }],

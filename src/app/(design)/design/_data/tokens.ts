@@ -1003,6 +1003,12 @@ export const SCALES: Scale[] = [
         "editorial": "20px",
         "product": "18px",
         "differs": true
+      },
+      {
+        "name": "--text-metric",
+        "editorial": "28px",
+        "product": "24px",
+        "differs": true
       }
     ]
   },

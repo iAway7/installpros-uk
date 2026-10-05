@@ -2,6 +2,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { Card, CardContent } from "@/components/system/card";
 import { aggregateLandings, totals, RANGES, type LandingLeadRow } from "@/lib/dashboard/landings";
+import { Stat } from "@/components/system/stat";
 
 export const dynamic = "force-dynamic";
 
@@ -127,14 +128,3 @@ export default async function LandingsPage({
   );
 }
 
-function Stat({ label, value, hint }: { label: string; value: number; hint?: string }) {
-  return (
-    <Card>
-      <CardContent className="p-4">
-        <p className="text-label uppercase text-muted-foreground">{label}</p>
-        <p className="text-2xl font-bold">{value}</p>
-        {hint && <p className="text-label text-muted-foreground">{hint}</p>}
-      </CardContent>
-    </Card>
-  );
-}

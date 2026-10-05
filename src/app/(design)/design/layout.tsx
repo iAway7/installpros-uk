@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { NAV } from "./_components/nav";
 import { DocsFooter } from "./_components/docs-footer";
+import { GeistSans } from "geist/font/sans";
 
 export const metadata: Metadata = {
   title: { default: "InstallPros Design System", template: "%s | InstallPros Design" },
@@ -12,7 +13,9 @@ export const metadata: Metadata = {
 
 export default function DesignLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-dvh overflow-x-clip bg-white text-neutral-900 antialiased">
+    // Geist's variable on the docs root so every .theme-product preview renders in
+    // Product's face, as it does on /dashboard.
+    <div className={`${GeistSans.variable} min-h-dvh overflow-x-clip bg-white text-neutral-900 antialiased`}>
       <div className="mx-auto flex max-w-[1240px] gap-12 px-6 lg:px-10">
         <aside className="sticky top-0 hidden h-dvh w-56 shrink-0 overflow-y-auto py-10 lg:block">
           <Link href="/design" className="block">

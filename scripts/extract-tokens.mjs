@@ -125,7 +125,7 @@ const THEME_TOKENS = semanticNames.map((name) => {
  */
 const FAMILIES = [
   ["Type scale", ["--text-micro", "--text-label", "--text-caption", "--text-body-sm",
-                  "--text-body", "--text-entry", "--text-lead", "--text-title"]],
+                  "--text-body", "--text-entry", "--text-lead", "--text-title", "--text-metric"]],
   ["Button voice", ["--button-size", "--button-weight", "--button-case", "--button-tracking"]],
   ["Line height", ["--leading-body"]],
   ["Control height", ["--control-sm", "--control-aux", "--control", "--control-lg"]],

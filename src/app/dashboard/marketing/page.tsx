@@ -6,6 +6,7 @@ import { SearchConsoleChart } from "@/components/dashboard/search-console-chart"
 import { ConversionChart } from "@/components/dashboard/conversion-chart";
 import { type LeadStatus, realLeads } from "@/lib/dashboard/leads";
 import { getVisitorLeadRate, fmtRate, fmtDelta } from "@/lib/dashboard/conversion";
+import { Stat } from "@/components/system/stat";
 
 export const dynamic = "force-dynamic";
 
@@ -31,21 +32,21 @@ export default async function MarketingPage() {
 
       {/* Blended overview */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <Kpi icon={<Users className="h-5 w-5" />} label="Total leads" value={totalLeads} />
-        <Kpi
-          icon={<TrendingUp className="h-5 w-5" />}
+        <Stat icon={<Users />} label="Total leads" value={totalLeads} />
+        <Stat
+          icon={<TrendingUp />}
           label={`Visitor → lead rate (${conv.windowDays}d)`}
           value={fmtRate(conv.rate)}
           hint={conv.ok ? undefined : "Connect PostHog"}
-          sub={convDelta ? convDelta : undefined}
+          delta={convDelta ? { text: convDelta.text, direction: convDelta.up ? "up" : "down" } : undefined}
         />
-        <Kpi
-          icon={<Search className="h-5 w-5" />}
+        <Stat
+          icon={<Search />}
           label="Search clicks (28d)"
           value={sc.ok ? sc.totals.clicks.toLocaleString("en-GB") : "—"}
         />
-        <Kpi
-          icon={<PoundSterling className="h-5 w-5" />}
+        <Stat
+          icon={<PoundSterling />}
           label="Cost / lead"
           value="—"
           hint="Connect Google Ads"
@@ -113,10 +114,10 @@ export default async function MarketingPage() {
         ) : (
           <>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              <Kpi icon={<MousePointerClick className="h-5 w-5" />} label="Clicks" value={sc.totals.clicks.toLocaleString("en-GB")} />
-              <Kpi icon={<Eye className="h-5 w-5" />} label="Impressions" value={sc.totals.impressions.toLocaleString("en-GB")} />
-              <Kpi icon={<Percent className="h-5 w-5" />} label="Avg CTR" value={`${(sc.totals.ctr * 100).toFixed(1)}%`} />
-              <Kpi icon={<TrendingUp className="h-5 w-5" />} label="Avg position" value={sc.totals.position.toFixed(1)} />
+              <Stat icon={<MousePointerClick />} label="Clicks" value={sc.totals.clicks.toLocaleString("en-GB")} />
+              <Stat icon={<Eye />} label="Impressions" value={sc.totals.impressions.toLocaleString("en-GB")} />
+              <Stat icon={<Percent />} label="Avg CTR" value={`${(sc.totals.ctr * 100).toFixed(1)}%`} />
+              <Stat icon={<TrendingUp />} label="Avg position" value={sc.totals.position.toFixed(1)} />
             </div>
 
             <Card>
@@ -154,34 +155,6 @@ export default async function MarketingPage() {
         </Card>
       </section>
     </div>
-  );
-}
-
-function Kpi({
-  icon,
-  label,
-  value,
-  hint,
-  sub,
-}: {
-  icon: React.ReactNode;
-  label: string;
-  value: string | number;
-  hint?: string;
-  /** Small caption under the label, e.g. a period-over-period delta. */
-  sub?: { text: string; up: boolean };
-}) {
-  return (
-    <Card>
-      <CardContent className="flex items-center gap-4 p-5">
-        <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-secondary text-foreground">{icon}</div>
-        <div className="min-w-0">
-          <div className="text-2xl font-bold tabular-nums">{value}</div>
-          <div className="truncate text-label text-muted-foreground">{hint ?? label}</div>
-          {sub && <div className={`text-label font-semibold ${sub.up ? "text-success" : "text-destructive"}`}>{sub.text}</div>}
-        </div>
-      </CardContent>
-    </Card>
   );
 }
 
