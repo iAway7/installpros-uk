@@ -1,13 +1,13 @@
 import { MapPin } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/system/card";
+import { Card, CardContent } from "@/components/system/card";
 import { lookupLocations } from "@/lib/dashboard/locations";
 import { WON_STATUSES, type LeadStatus } from "@/lib/dashboard/leads";
 import { ukMap, UK_MAP_VIEWBOX } from "@/lib/funnel/uk-map";
-import { InfoTip } from "@/components/system/info-tip";
 import { worstServedOutcodes, releaseLabel } from "@/lib/broadband/outcode-coverage";
 import { EmptyState } from "@/components/system/empty-state";
 import { PageHeader } from "@/components/system/page-header";
+import { MapTables, type MapTab } from "@/components/dashboard/map-tables";
 
 export const dynamic = "force-dynamic";
 
@@ -20,6 +20,9 @@ const QUOTED_OR_LATER: LeadStatus[] = ["quoted", "booked", "installed"];
  * the country, and none of those premises is a house anyone lives in.
  */
 const MIN_POSTCODES = 150;
+
+/** How many of the worst-served districts the ad-target tab pages through. */
+const GAP_ROWS = 200;
 
 /** Normalise a district name for fuzzy matching against the SVG region names. */
 function norm(s: string): string {
@@ -42,7 +45,8 @@ interface DistrictStats {
   won: number;
 }
 
-export default async function MapPage() {
+export default async function MapPage({ searchParams }: { searchParams: { tab?: string } }) {
+  const initialTab: MapTab = searchParams.tab === "gaps" ? "gaps" : "districts";
   const supabase = createClient();
   const { data, error } = await supabase.from("leads").select("postcode, status").eq("is_test", false);
   const leads = ((data as { postcode: string; status: LeadStatus }[] | null) ?? []);
@@ -100,9 +104,17 @@ export default async function MapPage() {
     const oc = outcodeOf(l.postcode);
     leadsByOutcode.set(oc, (leadsByOutcode.get(oc) || 0) + 1);
   }
-  const worst = await worstServedOutcodes(supabase, { limit: 12, minPostcodes: MIN_POSTCODES });
+  const worst = await worstServedOutcodes(supabase, { limit: GAP_ROWS, minPostcodes: MIN_POSTCODES });
   const gaps = worst.map((c) => ({ ...c, leads: leadsByOutcode.get(c.outcode) ?? 0 }));
   const gapsRelease = releaseLabel(gaps[0]?.release);
+
+  const unmatchedNote =
+    [
+      unmatchedLeads > 0 ? `${unmatchedLeads} lead(s) had unresolvable postcodes.` : "",
+      unmatchedDistricts.length > 0 ? `Not drawn on the map: ${unmatchedDistricts.join(", ")}.` : "",
+    ]
+      .filter(Boolean)
+      .join(" ") || undefined;
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
@@ -146,165 +158,13 @@ export default async function MapPage() {
             </CardContent>
           </Card>
 
-          <div className="space-y-6">
-            <Card>
-              <CardHeader><CardTitle>By district</CardTitle></CardHeader>
-              <CardContent className="p-0">
-                <div className="overflow-x-auto">
-                  <table className="w-full text-body-sm">
-                    <thead className="border-y border-border bg-secondary/40 text-left text-label uppercase text-muted-foreground">
-                      <tr>
-                        <th className="px-4 py-2 font-medium">District</th>
-                        <th className="px-3 py-2 text-right font-medium">Leads</th>
-                        <th className="px-3 py-2 text-right font-medium">Quoted+</th>
-                        <th className="px-3 py-2 text-right font-medium">Won</th>
-                        <th className="px-3 py-2 text-right font-medium">Win rate</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-border">
-                      {table.map((d) => {
-                        const gap = d.leads >= 3 && d.won === 0;
-                        return (
-                          <tr key={d.name}>
-                            <td className="px-4 py-2">
-                              {d.name}
-                              {gap && (
-                                <span className="ml-2 rounded-full bg-warning/10 px-2 py-0.5 text-micro font-semibold uppercase text-warning">
-                                  gap
-                                </span>
-                              )}
-                            </td>
-                            <td className="px-3 py-2 text-right tabular-nums">{d.leads}</td>
-                            <td className="px-3 py-2 text-right tabular-nums text-muted-foreground">{d.quoted}</td>
-                            <td className="px-3 py-2 text-right tabular-nums text-muted-foreground">{d.won}</td>
-                            <td className="px-3 py-2 text-right tabular-nums">
-                              {d.leads ? `${Math.round((d.won / d.leads) * 100)}%` : "—"}
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </div>
-              </CardContent>
-            </Card>
-
-            {(unmatchedDistricts.length > 0 || unmatchedLeads > 0) && (
-              <p className="text-label text-muted-foreground">
-                {unmatchedLeads > 0 && `${unmatchedLeads} lead(s) had unresolvable postcodes. `}
-                {unmatchedDistricts.length > 0 && `Not drawn on the map: ${unmatchedDistricts.join(", ")}.`}
-              </p>
-            )}
-
-            <Card>
-              <CardHeader><CardTitle>Broadband gaps: ad targets</CardTitle></CardHeader>
-              <CardContent className="p-0">
-                <div className="overflow-x-auto">
-                  <table className="w-full text-body-sm">
-                    <thead className="border-y border-border bg-secondary/40 text-left text-label uppercase text-muted-foreground">
-                      <tr>
-                        <th className="px-4 py-2 font-medium">
-                          <span className="inline-flex items-center gap-1">
-                            District
-                            <InfoTip
-                              text="Postcode district: the part before the space, like EX21. Ofcom publishes coverage per full postcode, so each row here is the average of every postcode in that district."
-                              source="Ofcom Connected Nations"
-                            />
-                          </span>
-                        </th>
-                        <th className="px-3 py-2 text-right font-medium">
-                          <span className="inline-flex items-center justify-end gap-1">
-                            No 10Mb
-                            <InfoTip
-                              align="end"
-                              text="Homes that cannot order a 10 Mbit/s line at any price. That is below the UK legal minimum, so these homes can claim a subsidised connection. Your strongest sales case."
-                              source="Ofcom Connected Nations"
-                            />
-                          </span>
-                        </th>
-                        <th className="px-3 py-2 text-right font-medium">
-                          <span className="inline-flex items-center justify-end gap-1">
-                            No 30Mb
-                            <InfoTip
-                              align="end"
-                              text="Homes that cannot get 30 Mbit/s, the UK definition of superfast. Enough for one video stream, not for a family or for working from home."
-                              source="Ofcom Connected Nations"
-                            />
-                          </span>
-                        </th>
-                        <th className="px-3 py-2 text-right font-medium">
-                          <span className="inline-flex items-center justify-end gap-1">
-                            Postcodes
-                            <InfoTip
-                              align="end"
-                              text="How many postcodes the district average is built from. More postcodes means a more reliable figure. Districts under 150 are excluded."
-                              source="Ofcom Connected Nations"
-                            />
-                          </span>
-                        </th>
-                        <th className="px-3 py-2 text-right font-medium">
-                          <span className="inline-flex items-center justify-end gap-1">
-                            Leads
-                            <InfoTip
-                              align="end"
-                              text="Your leads from this district so far. Terrible broadband plus zero leads is an audience that needs you and has never heard of you."
-                            />
-                          </span>
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-border">
-                      {gaps.length === 0 ? (
-                        <tr>
-                          <td colSpan={5} className="px-4 py-6 text-center text-muted-foreground">
-                            Ofcom coverage data not loaded yet.
-                          </td>
-                        </tr>
-                      ) : (
-                        gaps.map((g) => (
-                          <tr key={g.outcode}>
-                            <td className="px-4 py-2 font-medium">
-                              {g.outcode}
-                              {g.leads === 0 && (
-                                <span className="ml-2 rounded-full bg-primary/10 px-2 py-0.5 text-micro font-semibold uppercase text-primary">
-                                  untapped
-                                </span>
-                              )}
-                            </td>
-                            <td className="px-3 py-2 text-right tabular-nums text-destructive">
-                              {g.pctUnable10 == null ? "\u2014" : `${g.pctUnable10}%`}
-                            </td>
-                            <td className="px-3 py-2 text-right tabular-nums">
-                              {g.pctUnable30 == null ? "\u2014" : `${g.pctUnable30}%`}
-                            </td>
-                            <td className="px-3 py-2 text-right tabular-nums text-muted-foreground">{g.postcodes}</td>
-                            <td className="px-3 py-2 text-right tabular-nums">{g.leads}</td>
-                          </tr>
-                        ))
-                      )}
-                    </tbody>
-                  </table>
-                </div>
-                <p className="px-4 pt-4 text-label text-muted-foreground">
-                  Worst-served postcode districts in the UK, ranked by how many homes fall below the legal 10 Mbit/s
-                  minimum. Source: Ofcom Connected Nations, {gapsRelease}.
-                </p>
-                <p className="px-4 pb-4 text-label text-muted-foreground">
-                  These are <span className="font-medium text-foreground">availability</span> figures: what a home is
-                  able to order, not the speed it actually gets. A district marked{" "}
-                  <span className="font-medium text-foreground">untapped</span> has bad broadband and not one lead, so
-                  point ads at it.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardContent className="p-4 text-label text-muted-foreground">
-                <span className="font-semibold text-foreground">Gap</span> badge in the district table = 3+ leads, zero
-                won. Investigate pricing or follow-up in that area.
-              </CardContent>
-            </Card>
-          </div>
+          <MapTables
+            districts={table}
+            gaps={gaps.map(({ outcode, postcodes, pctUnable10, pctUnable30, leads }) => ({ outcode, postcodes, pctUnable10, pctUnable30, leads }))}
+            gapsRelease={gapsRelease}
+            unmatchedNote={unmatchedNote}
+            initialTab={initialTab}
+          />
         </div>
       )}
     </div>
