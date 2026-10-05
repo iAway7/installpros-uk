@@ -1,5 +1,5 @@
-import { WhatsAppIcon } from "./ui/whatsapp-icon";
-import { Button } from "@/components/system/button";
+import { Anchor, Camera, CircleCheck, Receipt } from "lucide-react";
+import { ProcessStepsSection, type ProcessStep } from "./process-steps-section";
 
 /**
  * How it works, for somebody who may be hours from their boat.
@@ -24,6 +24,11 @@ import { Button } from "@/components/system/button";
  * the engineer could get in. It is an obstacle they are already worrying
  * about on our behalf.
  *
+ * The layout is ProcessStepsSection, shared with the other segment landings;
+ * this file is the data and the reasoning behind it. No `image` on any step:
+ * there is not one photograph of a fitted boat, and the slot takes real ones
+ * only.
+ *
  * PENDING: the same-day price is an operational commitment, copied from the
  * vehicle and statics pages. Confirm it holds when the quote needs a boat
  * type rather than a roof photo.
@@ -35,62 +40,37 @@ const WHATSAPP_URL =
     "Hi, I'd like a price for Starlink on my boat. Photos and the marina to follow.",
   );
 
-type Step = { title: string; detail: string };
-
-const STEPS: Step[] = [
+const STEPS: ProcessStep[] = [
   {
     title: "Send two photos",
     detail: "One of the roof or the arch where it would sit, one of where the router goes. Say whether the boat moves.",
+    icon: <Camera className="h-5 w-5" />,
   },
   {
     title: "Get a price back",
     detail: "The fitting, spread if you want it, and which Starlink plan fits. No survey visit first.",
+    icon: <Receipt className="h-5 w-5" />,
   },
   {
     title: "Tell us how to reach the boat",
     detail: "Marina, berth, barrier code or pontoon key. We arrange a day the boat is there.",
+    icon: <Anchor className="h-5 w-5" />,
   },
   {
     title: "Fitted at the berth, tested before we go",
     detail: "Mount, power, cable and router in one visit. Account set up with you, pause button shown.",
+    icon: <CircleCheck className="h-5 w-5" />,
   },
 ];
 
 export function MarineHowItWorksSection() {
   return (
-    <section id="how-it-works" className="w-full scroll-mt-28 bg-background py-16 md:py-24">
-      <div className="container mx-auto">
-        <div className="mb-12 max-w-2xl">
-          <p className="eyebrow">How it works</p>
-          <h2 className="mt-4 h2-section text-foreground">
-            A price before anyone drives to the marina.
-          </h2>
-          <p className="mt-5 text-body text-muted-foreground md:text-lg" style={{ lineHeight: "1.6" }}>
-            You may be hours from the boat. Two photos are enough to price it.
-          </p>
-        </div>
-
-        <ol className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
-          {STEPS.map((s, i) => (
-            <li key={s.title} className="border-t border-border pt-6">
-              <span className="text-label font-semibold uppercase tracking-[0.14em] text-muted-foreground tabular-nums">
-                Step {i + 1}
-              </span>
-              <h3 className="mt-3 text-lead font-semibold text-foreground">{s.title}</h3>
-              <p className="mt-2 text-body-sm leading-[1.65] text-muted-foreground">{s.detail}</p>
-            </li>
-          ))}
-        </ol>
-
-        <div className="mt-10">
-          <Button asChild size="lg">
-            <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
-              <WhatsAppIcon className="mr-2 h-5 w-5" />
-              Send photos of your boat
-            </a>
-          </Button>
-        </div>
-      </div>
-    </section>
+    <ProcessStepsSection
+      eyebrow="How it works"
+      heading="A price before anyone drives to the marina."
+      subline="You may be hours from the boat. Two photos are enough to price it."
+      steps={STEPS}
+      cta={{ label: "Send photos of your boat", href: WHATSAPP_URL }}
+    />
   );
 }
