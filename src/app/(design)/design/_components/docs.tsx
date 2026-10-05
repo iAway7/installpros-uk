@@ -92,7 +92,11 @@ export function Mono({ children }: { children: ReactNode }) {
 /** Callout for a rule that is easy to break. */
 export function Rule({ children }: { children: ReactNode }) {
   return (
-    <div className="rounded-xl border-l-[3px] border-[#C70505] bg-[#FEF2F2] px-5 py-4 text-[15px] leading-[1.6] text-neutral-700">
+    // Neutral, not brand red: a red rule on a pink tint is how an error reads,
+    // and these are the page's reasoning, not a warning. Square on the ruled
+    // side so the rule is a straight line rather than a bracket, and spaced
+    // from whatever comes before it — two Rules in a row used to touch.
+    <div className="rounded-r-lg border-l-2 border-neutral-300 bg-neutral-50 px-5 py-4 text-[15px] leading-[1.6] text-neutral-700 [&:not(:first-child)]:mt-4">
       {children}
     </div>
   );
