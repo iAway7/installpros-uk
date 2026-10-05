@@ -29,6 +29,9 @@ import { ProcessStepsSection, type ProcessStep } from "./process-steps-section";
  * there is not one photograph of a fitted boat, and the slot takes real ones
  * only.
  *
+ * Copy tightened 5 October 2026: each detail is one line of about ten
+ * words, titles are four words or fewer. The reasoning above is unchanged.
+ *
  * PENDING: the same-day price is an operational commitment, copied from the
  * vehicle and statics pages. Confirm it holds when the quote needs a boat
  * type rather than a roof photo.
@@ -43,22 +46,22 @@ const WHATSAPP_URL =
 const STEPS: ProcessStep[] = [
   {
     title: "Send two photos",
-    detail: "One of the roof or the arch where it would sit, one of where the router goes. Say whether the boat moves.",
+    detail: "The roof or arch, and where the router goes. Say if the boat moves.",
     icon: <Camera className="h-5 w-5" />,
   },
   {
     title: "Get a price back",
-    detail: "The fitting, spread if you want it, and which Starlink plan fits. No survey visit first.",
+    detail: "Fitting and plan, the same day. No survey visit.",
     icon: <Receipt className="h-5 w-5" />,
   },
   {
-    title: "Tell us how to reach the boat",
-    detail: "Marina, berth, barrier code or pontoon key. We arrange a day the boat is there.",
+    title: "Tell us how to get in",
+    detail: "Marina, berth, gate code. We pick a day the boat is there.",
     icon: <Anchor className="h-5 w-5" />,
   },
   {
-    title: "Fitted at the berth, tested before we go",
-    detail: "Mount, power, cable and router in one visit. Account set up with you, pause button shown.",
+    title: "Fitted at the berth",
+    detail: "One visit. Tested before we leave, pause button shown.",
     icon: <CircleCheck className="h-5 w-5" />,
   },
 ];
@@ -68,7 +71,7 @@ export function MarineHowItWorksSection() {
     <ProcessStepsSection
       eyebrow="How it works"
       heading="A price before anyone drives to the marina."
-      subline="You may be hours from the boat. Two photos are enough to price it."
+      subline="Two photos are enough to price it, wherever you are."
       steps={STEPS}
       cta={{ label: "Send photos of your boat", href: WHATSAPP_URL }}
     />

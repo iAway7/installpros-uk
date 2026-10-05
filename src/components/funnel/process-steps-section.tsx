@@ -20,9 +20,11 @@ import { Button } from "@/components/system/button";
  *
  *   1. A centred heading block: eyebrow, H2, one line of support. The steps
  *      hang from something.
- *   2. Each step is a CARD with something to look at. A tile with an icon
+ *   2. Each step is a CARD with something to look at. A numbered tile
  *      here, a photograph where we have one (see `image` below).
- *   3. The step label is small and separate from the title.
+ *   3. The step number sits in the tile, separate from the title. Since
+ *      2026-10-05 there is no icon and no STEP 1 label: the number is the one
+ *      thing above the title.
  *   4. Something joins the steps: a circled arrow between the cards from lg.
  *      Below lg the cards stack and the arrows go, because an arrow pointing
  *      right at a card that is actually below is wrong.
@@ -43,8 +45,9 @@ import { Button } from "@/components/system/button";
 export type ProcessStep = {
   title: string;
   detail: string;
-  /** Drawn in the tile when there is no photograph. A lucide icon at h-5 w-5. */
-  icon: ReactNode;
+  /** No longer drawn: the tile shows the step number since 2026-10-05. Kept
+   *  optional so the three data files need not change in the same commit. */
+  icon?: ReactNode;
   /** A real photograph of this step. Replaces the tile. Never stock. */
   image?: { src: string; srcSet?: string; alt: string };
 };
@@ -85,11 +88,19 @@ export function ProcessStepsSection({
         <ol className="mt-14 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
           {steps.map((s, i) => (
             <li key={s.title} className="relative flex flex-col rounded-2xl bg-secondary p-6 md:p-7">
-              <span className="text-label font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                Step {i + 1}
+              {/* The number IS the tile. It used to be a STEP 1 label over an
+                  icon tile, then an icon with a faint number beside it; the
+                  icons repeated what the titles already say, so the number
+                  took their place (2026-10-05). The <ol> carries the order for
+                  screen readers, hence aria-hidden. */}
+              <span
+                aria-hidden="true"
+                className="flex h-12 w-12 items-center justify-center rounded-xl border border-border bg-background text-lead font-semibold tabular-nums text-brand-icon"
+              >
+                {String(i + 1).padStart(2, "0")}
               </span>
 
-              {s.image ? (
+              {s.image && (
                 /* eslint-disable-next-line @next/next/no-img-element */
                 <img
                   src={s.image.src}
@@ -98,15 +109,8 @@ export function ProcessStepsSection({
                   alt={s.image.alt}
                   loading="lazy"
                   decoding="async"
-                  className="mt-6 aspect-[4/3] w-full rounded-xl object-cover"
+                  className="mt-5 aspect-[4/3] w-full rounded-xl object-cover"
                 />
-              ) : (
-                <span
-                  aria-hidden="true"
-                  className="mt-6 flex h-12 w-12 items-center justify-center rounded-xl border border-border bg-background text-brand-icon"
-                >
-                  {s.icon}
-                </span>
               )}
 
               <h3 className="mt-5 text-lead font-semibold text-foreground">{s.title}</h3>

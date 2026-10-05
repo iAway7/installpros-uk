@@ -53,13 +53,10 @@ import { ExperimentProvider } from "@/components/experiments/experiment-provider
  * where each line came from.
  *
  * ── WHAT THIS PAGE IS MISSING ───────────────────────────────────────────────
- * 1. NO PHOTOGRAPH. The hero below is the coastal vehicle plate, which is a
- *    4x4 on a cliff road: wrong subject, right water. Every other image in
- *    public/funnel is a house, a caravan park or a business. Ask Will for the
- *    Tattenhall narrowboat or the Cuxton houseboat: dish on the roof, cable
- *    going in, router inside. The report also says the picture in the
- *    customer's head should not be the open sea: a marina or a canal, not
- *    a horizon.
+ * 1. THE PHOTOGRAPH IS STOCK. An aerial of a motor yacht at sea, no dish
+ *    on it (see the note on the hero). There is still no picture of a boat
+ *    we fitted, so FinishedInstallSection stays absent. Ask Will for the
+ *    Tattenhall narrowboat or the Cuxton houseboat.
  * 2. NO PRICES, BY DECISION. The report's strongest ask is an indicative
  *    install price or a range, and this page does not meet it, for the same
  *    reason as cars and statics: no figure has been agreed with Will for the
@@ -116,13 +113,20 @@ export default function StarlinkInstallationForBoatsPage() {
           <HeroSection
             smartCoverage
             addressMode
-            // PLACEHOLDER. See "what this page is missing" above. This is the
-            // vehicle page's coastal plate and its three rungs, reused because
-            // it is the only water in public/funnel. The 4x4 on the road is
-            // wrong for this page and reads as such at hero size.
-            image="/funnel/hero-vehicle-coastal.webp"
-            imageMobile="/funnel/hero-vehicle-coastal-portrait.webp"
-            imageSrcSet="/funnel/hero-vehicle-coastal-960.webp 960w, /funnel/hero-vehicle-coastal-1440.webp 1440w, /funnel/hero-vehicle-coastal.webp 1920w"
+            // Aerial top-down of a motor yacht on dark water, chosen 5 October
+            // 2026 to match a reference the user liked. Stock: Pexels 5581859 by
+            // Taryn Elliott, Pexels licence (free commercial use, no credit
+            // required), cropped to 2:1 at 1920 wide. The boat sits left of
+            // centre and in the upper half, so the headline overlay and the
+            // bottom crop on wide screens both miss it.
+            //
+            // No Starlink dish on this boat, and it is under way at sea, which
+            // the marine report argues against. Both are known. It is a stand-in
+            // until a generated or shot image with the dish exists; the copy
+            // claims nothing about being under way.
+            image="/funnel/hero-marine-aerial.webp"
+            // 3:4 crop centred on the boat, for phones.
+            imageMobile="/funnel/hero-marine-aerial-portrait.webp"
             // The four kinds of boat in the corpus, in the customers' own
             // words: 3 narrowboats, a houseboat, a Fairline motor cruiser,
             // two yachts. Not "marine": nobody in the twelve uses the word.

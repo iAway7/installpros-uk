@@ -40,28 +40,28 @@ const WHATSAPP_URL =
 
 const STEPS: ProcessStep[] = [
   {
-    title: "Tell us the park and the unit",
+    title: "Tell us the park",
     // The two facts that are in the customer's head at home. 25 of 175 are
     // enquiring because they have just bought the van or are moving onto a
     // park, so they know the park before they know anything else.
-    detail: "Park name, postcode, and what the unit is. No photos yet.",
+    detail: "Park name, postcode and the unit. No photos yet.",
     icon: <MapPin className="h-5 w-5" />,
   },
   {
     title: "Get a price back",
-    detail: "One figure for the fitting, spread if you want it.",
+    detail: "One figure for the fitting, the same day. Spread it if you want.",
     icon: <Receipt className="h-5 w-5" />,
   },
   {
-    title: "Photos when you are next down",
+    title: "Photos later",
     // The step that used to be first. It is not a blocker here, it is a
     // confirmation, so it sits after the number the customer came for.
-    detail: "One outside, one of where the router goes. We confirm the mount.",
+    detail: "When you are next down: outside, and where the router goes.",
     icon: <Camera className="h-5 w-5" />,
   },
   {
-    title: "Fitted in a day, tested before we go",
-    detail: "Account set up with you, and we show you the pause button.",
+    title: "Fitted in a day",
+    detail: "Tested before we leave, pause button shown.",
     icon: <CircleCheck className="h-5 w-5" />,
   },
 ];
@@ -71,7 +71,7 @@ export function StaticHowItWorksSection() {
     <ProcessStepsSection
       eyebrow="How it works"
       heading="A price without a trip to the van."
-      subline="Most people ask from home, weeks before they are next down. That is enough."
+      subline="Most people ask from home, weeks before they are next down."
       steps={STEPS}
       cta={{ label: "Send your park name", href: WHATSAPP_URL }}
     />
