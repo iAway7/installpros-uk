@@ -1,4 +1,3 @@
-import { CheckCircle2, XCircle, CircleDashed, Clock3 } from "lucide-react";
 import { Card, CardContent } from "@/components/system/card";
 import { RefreshButton } from "@/components/dashboard/refresh-button";
 import { SettingToggle } from "@/components/dashboard/setting-toggle";
@@ -6,30 +5,18 @@ import { SettingsTabs } from "@/components/dashboard/settings-tabs";
 import { getApiStatuses, type ApiHealth } from "@/lib/settings/api-status";
 import { isAdmin } from "@/lib/auth/role";
 import { PageHeader } from "@/components/system/page-header";
+import { Pill, type PillVariant } from "@/components/system/badge";
 
 export const dynamic = "force-dynamic";
 
-const HEALTH_META: Record<ApiHealth, { label: string; icon: React.ReactNode; pill: string }> = {
-  connected: {
-    label: "Connected",
-    icon: <CheckCircle2 className="h-4 w-4" />,
-    pill: "bg-success/10 text-success",
-  },
-  error: {
-    label: "Error",
-    icon: <XCircle className="h-4 w-4" />,
-    pill: "bg-destructive/10 text-destructive",
-  },
-  pending: {
-    label: "Pending approval",
-    icon: <Clock3 className="h-4 w-4" />,
-    pill: "bg-warning/10 text-warning",
-  },
-  not_configured: {
-    label: "Not connected",
-    icon: <CircleDashed className="h-4 w-4" />,
-    pill: "bg-muted text-muted-foreground",
-  },
+// A Pill per integration state: the word in the text colour, the state in the
+// dot. It was an icon plus a tinted pill, success and error text on their own
+// tint — under AA — with the icon repeating what the colour already said.
+const HEALTH_META: Record<ApiHealth, { label: string; tone: PillVariant }> = {
+  connected: { label: "Connected", tone: "success" },
+  error: { label: "Error", tone: "error" },
+  pending: { label: "Pending approval", tone: "warning" },
+  not_configured: { label: "Not connected", tone: "muted" },
 };
 
 export default async function SettingsPage() {
@@ -77,9 +64,7 @@ export default async function SettingsPage() {
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <div className="flex items-center gap-3">
                     <span className="font-semibold">{s.name}</span>
-                    <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-label font-semibold ${meta.pill}`}>
-                      {meta.icon} {meta.label}
-                    </span>
+                    <Pill variant={meta.tone}>{meta.label}</Pill>
                   </div>
                   <span className="flex items-center gap-3">
                     {s.docsHint && <span className="text-label text-muted-foreground">{s.docsHint}</span>}

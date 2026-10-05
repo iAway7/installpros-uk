@@ -13,6 +13,7 @@ import { DEFAULT_HERO_HEADLINE } from "@/lib/funnel/defaults";
 import type { Experiment, ExperimentStatus, VariantResult } from "@/lib/experiments/types";
 import { CHART } from "@/components/system/chart-theme";
 import { EmptyState } from "@/components/system/empty-state";
+import { Pill, type PillVariant } from "@/components/system/badge";
 
 /** Small hover/focus tooltip for explaining a field. */
 function InfoHint({ text }: { text: string }) {
@@ -36,11 +37,11 @@ export interface ExperimentWithResults {
   totalConversions: number;
 }
 
-const STATUS_STYLE: Record<ExperimentStatus, string> = {
-  draft: "bg-muted text-muted-foreground",
-  running: "bg-success/10 text-success",
-  paused: "bg-warning/10 text-warning",
-  complete: "bg-primary/10 text-primary",
+const STATUS_TONE: Record<ExperimentStatus, PillVariant> = {
+  draft: "muted",
+  running: "success",
+  paused: "warning",
+  complete: "brand",
 };
 
 export function ExperimentsView({ experiments, isAdmin }: { experiments: ExperimentWithResults[]; isAdmin: boolean }) {
@@ -147,9 +148,9 @@ function ExperimentCard({ data, isAdmin }: { data: ExperimentWithResults; isAdmi
           <div>
             <div className="flex items-center gap-2">
               <CardTitle>{experiment.name}</CardTitle>
-              <span className={`rounded-full px-2.5 py-0.5 text-label font-semibold capitalize ${STATUS_STYLE[experiment.status]}`}>
+              <Pill variant={STATUS_TONE[experiment.status]} className="capitalize">
                 {experiment.status}
-              </span>
+              </Pill>
             </div>
             {experiment.hypothesis ? <p className="mt-1 text-body-sm text-muted-foreground">{experiment.hypothesis}</p> : null}
             <p className="mt-1 text-label text-muted-foreground">

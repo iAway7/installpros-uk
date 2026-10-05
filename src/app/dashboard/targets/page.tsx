@@ -8,6 +8,7 @@ import { fetchSources, fetchTargetCounts, isOrganicSource, posthogConfigured, FU
 import { buildTargetsReport, pct, LAUNCH_DATE, type TargetStatus, type TargetsReport } from "@/lib/dashboard/targets";
 import { EmptyState } from "@/components/system/empty-state";
 import { PageHeader } from "@/components/system/page-header";
+import { Pill, type PillVariant } from "@/components/system/badge";
 
 export const dynamic = "force-dynamic";
 
@@ -236,15 +237,15 @@ function DeviceTable({ report }: { report: TargetsReport }) {
   );
 }
 
-const STATUS_STYLE: Record<TargetStatus, [string, string]> = {
-  beaten: ["Beaten", "bg-success/15 text-success"],
-  below: ["Below target", "bg-warning/10 text-warning"],
-  insufficient: ["Not enough data", "bg-muted text-muted-foreground"],
+const STATUS_TONE: Record<TargetStatus, [string, PillVariant]> = {
+  beaten: ["Beaten", "success"],
+  below: ["Below target", "warning"],
+  insufficient: ["Not enough data", "muted"],
 };
 
 function StatusBadge({ status }: { status: TargetStatus }) {
-  const [label, cls] = STATUS_STYLE[status];
-  return <span className={`inline-block whitespace-nowrap rounded-full px-2 py-0.5 text-label font-medium ${cls}`}>{label}</span>;
+  const [label, tone] = STATUS_TONE[status];
+  return <Pill variant={tone}>{label}</Pill>;
 }
 
 function Shell({ filters, sources, children }: { filters: Filters; sources: [string, string][]; children: React.ReactNode }) {

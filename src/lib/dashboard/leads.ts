@@ -1,3 +1,4 @@
+import type { PillVariant } from "@/components/system/badge";
 export type LeadStatus = "new" | "contacted" | "quoted" | "booked" | "installed" | "lost";
 
 export interface Lead {
@@ -53,11 +54,15 @@ export function realLeads<T extends { is_test?: boolean | null }>(leads: T[]): T
   return leads.filter((l) => !l.is_test);
 }
 
-/** Tailwind classes for the 1-10 lead-score badge. */
+/**
+ * Tailwind classes for the 1-10 lead-score badge: a ring in the band's colour
+ * around the number in the text colour. The fill used to carry it — success
+ * text on its own tint is under AA, and the middle band was raw amber.
+ */
 export function scoreStyle(score: number): string {
-  if (score >= 8) return "bg-success/15 text-success";
-  if (score >= 5) return "bg-amber-500/10 text-amber-600";
-  return "bg-muted text-muted-foreground";
+  if (score >= 8) return "border-2 border-success bg-card text-foreground";
+  if (score >= 5) return "border-2 border-warning bg-card text-foreground";
+  return "border-2 border-border bg-card text-muted-foreground";
 }
 
 /** City/region resolved from a postcode (postcodes.io) — not stored in the DB. */
@@ -82,14 +87,18 @@ export const STATUS_LABEL: Record<LeadStatus, string> = {
   lost: "Lost",
 };
 
-/** Tailwind classes for each status pill. */
-export const STATUS_STYLE: Record<LeadStatus, string> = {
-  new: "bg-primary/10 text-primary",
-  contacted: "bg-accent/10 text-accent",
-  quoted: "bg-amber-500/10 text-amber-600",
-  booked: "bg-success/10 text-success",
-  installed: "bg-success/15 text-success",
-  lost: "bg-muted text-muted-foreground",
+/**
+ * Pill tone per status (system/badge Pill). A tone, not classes: these used to
+ * be hand-written Tailwind — contacted on --accent, which turned invisible
+ * when Product's accent became the soft hover grey, and quoted on raw amber.
+ */
+export const STATUS_TONE: Record<LeadStatus, PillVariant> = {
+  new: "brand",
+  contacted: "neutral",
+  quoted: "warning",
+  booked: "success",
+  installed: "success",
+  lost: "muted",
 };
 
 /** Pull the human-entered service out of the funnel's notes ("Service: X | …"). */

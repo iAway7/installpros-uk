@@ -14,13 +14,14 @@ import {
   type LocationMap,
   LEAD_STATUSES,
   STATUS_LABEL,
-  STATUS_STYLE,
+  STATUS_TONE,
   serviceOf,
   scoreStyle,
   formatDateTime,
 } from "@/lib/dashboard/leads";
 import type { LeadIntel } from "@/lib/intel/types";
 import { EmptyState } from "@/components/system/empty-state";
+import { Badge, PILL_DOT } from "@/components/system/badge";
 
 /** Escape one CSV cell per RFC 4180. */
 function csvCell(v: unknown): string {
@@ -396,8 +397,8 @@ export function LeadsTable({
 
 function TestBadge() {
   return (
-    <span className="rounded-full bg-warning/10 px-2 py-0.5 text-label font-semibold uppercase tracking-wide text-warning" title="Test submission — excluded from metrics">
-      Test
+    <span title="Test submission — excluded from metrics">
+      <Badge variant="warning">Test</Badge>
     </span>
   );
 }
@@ -416,12 +417,19 @@ function StatusPicker({ lead, saving, onChange }: { lead: Lead; saving: boolean;
     <div className="flex items-center gap-2">
       {saving && <Loader2 className="h-3.5 w-3.5 animate-spin text-muted-foreground" />}
       <Select value={lead.status} onValueChange={(v) => onChange(v as LeadStatus)}>
-        <SelectTrigger className={`h-8 w-[130px] border-0 text-label font-semibold ${STATUS_STYLE[lead.status]}`}>
+        {/* The dot lives in the item, so the trigger shows it too: SelectValue
+            renders the chosen item's text, dot included. */}
+        <SelectTrigger className="h-8 w-[130px] text-label font-medium">
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
           {LEAD_STATUSES.map((s) => (
-            <SelectItem key={s} value={s}>{STATUS_LABEL[s]}</SelectItem>
+            <SelectItem key={s} value={s}>
+              <span className="flex items-center gap-2">
+                <span aria-hidden className={`h-[6px] w-[6px] shrink-0 rounded-full ${PILL_DOT[STATUS_TONE[s]]}`} />
+                {STATUS_LABEL[s]}
+              </span>
+            </SelectItem>
           ))}
         </SelectContent>
       </Select>

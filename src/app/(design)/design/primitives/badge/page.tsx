@@ -1,5 +1,6 @@
 import { Badge, Pill } from "@/components/system/badge";
-import { PageHeader, Section, Preview, Code, BestPractices } from "../../_components/docs";
+import { LEAD_STATUSES, STATUS_LABEL, STATUS_TONE } from "@/lib/dashboard/leads";
+import { PageHeader, Section, Preview, Code, BestPractices, Rule, Mono } from "../../_components/docs";
 
 export const metadata = { title: "Badge" };
 
@@ -33,13 +34,36 @@ export default function BadgePage() {
 
       <Section title="Pill" note="Sentence case with a dot. For state that moves.">
         <Preview>
-          <Pill variant="neutral">New lead</Pill>
-          <Pill variant="warning">Awaiting survey</Pill>
-          <Pill variant="brand">Booked</Pill>
-          <Pill variant="success">Installed</Pill>
-          <Pill variant="error">Lost</Pill>
+          <Pill variant="brand">Brand</Pill>
+          <Pill variant="neutral">Neutral</Pill>
+          <Pill variant="success">Success</Pill>
+          <Pill variant="warning">Warning</Pill>
+          <Pill variant="error">Error</Pill>
+          <Pill variant="muted">Muted</Pill>
         </Preview>
-        <Code>{`<Pill variant="warning">Awaiting survey</Pill>`}</Code>
+        <Code>{`<Pill variant="warning">Quoted</Pill>`}</Code>
+      </Section>
+
+      <Section
+        title="Lead statuses"
+        note="The leads pipeline, rendered from STATUS_TONE — the same map the dashboard reads, so this cannot drift from it."
+      >
+        <Preview>
+          <div className="theme-product flex flex-wrap gap-2">
+            {LEAD_STATUSES.map((s) => (
+              <Pill key={s} variant={STATUS_TONE[s]}>
+                {STATUS_LABEL[s]}
+              </Pill>
+            ))}
+          </div>
+        </Preview>
+        <Rule>
+          The word keeps the text colour and only the dot carries the hue. The dashboard&apos;s own pills
+          used to tint both — success and error text on a 10% tint of themselves measure 4.44 and
+          4.13:1, under AA — and <Mono>contacted</Mono> sat on <Mono>--accent</Mono>, which vanished
+          when Product&apos;s accent became the soft hover grey. <Mono>muted</Mono> is for what is over
+          or not started: lost, draft, not enough data.
+        </Rule>
       </Section>
 
       <BestPractices

@@ -47,9 +47,30 @@ export function Badge({
   );
 }
 
+export type PillVariant = Variant | "muted";
+
+/** The dot alone, for places that show a status without the pill around it (a Select item). */
+export const PILL_DOT: Record<PillVariant, string> = {
+  brand: "bg-primary",
+  neutral: "bg-muted-foreground",
+  success: "bg-success",
+  warning: "bg-warning",
+  error: "bg-error",
+  muted: "bg-border",
+};
+
 /**
  * Status pill — a dot plus a word. Sentence case, not uppercase, because it
  * reads as state rather than as a label.
+ *
+ * The word stays in the text colour and only the dot carries the hue. The
+ * dashboard's own pills tinted both — text-success on bg-success/10 and so on
+ * — which put success and error text at 4.44 and 4.13:1, under AA, and made
+ * the colour do the reading. Here the word reads at full contrast and the dot
+ * is decoration.
+ *
+ * `muted` is for states that are over or not started — lost, draft, not
+ * enough data: a pale dot and muted text, so they recede in a list.
  */
 export function Pill({
   children,
@@ -57,25 +78,19 @@ export function Pill({
   className,
 }: {
   children: React.ReactNode;
-  variant?: Variant;
+  variant?: PillVariant;
   className?: string;
 }) {
-  const dot: Record<Variant, string> = {
-    brand: "bg-primary",
-    neutral: "bg-muted-foreground",
-    success: "bg-success",
-    warning: "bg-warning",
-    error: "bg-error",
-  };
   return (
     <span
       className={cn(
         "inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border border-border px-2.5 py-1",
-        "text-caption font-medium text-foreground",
+        "text-caption font-medium",
+        variant === "muted" ? "text-muted-foreground" : "text-foreground",
         className,
       )}
     >
-      <span aria-hidden className={cn("h-[6px] w-[6px] rounded-full", dot[variant])} />
+      <span aria-hidden className={cn("h-[6px] w-[6px] shrink-0 rounded-full", PILL_DOT[variant])} />
       {children}
     </span>
   );

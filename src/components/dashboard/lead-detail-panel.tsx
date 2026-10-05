@@ -12,11 +12,12 @@ import {
   type Lead,
   type LeadLocation,
   STATUS_LABEL,
-  STATUS_STYLE,
+  STATUS_TONE,
   serviceOf,
   installTypeLabel,
   formatDateTime,
 } from "@/lib/dashboard/leads";
+import { Pill } from "@/components/system/badge";
 
 interface Props {
   lead: Lead;
@@ -67,9 +68,7 @@ export function LeadDetailPanel({ lead, location, onClose, statusPicker, onSaveV
             <div>
               <div className="flex items-center gap-2">
                 <h2 className="text-xl font-bold tracking-tight">{lead.name}</h2>
-                <span className={`rounded-full px-2.5 py-0.5 text-label font-semibold ${STATUS_STYLE[lead.status]}`}>
-                  {STATUS_LABEL[lead.status]}
-                </span>
+                <Pill variant={STATUS_TONE[lead.status]}>{STATUS_LABEL[lead.status]}</Pill>
               </div>
               <p className="mt-1 text-body-sm text-muted-foreground">Submitted {formatDateTime(lead.created_at)}</p>
             </div>

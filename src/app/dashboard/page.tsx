@@ -7,7 +7,7 @@ import {
   type LeadStatus,
   LEAD_STATUSES,
   STATUS_LABEL,
-  STATUS_STYLE,
+  STATUS_TONE,
   serviceOf,
 } from "@/lib/dashboard/leads";
 import { getVisitorLeadRate, fmtRate, fmtDelta } from "@/lib/dashboard/conversion";
@@ -15,6 +15,7 @@ import { realLeads } from "@/lib/dashboard/leads";
 import { Stat } from "@/components/system/stat";
 import { EmptyState } from "@/components/system/empty-state";
 import { PageHeader } from "@/components/system/page-header";
+import { Pill } from "@/components/system/badge";
 
 export const dynamic = "force-dynamic";
 
@@ -179,9 +180,9 @@ export default async function OverviewPage() {
               <CardContent className="space-y-3">
                 {byStatus.map(({ status, count }) => (
                   <div key={status} className="flex items-center gap-3">
-                    <span className={`inline-flex w-24 justify-center rounded-full px-2.5 py-0.5 text-label font-semibold ${STATUS_STYLE[status as LeadStatus]}`}>
+                    <Pill variant={STATUS_TONE[status as LeadStatus]} className="w-24">
                       {STATUS_LABEL[status as LeadStatus]}
-                    </span>
+                    </Pill>
                     <div className="h-2 flex-1 overflow-hidden rounded-full bg-secondary">
                       <div className="h-full rounded-full bg-primary" style={{ width: `${total ? (count / total) * 100 : 0}%` }} />
                     </div>
