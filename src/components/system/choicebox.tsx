@@ -17,6 +17,7 @@ export function Choicebox({
   onSelect,
   multi = false,
   disabled = false,
+  icon,
   name,
   className,
 }: {
@@ -26,6 +27,8 @@ export function Choicebox({
   onSelect: () => void;
   /** Renders a square indicator and reports checkbox semantics. */
   multi?: boolean;
+  /** A lucide icon before the title, 16px. Decoration: the title carries the meaning. */
+  icon?: React.ReactNode;
   disabled?: boolean;
   /** Radio group name. Required when multi is false. */
   name?: string;
@@ -49,7 +52,14 @@ export function Choicebox({
         className="peer sr-only"
       />
       <span className="min-w-0 flex-1">
-        <span className="block text-body font-semibold text-foreground">{title}</span>
+        <span className="flex items-center gap-2 text-body font-semibold text-foreground">
+          {icon && (
+            <span aria-hidden className="shrink-0 text-muted-foreground [&_svg]:size-4">
+              {icon}
+            </span>
+          )}
+          {title}
+        </span>
         {description && (
           <span className="mt-0.5 block text-body-sm text-muted-foreground">{description}</span>
         )}

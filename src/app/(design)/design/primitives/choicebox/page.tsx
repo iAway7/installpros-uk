@@ -41,10 +41,12 @@ export default function ChoiceboxPage() {
           needs explaining, or when more than one can be picked, which FormOption cannot do.
         </Rule>
         <Rule>
-          Worth saying plainly: Choicebox ships nowhere today. All of its uses are on these
-          documentation pages, while FormOption runs the quote form and the coverage checker. Both
-          are kept on purpose — Choicebox has the description and multi-select that FormOption will
-          never grow — but if a year from now it is still unused, that is the answer.
+          Its first real use is in the dashboard: the experiment type, two pages or same page,
+          in Experiments. Those were two buttons with <Mono>aria-pressed</Mono> — the same mistake
+          FormOption used to make, two independent toggles to a screen reader for a pick-one
+          question. They are Choiceboxes now, radios sharing a name, each with an icon (the
+          optional <Mono>icon</Mono> prop) and a sentence explaining it. FormOption still runs the
+          quote form and the coverage checker; the split between them is the one described above.
         </Rule>
       </Section>
 

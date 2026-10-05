@@ -69,7 +69,7 @@ export default async function SettingsPage() {
                   <span className="flex items-center gap-3">
                     {s.docsHint && <span className="text-label text-muted-foreground">{s.docsHint}</span>}
                     {s.toggleKey && (
-                      <SettingToggle settingKey={s.toggleKey} initial={Boolean(s.toggleOn)} disabled={s.toggleDisabled} />
+                      <SettingToggle settingKey={s.toggleKey} initial={Boolean(s.toggleOn)} disabled={s.toggleDisabled} label={s.name} />
                     )}
                   </span>
                 </div>

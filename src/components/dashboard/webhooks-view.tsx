@@ -9,6 +9,7 @@ import { Input } from "@/components/system/input";
 import { Label } from "@/components/system/label";
 import { Table, TableHead, TableBody, TableRow, TableHeaderCell, TableCell } from "@/components/system/table";
 import { MiddleTruncate } from "@/components/system/middle-truncate";
+import { Switch } from "@/components/system/switch";
 import {
   WEBHOOK_EVENTS,
   EVENT_LABEL,
@@ -312,7 +313,7 @@ function EndpointRow({
           </div>
         </TableCell>
         <TableCell className="align-middle">
-          <ActiveSwitch on={ep.active} disabled={busy} onChange={onSetActive} />
+          <ActiveSwitch name={ep.name} on={ep.active} disabled={busy} onChange={onSetActive} />
         </TableCell>
         <TableCell className="align-middle text-right">
           {confirmingDelete ? (
@@ -362,28 +363,17 @@ function EndpointRow({
   );
 }
 
-function ActiveSwitch({ on, disabled, onChange }: { on: boolean; disabled?: boolean; onChange: (next: boolean) => void }) {
+/** Whether leads are sent to this endpoint. The name says what; aria-checked
+ *  says the state — the state used to be the name ("Active" / "Paused"). */
+function ActiveSwitch({ name, on, disabled, onChange }: { name: string; on: boolean; disabled?: boolean; onChange: (next: boolean) => void }) {
   return (
-    <label className="flex cursor-pointer items-center gap-2 text-body-sm">
-      <button
-        type="button"
-        role="switch"
-        aria-checked={on}
-        disabled={disabled}
-        onClick={() => onChange(!on)}
-        title={on ? "Pause: stop sending leads here" : "Resume: start sending leads here"}
-        className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors disabled:opacity-50 ${
-          on ? "bg-success" : "bg-muted"
-        }`}
-      >
-        <span
-          className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform ${
-            on ? "translate-x-[22px]" : "translate-x-0.5"
-          }`}
-        />
-      </button>
-      <span className="sr-only">{on ? "Active" : "Paused"}</span>
-    </label>
+    <Switch
+      checked={on}
+      onCheckedChange={onChange}
+      disabled={disabled}
+      aria-label={`Send leads to ${name}`}
+      title={on ? "Pause: stop sending leads here" : "Resume: start sending leads here"}
+    />
   );
 }
 

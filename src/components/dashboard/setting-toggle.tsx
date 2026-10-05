@@ -3,9 +3,22 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { Switch } from "@/components/system/switch";
 
-/** On/off switch bound to an app_settings key via /api/settings/toggles. */
-export function SettingToggle({ settingKey, initial, disabled }: { settingKey: string; initial: boolean; disabled?: boolean }) {
+/** On/off switch bound to an app_settings key via /api/settings/toggles.
+ *  The Switch itself is system/switch; this owns the optimistic save. */
+export function SettingToggle({
+  settingKey,
+  initial,
+  disabled,
+  label,
+}: {
+  settingKey: string;
+  initial: boolean;
+  disabled?: boolean;
+  /** Accessible name: what the switch turns on, e.g. "WhatsApp follow-up". */
+  label: string;
+}) {
   const router = useRouter();
   const [on, setOn] = useState(initial);
   const [saving, setSaving] = useState(false);
@@ -32,21 +45,12 @@ export function SettingToggle({ settingKey, initial, disabled }: { settingKey: s
   }
 
   return (
-    <button
-      role="switch"
-      aria-checked={on}
+    <Switch
+      checked={on}
+      onCheckedChange={flip}
       disabled={saving || disabled}
-      onClick={flip}
+      aria-label={label}
       title={disabled ? "Add the API key first" : on ? "Deactivate" : "Activate"}
-      className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors disabled:opacity-50 ${
-        on ? "bg-success" : "bg-muted"
-      }`}
-    >
-      <span
-        className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform ${
-          on ? "translate-x-[22px]" : "translate-x-0.5"
-        }`}
-      />
-    </button>
+    />
   );
 }

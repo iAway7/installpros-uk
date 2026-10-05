@@ -53,6 +53,7 @@ export const NAV: NavGroup[] = [
       { href: "/design/primitives/skeleton", label: "Skeleton" },
       { href: "/design/primitives/stat", label: "Stat" },
       { href: "/design/primitives/status-dot", label: "Status dot" },
+      { href: "/design/primitives/switch", label: "Switch" },
       { href: "/design/primitives/tabs", label: "Tabs" },
       { href: "/design/primitives/textarea", label: "Textarea" },
       { href: "/design/primitives/toast", label: "Toast" },

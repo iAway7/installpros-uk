@@ -16,6 +16,7 @@ import { CHART } from "@/components/system/chart-theme";
 import { EmptyState } from "@/components/system/empty-state";
 import { Pill, type PillVariant } from "@/components/system/badge";
 import { Table, TableHead, TableBody, TableRow, TableHeaderCell, TableCell } from "@/components/system/table";
+import { Choicebox } from "@/components/system/choicebox";
 
 /** Small hover/focus tooltip for explaining a field. */
 function InfoHint({ text }: { text: string }) {
@@ -481,27 +482,32 @@ function CreateForm({ onDone }: { onDone: () => void }) {
       <CardContent>
         <form onSubmit={submit} className="space-y-5">
           {/* 1. What kind of test */}
-          {/* Not a <Label>: this heads a grid of cards, it does not name one
-              control. role=group with aria-labelledby is what it actually is. */}
-          <div className="space-y-2" role="group" aria-labelledby="exp-type-heading">
+          {/* Not a <Label>: this heads a pick-one choice, it does not name one
+              control. The options were buttons with aria-pressed — two
+              independent toggles to a screen reader. They are Choicebox
+              radios sharing a name now, so arrow keys move between them and
+              only one can be on; the group takes its name from the heading. */}
+          <div className="space-y-2" role="radiogroup" aria-labelledby="exp-type-heading">
             <div id="exp-type-heading" className="flex items-center gap-1.5 text-body font-semibold text-foreground">
               What do you want to test?
               <InfoHint text="Two pages: split traffic between two different landing pages and see which converts better. Same page: keep one page and swap a piece of its content." />
             </div>
             <div className="grid gap-2 sm:grid-cols-2">
-              <TypeCard
-                active={isSplit}
-                onClick={() => setType("page_split")}
-                icon={<Layers className="h-4 w-4" />}
+              <Choicebox
+                name="exp-type"
+                selected={isSplit}
+                onSelect={() => setType("page_split")}
+                icon={<Layers />}
                 title="Two pages (split URL)"
-                desc="Pick two existing pages. Traffic to /go is split between them."
+                description="Pick two existing pages. Traffic to /go is split between them."
               />
-              <TypeCard
-                active={!isSplit}
-                onClick={() => setType("on_page")}
-                icon={<FileText className="h-4 w-4" />}
+              <Choicebox
+                name="exp-type"
+                selected={!isSplit}
+                onSelect={() => setType("on_page")}
+                icon={<FileText />}
                 title="Same page, change content"
-                desc="Keep one page, swap a piece of content (today: the hero headline)."
+                description="Keep one page, swap a piece of content (today: the hero headline)."
               />
             </div>
           </div>
@@ -656,34 +662,3 @@ function CreateForm({ onDone }: { onDone: () => void }) {
   );
 }
 
-/** Selectable card for the experiment-type toggle. */
-function TypeCard({
-  active,
-  onClick,
-  icon,
-  title,
-  desc,
-}: {
-  active: boolean;
-  onClick: () => void;
-  icon: React.ReactNode;
-  title: string;
-  desc: string;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-pressed={active}
-      className={`flex flex-col items-start gap-1 rounded-lg border-2 p-3 text-left transition-all ${
-        active ? "border-primary bg-primary/5" : "border-border hover:border-primary/40"
-      }`}
-    >
-      <span className={`flex items-center gap-2 text-body-sm font-semibold ${active ? "text-primary" : "text-foreground"}`}>
-        {icon}
-        {title}
-      </span>
-      <span className="text-label text-muted-foreground">{desc}</span>
-    </button>
-  );
-}
