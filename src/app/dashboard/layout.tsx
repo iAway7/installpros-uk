@@ -5,6 +5,8 @@ import { siteConfig } from "@/lib/site-config";
 import { evaluateAlerts } from "@/lib/alerts/evaluate";
 import { NotificationsBell, type AlertItem } from "@/components/dashboard/notifications-bell";
 import { NavItem } from "@/components/dashboard/nav-item";
+import { ProductBodyTheme } from "@/components/dashboard/product-body-theme";
+import { GeistSans } from "geist/font/sans";
 
 export const dynamic = "force-dynamic";
 
@@ -26,7 +28,8 @@ export default async function DashboardLayout({ children }: { children: React.Re
   const alerts = (alertRows as AlertItem[] | null) ?? [];
 
   return (
-    <div className="theme-product flex min-h-dvh bg-secondary/30">
+    <div className={`theme-product ${GeistSans.variable} flex min-h-dvh bg-secondary/30`}>
+      <ProductBodyTheme className={GeistSans.variable} />
       {/* Sidebar (desktop) */}
       <aside className="hidden w-60 shrink-0 flex-col border-r border-border bg-sidebar md:flex">
         <div className="flex h-16 items-center gap-2 border-b border-border px-5 font-bold">

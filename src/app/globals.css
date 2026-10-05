@@ -347,6 +347,11 @@
 }
 
 .theme-product {
+  /* Geist, the preset's face, for Product only. Loaded by the dashboard and
+     auth layouts (package `geist`: next/font in 14.2 predates Geist on Google
+     Fonts), so the funnel neither downloads it nor preloads it. Inter stays as
+     the first fallback, which is what renders if the variable is missing. */
+  --font-sans: var(--font-geist-sans), var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   font-family: var(--font-sans);
   font-size: 14px;
   /* Neutrals on zinc, from shadcn's zinc preset — taken by hand, value by value,
