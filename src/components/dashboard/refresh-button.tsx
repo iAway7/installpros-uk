@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { RefreshCw } from "lucide-react";
+import { Button } from "@/components/system/button";
 
 /** Re-runs the server component (and its live API checks) via router.refresh. */
 export function RefreshButton({ label = "Refresh statuses" }: { label?: string }) {
@@ -21,13 +22,9 @@ export function RefreshButton({ label = "Refresh statuses" }: { label?: string }
 
   const busy = isPending || spinning;
   return (
-    <button
-      onClick={refresh}
-      disabled={busy}
-      className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-body-sm font-semibold text-primary-foreground disabled:opacity-60"
-    >
-      <RefreshCw className={`h-4 w-4 ${busy ? "animate-spin" : ""}`} />
+    <Button size="sm" onClick={refresh} disabled={busy}>
+      <RefreshCw className={busy ? "animate-spin" : undefined} />
       {busy ? "Checking…" : label}
-    </button>
+    </Button>
   );
 }

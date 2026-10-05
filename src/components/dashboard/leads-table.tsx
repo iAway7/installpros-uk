@@ -22,6 +22,7 @@ import {
 import type { LeadIntel } from "@/lib/intel/types";
 import { EmptyState } from "@/components/system/empty-state";
 import { Badge, PILL_DOT } from "@/components/system/badge";
+import { Button } from "@/components/system/button";
 
 /** Escape one CSV cell per RFC 4180. */
 function csvCell(v: unknown): string {
@@ -237,13 +238,9 @@ export function LeadsTable({
             <SelectItem value="score">Highest score</SelectItem>
           </SelectContent>
         </Select>
-        <button
-          onClick={exportCsv}
-          disabled={filtered.length === 0}
-          className="inline-flex h-9 items-center gap-2 rounded-md border border-border bg-background px-3 text-body-sm font-medium hover:bg-secondary disabled:opacity-50"
-        >
-          <Download className="h-4 w-4" /> CSV
-        </button>
+        <Button variant="outline" size="sm" onClick={exportCsv} disabled={filtered.length === 0}>
+          <Download /> CSV
+        </Button>
       </div>
 
       {dateRange === "custom" && (
@@ -271,12 +268,14 @@ export function LeadsTable({
             />
           </div>
           {(customFrom || customTo) && (
-            <button
+            <Button
+              variant="link"
+              size="inline"
               onClick={() => { setCustomFrom(""); setCustomTo(""); }}
-              className="text-body-sm text-muted-foreground underline-offset-2 hover:text-foreground hover:underline"
+              className="text-body-sm font-normal text-muted-foreground hover:text-foreground"
             >
               Clear
-            </button>
+            </Button>
           )}
         </div>
       )}

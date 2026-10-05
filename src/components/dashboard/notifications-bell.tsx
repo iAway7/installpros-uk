@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Bell, TriangleAlert, Info, CircleAlert, CheckCheck } from "lucide-react";
+import { Button } from "@/components/system/button";
 
 export interface AlertItem {
   id: string;
@@ -63,10 +64,12 @@ export function NotificationsBell({ initialAlerts }: { initialAlerts: AlertItem[
 
   return (
     <div className="relative" ref={ref}>
-      <button
+      <Button
+        variant="ghost"
+        size="icon-sm"
         onClick={() => setOpen((o) => !o)}
         aria-label={`Notifications${unread ? ` (${unread} unread)` : ""}`}
-        className="relative rounded-lg p-2 text-muted-foreground hover:bg-secondary hover:text-foreground"
+        className="relative text-muted-foreground"
       >
         <Bell className="h-5 w-5" />
         {unread > 0 && (
@@ -74,19 +77,21 @@ export function NotificationsBell({ initialAlerts }: { initialAlerts: AlertItem[
             {unread > 9 ? "9+" : unread}
           </span>
         )}
-      </button>
+      </Button>
 
       {open && (
         <div className="absolute right-0 z-50 mt-2 w-96 max-w-[calc(100vw-2rem)] overflow-hidden rounded-xl border border-border bg-background shadow-popover">
           <div className="flex items-center justify-between border-b border-border px-4 py-2.5">
             <span className="text-body-sm font-semibold">Notifications</span>
             {unread > 0 && (
-              <button
+              <Button
+                variant="link"
+                size="inline"
                 onClick={markAllRead}
-                className="inline-flex items-center gap-1 text-label font-medium text-muted-foreground hover:text-primary"
+                className="gap-1 text-label font-medium text-muted-foreground hover:text-primary [&_svg]:size-3.5"
               >
-                <CheckCheck className="h-3.5 w-3.5" /> Mark all read
-              </button>
+                <CheckCheck /> Mark all read
+              </Button>
             )}
           </div>
           <div className="max-h-96 overflow-y-auto">

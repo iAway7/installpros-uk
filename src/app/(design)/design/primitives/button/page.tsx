@@ -1,4 +1,4 @@
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Bell, Download, RefreshCw, Trash2, X } from "lucide-react";
 import { Button } from "@/components/system/button";
 import { PageHeader, Section, Preview, Code, Table, Mono, Rule, BestPractices } from "../../_components/docs";
 
@@ -56,6 +56,53 @@ export default function ButtonPage() {
           keeps its weight over any background. Focus draws a 2px ring in <Mono>--selection</Mono>, not red, a red ring
           on a red button cannot be seen.
         </p>
+      </Section>
+
+      <Section
+        title="In the dashboard"
+        note="Product density: 44px default, sentence case. Two sizes and a variant exist for what a dense app needs."
+      >
+        <Preview>
+          <div className="theme-product flex flex-wrap items-center gap-3">
+            <Button size="sm">
+              <RefreshCw /> Refresh
+            </Button>
+            <Button variant="outline" size="sm">
+              <Download /> CSV
+            </Button>
+            <Button variant="ghost" size="icon-sm" aria-label="Notifications">
+              <Bell />
+            </Button>
+            <Button variant="ghost" size="icon-sm" aria-label="Remove" className="text-muted-foreground hover:text-destructive">
+              <Trash2 />
+            </Button>
+            <Button variant="ghost" size="icon-sm" aria-label="Close" className="text-muted-foreground">
+              <X />
+            </Button>
+            <span className="text-body-sm text-muted-foreground">
+              Secret set ·{" "}
+              <Button variant="link" size="inline" className="text-body-sm font-normal text-foreground underline">
+                Replace
+              </Button>
+            </span>
+          </div>
+        </Preview>
+        <Code>{`<Button variant="ghost" size="icon-sm" aria-label="Close"><X /></Button>
+<Button variant="link" size="inline">Replace</Button>`}</Code>
+        <Table
+          head={["Addition", "What", "For"]}
+          rows={[
+            [<Mono key="a">size=&quot;icon-sm&quot;</Mono>, "control-sm square, 36px", "Close, remove, notifications — inside rows and panel headers, where the 40px icon size would lift the row."],
+            [<Mono key="a">variant=&quot;link&quot;</Mono>, "text-primary, underline on hover", "An action that reads as text: Replace, Clear, Mark all read."],
+            [<Mono key="a">size=&quot;inline&quot;</Mono>, "no height, no padding", "A link-variant button inside a line of text."],
+          ]}
+        />
+        <Rule>
+          These replaced fourteen hand-written <Mono>&lt;button&gt;</Mono>s in the dashboard — a filled
+          Refresh, an outlined CSV export, three icon buttons and nine underlined text actions, each
+          with its own padding. Added as new keys only: every existing variant and size produces the
+          same classes it did, checked combination by combination, so the funnel&apos;s buttons do not move.
+        </Rule>
       </Section>
 
       <Section title="On the hero">

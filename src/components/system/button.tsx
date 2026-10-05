@@ -34,6 +34,11 @@ const buttonVariants = cva(
         secondary: "bg-secondary/80 text-foreground hover:bg-secondary border border-border",
         outline: "border border-border bg-transparent text-foreground hover:bg-secondary/50",
         ghost: "hover:bg-accent hover:text-accent-foreground",
+        // An action that reads as text: "Replace", "Clear filters", "View all".
+        // Pair with size="inline" so it sits in a line of text without a
+        // control's height. It is still a <button> — it does something on
+        // this page; if it goes somewhere, it is a link.
+        link: "text-primary underline-offset-2 hover:underline",
       },
       size: {
         // No vertical padding on any of these. The height is fixed, the content
@@ -50,6 +55,11 @@ const buttonVariants = cva(
         sm: "h-control-sm rounded-md px-4",
         lg: "h-control-lg rounded-lg px-6",
         icon: "h-control-aux w-control-aux rounded-md",
+        // Icon actions inside dense rows and panel headers, where 40px would
+        // lift the row: close, remove, notifications.
+        "icon-sm": "h-control-sm w-control-sm rounded-md",
+        // No box at all, for variant="link" inside text.
+        inline: "h-auto rounded-sm p-0",
       },
     },
     defaultVariants: { variant: "default", size: "default" },

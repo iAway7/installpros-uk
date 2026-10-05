@@ -120,14 +120,16 @@ export function TeamTable({ users, currentUserId }: { users: TeamMember[]; curre
                     <TableCell className="text-muted-foreground">{when(u.last_sign_in_at)}</TableCell>
                     <TableCell className="text-right">
                       {!isSelf && (
-                        <button
+                        <Button
+                          variant="ghost"
+                          size="icon-sm"
                           onClick={() => remove(u)}
                           disabled={busy === u.id}
                           aria-label={`Remove ${u.email}`}
-                          className="rounded-md p-1.5 text-muted-foreground hover:bg-secondary hover:text-destructive disabled:opacity-50"
+                          className="text-muted-foreground hover:text-destructive"
                         >
-                          {busy === u.id ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
-                        </button>
+                          {busy === u.id ? <Loader2 className="animate-spin" /> : <Trash2 />}
+                        </Button>
                       )}
                     </TableCell>
                   </TableRow>

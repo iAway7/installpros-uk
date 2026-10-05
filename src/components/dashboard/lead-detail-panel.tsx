@@ -18,6 +18,7 @@ import {
   formatDateTime,
 } from "@/lib/dashboard/leads";
 import { Pill } from "@/components/system/badge";
+import { Button } from "@/components/system/button";
 
 interface Props {
   lead: Lead;
@@ -72,13 +73,9 @@ export function LeadDetailPanel({ lead, location, onClose, statusPicker, onSaveV
               </div>
               <p className="mt-1 text-body-sm text-muted-foreground">Submitted {formatDateTime(lead.created_at)}</p>
             </div>
-            <button
-              onClick={onClose}
-              aria-label="Close"
-              className="rounded-md p-1.5 text-muted-foreground hover:bg-secondary hover:text-foreground"
-            >
-              <X className="h-5 w-5" />
-            </button>
+            <Button variant="ghost" size="icon-sm" onClick={onClose} aria-label="Close" className="text-muted-foreground">
+              <X />
+            </Button>
           </div>
         </div>
 
@@ -263,12 +260,14 @@ function SatelliteView({ leadId, mapsQuery, exact }: { leadId: string; mapsQuery
             source="Esri World Imagery, or Google Static Maps when a key is set"
           />
         </p>
-        <button
+        <Button
+          variant="link"
+          size="inline"
           onClick={() => setZoomOut((z) => !z)}
           className="text-label font-medium text-muted-foreground hover:text-primary"
         >
           {zoomOut ? "Zoom to roof" : "Zoom out"}
-        </button>
+        </Button>
       </div>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
@@ -388,14 +387,10 @@ function AddressResolver({ leadId, intel }: { leadId: string; intel?: LeadIntel 
           ))}
         </div>
       ) : (
-        <button
-          onClick={() => resolve()}
-          disabled={busy}
-          className="inline-flex items-center gap-1.5 text-body-sm font-medium text-primary hover:underline disabled:opacity-50"
-        >
-          {busy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <MapPinned className="h-3.5 w-3.5" />}
+        <Button variant="link" size="inline" onClick={() => resolve()} disabled={busy} className="gap-1.5 text-body-sm font-medium">
+          {busy ? <Loader2 className="animate-spin" /> : <MapPinned />}
           Resolve exact address (Propalt)
-        </button>
+        </Button>
       )}
       {error && <p className="text-label text-destructive">{error}</p>}
     </div>
@@ -421,14 +416,16 @@ function IntelSection({ leadId, intel }: { leadId: string; intel?: LeadIntel }) 
     <Section
       title="Property intelligence"
       action={
-        <button
+        <Button
+          variant="link"
+          size="inline"
           onClick={refresh}
           disabled={refreshing}
-          className="inline-flex items-center gap-1 text-label font-medium text-muted-foreground hover:text-primary disabled:opacity-50"
+          className="gap-1 text-label font-medium text-muted-foreground hover:text-primary [&_svg]:size-3"
         >
-          <RefreshCw className={`h-3 w-3 ${refreshing ? "animate-spin" : ""}`} />
+          <RefreshCw className={refreshing ? "animate-spin" : undefined} />
           {intel ? "Refresh" : "Fetch"}
-        </button>
+        </Button>
       }
     >
       {!intel ? (

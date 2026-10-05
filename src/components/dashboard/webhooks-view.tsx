@@ -195,9 +195,9 @@ export function WebhooksView() {
           {filteredEndpoint && (
             <p className="text-label text-muted-foreground">
               Showing <span className="font-semibold text-foreground">{filteredEndpoint.name}</span> only ·{" "}
-              <button type="button" className="underline underline-offset-2" onClick={() => setLogFilter(null)}>
+              <Button variant="link" size="inline" className="text-label font-normal text-foreground underline" onClick={() => setLogFilter(null)}>
                 Show all
-              </button>
+              </Button>
             </p>
           )}
         </div>
@@ -473,13 +473,13 @@ function EndpointForm({
         {isEdit && secretMode === "keep" ? (
           <div className="flex flex-wrap items-center gap-3 text-body-sm">
             <span className="rounded-full bg-primary/10 px-2 py-0.5 text-label font-semibold text-primary">Secret set</span>
-            <button type="button" className="underline underline-offset-2" onClick={() => setSecretMode("replace")}>Replace</button>
-            <button type="button" className="text-muted-foreground underline underline-offset-2" onClick={() => setSecretMode("remove")}>Remove</button>
+            <Button variant="link" size="inline" className="text-body-sm font-normal text-foreground underline" onClick={() => setSecretMode("replace")}>Replace</Button>
+            <Button variant="link" size="inline" className="text-body-sm font-normal text-muted-foreground underline" onClick={() => setSecretMode("remove")}>Remove</Button>
           </div>
         ) : isEdit && secretMode === "remove" ? (
           <div className="flex flex-wrap items-center gap-3 text-body-sm">
             <span className="text-muted-foreground">Secret will be removed on save.</span>
-            <button type="button" className="underline underline-offset-2" onClick={() => setSecretMode("keep")}>Keep it</button>
+            <Button variant="link" size="inline" className="text-body-sm font-normal text-foreground underline" onClick={() => setSecretMode("keep")}>Keep it</Button>
           </div>
         ) : (
           <Input id="wh-secret" value={secret} onChange={(e) => setSecret(e.target.value)} placeholder="Leave blank for Zapier / Make" />
