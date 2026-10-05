@@ -40,6 +40,7 @@ export const NAV: NavGroup[] = [
       { href: "/design/primitives/middle-truncate", label: "Middle truncate" },
       { href: "/design/primitives/modal", label: "Modal" },
       { href: "/design/primitives/note", label: "Note" },
+      { href: "/design/primitives/page-header", label: "Page header" },
       { href: "/design/primitives/pagination", label: "Pagination" },
       { href: "/design/primitives/progress", label: "Progress" },
       { href: "/design/primitives/project-banner", label: "Project banner" },

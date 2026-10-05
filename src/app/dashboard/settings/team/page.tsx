@@ -5,6 +5,7 @@ import { getCurrentRole } from "@/lib/auth/role";
 import { createServiceClient } from "@/lib/supabase/server";
 import type { TeamMember } from "@/app/api/settings/users/route";
 import type { AppRole } from "@/lib/auth/role";
+import { PageHeader } from "@/components/system/page-header";
 
 export const dynamic = "force-dynamic";
 
@@ -13,10 +14,7 @@ export default async function TeamSettingsPage() {
   const me = await getCurrentRole();
 
   const header = (
-    <div>
-      <h1 className="text-2xl font-bold tracking-tight">Settings</h1>
-      <p className="text-muted-foreground">Integrations, connections and configuration.</p>
-    </div>
+    <PageHeader title="Settings" description="Integrations, connections and configuration." />
   );
 
   if (me?.role !== "admin") {

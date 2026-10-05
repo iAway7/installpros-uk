@@ -14,6 +14,7 @@ import {
   type FunnelStepResult,
 } from "@/lib/posthog/query";
 import { EmptyState } from "@/components/system/empty-state";
+import { PageHeader } from "@/components/system/page-header";
 
 export const dynamic = "force-dynamic";
 
@@ -199,10 +200,7 @@ function Shell({
 }) {
   return (
     <div className="mx-auto max-w-6xl space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight">Funnel</h1>
-        <p className="text-muted-foreground">Where visitors drop off on the way to becoming leads.</p>
-      </div>
+      <PageHeader title="Funnel" description="Where visitors drop off on the way to becoming leads." />
 
       <div className="flex flex-wrap items-end gap-3">
         <SelectFilter name="days" label="Period" value={String(days)} options={DAY_OPTIONS.map((d): [string, string] => [String(d), d === 0 ? "Today" : `Last ${d} days`])} />

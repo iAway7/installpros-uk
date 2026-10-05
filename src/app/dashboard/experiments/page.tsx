@@ -3,6 +3,7 @@ import { computeResults, type ResultRow } from "@/lib/experiments/stats";
 import type { Experiment, Variant, VariantResult } from "@/lib/experiments/types";
 import { ExperimentsView, type ExperimentWithResults } from "@/components/dashboard/experiments-view";
 import { Card, CardContent } from "@/components/system/card";
+import { PageHeader } from "@/components/system/page-header";
 
 export const dynamic = "force-dynamic";
 
@@ -55,10 +56,7 @@ export default async function ExperimentsPage() {
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight">Experiments</h1>
-        <p className="text-muted-foreground">Run A/B tests on the landing page and read the results.</p>
-      </div>
+      <PageHeader title="Experiments" description="Run A/B tests on the landing page and read the results." />
 
       {error ? (
         <Card>

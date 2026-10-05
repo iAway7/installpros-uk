@@ -7,6 +7,7 @@ import { realLeads } from "@/lib/dashboard/leads";
 import { fetchSources, fetchTargetCounts, isOrganicSource, posthogConfigured, FUNNEL_PAGES, ORGANIC_SOURCE } from "@/lib/posthog/query";
 import { buildTargetsReport, pct, LAUNCH_DATE, type TargetStatus, type TargetsReport } from "@/lib/dashboard/targets";
 import { EmptyState } from "@/components/system/empty-state";
+import { PageHeader } from "@/components/system/page-header";
 
 export const dynamic = "force-dynamic";
 
@@ -251,12 +252,7 @@ function Shell({ filters, sources, children }: { filters: Filters; sources: [str
   const isDefault = since === LAUNCH_DATE && !until && page === DEFAULT_PAGE && source === DEFAULT_SOURCE;
   return (
     <div className="mx-auto max-w-6xl space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight">Targets</h1>
-        <p className="text-muted-foreground">
-          The new landing against the June 2026 baseline and the targets set for it. Rates need at least 30 visitors before they are judged.
-        </p>
-      </div>
+      <PageHeader title="Targets" description="The new landing against the June 2026 baseline and the targets set for it. Rates need at least 30 visitors before they are judged." />
 
       <div className="flex flex-wrap items-end gap-3">
         <DateFilter name="since" label="From" value={since} min={LAUNCH_DATE} placeholder={LAUNCH_DATE} />

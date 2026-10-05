@@ -4,6 +4,7 @@ import type { LeadIntel } from "@/lib/intel/types";
 import { lookupLocations } from "@/lib/dashboard/locations";
 import { LeadsTable } from "@/components/dashboard/leads-table";
 import { Card, CardContent } from "@/components/system/card";
+import { PageHeader } from "@/components/system/page-header";
 
 export const dynamic = "force-dynamic";
 
@@ -50,10 +51,7 @@ export default async function LeadsPage() {
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight">Leads</h1>
-        <p className="text-muted-foreground">Every quote request from your landing page.</p>
-      </div>
+      <PageHeader title="Leads" description="Every quote request from your landing page." />
 
       {error ? (
         <Card>

@@ -14,6 +14,7 @@ import { getVisitorLeadRate, fmtRate, fmtDelta } from "@/lib/dashboard/conversio
 import { realLeads } from "@/lib/dashboard/leads";
 import { Stat } from "@/components/system/stat";
 import { EmptyState } from "@/components/system/empty-state";
+import { PageHeader } from "@/components/system/page-header";
 
 export const dynamic = "force-dynamic";
 
@@ -112,10 +113,7 @@ export default async function OverviewPage() {
 
   return (
     <div className="mx-auto max-w-6xl space-y-8">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight">Overview</h1>
-        <p className="text-muted-foreground">Your lead pipeline at a glance.</p>
-      </div>
+      <PageHeader title="Overview" description="Your lead pipeline at a glance." />
 
       {error ? (
         <Card>

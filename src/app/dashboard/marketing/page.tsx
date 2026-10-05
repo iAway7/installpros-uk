@@ -8,6 +8,7 @@ import { type LeadStatus, realLeads } from "@/lib/dashboard/leads";
 import { getVisitorLeadRate, fmtRate, fmtDelta } from "@/lib/dashboard/conversion";
 import { Stat } from "@/components/system/stat";
 import { EmptyState } from "@/components/system/empty-state";
+import { PageHeader } from "@/components/system/page-header";
 
 export const dynamic = "force-dynamic";
 
@@ -26,10 +27,7 @@ export default async function MarketingPage() {
 
   return (
     <div className="mx-auto max-w-6xl space-y-8">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight">Marketing</h1>
-        <p className="text-muted-foreground">Acquisition and SEO performance, blended with your lead pipeline.</p>
-      </div>
+      <PageHeader title="Marketing" description="Acquisition and SEO performance, blended with your lead pipeline." />
 
       {/* Blended overview */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -57,7 +55,7 @@ export default async function MarketingPage() {
       {/* Landing-page conversion (CRO) */}
       <section className="space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold">Landing page conversion</h2>
+          <h2 className="text-title font-semibold">Landing page conversion</h2>
           {conv.ok ? (
             <span className="text-label text-muted-foreground">
               {conv.leads} leads / {conv.visitors.toLocaleString("en-GB")} visitors · last {conv.windowDays} days
@@ -95,7 +93,7 @@ export default async function MarketingPage() {
       {/* Search Console */}
       <section className="space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold">Google Search Console</h2>
+          <h2 className="text-title font-semibold">Google Search Console</h2>
           {sc.ok && sc.site ? <span className="text-label text-muted-foreground">{sc.site} · last 28 days</span> : null}
         </div>
 
@@ -138,7 +136,7 @@ export default async function MarketingPage() {
 
       {/* Behaviour → PostHog (not duplicated here) */}
       <section className="space-y-4">
-        <h2 className="text-lg font-semibold">On-site behaviour &amp; funnel</h2>
+        <h2 className="text-title font-semibold">On-site behaviour &amp; funnel</h2>
         <Card>
           <CardContent className="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-body-sm text-muted-foreground">

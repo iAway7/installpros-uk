@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/system/card";
 import { aggregateLandings, totals, RANGES, type LandingLeadRow } from "@/lib/dashboard/landings";
 import { Stat } from "@/components/system/stat";
 import { EmptyState } from "@/components/system/empty-state";
+import { PageHeader } from "@/components/system/page-header";
 
 export const dynamic = "force-dynamic";
 
@@ -34,29 +35,27 @@ export default async function LandingsPage({
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">Landing pages</h1>
-          <p className="text-muted-foreground">
-            Leads by the page they arrived on. This is the number to hold against Google Ads.
-          </p>
-        </div>
-        <div className="flex gap-1 rounded-lg bg-secondary p-1 text-body-sm font-medium">
-          {RANGES.map((r) => (
-            <Link
-              key={r.days}
-              href={`/dashboard/landings?days=${r.days}`}
-              className={
-                r.days === range.days
-                  ? "rounded-md bg-background px-3 py-1.5 shadow-sm"
-                  : "rounded-md px-3 py-1.5 text-muted-foreground hover:text-foreground"
-              }
-            >
-              {r.label}
-            </Link>
-          ))}
-        </div>
-      </div>
+      <PageHeader
+        title="Landing pages"
+        description="Leads by the page they arrived on. This is the number to hold against Google Ads."
+        actions={
+          <div className="flex gap-1 rounded-lg bg-secondary p-1 text-body-sm font-medium">
+            {RANGES.map((r) => (
+              <Link
+                key={r.days}
+                href={`/dashboard/landings?days=${r.days}`}
+                className={
+                  r.days === range.days
+                    ? "rounded-md bg-background px-3 py-1.5 shadow-sm"
+                    : "rounded-md px-3 py-1.5 text-muted-foreground hover:text-foreground"
+                }
+              >
+                {r.label}
+              </Link>
+            ))}
+          </div>
+        }
+      />
 
       <div className="grid gap-3 sm:grid-cols-4">
         <Stat label="Leads" value={sum.leads} />

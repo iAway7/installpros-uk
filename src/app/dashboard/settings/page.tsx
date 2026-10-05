@@ -5,6 +5,7 @@ import { SettingToggle } from "@/components/dashboard/setting-toggle";
 import { SettingsTabs } from "@/components/dashboard/settings-tabs";
 import { getApiStatuses, type ApiHealth } from "@/lib/settings/api-status";
 import { isAdmin } from "@/lib/auth/role";
+import { PageHeader } from "@/components/system/page-header";
 
 export const dynamic = "force-dynamic";
 
@@ -38,10 +39,7 @@ export default async function SettingsPage() {
   if (!(await isAdmin())) {
     return (
       <div className="mx-auto max-w-4xl space-y-6">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">Settings</h1>
-          <p className="text-muted-foreground">Integrations, connections and configuration.</p>
-        </div>
+        <PageHeader title="Settings" description="Integrations, connections and configuration." />
         <Card>
           <CardContent className="py-10 text-center">
             <p className="font-medium">Admins only</p>
@@ -59,10 +57,7 @@ export default async function SettingsPage() {
 
   return (
     <div className="mx-auto max-w-4xl space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight">Settings</h1>
-        <p className="text-muted-foreground">Integrations, connections and configuration.</p>
-      </div>
+      <PageHeader title="Settings" description="Integrations, connections and configuration." />
 
       <SettingsTabs active="apis" />
 

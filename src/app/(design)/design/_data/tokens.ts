@@ -1005,6 +1005,12 @@ export const SCALES: Scale[] = [
         "differs": true
       },
       {
+        "name": "--text-heading",
+        "editorial": "28px",
+        "product": "24px",
+        "differs": true
+      },
+      {
         "name": "--text-metric",
         "editorial": "28px",
         "product": "24px",

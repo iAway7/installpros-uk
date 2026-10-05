@@ -213,6 +213,10 @@
                                below 16px iOS Safari zooms the page on focus. */
     --text-lead: 18px;      /* accordion content, modal title */
     --text-title: 20px;     /* accordion trigger, feedback title */
+    --text-heading: 28px;   /* a page's h1 in the app. Above the reading scale,
+                               with its own leading, like text-metric. Not the
+                               funnel's display sizes — those are .h1-hero and
+                               .h2-section, and say so. */
     --text-metric: 28px;    /* the number on a Stat. Above the reading scale,
                                so it carries its own tight leading. It was
                                Tailwind's text-2xl, three times, outside the
@@ -408,6 +412,7 @@
   --text-body: 14px;
   --text-lead: 16px;
   --text-title: 18px;
+  --text-heading: 24px;
   --text-metric: 24px;
     --button-size: 13px;
 

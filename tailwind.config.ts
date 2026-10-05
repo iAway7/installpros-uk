@@ -51,6 +51,8 @@ const config: Config = {
         entry: ["var(--text-entry)", { lineHeight: "var(--leading-body)" }],
         lead: ["var(--text-lead)", { lineHeight: "var(--leading-body)" }],
         title: ["var(--text-title)", { lineHeight: "var(--leading-body)" }],
+        // Page h1 in the app. Tight leading, slight negative tracking, like a heading.
+        heading: ["var(--text-heading)", { lineHeight: "1.2", letterSpacing: "-0.015em" }],
         // A figure, not a sentence: tight leading of its own, not --leading-body.
         metric: ["var(--text-metric)", { lineHeight: "1.15", letterSpacing: "-0.01em" }],
         // Not part of the reading scale: the button's size is a voice token

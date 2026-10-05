@@ -7,6 +7,7 @@ import { ukMap, UK_MAP_VIEWBOX } from "@/lib/funnel/uk-map";
 import { InfoTip } from "@/components/system/info-tip";
 import { worstServedOutcodes, releaseLabel } from "@/lib/broadband/outcode-coverage";
 import { EmptyState } from "@/components/system/empty-state";
+import { PageHeader } from "@/components/system/page-header";
 
 export const dynamic = "force-dynamic";
 
@@ -105,10 +106,7 @@ export default async function MapPage() {
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight">Map</h1>
-        <p className="text-muted-foreground">Where your leads come from, and where you close.</p>
-      </div>
+      <PageHeader title="Map" description="Where your leads come from, and where you close." />
 
       {error ? (
         <Card><CardContent className="text-body-sm text-destructive">Couldn&apos;t load leads ({error.message}).</CardContent></Card>
