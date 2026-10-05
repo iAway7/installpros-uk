@@ -23,6 +23,7 @@ import type { LeadIntel } from "@/lib/intel/types";
 import { EmptyState } from "@/components/system/empty-state";
 import { Badge, PILL_DOT } from "@/components/system/badge";
 import { Button } from "@/components/system/button";
+import { TablePager, usePager } from "@/components/dashboard/table-pager";
 
 /** Escape one CSV cell per RFC 4180. */
 function csvCell(v: unknown): string {
@@ -115,6 +116,10 @@ export function LeadsTable({
     return rows;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [leads, query, filter, service, dateRange, customFrom, customTo, sortBy]);
+
+  // Back to page 1 whenever the set of rows changes, not when a row is edited.
+  const pager = usePager(filtered.length, [query, filter, service, dateRange, customFrom, customTo, sortBy]);
+  const visible = filtered.slice(pager.from, pager.to);
 
   const openLead = openId ? leads.find((l) => l.id === openId) ?? null : null;
 
@@ -313,7 +318,7 @@ export function LeadsTable({
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {filtered.map((l) => (
+                  {visible.map((l) => (
                     <TableRow
                       key={l.id}
                       onClick={() => setOpenId(l.id)}
@@ -356,7 +361,7 @@ export function LeadsTable({
 
           {/* Mobile cards */}
           <div className="space-y-3 md:hidden">
-            {filtered.map((l) => (
+            {visible.map((l) => (
               <Card key={l.id} onClick={() => setOpenId(l.id)} className="cursor-pointer">
                 <CardContent className="space-y-3 p-4">
                   <div className="flex items-start justify-between gap-2">
@@ -377,6 +382,8 @@ export function LeadsTable({
               </Card>
             ))}
           </div>
+
+          <TablePager pager={pager} total={filtered.length} />
         </>
       )}
 

@@ -1,11 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { TablePager, usePager } from "@/components/dashboard/table-pager";
 import { Card, CardContent } from "@/components/system/card";
 import { Tabs } from "@/components/system/tabs";
-import { Pagination } from "@/components/system/pagination";
 import { InfoTip } from "@/components/system/info-tip";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/system/select";
 
 export interface DistrictRow {
   name: string;
@@ -23,9 +22,6 @@ export interface GapRow {
 }
 
 export type MapTab = "districts" | "gaps";
-
-const PAGE_SIZES = [10, 20, 50] as const;
-const DEFAULT_PAGE_SIZE = 20;
 
 /**
  * The two lists under the map, one at a time. The tab is mirrored into
@@ -47,13 +43,9 @@ export function MapTables({
   initialTab: MapTab;
 }) {
   const [tab, setTab] = useState<MapTab>(initialTab);
-  const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
-  const [page, setPage] = useState(1);
-
   const rows = tab === "districts" ? districts.length : gaps.length;
-  const totalPages = Math.max(1, Math.ceil(rows / pageSize));
-  const from = (page - 1) * pageSize;
-  const to = Math.min(rows, from + pageSize);
+  const pager = usePager(rows, tab);
+  const { from, to } = pager;
 
   useEffect(() => {
     const url = new URL(window.location.href);
@@ -69,7 +61,7 @@ export function MapTables({
         label="Map breakdown"
         className="px-2"
         selected={tab}
-        onSelect={(v) => { setTab(v as MapTab); setPage(1); }}
+        onSelect={(v) => setTab(v as MapTab)}
         tabs={[
           { title: "By district", value: "districts", badge: districts.length || undefined },
           { title: "Broadband gaps: ad targets", value: "gaps", badge: untapped ? `${untapped} untapped` : undefined },
@@ -83,30 +75,7 @@ export function MapTables({
           <GapTable rows={gaps.slice(from, to)} />
         )}
 
-        {rows > 0 && (
-          <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border px-4 py-3">
-            <div className="flex items-center gap-3 text-label text-muted-foreground">
-              <span className="tabular-nums">
-                {from + 1}–{to} of {rows}
-              </span>
-              <span aria-hidden>·</span>
-              <label className="flex items-center gap-2">
-                Rows per page
-                <Select value={String(pageSize)} onValueChange={(v) => { setPageSize(Number(v)); setPage(1); }}>
-                  <SelectTrigger className="h-8 w-[4.5rem] text-body-sm" aria-label="Rows per page">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {PAGE_SIZES.map((n) => (
-                      <SelectItem key={n} value={String(n)}>{n}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </label>
-            </div>
-            <Pagination page={page} totalPages={totalPages} onChange={setPage} />
-          </div>
-        )}
+        <TablePager pager={pager} total={rows} className="border-t border-border px-4 py-3" />
 
         <div className="space-y-2 border-t border-border px-4 py-4 text-label text-muted-foreground">
           {tab === "districts" ? (
