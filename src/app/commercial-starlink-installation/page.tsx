@@ -128,7 +128,12 @@ export default function CommercialStarlinkInstallationPage() {
           <WhyInstallProsSection
             features={COMMERCIAL_FEATURES}
             heading="Engineered for sites that cannot go offline."
-            intro="One certified team handles everything, from the first site survey to the final speed test, and picks up the phone long after."
+            // "One certified team" until 7 October. The £10m Cover card two lines
+            // down exists because Will confirmed we hold none of CHAS,
+            // SafeContractor, ISO 9001, 14001, 45001, IPAF, PASMA or NICEIC, so
+            // the accreditation claim came out of the card and was left sitting
+            // in the intro above it. The word goes; nothing else needed to.
+            intro="One team handles everything, from the first site survey to the final speed test, and picks up the phone long after."
           />
           <SectorsSection />
           {/* "Who this is for" running straight into "what it keeps working for

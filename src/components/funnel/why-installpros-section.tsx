@@ -87,8 +87,17 @@ export const COMMERCIAL_FEATURES: Feature[] = [
     // keeping businesses online." He reached that from knowing his customers;
     // eighty commercial chats in which nobody says the word reached it from the
     // other side.
-    t: "Always A Second Line",
-    d: "Starlink with 5G backup, working alongside the line you already have. The site stays up when one link does not.",
+    //
+    // It was "Always A Second Line" until 7 October, and said "the site stays
+    // up when one link does not". Two problems. Second undercounts: Will gave
+    // the stack as the leased line, Starlink, then 4G/5G, and the cost section
+    // already badges it as three. And "stays up" is the same blanket promise
+    // that came out of the H1 the day before, since a power cut or a dead
+    // router takes the site down whatever is on the roof. The title now works
+    // whether it is two routes or three, and the body describes the design
+    // rather than guaranteeing the outcome.
+    t: "Never One Connection",
+    d: "Starlink and 4G/5G running alongside the connection you already have, so the site never depends on one route.",
     i: IconWifi,
   },
   {
@@ -97,8 +106,21 @@ export const COMMERCIAL_FEATURES: Feature[] = [
     // NICEIC yet, so an accreditation claim would have been false. The cover is
     // real, it is unusually high, and for a facilities team it does much of the
     // same job.
+    //
+    // It claimed "professional indemnity, employers' liability and cyber, all
+    // at ten million" until 7 October. The broker letter of 15 September does
+    // not evidence professional indemnity or cyber at all, and the public
+    // liability is not ten million on one policy: it is £5m primary with
+    // Chaucer and a £5m excess layer with AXA XL. Employers' liability is the
+    // only class that is a flat ten.
+    //
+    // The long body is deliberate and this is the one card that earns it.
+    // Nobody skims this one. It is read by the facilities or procurement team
+    // deciding whether we clear their contractor onboarding, and for that
+    // reader the layering is the information rather than a detail. The pack
+    // further down carries the policy numbers.
     t: "£10m Cover",
-    d: "Public liability, professional indemnity, employers' liability and cyber, all at ten million.",
+    d: "£10m public liability through £5m primary and £5m excess cover, plus £10m employers' liability. Insurance evidence is available for your site's contractor checks, subject to policy terms.",
     i: IconShield,
   },
   {
