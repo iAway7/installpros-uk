@@ -114,13 +114,21 @@ export const COMMERCIAL_FEATURES: Feature[] = [
     // Chaucer and a £5m excess layer with AXA XL. Employers' liability is the
     // only class that is a flat ten.
     //
-    // The long body is deliberate and this is the one card that earns it.
-    // Nobody skims this one. It is read by the facilities or procurement team
-    // deciding whether we clear their contractor onboarding, and for that
-    // reader the layering is the information rather than a detail. The pack
-    // further down carries the policy numbers.
+    // The review's own wording ran to six lines in this card against four for
+    // its neighbours, so it is trimmed to the same four. What survives is the
+    // headline limit first and the layering right behind it in brackets, which
+    // is the order a facilities team reads it in: they are looking for the ten
+    // million, and the structure is the qualifier. Primary and excess stay as
+    // words because that is the vocabulary on their own onboarding form, and
+    // an excess layer attaching above a primary is the part a flat "two layers
+    // of £5m" would lose.
+    //
+    // Dropped: "subject to policy terms" and a sentence about contractor
+    // checks. "Certificates on request" does that job better, since it points
+    // at the document instead of warning about it, and the pack further down
+    // carries the policy numbers and the full caveat.
     t: "£10m Cover",
-    d: "£10m public liability through £5m primary and £5m excess cover, plus £10m employers' liability. Insurance evidence is available for your site's contractor checks, subject to policy terms.",
+    d: "£10m public liability (£5m primary plus £5m excess) and £10m employers' liability. Certificates on request.",
     i: IconShield,
   },
   {
