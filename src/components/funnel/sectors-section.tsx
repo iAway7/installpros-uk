@@ -33,6 +33,12 @@ interface Sector {
   alt?: string;
   t: string;
   d: string;
+  /** Analytics id, fixed. Without it the id is derived from `t`, so renaming a
+   *  card splits its history in two and the section stops answering the one
+   *  question it was built for: whether these six are the right six. Set it to
+   *  whatever the derived value was on the day the card shipped and the series
+   *  survives any amount of rewriting. */
+  k?: string;
 }
 
 const SECTORS: Sector[] = [
@@ -55,14 +61,30 @@ const SECTORS: Sector[] = [
   {
     img: "/funnel/sector-construction.webp",
     alt: "Crane lifting a precast floor slab onto a city-centre building site",
-    t: "Construction sites",
-    d: "Connected from week one, long before a line could be",
+    // "Construction sites" until 7 October. The two extra words are the
+    // cheapest way to start catching a fifth of the commercial book: site
+    // containers, an 18 week job, a 9 month season, a 5 day event, a 13 month
+    // self build. "Temporary" appeared nowhere on this page before today, so
+    // all of that arrived and found nothing addressed to it.
+    //
+    // The body is the review's, which named site offices and project teams,
+    // minus its second half about access, mounting and safety being reviewed
+    // before installation. That half is process, and at 124 characters it ran
+    // to three lines where every neighbour runs to one or two. "Cabins" is the
+    // word the chat log uses.
+    k: "construction_sites",
+    t: "Construction and temporary sites",
+    d: "Site offices, cabins and project teams",
   },
   {
     img: "/funnel/sector-retail.webp",
     alt: "Retail counter with a card terminal",
+    // "Card terminals and tills that stay up" promised uptime, which is the
+    // same blanket claim that came out of the H1 and the backup card. Three
+    // sentences on one page all guaranteeing the day. A list instead, like
+    // Offices two cards up.
     t: "Retail and hospitality",
-    d: "Card terminals and tills that stay up",
+    d: "Card terminals, tills and the booking system",
   },
   {
     img: "/funnel/sector-campsites.webp",
@@ -107,7 +129,7 @@ export function SectorsSection() {
               onClick={() => {
                 rememberSectorInterest(s.t);
                 track(EVENTS.CTA_CLICKED, {
-                  cta_id: `sector_${s.t.toLowerCase().replace(/[^a-z0-9]+/g, "_")}`,
+                  cta_id: `sector_${s.k ?? s.t.toLowerCase().replace(/[^a-z0-9]+/g, "_")}`,
                   cta_label: s.t,
                   cta_location: "sectors",
                 });
