@@ -1,55 +1,25 @@
-import { Users, Sparkles, CalendarClock, TrendingUp, PoundSterling, Timer, FileClock } from "lucide-react";
+import { Users, Sparkles, CalendarClock, CalendarDays, TrendingUp } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { TrendChart } from "@/components/system/chart";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/system/card";
-import {
-  type Lead,
-  type LeadStatus,
-  LEAD_STATUSES,
-  STATUS_LABEL,
-  STATUS_TONE,
-  serviceOf,
-} from "@/lib/dashboard/leads";
+import { type Lead, serviceOf } from "@/lib/dashboard/leads";
 import { getVisitorLeadRate, fmtRate, fmtDelta } from "@/lib/dashboard/conversion";
 import { realLeads } from "@/lib/dashboard/leads";
 import { Stat } from "@/components/system/stat";
 import { EmptyState } from "@/components/system/empty-state";
 import { PageHeader } from "@/components/system/page-header";
-import { Pill } from "@/components/system/badge";
 
 export const dynamic = "force-dynamic";
 
-type Row = Pick<
-  Lead,
-  "id" | "created_at" | "status" | "traffic_source" | "service" | "notes" | "estimated_value" | "contacted_at" | "quoted_at" | "is_test"
->;
+type Row = Pick<Lead, "id" | "created_at" | "status" | "traffic_source" | "service" | "notes" | "is_test">;
 
 const DAY = 864e5;
-
-/** Average of (later - created_at) in hours, over leads where later is set. */
-function avgHours(leads: Row[], later: (l: Row) => string | null): number | null {
-  const deltas = leads
-    .map((l) => {
-      const end = later(l);
-      return end ? new Date(end).getTime() - new Date(l.created_at).getTime() : null;
-    })
-    .filter((d): d is number => d !== null && d >= 0);
-  if (!deltas.length) return null;
-  return deltas.reduce((a, b) => a + b, 0) / deltas.length / 36e5;
-}
-
-function fmtHours(h: number | null): string {
-  if (h == null) return "—";
-  if (h < 1) return `${Math.round(h * 60)}m`;
-  if (h < 48) return `${h.toFixed(1)}h`;
-  return `${(h / 24).toFixed(1)}d`;
-}
 
 export default async function OverviewPage() {
   const supabase = createClient();
   const { data, error } = await supabase
     .from("leads")
-    .select("id, created_at, status, traffic_source, service, notes, estimated_value, contacted_at, quoted_at, is_test")
+    .select("id, created_at, status, traffic_source, service, notes, is_test")
     .order("created_at", { ascending: false });
 
   // Test submissions are flagged, not deleted; they never count here.
@@ -58,41 +28,37 @@ export default async function OverviewPage() {
   const conv = await getVisitorLeadRate(leads.map((l) => l.created_at));
   const convDelta = fmtDelta(conv.deltaPoints, conv.windowDays);
 
-  const now = new Date();
-  const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
-  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).getTime();
-  const weekAgo = now.getTime() - 7 * DAY;
-  const twoWeeksAgo = now.getTime() - 14 * DAY;
+  // Day boundaries in UK time: the leads are British and the team works on
+  // UK days. The server runs in UTC, so a plain local midnight would start
+  // "today" at 01:00 BST. Every count is a rolling window ending now, so the
+  // three numbers nest (today ≤ 7 days ≤ 30 days) instead of mixing a rolling
+  // week with a calendar month.
+  const nowMs = Date.now();
+  const startOfToday = ukDayStart(nowMs, 0);
+  const sevenDaysAgo = ukDayStart(nowMs, 6);
+  const fourteenDaysAgo = ukDayStart(nowMs, 13);
+  const thirtyDaysAgo = ukDayStart(nowMs, 29);
 
   const ts = (l: Row) => new Date(l.created_at).getTime();
 
   const total = leads.length;
   const today = leads.filter((l) => ts(l) >= startOfToday).length;
-  const thisWeek = leads.filter((l) => ts(l) >= weekAgo).length;
-  const lastWeek = leads.filter((l) => ts(l) >= twoWeeksAgo && ts(l) < weekAgo).length;
-  const thisMonth = leads.filter((l) => ts(l) >= startOfMonth).length;
-  const weekDelta = lastWeek ? Math.round(((thisWeek - lastWeek) / lastWeek) * 100) : null;
+  const last7 = leads.filter((l) => ts(l) >= sevenDaysAgo).length;
+  const prev7 = leads.filter((l) => ts(l) >= fourteenDaysAgo && ts(l) < sevenDaysAgo).length;
+  const last30 = leads.filter((l) => ts(l) >= thirtyDaysAgo).length;
+  const weekDelta = prev7 ? Math.round(((last7 - prev7) / prev7) * 100) : null;
 
   const newCount = leads.filter((l) => l.status === "new").length;
 
-  // Revenue still in play: everything not lost and not yet installed.
-  const pipelineValue = leads
-    .filter((l) => l.status !== "lost" && l.status !== "installed")
-    .reduce((sum, l) => sum + (Number(l.estimated_value) || 0), 0);
-
-  const timeToContact = avgHours(leads, (l) => l.contacted_at);
-  const timeToQuote = avgHours(leads, (l) => l.quoted_at);
-
-  // Daily counts, last 14 days (oldest → newest) for the trend chart.
+  // Daily counts, last 14 UK days (oldest → newest) for the trend chart.
   const daily = Array.from({ length: 14 }, (_, i) => {
-    const dayStart = startOfToday - (13 - i) * DAY;
+    const dayStart = ukDayStart(nowMs, 13 - i);
+    const dayEnd = ukDayStart(nowMs, 12 - i);
     return {
-      date: localIsoDate(new Date(dayStart)),
-      leads: leads.filter((l) => ts(l) >= dayStart && ts(l) < dayStart + DAY).length,
+      date: ukIsoDate(dayStart),
+      leads: leads.filter((l) => ts(l) >= dayStart && ts(l) < dayEnd).length,
     };
   });
-
-  const byStatus = LEAD_STATUSES.map((s) => ({ status: s, count: leads.filter((l) => l.status === s).length }));
 
   const byService = Object.entries(
     leads.reduce<Record<string, number>>((acc, l) => {
@@ -130,16 +96,16 @@ export default async function OverviewPage() {
         />
       ) : (
         <>
-          {/* The number that matters: this week vs last week + trend */}
+          {/* The number that matters: the last 7 days against the 7 before, plus trend */}
           <Card>
             <CardContent className="flex flex-col gap-6 sm:flex-row sm:items-center">
               <div className="shrink-0">
-                <p className="text-label font-medium uppercase tracking-wide text-muted-foreground">Leads this week</p>
+                <p className="text-label font-medium uppercase tracking-wide text-muted-foreground">Leads, last 7 days</p>
                 <div className="mt-1 flex items-baseline gap-3">
-                  <span className="text-5xl font-bold tabular-nums">{thisWeek}</span>
+                  <span className="text-5xl font-bold tabular-nums">{last7}</span>
                   {weekDelta !== null && (
                     <span className={`text-body-sm font-semibold ${weekDelta >= 0 ? "text-success" : "text-destructive"}`}>
-                      {weekDelta >= 0 ? "▲" : "▼"} {Math.abs(weekDelta)}% vs last week ({lastWeek})
+                      {weekDelta >= 0 ? "▲" : "▼"} {Math.abs(weekDelta)}% vs previous 7 days ({prev7})
                     </span>
                   )}
                 </div>
@@ -152,8 +118,8 @@ export default async function OverviewPage() {
           </Card>
 
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <Stat icon={<CalendarClock />} label="Today" value={today} />
-            <Stat icon={<Users />} label="This month" value={thisMonth} />
+            <Stat icon={<CalendarClock />} label="Today" value={today} hint="Since midnight, UK time" />
+            <Stat icon={<CalendarDays />} label="Last 30 days" value={last30} />
             <Stat icon={<Sparkles />} label="New / unworked" value={newCount} attention />
             <Stat
               icon={<TrendingUp />}
@@ -164,34 +130,8 @@ export default async function OverviewPage() {
             />
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-3">
-            <Stat
-              icon={<PoundSterling />}
-              label="Revenue in pipeline"
-              value={pipelineValue ? `£${pipelineValue.toLocaleString("en-GB")}` : "—"}
-            />
-            <Stat icon={<Timer />} label="Avg time to first contact" value={fmtHours(timeToContact)} />
-            <Stat icon={<FileClock />} label="Avg time to quote" value={fmtHours(timeToQuote)} />
-          </div>
 
           <div className="grid gap-4 lg:grid-cols-2">
-            <Card>
-              <CardHeader><CardTitle>Pipeline by status</CardTitle></CardHeader>
-              <CardContent className="space-y-3">
-                {byStatus.map(({ status, count }) => (
-                  <div key={status} className="flex items-center gap-3">
-                    <Pill variant={STATUS_TONE[status as LeadStatus]} className="w-24">
-                      {STATUS_LABEL[status as LeadStatus]}
-                    </Pill>
-                    <div className="h-2 flex-1 overflow-hidden rounded-full bg-secondary">
-                      <div className="h-full rounded-full bg-primary" style={{ width: `${total ? (count / total) * 100 : 0}%` }} />
-                    </div>
-                    <span className="w-8 text-right text-body-sm font-medium tabular-nums">{count}</span>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
-
             <Card>
               <CardHeader><CardTitle>Leads by service</CardTitle></CardHeader>
               <CardContent className="space-y-3">
@@ -206,32 +146,61 @@ export default async function OverviewPage() {
                 ))}
               </CardContent>
             </Card>
+
+            <Card>
+              <CardHeader><CardTitle>Top traffic sources</CardTitle></CardHeader>
+              <CardContent className="space-y-3">
+                {bySource.map(([source, count]) => (
+                  <div key={source} className="flex items-center gap-3">
+                    <span className="w-28 truncate text-body-sm capitalize">{source}</span>
+                    <div className="h-2 flex-1 overflow-hidden rounded-full bg-secondary">
+                      <div className="h-full rounded-full bg-chart-2" style={{ width: `${total ? (count / total) * 100 : 0}%` }} />
+                    </div>
+                    <span className="w-8 text-right text-body-sm font-medium tabular-nums">{count}</span>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
           </div>
 
-          <Card>
-            <CardHeader><CardTitle>Top traffic sources</CardTitle></CardHeader>
-            <CardContent className="space-y-3">
-              {bySource.map(([source, count]) => (
-                <div key={source} className="flex items-center gap-3">
-                  <span className="w-28 truncate text-body-sm capitalize">{source}</span>
-                  <div className="h-2 flex-1 overflow-hidden rounded-full bg-secondary">
-                    <div className="h-full rounded-full bg-chart-2" style={{ width: `${total ? (count / total) * 100 : 0}%` }} />
-                  </div>
-                  <span className="w-8 text-right text-body-sm font-medium tabular-nums">{count}</span>
-                </div>
-              ))}
-            </CardContent>
-          </Card>
         </>
       )}
     </div>
   );
 }
 
-/** YYYY-MM-DD in the server's local zone, not UTC, so the day boundaries
- *  match `startOfToday` above. */
-function localIsoDate(d: Date): string {
-  const p = (n: number) => String(n).padStart(2, "0");
-  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
+const UK = new Intl.DateTimeFormat("en-GB", {
+  timeZone: "Europe/London",
+  hourCycle: "h23",
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+  hour: "2-digit",
+  minute: "2-digit",
+  second: "2-digit",
+});
+
+function ukParts(ms: number) {
+  const p = Object.fromEntries(UK.formatToParts(new Date(ms)).map((x) => [x.type, x.value]));
+  return { y: +p.year, m: +p.month, d: +p.day, h: +p.hour, min: +p.minute, s: +p.second };
 }
 
+/** Milliseconds UK wall-clock time is ahead of UTC at `ms` (0 in GMT, 1h in BST). */
+function ukOffset(ms: number): number {
+  const p = ukParts(ms);
+  return Date.UTC(p.y, p.m - 1, p.d, p.h, p.min, p.s) - Math.floor(ms / 1000) * 1000;
+}
+
+/** UTC timestamp of UK midnight, `daysBack` UK calendar days before the day of `ms`. */
+function ukDayStart(ms: number, daysBack: number): number {
+  const p = ukParts(ms);
+  const wallMidnight = Date.UTC(p.y, p.m - 1, p.d - daysBack);
+  // The offset at that midnight, not now: a DST change inside the window moves it by an hour.
+  return wallMidnight - ukOffset(wallMidnight - ukOffset(wallMidnight));
+}
+
+/** YYYY-MM-DD of the UK day that starts at `ms`. */
+function ukIsoDate(ms: number): string {
+  const p = ukParts(ms);
+  return `${p.y}-${String(p.m).padStart(2, "0")}-${String(p.d).padStart(2, "0")}`;
+}
