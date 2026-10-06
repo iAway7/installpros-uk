@@ -49,8 +49,18 @@ const SECTORS: Sector[] = [
     // looks like now.
     img: "/funnel/sector-offices.webp",
     alt: "Open-plan office with bench desks and a glazed frontage",
+    // The review's list, cut to the length of the set. It ran "Connectivity
+    // planned around video meetings, cloud applications, shared systems and
+    // business Wi-Fi", which is 98 characters and three lines where the
+    // neighbours run to one or two. The four things it names survive; the
+    // "connectivity planned around" opening does not, because every card here
+    // is a list and none of them needs to say that it is one.
+    //
+    // "Shared systems" is the one genuine addition. VoIP handsets come out:
+    // phones have their own card in the systems row below, and the office
+    // visitor is not scanning for them here.
     t: "Offices",
-    d: "Video calls, cloud tools and VoIP handsets",
+    d: "Video meetings, cloud apps, shared systems and Wi-Fi",
   },
   {
     img: "/funnel/sector-warehouses.webp",
@@ -110,8 +120,14 @@ export function SectorsSection() {
     <section id="sectors" className="w-full scroll-mt-28 bg-secondary/40 py-16 md:py-24">
       <div className="container mx-auto">
         <p className="eyebrow">Sectors</p>
-        <h2 className="mt-4 max-w-[640px] h2-section text-foreground">
-          Every building is a different problem.
+        {/* 760, not the 640 this was. That width was measured against "Every
+            building is a different problem.", and the shorter heading that
+            replaced it broke one word earlier, leaving "connect." alone on a
+            line of its own. 760 is the first round value that holds it on one
+            line; below that the container wraps it to "Commercial sites / we
+            connect.", which is a fair break. */}
+        <h2 className="mt-4 max-w-[760px] h2-section text-foreground">
+          Commercial sites we connect.
         </h2>
         <p className="mt-5 max-w-[560px] text-body text-muted-foreground md:text-lg" style={{ lineHeight: "1.6" }}>
           The dish is the easy part. What changes is the structure, the number of people on it, and what it costs you when the connection drops.
