@@ -86,18 +86,29 @@ export default function CommercialStarlinkInstallationPage() {
             // visitor who already has good fibre the target rather than an
             // objection, because he is the one with something to lose.
             //
+            // It read "stays online, whatever happens to your main line" until
+            // 6 October. Two words went and the strategy did not. "Whatever
+            // happens" promised to cover every failure, including a power cut
+            // and a dead router, which is not what we sell and not what we can
+            // hold. "When your main connection does not" scopes it to the one
+            // failure this product does answer, and costs nothing: the line is
+            // the same 58 characters it was. "Line" went to "connection" for
+            // the reason Will gave on the cost section: line names the physical
+            // circuit, and a reader who thinks of it as "the internet" has to
+            // translate.
+            //
             // The old headline, "Commercial Starlink installation, fitted in
             // under a week", is the obvious challenger if we want to test this.
             // It goes in an experiment as `headlineCommercial`, a key only this
             // page reads. See HeroHeadline for why it is not plain `headline`:
             // on-page experiments are not page-scoped, and that key would
             // rewrite the residential H1s too.
-            headline="Your site stays online, whatever happens to your main line"
+            headline="Your site keeps working when your main connection does not"
             headlineConfigKey="headlineCommercial"
             // Two lines. The paragraph is max-w-3xl at 24px on lg, so roughly
             // 62 characters a line: past about 120 it spills to a third. This
-            // is 107.
-            subheadline="Starlink installed and managed, with 5G failover alongside your existing line. Fixed quote, set-up in days."
+            // is 113.
+            subheadline="Starlink installed and managed, with 5G failover alongside your existing connection. Fixed quote, set-up in days."
             // They arrived on the commercial page, from a commercial ad, and
             // have just read a commercial headline. Asking them what they are
             // installing is a step that answers itself.
