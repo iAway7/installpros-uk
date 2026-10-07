@@ -91,16 +91,20 @@ export default function CommercialStarlinkInstallationPage() {
             // visitor who already has good fibre the target rather than an
             // objection, because he is the one with something to lose.
             //
-            // It read "stays online, whatever happens to your main line" until
-            // 6 October. Two words went and the strategy did not. "Whatever
-            // happens" promised to cover every failure, including a power cut
-            // and a dead router, which is not what we sell and not what we can
-            // hold. "When your main connection does not" scopes it to the one
-            // failure this product does answer, and costs nothing: the line is
-            // the same 58 characters it was. "Line" went to "connection" for
-            // the reason Will gave on the cost section: line names the physical
-            // circuit, and a reader who thinks of it as "the internet" has to
-            // translate.
+            // Will, on the 7 October call: the SEO headline goes, the hook is
+            // the pain point, and the angle is "we help keep businesses
+            // operational". This is that in his own words.
+            //
+            // It is still a continuity promise, but a scoped one. "Whatever
+            // your line does" is about the line failing, not about every
+            // possible failure: the version this replaced on 6 October,
+            // "stays online, whatever happens to your main line", covered a
+            // power cut and a dead router too, which is neither what we sell
+            // nor what we can hold.
+            //
+            // "Line" rather than "connection", which is the word the rest of
+            // the page moved to. Flagged to Gus; his call, and it reads better
+            // out loud than "whatever your connection does".
             //
             // The old headline, "Commercial Starlink installation, fitted in
             // under a week", is the obvious challenger if we want to test this.
@@ -108,7 +112,7 @@ export default function CommercialStarlinkInstallationPage() {
             // page reads. See HeroHeadline for why it is not plain `headline`:
             // on-page experiments are not page-scoped, and that key would
             // rewrite the residential H1s too.
-            headline="Your site keeps working when your main connection does not"
+            headline="We keep your business operating. Whatever your line does."
             headlineConfigKey="headlineCommercial"
             // Two lines. The paragraph is max-w-3xl at 24px on lg, so roughly
             // 62 characters a line: past about 120 it spills to a third. This
