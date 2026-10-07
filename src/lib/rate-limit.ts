@@ -136,10 +136,4 @@ export const LIMITS = {
   propertyPhotos: [{ name: "photos", limit: 20, windowMs: HOUR }],
   /** Cheap, but an open counter is an invitation to poison the A/B results. */
   experimentTrack: [{ name: "exp-track", limit: 120, windowMs: MINUTE }],
-  /** Post-submit qualification answers. Its own counter rather than sharing
-   *  `lead`: these arrive a minute after a lead from the same address, and
-   *  spending the lead budget on them would rate-limit the next real customer
-   *  behind the same office router. One write per lead, so the ceiling only
-   *  has to cover retries and a shared IP. */
-  qualify: [{ name: "qualify", limit: 20, windowMs: HOUR }],
 } satisfies Record<string, RateLimitRule[]>;

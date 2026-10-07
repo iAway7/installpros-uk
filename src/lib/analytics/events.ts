@@ -23,11 +23,6 @@ export const EVENTS = {
   LEAD_CREATED: "lead_created",
   /** The server refused or failed to store a lead the visitor had completed. */
   LEAD_SUBMIT_FAILED: "lead_submit_failed",
-  /** Post-submit qualification answers saved against an existing lead.
-   *  Not a conversion: the lead already converted and counting this one too
-   *  would report two for one customer. It measures how many people finish the
-   *  survey step, which is the number that says whether it is worth asking. */
-  LEAD_QUALIFIED: "lead_qualified",
   COVERAGE_CHECKED: "coverage_checked",
   SCROLL_DEPTH: "scroll_depth",
   VIDEO_PLAYED: "video_played",
@@ -120,11 +115,6 @@ export interface EventProperties {
   video_location?: string;
   // quote_started — which of the two A/B first fields the visitor touched
   first_field?: "postcode" | "address";
-  /** lead_qualified only. How many of the questions they actually answered,
-   *  from zero to six. Every field is optional, so the interesting number is
-   *  not how many submitted but how much they gave: a page where everyone
-   *  answers one question is asking five too many. */
-  answered_count?: number;
 }
 
 export type InstallType = "residential" | "business" | "rural" | "marine" | "events";
