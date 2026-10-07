@@ -72,7 +72,13 @@ export default function CommercialStarlinkInstallationPage() {
         <main id="main" tabIndex={-1} className="flex flex-col outline-none">
           <HeroSection
             smartCoverage
-            addressMode
+            // No addressMode, so step zero asks for a postcode rather than a
+            // Google Places address. Will on the call, 7 October: a postcode is
+            // enough and it matches /install-quote, which is the funnel
+            // actually taking traffic. It also removes the dead end a site with
+            // no postal address used to hit, which is a real share of this
+            // segment: site containers, a self build with no house on it yet,
+            // a yard.
             image="/funnel/hero-commercial-rooftop.webp"
             // The keyword moves into the pill so the H1 is free to sell what
             // Will says the business actually is. Message match survives:
@@ -183,7 +189,7 @@ export default function CommercialStarlinkInstallationPage() {
           <CoverageMapSection leadTime="7 days" />
           <TrackRecordSection />
           <FaqSectionAlt faqs={COMMERCIAL_FAQS} />
-          <CtaSection addressMode defaultService="commercial" skipServiceStep formName="starlink_commercial" />
+          <CtaSection defaultService="commercial" skipServiceStep formName="starlink_commercial" />
         </main>
       </ExperimentProvider>
       <FunnelFooter />

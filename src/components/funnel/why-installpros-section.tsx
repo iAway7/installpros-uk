@@ -97,7 +97,7 @@ export const COMMERCIAL_FEATURES: Feature[] = [
     // whether it is two routes or three, and the body describes the design
     // rather than guaranteeing the outcome.
     t: "Never One Connection",
-    d: "Starlink and 4G/5G running alongside the connection you already have, so the site never depends on one route.",
+    d: "Starlink and 4G/5G running alongside the connection you already have, so the site never depends on one source.",
     i: IconWifi,
   },
   {
@@ -141,7 +141,7 @@ export const COMMERCIAL_FEATURES: Feature[] = [
     // building; the systems row is the mechanism, the point to point link and
     // what it costs against a second subscription.
     t: "Full Site Coverage",
-    d: "Offices, warehouses, yards and outbuildings. Not just the room the dish lands in.",
+    d: "Offices, warehouses, yards and outbuildings. Not just the room the router sits in.",
     i: IconCable,
   },
 ];
