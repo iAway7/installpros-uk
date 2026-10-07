@@ -116,7 +116,7 @@ export const COMMERCIAL_FAQS: FaqEntry[] = [
     // Whether a specific VPN works over a static IP is a survey question, not
     // a promise for a landing page.
     q: "Will our VPN work over Starlink?",
-    a: "Usually, and where it does not the fix is known. The standard service puts you behind shared addressing, which is what breaks inbound connections and some VPNs. A static IP address solves that and is available with the managed service. Tell us which VPN you run at survey and we will tell you which of the two you need before you order anything.",
+    a: "Usually, and where it does not the fix is known. Starlink puts you behind shared addressing, which is what breaks inbound connections and some VPNs. Starlink does not sell a static IP and the public address it offers is not a guaranteed fixed one, so where you genuinely need a fixed address it comes from a managed network on top, priced separately. Tell us which VPN you run at survey and we will tell you which of the two you need before you order anything.",
   },
   {
     category: "Coverage & WiFi",
@@ -141,25 +141,49 @@ export const COMMERCIAL_FAQS: FaqEntry[] = [
   },
   {
     category: "Coverage & WiFi",
-    // Will's own answer, tightened. This objection was not addressed anywhere on
-    // the site and it is the one a burned customer arrives with. The chat log
-    // backs it: "We are using 4g and converting it to WiFi, speed is in and
-    // out, best speeds of 60mbps but currently on 2".
-    q: "We tried a 4G router and it was not reliable. Why is this different?",
-    a: "A 4G router on its own will not keep a business running. A combined system will. We design the connection so there is more than one way out of the building, and we manage it, so you keep operating even when your main source of internet is down.",
+    // Two entries until 7 October: "We tried a 4G router and it was not
+    // reliable. Why is this different?" and "Can Starlink back up our existing
+    // line rather than replace it?" Their answers had converged on the same
+    // sentence about more than one way out of the building, so they are one
+    // question now. It serves both arrivals: the customer burned by a 4G
+    // router, and the one asking whether this sits alongside what they have.
+    //
+    // Both answers also ended in a blanket promise, "a combined system will
+    // [keep a business running]" and "if one link goes down the site keeps
+    // working". Those are the same claim that came out of the H1, the backup
+    // card, the retail sector card and the systems heading earlier in the week.
+    // They survived because they were in the FAQ and the clean-up was looking
+    // at sections.
+    //
+    // The chat log behind it: "We are using 4g and converting it to WiFi, speed
+    // is in and out, best speeds of 60mbps but currently on 2", and "we have a
+    // server room here so primary connection we're using broadband but as a
+    // secondary or backup connection we need starlink".
+    q: "Can Starlink sit alongside the connection we already have?",
+    a: "Yes, and for a lot of our commercial customers that is the point. You keep the line you have, fibre or leased line, and Starlink goes in alongside it with 4G or 5G behind that. It is also the answer if a 4G router on its own has let you down, because the weakness there is having one route rather than the technology. We set the changeover up during the installation and test it before we leave.",
+  },
+  {
+    category: "Coverage & WiFi",
+    // Finding 06 of the commercial analysis, and the only one of its findings
+    // that is about something we were not saying rather than something we were
+    // saying badly. Not one residential customer in the whole export mentions
+    // upload. One commercial customer did, after switching: "our upload speeds
+    // are pretty appalling, it's about a quarter slower than our previous
+    // supplier and it's important to my business that we can upload large files
+    // quickly", and then "I wasn't aware that Starlink had bad upload speeds
+    // before switching, it would have been helpful to have known this but there
+    // is not much I can do about it now."
+    //
+    // So it goes on the page before the sale rather than being discovered after
+    // it. No competitor does this, and the CCTV card already sizes the upload
+    // against camera count, so the position is consistent.
+    q: "We upload large files. Is Starlink any good at that?",
+    a: "Ask us before you switch rather than after. Starlink's upload is a fraction of its download, which is fine for email, card payments and cloud apps, and is the thing to check if you move big files, run a lot of cameras or stream out. Tell us what you upload and roughly how much at survey and we will tell you whether it fits before you commit to anything.",
   },
   {
     category: "Installation",
     q: "Can you do multiple sites?",
     a: "Yes. We install and manage multi-site estates, with the same setup and the same point of contact across all of them.",
-  },
-  {
-    category: "Coverage & WiFi",
-    // Eleventh, not first. Will calls this the primary use case and it may well
-    // be where his margin is, but no commercial visitor in the corpus arrives
-    // asking for it.
-    q: "Can Starlink back up our existing line rather than replace it?",
-    a: "Yes, and for a lot of our commercial customers that is the point. You keep the line you already have, whether that is fibre or a leased line, and we add Starlink alongside it with 5G as a further fallback. If one link goes down the site keeps working. We set the changeover up during the installation and test it before we leave.",
   },
   {
     category: "Pricing",
