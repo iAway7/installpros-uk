@@ -62,7 +62,17 @@ const SYSTEMS: SystemItem[] = [
     title: "Working off-site",
     // "apparently they said this would not work with Starlink, looking at what
     // the workaround is". The blocker is CGNAT.
-    detail: "Cloud apps, remote desktops and VPNs. The standard service uses shared addressing, which some VPNs will not cross, and a static IP fixes it.",
+    //
+    // This said "and a static IP fixes it" until 7 October, and that was simply
+    // wrong. Starlink does not sell a static IP. Its public IPv4 option is not
+    // a guaranteed fixed address, and anything truly static has to be built on
+    // top, as a managed network with its own scope and cost. Getting it wrong
+    // here is expensive: 51 of the 178 commercial conversations ask whether it
+    // will work with the kit they already run, and several name CGNAT and the
+    // static IP themselves. "Can you confirm our current remote-access VPN
+    // supports connections behind CGNAT/NAT-T and doesn't require a fixed
+    // public IP". Those are the people this sentence was answering badly.
+    detail: "Cloud apps, remote desktops and VPNs. Starlink shares addressing, which some VPNs will not cross. A fixed address needs a managed network.",
   },
   {
     icon: <Network className="h-5 w-5" />,
@@ -99,10 +109,24 @@ export function WhatItRunsSection() {
       <div className="container mx-auto">
         <div className="mb-12 max-w-2xl">
           <p className="eyebrow">Your systems</p>
-          <h2 className="mt-4 h2-section text-foreground">Everything on site keeps running.</h2>
+          {/* "Everything on site keeps running." until 7 October: the fourth
+              sentence on this page to promise the whole day, after the H1, the
+              backup card and the retail sector card. The review's heading
+              claims nothing and says the same thing. */}
+          <h2 className="mt-4 h2-section text-foreground">Built around the systems you already use.</h2>
           <p className="mt-5 text-body text-muted-foreground md:text-lg" style={{ lineHeight: "1.6" }}>
-            Businesses do not ask us how many megabits they will get. They ask whether the kit they
-            already have will still work. It does, and this is how we set it up.
+            {/* "It does" came out. It was a flat guarantee that every piece
+                of kit a visitor owns will work, and the fifth card on this
+                same row contradicts it by explaining that some VPNs will not
+                cross shared addressing.
+
+                Losing the guarantee cost two words elsewhere. "This is what we
+                check, and how we set it up" is longer than "It does, and this
+                is how we set it up", and the paragraph tipped to three lines
+                where it had been two. "us" and "already" came out to buy them
+                back: at 145 characters it holds at two, at 153 it does not. */}
+            Businesses do not ask how many megabits they will get. They ask whether the kit they
+            have will work. This is what we check, and how we set it up.
           </p>
         </div>
 
