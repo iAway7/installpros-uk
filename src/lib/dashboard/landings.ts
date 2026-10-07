@@ -32,6 +32,27 @@ export interface LandingStats {
 
 const WON = new Set(["booked", "installed"]);
 
+/**
+ * One page, one row.
+ *
+ * `landing_page` is stored exactly as the browser saw it, which is right: it
+ * is a fact about the visit, and it is what goes to Will on the webhook. But
+ * `skipTrailingSlashRedirect` is on in next.config, so /install-quote and
+ * /install-quote/ both serve the page and both get stored, and grouping on the
+ * raw string split one landing into two rows. On 30 days to 7 October that was
+ * 478 leads against 138, reported as two pages converting at 45% and 49%, when
+ * it is 616 leads on one page and the difference is a slash.
+ *
+ * Normalising here rather than at capture keeps the stored value honest and
+ * fixes the only place that was reading it wrong.
+ */
+export function normalisePagePath(raw: string | null | undefined): string {
+  const path = raw?.trim();
+  if (!path) return "(unknown)";
+  // "/" is the only path whose trailing slash is the path.
+  return path.length > 1 && path.endsWith("/") ? path.slice(0, -1) : path;
+}
+
 /** "google / cpc"-ish sources, for leads where auto-tagging didn't give a gclid. */
 function isPaid(row: LandingLeadRow): boolean {
   if (row.gclid) return true;
@@ -42,7 +63,7 @@ function isPaid(row: LandingLeadRow): boolean {
 export function aggregateLandings(rows: LandingLeadRow[]): LandingStats[] {
   const byPage = new Map<string, LandingLeadRow[]>();
   for (const r of rows) {
-    const page = r.landing_page?.trim() || "(unknown)";
+    const page = normalisePagePath(r.landing_page);
     const list = byPage.get(page);
     if (list) list.push(r);
     else byPage.set(page, [r]);
