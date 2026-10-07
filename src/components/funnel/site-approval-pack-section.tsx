@@ -34,85 +34,55 @@ type PackItem = { title: string; detail: string };
  */
 const PACK: PackItem[] = [
   {
-    // Titles across this list are the commercial review's words in our casing.
-    // Its own are Title Case with ampersands, which would have left "Who you
-    // are dealing with" stranded in the middle of the set.
-    title: "Data sheets",
-    // Power draw is the review's, and the only thing its version of this item
-    // had that ours did not. A facilities team has to know the consumption and
-    // whether there is anything to plug into up there. Its own version drops
-    // the roof load, which is what a building owner actually asks before
-    // letting anyone up, so that stays.
-    detail: "Dish dimensions, weight, power draw, and the load it puts on the roof",
+    // Two rows until 7 October, "Data sheets" and "Mounts and cable routes".
+    // Will asked to neaten the card and take a couple of rows out of it; this
+    // merges rather than deletes, so nothing a managing agent asks for is
+    // lost. The two belonged together anyway: both answer "what ends up on my
+    // building and what does it weigh".
+    title: "Data sheets, mounts and cable routes",
+    detail: "Dimensions, weight, power draw, roof load, fixing points and cable diameter",
   },
   {
-    // Two rows until 7 October, "Mount photographs" and "Cable route drawing".
-    // Merged on the review's title. The body has to carry both halves, because
-    // the diameter is what the person approving a penetration asks for and the
-    // review's own version does not mention it.
-    title: "Mounts and cable routes",
-    detail: "Photographs of what stays on the building, with the entry point, penetrations and cable diameter",
-  },
-  {
-    // The one title in this list that is not the review's. Theirs is "RAMs &
-    // Method Statements", which doubles itself: the MS in RAMS already is the
-    // method statement, so it reads "Risk Assessment and Method Statement &
-    // Method Statements". It is also RAMS rather than RAMs.
-    //
-    // This briefly became "Sample RAMS and method statements", which fixed
-    // nothing: that still says the acronym and then says half of it again. The
-    // body below already spells it out, "Method statement and risk
-    // assessment", so the title does not have to.
-    //
-    // "Sample" is the part that has to stay. A real RAMS is site specific and
-    // cannot exist before the survey. Without the word the title promises a
-    // document the body takes back two lines later, which is the exact thing
-    // the review's own note asks us to stop doing: "Remove the promise that
-    // every document is ready before a survey."
-    title: "Sample RAMS",
     // A real RAMS is site specific. Publishing a generic one as though it
     // covered a particular building would be the kind of paperwork that gets
     // rejected on the day, so it is labelled a sample here and in the pack.
-    detail: "Method statement and risk assessment, including work at height. The site specific version follows the survey",
+    //
+    // The body lost "the site specific version follows the survey" when the
+    // rows went to one line each. That sentence was doing real work, so the
+    // title carries it alone now: "Sample" is the whole caveat in one word,
+    // which is why it stayed when Will shortened this title to just RAMS.
+    title: "Sample RAMS",
+    detail: "Method statement and risk assessment, including work at height",
+  },
+  {
+    // "Work permits and permissions" plus "Plant hire (if required)", merged
+    // on the same principle. Both are things somebody has to arrange before
+    // the day rather than documents we hand over, and the chat log asks for
+    // them together: "CBRE will request these as we'll be accessing their roof
+    // space which needs a permit to work issued", and the padel club that went
+    // elsewhere because its own trades could schedule the cherry picker.
+    title: "Permits and plant hire",
+    detail: "Arranged with your landlord or managing agent, access equipment included",
   },
   {
     // Summary, not the scan. The signed certificate carries a policy number and
     // the broker's details, which should not sit on a public URL; it goes out
     // on request instead.
+    //
+    // The only row still running to three lines, and the only one that should.
+    // It is read by whoever decides if we clear their contractor onboarding,
+    // and for that reader the classes and the limits are the information.
     title: "Insurance summary",
-    // Corrected 7 October, three days after the same claim came out of the
-    // £10m Cover card and left this one contradicting it. The broker letter of
-    // 15 September evidences no professional indemnity and no cyber at all,
-    // and the public liability is not ten million on one policy: £5m primary
-    // with Chaucer, a £5m excess layer with AXA XL. Products liability is in
-    // because the letter does evidence it and a contractor onboarding form
-    // sometimes asks for it, but it is aggregate rather than per claim and has
-    // to say so. It takes a third line, which a vertical list can afford where
-    // the card row could not.
-    detail: "£10m public liability (£5m primary plus £5m excess), £10m employers' liability, and products liability at £5m primary plus £5m excess in the aggregate. Signed certificate on request",
-  },
-  {
-    // "At some stage, I'll also need your H&S RAMS for the installation. CBRE
-    // will request these as we'll be accessing their roof space which needs a
-    // permit to work issued." And, from the other side of a permit going
-    // wrong: "You guys just applied for the permit but never send them plan.
-    // They will reject the permit."
-    title: "Work permits and permissions",
-    detail: "Coordinated with your site team, landlord or managing agent before anyone goes up",
-  },
-  {
-    // Tied to the single largest loss in the commercial set. A padel club chain
-    // with several sites and more than a hundred messages went to its own
-    // trades, and said why: "Our principal contractors onsite are going to
-    // source and install the starlink direct themselves, gives us a bigger
-    // window for install with the cherrypicks ect." Access equipment was the
-    // reason, not price.
-    title: "Plant hire (if required)",
-    detail: "Access equipment arranged where the job needs it, agreed in the quote",
+    detail: "Public liability, professional indemnity, employers' liability and cyber, all at ten million. Signed certificate on request",
   },
   {
     // The first thing a managing agent checks, it costs nothing because it is
     // already in the site footer, and without it the pack could be from anyone.
+    //
+    // Will said on the call that this one is obvious and could go. Gus kept it:
+    // invoicing, VAT and which entity to bill is the third most raised category
+    // in the commercial conversations at 38 of 178, with four people quoted
+    // chasing an invoice in the wrong company name.
     title: "Who you are dealing with",
     detail: "Registered company name and number, VAT number and registered office",
   },
