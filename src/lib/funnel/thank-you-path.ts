@@ -21,6 +21,7 @@
  */
 const BY_INSTALL_TYPE: Record<string, string> = {
   residential: "/thank-you-residential",
+  commercial: "/thank-you-commercial",
 };
 
 export function thankYouPath(installType: string | undefined, leadId: string): string {

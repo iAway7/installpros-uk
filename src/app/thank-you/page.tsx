@@ -4,7 +4,7 @@ import { FunnelHeaderLight } from "@/components/funnel/funnel-header-light";
 import { FunnelFooter } from "@/components/funnel/funnel-footer";
 
 export const metadata: Metadata = {
-  title: "One Step Left | InstallPros",
+  title: "One Step Left",
   robots: { index: false, follow: false },
 };
 
