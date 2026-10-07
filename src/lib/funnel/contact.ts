@@ -51,3 +51,29 @@ export function photoRequestMessage(lead: { name?: string; postcode?: string }):
 
   return `${opener} Here are photos of my property:`;
 }
+
+/**
+ * The same thing for a vehicle, kept beside it so the two cannot drift.
+ *
+ * A separate function rather than a parameter on the one above, because the
+ * difference is not one noun: a vehicle quote needs the make and model, and
+ * the line ends on that label so the customer finishes the sentence instead of
+ * being asked for it in a second message. Fifteen of the thirty-six vehicle
+ * conversations in the chat log were open waiting on a detail we had not asked
+ * for in the first message, so the round trip is the thing to avoid.
+ */
+export function vehiclePhotoRequestMessage(lead: { name?: string; postcode?: string }): string {
+  const details = [
+    lead.postcode ? `postcode ${lead.postcode}` : null,
+    lead.name ? `name ${lead.name}` : null,
+  ].filter(Boolean);
+
+  const opener = details.length
+    ? `Hi InstallPros, I've just requested a Starlink quote for my vehicle (${details.join(", ")}).`
+    : "Hi InstallPros, I've just requested a Starlink quote for my vehicle.";
+
+  // "to follow", not "attached": the link opens a chat with this text already
+  // in the box and nothing attached yet, so the photos come after they send.
+  // Same phrasing as the how-it-works CTA on the vehicle landing.
+  return `${opener} Photos of the roof and inside to follow. Make and model:`;
+}

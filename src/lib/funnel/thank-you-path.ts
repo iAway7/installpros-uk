@@ -22,6 +22,9 @@
 const BY_INSTALL_TYPE: Record<string, string> = {
   residential: "/thank-you-residential",
   commercial: "/thank-you-commercial",
+  // Both vehicle landings pass this, the standard one and the weather-hero
+  // variant. They make the same promise, so they get the same page.
+  mobile_rv: "/thank-you-vehicles",
 };
 
 export function thankYouPath(installType: string | undefined, leadId: string): string {
