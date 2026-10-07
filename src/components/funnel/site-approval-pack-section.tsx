@@ -79,16 +79,31 @@ const PACK: PackItem[] = [
     detail: "Access equipment arranged where the job needs it, agreed in the quote",
   },
   {
-    title: "Asbestos note",
-    detail: "When a survey is needed before we drill, and when it is not",
-  },
-  {
     // The first thing a managing agent checks, it costs nothing because it is
     // already in the site footer, and without it the pack could be from anyone.
     title: "Who you are dealing with",
     detail: "Registered company name and number, VAT number and registered office",
   },
 ];
+
+/* There was an "Asbestos note" row here, "when a survey is needed before we
+ * drill, and when it is not". It came out on 7 October.
+ *
+ * Nothing in the 178 commercial conversations asked for it. The word appears
+ * twice in that whole analysis, both times inside a list of documents, never
+ * with a count and never with anyone quoted saying it. Compare "Who you are
+ * dealing with", which stayed: invoicing, VAT and which entity to bill is the
+ * third most raised category in the segment at 38 of 178.
+ *
+ * It was defended here on the grounds that the commercial review itself says
+ * asbestos conclusions depend on site assessment, and that this row concluded
+ * nothing. True, but that is an argument for it being harmless rather than an
+ * argument for it being present, and it was one more document promised in a
+ * pack nobody has confirmed exists.
+ *
+ * The subject is not dropped. The pack PDF asks the building owner for the
+ * asbestos register, which is where that belongs: the person who can action it
+ * is the owner, and the visitor reading this page is usually the tenant. */
 
 /**
  * What we need back from the building owner (roof access and keys, the asbestos
