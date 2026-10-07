@@ -25,18 +25,41 @@ type PackItem = { title: string; detail: string };
  */
 const PACK: PackItem[] = [
   {
-    title: "Equipment data sheet",
-    detail: "Dish dimensions and weight, and the load it puts on the roof",
+    // Titles across this list are the commercial review's words in our casing.
+    // Its own are Title Case with ampersands, which would have left "Who you
+    // are dealing with" stranded in the middle of the set.
+    title: "Data sheets",
+    // Power draw is the review's, and the only thing its version of this item
+    // had that ours did not. A facilities team has to know the consumption and
+    // whether there is anything to plug into up there. Its own version drops
+    // the roof load, which is what a building owner actually asks before
+    // letting anyone up, so that stays.
+    detail: "Dish dimensions, weight, power draw, and the load it puts on the roof",
   },
   {
-    title: "Mount photographs",
-    detail: "What stays on the building once we leave",
+    // Two rows until 7 October, "Mount photographs" and "Cable route drawing".
+    // Merged on the review's title. The body has to carry both halves, because
+    // the diameter is what the person approving a penetration asks for and the
+    // review's own version does not mention it.
+    title: "Mounts and cable routes",
+    detail: "Photographs of what stays on the building, with the entry point, penetrations and cable diameter",
   },
   {
-    title: "Cable route drawing",
-    detail: "Entry point, how many penetrations and what diameter",
-  },
-  {
+    // The one title in this list that is not the review's. Theirs is "RAMs &
+    // Method Statements", which doubles itself: the MS in RAMS already is the
+    // method statement, so it reads "Risk Assessment and Method Statement &
+    // Method Statements". It is also RAMS rather than RAMs.
+    //
+    // This briefly became "Sample RAMS and method statements", which fixed
+    // nothing: that still says the acronym and then says half of it again. The
+    // body below already spells it out, "Method statement and risk
+    // assessment", so the title does not have to.
+    //
+    // "Sample" is the part that has to stay. A real RAMS is site specific and
+    // cannot exist before the survey. Without the word the title promises a
+    // document the body takes back two lines later, which is the exact thing
+    // the review's own note asks us to stop doing: "Remove the promise that
+    // every document is ready before a survey."
     title: "Sample RAMS",
     // A real RAMS is site specific. Publishing a generic one as though it
     // covered a particular building would be the kind of paperwork that gets
@@ -75,7 +98,7 @@ const PACK: PackItem[] = [
     // source and install the starlink direct themselves, gives us a bigger
     // window for install with the cherrypicks ect." Access equipment was the
     // reason, not price.
-    title: "Plant hire",
+    title: "Plant hire (if required)",
     detail: "Access equipment arranged where the job needs it, agreed in the quote",
   },
   {
