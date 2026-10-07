@@ -604,20 +604,31 @@ function ContinuityVariant() {
   );
 }
 
-/** The only outage figure we have, and it is not ours: a logistics operator
- *  told Will a day without their only line cost them £150,000. Everything the
- *  cost variant puts on screen is derived from this one number, so if the
- *  permission note below the panels ever comes back a no, the whole variant
- *  goes with it. Nothing here is a claim about the visitor's own business. */
-const DAY_COST = 150_000;
-const COST_PER_SECOND = DAY_COST / 86_400; // ≈ £1.74
+/** An illustration, and labelled as one under the cards. Will, 7 October: the
+ *  £150,000 a logistics operator reported is not relatable to the businesses
+ *  actually writing in. "We get a lot of small startups coming to us. They've
+ *  hired a little shipping container somewhere and they're not going to lose
+ *  £150K a day. They might lose £150 a day." He asked for the figure on screen
+ *  to sit between £9,000 and £10,000.
+ *
+ *  That forces the frame. A counter showing £9,400 and visibly moving asserts
+ *  a rate, and the rate asserts a daily loss: at the old £1.74 a second it
+ *  would have been claiming £50,000 a trading day, which is the number he had
+ *  just rejected. So the day became a trading day of eight hours and the loss
+ *  became £10,000. That is £0.35 a second, a pound every three seconds, which
+ *  is slow enough to be honest and quick enough to see.
+ *
+ *  Nothing here measures the reader's business, and the line under the cards
+ *  says so. The £150,000 attribution it replaces is gone with the figure, and
+ *  so is the permission question that hung over it. */
+const TRADING_DAY_LOSS = 10_000;
+const TRADING_DAY_SECONDS = 8 * 60 * 60;
+const COST_PER_SECOND = TRADING_DAY_LOSS / TRADING_DAY_SECONDS; // £0.35
 
-/** Where the counter starts, same device as OUTAGE_START_SECONDS above and the
- *  same honesty about it: any value works. 6,420 seconds is 1h 47m, which at
- *  the rate above is a little over £11,000 — long enough to read as a fault
- *  someone is waiting on an engineer for rather than a blip, and short enough
- *  that it is still a fraction of the day's figure in the line underneath. */
-const COST_OUTAGE_START_SECONDS = 6_420;
+/** Seven and a half hours into that trading day, which opens the counter at
+ *  about £9,400 and leaves it climbing towards the £10,000 the note names.
+ *  Will asked for the figure on screen to sit in that band. */
+const COST_OUTAGE_START_SECONDS = 27_000;
 
 /** Deterministic thousands separators. toLocaleString would do this too, and
  *  would also give the server and the client licence to disagree about the
@@ -791,17 +802,17 @@ function CostVariant() {
   return (
     <SectionShell
       eyebrow="Cost of downtime"
-      heading="Your internet stops. Your costs do not."
-      sub="Not how fast your connection is. What the day costs you when it drops."
+      heading="What is a poor connection costing you?"
+      sub="The work stops. The costs do not."
     >
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {/* ONE LINE (light) — the money going out */}
         <div className="rounded-xl border border-border p-6 md:p-10" style={{ background: "var(--before-grad)" }}>
           <span className="inline-block rounded-full border border-black/15 px-[15px] py-[7px] text-micro font-semibold uppercase tracking-[0.18em]" style={{ color: VIZ.ink }}>
-            One connection
+            Poor connection
           </span>
 
-          <div className="mt-8 text-caption tracking-[0.06em]" style={{ color: VIZ.ink }}>Trading lost, this outage</div>
+          <div className="mt-8 text-caption tracking-[0.06em]" style={{ color: VIZ.ink }}>Trading lost today</div>
           <div className="mt-2.5 flex items-baseline gap-2">
             <span ref={lostRef} className="tabular-nums" style={{ ...NUM, fontWeight: 200, color: "hsl(var(--error))" }}>
               {gbp(COST_OUTAGE_START_SECONDS * COST_PER_SECOND)}
@@ -815,7 +826,7 @@ function CostVariant() {
 
           <div className="mt-3 flex items-center gap-2 text-caption" style={{ color: VIZ.ink }}>
             <span className="h-[7px] w-[7px] rounded-full motion-safe:animate-pulse" style={{ background: "hsl(var(--error))" }} />
-            No connection. Nothing to fall back to.
+            Poor or no connection. Nothing to fall back to.
           </div>
           <div className="mt-5 text-caption leading-[1.7]" style={{ color: VIZ.ink }}>
             Orders, tills and phones stop.
@@ -832,10 +843,10 @@ function CostVariant() {
             className="relative inline-block rounded-full px-[15px] py-[7px] text-micro font-semibold uppercase tracking-[0.18em]"
             style={{ border: "1px solid hsl(var(--brand-soft) / 0.4)", color: VIZ.rose4, background: "rgba(60,5,5,.35)" }}
           >
-            Three connections
+            Starlink connection
           </span>
 
-          <div className="relative mt-8 text-caption tracking-[0.06em]" style={{ color: VIZ.rose }}>Trading lost, same outage</div>
+          <div className="relative mt-8 text-caption tracking-[0.06em]" style={{ color: VIZ.rose }}>Trading lost today</div>
           <div className="relative mt-2.5 flex items-baseline gap-2">
             <span
               className="tabular-nums"
@@ -855,31 +866,23 @@ function CostVariant() {
             Trading as normal, running on Starlink.
           </div>
           <div className="relative mt-5 text-caption leading-[1.7]" style={{ color: VIZ.rose3 }}>
-            Starlink and 4G/5G sit behind your existing connection, already
-            running, so the day carries on and nobody on site has to do anything.
+            Starlink and 4G/5G sit behind your existing connection or act as the
+            primary source, keeping your business operational all day.
           </div>
         </div>
       </div>
 
-      {/* TODO(will): PERMISSION, and it matters more here than it did under the
-          continuity variant. There the £150,000 was a footnote you could delete
-          and still have a section; here it sets the rate the counter runs at,
-          so if he cannot publish it this variant has no number and the page
-          goes back to variant="continuity".
+      {/* What is left of the £150,000 line. The figure is gone on Will's
+          instruction, 7 October, and so is the permission question that hung
+          over it for two weeks.
 
-          His words: "One logistics company we solved lost £150k per day just
-          coz their only source of internet died." The company is unnamed, which
-          needs no permission from them, but the figure is his customer's.
-
-          "Told us" on purpose, and the second sentence on purpose too. The
-          counter is arithmetic on somebody else's number, not a measurement of
-          the reader's business, and the line should not let anyone think
-          otherwise. */}
+          Something had to replace it. A counter reading £9,400 with nothing
+          underneath looks like a claim about the business reading it, which is
+          worse than the attributed figure it replaces. This says what the
+          number assumes in one sentence, which is all it needs to say. */}
       <p className="mt-6 text-center text-body-sm text-muted-foreground">
-        A logistics operator told us a day without their only internet
-        connection cost them{" "}
-        <strong className="font-semibold text-foreground">£150,000</strong>. The
-        counter runs at that rate.
+        Based on a business turning over{" "}
+        <strong className="font-semibold text-foreground">£10,000</strong> on a trading day.
       </p>
     </SectionShell>
   );
