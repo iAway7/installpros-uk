@@ -48,7 +48,35 @@ const PACK: PackItem[] = [
     // the broker's details, which should not sit on a public URL; it goes out
     // on request instead.
     title: "Insurance summary",
-    detail: "£10m public liability, plus professional indemnity, employers' liability and cyber, with the renewal date. Signed certificate on request",
+    // Corrected 7 October, three days after the same claim came out of the
+    // £10m Cover card and left this one contradicting it. The broker letter of
+    // 15 September evidences no professional indemnity and no cyber at all,
+    // and the public liability is not ten million on one policy: £5m primary
+    // with Chaucer, a £5m excess layer with AXA XL. Products liability is in
+    // because the letter does evidence it and a contractor onboarding form
+    // sometimes asks for it, but it is aggregate rather than per claim and has
+    // to say so. It takes a third line, which a vertical list can afford where
+    // the card row could not.
+    detail: "£10m public liability (£5m primary plus £5m excess), £10m employers' liability, and products liability at £5m primary plus £5m excess in the aggregate. Signed certificate on request",
+  },
+  {
+    // "At some stage, I'll also need your H&S RAMS for the installation. CBRE
+    // will request these as we'll be accessing their roof space which needs a
+    // permit to work issued." And, from the other side of a permit going
+    // wrong: "You guys just applied for the permit but never send them plan.
+    // They will reject the permit."
+    title: "Work permits and permissions",
+    detail: "Coordinated with your site team, landlord or managing agent before anyone goes up",
+  },
+  {
+    // Tied to the single largest loss in the commercial set. A padel club chain
+    // with several sites and more than a hundred messages went to its own
+    // trades, and said why: "Our principal contractors onsite are going to
+    // source and install the starlink direct themselves, gives us a bigger
+    // window for install with the cherrypicks ect." Access equipment was the
+    // reason, not price.
+    title: "Plant hire",
+    detail: "Access equipment arranged where the job needs it, agreed in the quote",
   },
   {
     title: "Asbestos note",
@@ -133,7 +161,7 @@ export function SiteApprovalPackSection() {
             <h2 className="mt-4 h2-section text-foreground">Whoever signs it off will want paperwork.</h2>
             <p className="mt-5 max-w-md text-body text-muted-foreground md:text-lg" style={{ lineHeight: "1.6" }}>
               Building owners, managing agents and health and safety teams all ask for the same
-              documents before anyone goes on a roof. We send you the lot up front, so chasing it
+              documents before anyone goes on a roof. We send what we can up front, so chasing it
               is not your job.
             </p>
             <div className="mt-8">
