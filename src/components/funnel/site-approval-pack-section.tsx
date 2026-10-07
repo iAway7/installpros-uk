@@ -9,10 +9,19 @@ import { Button } from "@/components/system/button";
  * gated download instead, and the Google Ads conversion question gets decided
  * then rather than now: firing `lead_submission` for a document request would
  * mix two different actions in the data the bidding runs on.
+ *
+ * It asked for the pack by name until 7 October, and the review's "Discuss
+ * your site requirements" is better for a reason its document does not give:
+ * nobody has confirmed the pack exists. A button that says "ask us for the
+ * site approval pack" sends a stranger to WhatsApp to request a document the
+ * team may not be able to send, and the person holding that problem is Will.
+ * Asking to discuss the site promises nothing and describes what actually
+ * happens at the other end. The prefilled message moves with the label, or the
+ * button says one thing and WhatsApp says another.
  */
 const PACK_REQUEST_URL =
   "https://wa.me/447446112343?text=" +
-  encodeURIComponent("Hi, please send me the site approval pack for a commercial Starlink install.");
+  encodeURIComponent("Hi, I'd like to discuss the site requirements for a commercial Starlink install.");
 
 type PackItem = { title: string; detail: string };
 
@@ -198,15 +207,22 @@ export function SiteApprovalPackSection() {
             <p className="eyebrow">Getting it signed off</p>
             <h2 className="mt-4 h2-section text-foreground">Whoever signs it off will want paperwork.</h2>
             <p className="mt-5 max-w-md text-body text-muted-foreground md:text-lg" style={{ lineHeight: "1.6" }}>
-              Building owners, managing agents and health and safety teams all ask for the same
-              documents before anyone goes on a roof. We send what we can up front, so chasing it
-              is not your job.
+              {/* The review's, cut from 262 characters to 179 so it holds the
+                  four lines it had. Worth taking because ours only gave and
+                  this also asks: naming the person who signs it off is the
+                  whole bottleneck for 41 of the 178 commercial conversations,
+                  and the old version never invited anyone to name them. What
+                  it cost was "so chasing it is not your job", which was the
+                  line that stated the benefit. */}
+              Tell us your site rules, access restrictions and who has to approve the work. We&apos;ll
+              agree what your facilities, IT and health and safety teams need before anyone goes on
+              a roof.
             </p>
             <div className="mt-8">
               <Button asChild>
                 <a href={PACK_REQUEST_URL} target="_blank" rel="noopener noreferrer">
                   <WhatsAppIcon className="h-5 w-5 text-whatsapp" />
-                  Ask us for the site approval pack
+                  Discuss your site requirements
                 </a>
               </Button>
             </div>
@@ -217,7 +233,7 @@ export function SiteApprovalPackSection() {
 
           <div className="rounded-xl border border-border bg-background p-6 md:p-8">
             <p className="text-label font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-              What is in the pack
+              What you get
             </p>
             <ul className="mt-5">
               {PACK.map((item, i) => (
