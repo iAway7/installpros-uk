@@ -65,8 +65,20 @@ const SECTORS: Sector[] = [
   {
     img: "/funnel/sector-warehouses.webp",
     alt: "Forklift moving pallets in a warehouse aisle",
+    // The review's nouns, without its wrapper. It ran "Coverage planned across
+    // offices, working areas and yards, with cabling or wireless links where
+    // appropriate": 107 characters and three lines. The three places survive
+    // and so does the mechanism; "coverage planned across" and "where
+    // appropriate" do not.
+    //
+    // Worth the change because "the whole floor" was an abstraction and these
+    // are not. A depot manager reads "yards" and recognises himself, and the
+    // chat log is where that word comes from: "I need to be able to work from
+    // the yard. The grounds are approximately 95 acres and our yard covers
+    // approximately 45 acres." Naming cable or a wireless link also answers
+    // the man with the metal barn, "a nice Faraday cage".
     t: "Warehouses and depots",
-    d: "Coverage across the whole floor, not just the office",
+    d: "Offices, working areas and yards, by cable or wireless link",
   },
   {
     img: "/funnel/sector-construction.webp",
@@ -93,8 +105,15 @@ const SECTORS: Sector[] = [
     // same blanket claim that came out of the H1 and the backup card. Three
     // sentences on one page all guaranteeing the day. A list instead, like
     // Offices two cards up.
+    //
+    // Staff systems and guest access are the review's additions and both are
+    // real: "to be able to offer WiFi to customers as well as connecting our
+    // till systems". Its word for the first item is not. It wrote "payments",
+    // and Will has already corrected this once on the systems row: a barber
+    // says "the card machine" and "the till", not "POS". So the additions come
+    // in and the vocabulary stays ours.
     t: "Retail and hospitality",
-    d: "Card terminals, tills and the booking system",
+    d: "Card terminals, tills, staff systems and guest Wi-Fi",
   },
   {
     img: "/funnel/sector-campsites.webp",
