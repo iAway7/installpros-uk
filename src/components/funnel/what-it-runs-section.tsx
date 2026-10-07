@@ -30,7 +30,14 @@ const SYSTEMS: SystemItem[] = [
     // because a barber says "the card machine" and "the till", not "POS", and
     // this section exists to use their words. EPOS goes in the body instead, so
     // whoever does think in trade terms still finds themselves here.
-    title: "Taking payments",
+    // "Payments and EPOS" from 7 October, and it reverses the note above on
+    // purpose. That note says a barber says "the card machine", not "POS", and
+    // it was right for the audience it was written for. Will named a different
+    // one on the call: "anyone from an IT department will know exactly what
+    // we're talking about there, and they're the ones that are kind of
+    // reaching out". The trade term is the point now. The body still opens
+    // with card terminals and tills, so the barber is not lost.
+    title: "Payments and EPOS",
     // "So we can connect payment devices", "connecting our till systems".
     detail: "Card terminals, cloud tills, EPOS and your booking system, on their own network away from the WiFi you hand to customers.",
   },
@@ -39,27 +46,27 @@ const SYSTEMS: SystemItem[] = [
     // Was "Customers on site", which Will read as something else before the
     // body corrected him. If the title needs the body to explain it, it is the
     // wrong title.
-    title: "Guest WiFi",
+    title: "Guest and staff Wi-Fi",
     // "to be able to offer WiFi to customers as well as connecting our till systems".
-    detail: "Coverage where your customers actually sit, with access points placed around the building rather than where the cable happens to arrive.",
+    detail: "Coverage where your customers and staff actually are, with access points placed around the building rather than where the cable happens to arrive.",
   },
   {
     icon: <Camera className="h-5 w-5" />,
-    title: "Cameras and access",
+    title: "CCTV and access systems",
     // "the internet is connected to our access gates for customers", and a
     // poultry farm running forty cameras.
     detail: "Gates, barriers and CCTV, including remote viewing. We size the upload against how many cameras you run and how long you keep the footage.",
   },
   {
     icon: <Phone className="h-5 w-5" />,
-    title: "Phones",
+    title: "Phones and cloud applications",
     // "how would you run a phone off this and could I keep my buisness phone
     // number". Portability depends on the number and the current provider.
-    detail: "Handsets over the connection, and we check whether your existing number can move before you commit to anything.",
+    detail: "Handsets over the connection, and the cloud tools your team works in. We check whether your existing number can move before you commit.",
   },
   {
     icon: <Lock className="h-5 w-5" />,
-    title: "Working off-site",
+    title: "VPNs and remote access",
     // "apparently they said this would not work with Starlink, looking at what
     // the workaround is". The blocker is CGNAT.
     //
@@ -72,14 +79,36 @@ const SYSTEMS: SystemItem[] = [
     // static IP themselves. "Can you confirm our current remote-access VPN
     // supports connections behind CGNAT/NAT-T and doesn't require a fixed
     // public IP". Those are the people this sentence was answering badly.
-    detail: "Cloud apps, remote desktops and VPNs. Starlink shares addressing, which some VPNs will not cross. A fixed address needs a managed network.",
+    // Cloud apps moved up to the phones card with the retitling, which is the
+    // one real change of content in this row rather than of label. This card
+    // was carrying three unrelated things; now it carries the one the title
+    // names.
+    detail: "Remote desktops and VPNs. Starlink shares addressing, which some VPNs will not cross. A fixed address needs a managed network.",
   },
   {
     icon: <Network className="h-5 w-5" />,
     // Will's wording, and better than "More than one building": it covers the
     // yard as well as the second unit, and several sites in the chat log are a
     // yard.
-    title: "Full site coverage",
+    // "Multiple buildings" from 7 October, Gus's decision after the call.
+    //
+    // Worth knowing that this reverses an earlier one of Will's. The note
+    // above records him choosing "Full site coverage" over "More than one
+    // building" because it covers the yard as well as the second unit, and
+    // several sites in the chat log are a yard: "I need to be able to work
+    // from the yard. The grounds are approximately 95 acres and our yard
+    // covers approximately 45 acres." On the call he read the review's list
+    // straight through and asked for all six, which is almost certainly not
+    // him revisiting that.
+    //
+    // It also breaks a deliberate pairing. The Full Site Coverage card in the
+    // why section uses those exact words so the page makes one promise in one
+    // phrasing rather than two half promises. That card is now on its own.
+    //
+    // The body still says yards, so the yard is not lost, only demoted from
+    // the title. Raised and overruled; recorded here so it can be undone in
+    // one line.
+    title: "Multiple buildings",
     // "Would the one satellite give internet coverage for the properties
     // surrounding our building ?"
     detail: "Outbuildings, yards and neighbouring units linked back to the main dish, which usually costs less than a second subscription.",
