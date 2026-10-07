@@ -14,6 +14,7 @@ import { isValidUkPostcode, normalisePostcode } from "@/lib/utils";
 import { checkUkPostcode } from "@/lib/funnel/check-postcode";
 import { validateName, validatePhone, validateEmail, formatPhone, isValidUkPhone } from "@/lib/funnel/validation";
 import { submitLead } from "@/lib/funnel/submit-lead";
+import { thankYouPath } from "@/lib/funnel/thank-you-path";
 import { track, EVENTS } from "@/lib/analytics";
 
 type CheckStatus = "idle" | "checking" | "available" | "invalid";
@@ -328,7 +329,7 @@ export function ZipAvailabilityChecker(
         marketingConsent: consent, formName, postcodePrecision: formData.postcodePrecision,
       });
       toast.success("Quote request submitted!");
-      router.push(`/thank-you?leadId=${leadId}`);
+      router.push(thankYouPath(formData.installationType, leadId));
     } catch {
       toast.error("Something went wrong. Please try again.");
       setIsSubmitting(false);
