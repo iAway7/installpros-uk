@@ -64,14 +64,26 @@ export const COMMERCIAL_EQUIPMENT: EquipmentItem[] = [
   {
     t: "Starlink",
     badge: "Supply & Fit",
-    d: "Specified to the site, not the same kit every time",
+    // "Specified to the site, not the same kit every time" until 7 October.
+    // Will: "spec to the site as you've done, spec to the site. All kit
+    // included." The second half of the old line was explaining what the first
+    // half already said.
+    d: "Spec to the site. All kit included",
     img: "/funnel/starlink-performance.webp",
   },
   {
-    t: "Gen 3 Router",
-    badge: "Included",
-    d: "Not in the Performance kit, we supply and configure it",
-    img: "/funnel/starlink-gen-3-router.webp",
+    // Will, 7 October call. The card used to promise a Gen 3 router with every
+    // install; he does not want it read that way. It is an add-on, and the
+    // thing worth selling is that we can manage it: "companies are going to
+    // look for other companies that can provide MSP".
+    //
+    // The image is the one he sent, with the MikroTik wordmark and the hAP ax2
+    // model name painted out, also his ask: "that means then our competitors
+    // can't exactly see what we're [using]".
+    t: "Managed Router",
+    badge: "Add-on",
+    d: "MSP services available on request",
+    img: "/funnel/managed-router.webp",
   },
   ...EQUIPMENT.slice(2),
 ];

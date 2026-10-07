@@ -114,21 +114,25 @@ export const COMMERCIAL_FEATURES: Feature[] = [
     // Chaucer and a £5m excess layer with AXA XL. Employers' liability is the
     // only class that is a flat ten.
     //
-    // The review's own wording ran to six lines in this card against four for
-    // its neighbours, so it is trimmed to the same four. What survives is the
-    // headline limit first and the layering right behind it in brackets, which
-    // is the order a facilities team reads it in: they are looking for the ten
-    // million, and the structure is the qualifier. Primary and excess stay as
-    // words because that is the vocabulary on their own onboarding form, and
-    // an excess layer attaching above a primary is the part a flat "two layers
-    // of £5m" would lose.
+    // Back to the original wording on 7 October, Will's instruction on the call
+    // and Gus's after it. The £5m primary plus £5m excess breakdown comes out:
+    // Will's words were "that's unnecessary", and on a card he is right.
     //
-    // Dropped: "subject to policy terms" and a sentence about contractor
-    // checks. "Certificates on request" does that job better, since it points
-    // at the document instead of warning about it, and the pack further down
-    // carries the policy numbers and the full caveat.
+    // ON THE RECORD, BECAUSE IT IS NOT A STYLE QUESTION. Professional
+    // indemnity and cyber are not evidenced by the JMG broker letter of 15
+    // September, which is the document InstallPros supplied. That letter
+    // confirms employers' liability at £10m with Chaucer, public liability as
+    // £5m primary with Chaucer plus a £5m excess layer with AXA XL, and
+    // products liability at £5m primary plus £5m excess in the aggregate. It
+    // confirms no professional indemnity and no cyber at all. This did not
+    // come out of the AI review Will disowned on the call; it came out of his
+    // own broker's letter.
+    //
+    // Raised twice and instructed twice, so it ships. If a commercial site
+    // onboards us against this card and a claim follows, this comment is where
+    // the decision was recorded. One question to JMG settles it.
     t: "£10m Cover",
-    d: "£10m public liability (£5m primary plus £5m excess) and £10m employers' liability. Certificates on request.",
+    d: "Public liability, professional indemnity, employers' liability and cyber, all at ten million.",
     i: IconShield,
   },
   {
