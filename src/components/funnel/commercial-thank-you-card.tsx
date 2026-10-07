@@ -86,13 +86,6 @@ export function CommercialThankYouCard() {
         <WhatsAppIcon className="h-[19px] w-[19px]" />
         Message us on WhatsApp
       </a>
-
-      {/* "No obligation" is what the rest of the funnel says, on the residential
-          post-submit card and in the hero. Nothing on the site states what a
-          survey costs, so this page does not either. */}
-      <p className="mt-3.5 text-center text-caption md:text-body-sm leading-[1.5] text-muted-foreground">
-        No obligation. Monday to Friday, 8am to 6pm.
-      </p>
     </div>
   );
 }
