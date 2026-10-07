@@ -207,16 +207,22 @@ export function SiteApprovalPackSection() {
             <p className="eyebrow">Getting it signed off</p>
             <h2 className="mt-4 h2-section text-foreground">Whoever signs it off will want paperwork.</h2>
             <p className="mt-5 max-w-md text-body text-muted-foreground md:text-lg" style={{ lineHeight: "1.6" }}>
-              {/* The review's, cut from 262 characters to 179 so it holds the
-                  four lines it had. Worth taking because ours only gave and
+              {/* The review's, at 110 characters against its own 262 and three
+                  lines against six. Worth taking because ours only gave and
                   this also asks: naming the person who signs it off is the
                   whole bottleneck for 41 of the 178 commercial conversations,
                   and the old version never invited anyone to name them. What
                   it cost was "so chasing it is not your job", which was the
-                  line that stated the benefit. */}
-              Tell us your site rules, access restrictions and who has to approve the work. We&apos;ll
-              agree what your facilities, IT and health and safety teams need before anyone goes on
-              a roof.
+                  line that stated the benefit.
+
+                  Out of the review's wording: "facilities, IT and health and
+                  safety teams", which is a list of departments, and "access
+                  restrictions", which site rules already covers. "Who signs it
+                  off" is deliberate rather than "who has to approve the work":
+                  it is the heading's own phrase, so the section reads as one
+                  thought. */}
+              Tell us your site rules and who signs it off. We&apos;ll agree what your teams need
+              before anyone goes on a roof.
             </p>
             <div className="mt-8">
               <Button asChild>
