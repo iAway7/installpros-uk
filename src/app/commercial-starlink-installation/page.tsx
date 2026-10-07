@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { MainHeader } from "@/components/funnel/main-header";
 import { HeroSection } from "@/components/funnel/hero-section";
 import { WhatsAppFab } from "@/components/funnel/whatsapp-fab";
-import { CoverageSection } from "@/components/funnel/coverage-section";
 import { SectorsSection } from "@/components/funnel/sectors-section";
 import { WhatItRunsSection } from "@/components/funnel/what-it-runs-section";
 import { CustomerStoriesSection } from "@/components/funnel/customer-stories-section";
@@ -140,7 +139,28 @@ export default function CommercialStarlinkInstallationPage() {
               you". The chat log asks about tills, gates, cameras and phones far
               more than about speed, and that answer was buried in the FAQ. */}
           <WhatItRunsSection />
-          <CoverageSection />
+          {/* No CoverageSection here, and that is three claims removed rather
+              than one. It carried "Every Install Type: residential, commercial,
+              marine and mobile", which is the wrong segment on a page bought
+              with commercial clicks. The other two were already made further
+              down and better: CoverageMapSection says "From the Highlands to
+              Cornwall, our engineers cover all four nations" and prints a 7 day
+              lead time, and TrackRecordSection counts 225+ towns.
+
+              It also took the last two "certified" claims on this page with it.
+              Will confirmed we hold none of CHAS, SafeContractor, ISO 9001,
+              14001, 45001, IPAF, PASMA or NICEIC, which is why the word came
+              out of the Why InstallPros intro, and it was still sitting in this
+              section twice because the component is shared.
+
+              The component stays as it is: /starlink-installation, /install-
+              quote and the vehicles landing all render it, and there the list
+              of install types is accurate. The "certified engineers" line is
+              not, on any of them, but that is those pages' problem to fix and
+              /install-quote is live.
+
+              Backgrounds still alternate without it: WhatItRuns is
+              bg-secondary and Trustpilot is bg-background. */}
           <TrustpilotSection />
           <CustomerStoriesSection />
           <EquipmentSection equipment={COMMERCIAL_EQUIPMENT} />
