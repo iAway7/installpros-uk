@@ -872,18 +872,15 @@ function CostVariant() {
         </div>
       </div>
 
-      {/* What is left of the £150,000 line. The figure is gone on Will's
-          instruction, 7 October, and so is the permission question that hung
-          over it for two weeks.
+      {/* No line under the cards. There was one, "Based on a business turning
+          over £10,000 on a trading day", and before that the £150,000
+          attribution. Gus took it out on 7 October.
 
-          Something had to replace it. A counter reading £9,400 with nothing
-          underneath looks like a claim about the business reading it, which is
-          worse than the attributed figure it replaces. This says what the
-          number assumes in one sentence, which is all it needs to say. */}
-      <p className="mt-6 text-center text-body-sm text-muted-foreground">
-        Based on a business turning over{" "}
-        <strong className="font-semibold text-foreground">£10,000</strong> on a trading day.
-      </p>
+          What it was doing: the counter asserts a rate, and a reader with no
+          frame around it can take £9,400 as a claim about their own business
+          rather than an illustration. The rate is still £10,000 across an
+          eight hour trading day, which is where the figure comes from; it is
+          now in this comment rather than on the page. */}
     </SectionShell>
   );
 }
