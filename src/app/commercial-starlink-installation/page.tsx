@@ -118,10 +118,25 @@ export default function CommercialStarlinkInstallationPage() {
             // that key would rewrite the residential H1s too.
             headline="How much is unreliable internet costing your business?"
             headlineConfigKey="headlineCommercial"
+            // Will's opening and his "professionally installed", 8 October,
+            // with the two things his version dropped put back: the 5G
+            // failover, which was his own point on the 7 October call, and
+            // "set-up in days", which is the line people act on.
+            //
+            // What is not here is the rest of his sentence, "backed by expert
+            // ongoing support". Nothing on the site evidences a support offer,
+            // and "certified" came out of the intro on 7 October for the same
+            // reason. Asked him what is included as standard; if there is a
+            // real one it deserves better than a clause here.
+            //
+            // "Nationwide" is gone because the pill directly above now says
+            // it, and twice in adjacent lines reads like filler.
+            //
             // Two lines. The paragraph is max-w-3xl at 24px on lg, so roughly
             // 62 characters a line: past about 120 it spills to a third. This
-            // is 113.
-            subheadline="Starlink installed and managed, with 5G failover alongside your existing connection. Fixed quote, set-up in days."
+            // is 110, and it is a line shorter than its predecessor on a phone:
+            // 3 at 375px rather than 4.
+            subheadline="Fast, reliable broadband for business, professionally installed with 5G failover. Fixed quote, set-up in days."
             // They arrived on the commercial page, from a commercial ad, and
             // have just read a commercial headline. Asking them what they are
             // installing is a step that answers itself.
