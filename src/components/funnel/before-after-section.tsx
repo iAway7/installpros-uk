@@ -802,8 +802,12 @@ function CostVariant() {
   return (
     <SectionShell
       eyebrow="Cost of downtime"
-      heading="What is a poor connection costing you?"
-      sub="The work stops. The costs do not."
+      // The question moved to the H1 on 8 October, in Will's wording, so this
+      // section answers it instead of asking it a second time. The old sub is
+      // strong enough to carry the heading, and it is the one line here that
+      // states the thing the counter below is demonstrating.
+      heading="The work stops. The costs do not."
+      sub="The same trading day, side by side."
     >
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {/* ONE LINE (light) — the money going out */}

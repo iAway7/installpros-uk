@@ -84,7 +84,7 @@ export default function CommercialStarlinkInstallationPage() {
             // Will says the business actually is. Message match survives:
             // someone arriving on "commercial starlink installation" still
             // reads it back, just one line higher.
-            badge="Commercial Starlink Installation"
+            badge="Nationwide Commercial Starlink Installation"
             badgeFlag={false}
             // Leads with what Will says the business actually is: not a faster
             // connection, a site that does not go down. It also makes the
@@ -95,24 +95,28 @@ export default function CommercialStarlinkInstallationPage() {
             // the pain point, and the angle is "we help keep businesses
             // operational". This is that in his own words.
             //
-            // It is still a continuity promise, but a scoped one. "Whatever
-            // your line does" is about the line failing, not about every
-            // possible failure: the version this replaced on 6 October,
-            // "stays online, whatever happens to your main line", covered a
-            // power cut and a dead router too, which is neither what we sell
-            // nor what we can hold.
+            // Will's own words, 8 October: "How much is unreliable internet
+            // costing your business? ^ that's the one". It puts the cost of
+            // downtime in the first line, which is the angle he picked on the
+            // 7 October call and the one the chat log supports.
             //
-            // "Line" rather than "connection", which is the word the rest of
-            // the page moved to. Flagged to Gus; his call, and it reads better
-            // out loud than "whatever your connection does".
+            // It cost a line on mobile rather than adding one: 4 at 375px
+            // against the 5 of the version it replaces. Measured, because Will
+            // asked whether it was too much for a phone. The one that was too
+            // much was his other option, "Downtime = Downturn. Reliable, high
+            // speed internet supplied and installed within days", at 7 lines.
             //
-            // The old headline, "Commercial Starlink installation, fitted in
-            // under a week", is the obvious challenger if we want to test this.
-            // It goes in an experiment as `headlineCommercial`, a key only this
-            // page reads. See HeroHeadline for why it is not plain `headline`:
-            // on-page experiments are not page-scoped, and that key would
-            // rewrite the residential H1s too.
-            headline="We keep your business operating. Whatever your line does."
+            // It asks rather than answers, so the cost section further down
+            // stopped asking the same thing. That heading was "What is a poor
+            // connection costing you?" and is now the answer to this.
+            //
+            // The version this replaces, "We keep your business operating.
+            // Whatever your line does.", is the obvious challenger if we want
+            // to test this. It goes in an experiment as `headlineCommercial`,
+            // a key only this page reads. See HeroHeadline for why it is not
+            // plain `headline`: on-page experiments are not page-scoped, and
+            // that key would rewrite the residential H1s too.
+            headline="How much is unreliable internet costing your business?"
             headlineConfigKey="headlineCommercial"
             // Two lines. The paragraph is max-w-3xl at 24px on lg, so roughly
             // 62 characters a line: past about 120 it spills to a third. This
