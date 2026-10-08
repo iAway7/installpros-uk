@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { CheckCircle2, Phone, Mail } from "lucide-react";
 import { WhatsAppIcon } from "./ui/whatsapp-icon";
 import { track, EVENTS } from "@/lib/analytics";
-import { mailtoUrl, whatsappUrl, SUPPORT_PHONE, SUPPORT_PHONE_HREF } from "@/lib/funnel/contact";
+import { mailtoUrl, whatsappUrl, SUPPORT_PHONE_HREF } from "@/lib/funnel/contact";
 
 /**
  * Post-submit card for the commercial funnel.
@@ -113,10 +113,11 @@ export function CommercialThankYouCard() {
         Message us on WhatsApp
       </a>
 
-      {/* The number is in the label, not hidden behind "Call now". Somebody at
-          a desk reads it off and dials from the deskphone, which is what a
-          business does, and it tells them we are a UK landline before they
-          commit to the tap. */}
+      {/* "Call now", Will's own label, in quotes in his message of 8 October.
+          This read "Call 020 3397 7003" first, on the reasoning that somebody
+          at a desk reads the number off and dials from the deskphone. The
+          header already shows it, so nothing is lost by taking it out of the
+          button, and the shorter label is the stronger instruction. */}
       <a
         href={SUPPORT_PHONE_HREF}
         onClick={() =>
@@ -129,7 +130,7 @@ export function CommercialThankYouCard() {
         className="focus-ring-solid mt-3 flex h-control-lg items-center justify-center gap-2.5 rounded-lg border border-border bg-background text-button font-[var(--button-weight)] uppercase tracking-[var(--button-tracking)] text-foreground transition-colors duration-quick ease-ds hover:bg-secondary"
       >
         <Phone className="h-[18px] w-[18px]" aria-hidden="true" />
-        Call {SUPPORT_PHONE}
+        Call now
       </a>
 
       {/* Email is a text link, not a third button. It is the one people use
