@@ -31,7 +31,7 @@ export function SlimHeader() {
       <div className="container mx-auto flex items-center justify-between py-3">
         <a href="/starlink-installation" className="flex items-center" aria-label="InstallPros">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/funnel/installpros-logo-colored-new.svg" alt="Install Pros" className="h-8 md:h-10" />
+          <img src="/funnel/installpros-logo-colored-new.svg" alt="Install Pros" className="w-32 md:h-10 md:w-auto" />
         </a>
         <div className="flex items-center gap-2 md:gap-6">
           <a

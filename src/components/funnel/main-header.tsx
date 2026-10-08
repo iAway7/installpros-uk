@@ -38,9 +38,12 @@ export function MainHeader() {
           {/* Inline SVG, not <img src>: this is the LCP element and as a file it
               put a network round trip on the critical path. Swapping colour with
               a text-* class also removes the second download that used to happen
-              the moment the user scrolled and the header went white. */}
+              the moment the user scrolled and the header went white.
+              Sized by width on mobile: the lockup is wider than its height
+              suggests, and at h-8 it left no room for the phone link at 360px.
+              w-32 is the footprint the previous logo had there. */}
           <InstallProsLogo
-            className={`h-8 w-auto transition-colors duration-card ease-ds md:h-10 ${
+            className={`h-auto w-32 transition-colors duration-card ease-ds md:h-10 md:w-auto ${
               scrolled ? "text-black" : "text-white"
             }`}
           />

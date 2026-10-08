@@ -34,7 +34,7 @@ export default async function OgImage() {
         }}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={logo} alt="" width={380} height={95} style={{ marginBottom: 48 }} />
+        <img src={logo} alt="" width={425} height={90} style={{ marginBottom: 48 }} />
         <div style={{ fontSize: 64, fontWeight: 700, lineHeight: 1.1, letterSpacing: -2, display: "flex" }}>
           Professional Starlink
         </div>

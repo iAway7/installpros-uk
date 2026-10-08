@@ -22,7 +22,9 @@ export function FunnelHeaderLight({ ctaLocation = "thank_you" }: { ctaLocation?:
     <header className="border-b border-border/60 bg-white">
       <div className="container mx-auto flex items-center justify-between gap-4 py-3 md:py-4">
         <a href="/install-quote" className="flex min-h-[48px] items-center" aria-label="Install Pros">
-          <InstallProsLogo className="h-7 w-auto text-black md:h-10" />
+          {/* Width-capped on mobile, same footprint as the previous logo, so
+              the two contact links keep their room at 360px. */}
+          <InstallProsLogo className="h-auto w-28 text-black md:h-10 md:w-auto" />
         </a>
 
         <div className="flex items-center gap-4 md:gap-8">
