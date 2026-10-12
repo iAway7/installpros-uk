@@ -61,7 +61,7 @@ const FACTS: Fact[] = [
     // UK page says only "a small monthly fee", so his number is the one to
     // keep current. A pause is not free, and a page that implied it was would
     // be the first thing the customer catches us out on.
-    detail: "Billed every 30 days. Pause from the app for the months it sits on the drive; Starlink holds the account on Standby for £9 a month.",
+    detail: "Billed every 30 days. Pause from the app; a paused month is £9 on Standby.",
   },
   {
     icon: <Gauge className="h-5 w-5" />,
