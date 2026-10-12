@@ -84,7 +84,14 @@ export default function CommercialStarlinkInstallationPage() {
             // Will says the business actually is. Message match survives:
             // someone arriving on "commercial starlink installation" still
             // reads it back, just one line higher.
-            badge="Nationwide Commercial Starlink Installation"
+            // "UK" rather than "Nationwide", which is the same promise in two
+            // characters instead of ten. Will's version wrapped to two lines at
+            // 320, 360 and 375 and sat on one line everywhere above, so this is
+            // free: it fixes the wrap where there was one and changes nothing
+            // where there was not. It also matches the page title word for
+            // word, and the exact ad keyword now leads the pill rather than
+            // sitting second.
+            badge="Commercial Starlink Installation UK"
             badgeFlag={false}
             // Leads with what Will says the business actually is: not a faster
             // connection, a site that does not go down. It also makes the
@@ -100,11 +107,20 @@ export default function CommercialStarlinkInstallationPage() {
             // downtime in the first line, which is the angle he picked on the
             // 7 October call and the one the chat log supports.
             //
-            // It cost a line on mobile rather than adding one: 4 at 375px
-            // against the 5 of the version it replaces. Measured, because Will
-            // asked whether it was too much for a phone. The one that was too
-            // much was his other option, "Downtime = Downturn. Reliable, high
-            // speed internet supplied and installed within days", at 7 lines.
+            // "What is" rather than Will's "How much is", which is the only
+            // edit: every word carrying meaning is his. It takes the headline
+            // from 4 lines to 3 at every width from 375 up, which on this
+            // audience is most of the traffic. GA4 for the year to 12 October,
+            // 95,994 users: 78% mobile, and our own lead data agrees at 78%.
+            // The common widths are 390 to 440, and the headline was running
+            // to 4 lines on all of them.
+            //
+            // It does not help at 360 and 320, where it stays at 4 and 5.
+            // Getting those down needs words short enough to lose the sentence.
+            //
+            // The option that was genuinely too long for a phone was Will's
+            // other one, "Downtime = Downturn. Reliable, high speed internet
+            // supplied and installed within days", at 7 lines.
             //
             // It asks rather than answers, so the cost section further down
             // stopped asking the same thing. That heading was "What is a poor
@@ -116,7 +132,7 @@ export default function CommercialStarlinkInstallationPage() {
             // a key only this page reads. See HeroHeadline for why it is not
             // plain `headline`: on-page experiments are not page-scoped, and
             // that key would rewrite the residential H1s too.
-            headline="How much is unreliable internet costing your business?"
+            headline="What is unreliable internet costing your business?"
             headlineConfigKey="headlineCommercial"
             // Will's opening and his "professionally installed", 8 October. The
             // ending is the one the chat log supports rather than the one any
