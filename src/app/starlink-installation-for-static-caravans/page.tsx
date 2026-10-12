@@ -104,7 +104,11 @@ export default function StarlinkInstallationForStaticsPage() {
       <ExperimentProvider>
         <main id="main" tabIndex={-1} className="flex flex-col outline-none">
           <HeroSection
-            smartCoverage
+            // No smartCoverage. It swapped "We're available in X" for a
+            // paragraph built from broadband data, and on a well-served
+            // postcode that paragraph argued the area already has strong fixed
+            // broadband. Gus pulled it from every page on 12 October: postcode
+            // in, availability out, nothing else.
             addressMode
             // PLACEHOLDER, and a worse one than the cars page had. This is the
             // holiday park photograph from the commercial sectors grid, 800px

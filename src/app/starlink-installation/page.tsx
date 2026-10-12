@@ -18,12 +18,16 @@ import { FunnelFooter } from "@/components/funnel/funnel-footer";
 import { ExperimentProvider } from "@/components/experiments/experiment-provider";
 
 /**
- * A/B-test variant of /install-quote. Differences from the original:
+ * A/B-test variant of /install-quote. The difference from the original:
  *  1. SlimHeader — logo + phone only, no nav (nav is a top-5 clicked element
  *     on the original, i.e. a funnel exit).
- *  2. smartCoverage — the postcode step swaps the generic "we're available"
- *     copy for a real broadband-data message (see /api/broadband-coverage).
  * Everything else intentionally identical. /install-quote is untouched.
+ *
+ * It used to carry a second difference, smartCoverage, which replaced the
+ * generic "we're available in X" with a paragraph built from broadband data.
+ * Gus pulled that from every page on 12 October, so the variant now tests the
+ * header alone. Worth knowing when the numbers are read: a result after that
+ * date is about the nav, not about the nav and the coverage copy together.
  */
 
 export const metadata: Metadata = {
@@ -59,7 +63,7 @@ export default function StarlinkInstallationPage() {
       <MainHeader />
       <ExperimentProvider>
         <main id="main" tabIndex={-1} className="flex flex-col outline-none">
-          <HeroSection smartCoverage addressMode defaultInstallType="residential" skipServiceStep formName="starlink_residential" />
+          <HeroSection addressMode defaultInstallType="residential" skipServiceStep formName="starlink_residential" />
           {/* Mounted here on purpose: the sentinel inside it sits in flow at
               this exact spot, so the button appears once the hero is behind
               you. It takes itself off screen again over the quote form. */}

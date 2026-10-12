@@ -111,7 +111,11 @@ export default function StarlinkInstallationForBoatsPage() {
       <ExperimentProvider>
         <main id="main" tabIndex={-1} className="flex flex-col outline-none">
           <HeroSection
-            smartCoverage
+            // No smartCoverage. It swapped "We're available in X" for a
+            // paragraph built from broadband data, and on a well-served
+            // postcode that paragraph argued the area already has strong fixed
+            // broadband. Gus pulled it from every page on 12 October: postcode
+            // in, availability out, nothing else.
             addressMode
             // Aerial top-down of a motor yacht on dark water, chosen 5 October
             // 2026 to match a reference the user liked. Stock: Pexels 5581859 by

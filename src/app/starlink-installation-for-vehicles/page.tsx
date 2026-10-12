@@ -98,7 +98,11 @@ export default function StarlinkInstallationForCarsPage() {
       <ExperimentProvider>
         <main id="main" tabIndex={-1} className="flex flex-col outline-none">
           <HeroSection
-            smartCoverage
+            // No smartCoverage. It swapped "We're available in X" for a
+            // paragraph built from broadband data, and on a well-served
+            // postcode that paragraph argued the area already has strong fixed
+            // broadband. Gus pulled it from every page on 12 October: postcode
+            // in, availability out, nothing else.
             addressMode
             // Generated coastal scene from weather-hero-kit (its "wind" plate),
             // cropped to 2.14:1 with the vehicle centred vertically. That ratio
