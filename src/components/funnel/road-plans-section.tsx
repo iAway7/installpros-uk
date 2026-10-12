@@ -3,27 +3,35 @@ import { Globe, Navigation, PauseCircle, Gauge } from "lucide-react";
 type Plan = { name: string; price: string; per: string; data: string; detail: string };
 
 /**
- * The two Roam prices are Starlink's, copied from the text the team sends in
- * the chat: "£50/month, 50GB (extra data £1/GB); £96/month, Unlimited data.
- * Plans can be paused at any time and are billed every 30 days. Roam supports
- * mobile and temporary use, including travel and vehicle-based connections (up
- * to 2 months abroad). Service is deprioritised; typical speeds range from 30
- * to 250 Mbps." They are on this page because customers ask for the monthly
- * cost in the same breath as the install, and because Starlink publishes them.
- * They are not our prices and they will drift: check starlink.com before
- * touching the figures here.
+ * The two Roam prices are Starlink's. They are on this page because customers
+ * ask for the monthly cost in the same breath as the install, and because
+ * Starlink publishes them. They are not our prices and they will drift: check
+ * starlink.com before touching the figures here.
+ *
+ * History. Launched with the text the team sends in the chat: "£50/month,
+ * 50GB (extra data £1/GB); £96/month, Unlimited data. Plans can be paused at
+ * any time and are billed every 30 days. Roam supports mobile and temporary
+ * use, including travel and vehicle-based connections (up to 2 months abroad).
+ * Service is deprioritised; typical speeds range from 30 to 250 Mbps."
+ *
+ * Updated 2026-10-12 on Will's message: "Starlink currently lists 100GB at
+ * £55pm and Unlimited at £100pm. The pause wording also needs to mention paid
+ * Standby at £9pm." The two plan prices match starlink.com/gb/service-plans
+ * the same day, which also says the 100GB plan drops to unlimited low-speed
+ * data once the allowance is used. The £1/GB top-up line went with the old
+ * plan: not confirmed for the new one, so it is not claimed.
  */
 const PLANS: Plan[] = [
   {
-    name: "Roam 50GB",
-    price: "£50",
+    name: "Roam 100GB",
+    price: "£55",
     per: "a month",
-    data: "50GB, then £1 per GB",
-    detail: "Weekends and holidays. Top up by the gigabyte, or step up to unlimited.",
+    data: "100GB at full speed, then slow",
+    detail: "Weekends and holidays. When it runs out it slows rather than stops; step up to unlimited if that keeps happening.",
   },
   {
     name: "Roam Unlimited",
-    price: "£96",
+    price: "£100",
     per: "a month",
     data: "Unlimited data",
     detail: "Full-timers, remote workers and anyone who does not want to count gigabytes.",
@@ -48,9 +56,12 @@ const FACTS: Fact[] = [
   {
     icon: <PauseCircle className="h-5 w-5" />,
     title: "Pause it when parked up",
-    // The standby charge Starlink applies to a paused plan is quoted four
-    // different ways in the chat log, so no figure here until Will confirms one.
-    detail: "Billed every 30 days. Pause from the app for the months it sits on the drive.",
+    // The Standby figure is Will's, 2026-10-12: "paid Standby at £9pm". It was
+    // quoted four different ways in the chat log before that, and Starlink's
+    // UK page says only "a small monthly fee", so his number is the one to
+    // keep current. A pause is not free, and a page that implied it was would
+    // be the first thing the customer catches us out on.
+    detail: "Billed every 30 days. Pause from the app for the months it sits on the drive; Starlink holds the account on Standby for £9 a month.",
   },
   {
     icon: <Gauge className="h-5 w-5" />,

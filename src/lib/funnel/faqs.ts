@@ -388,10 +388,12 @@ export const VEHICLE_FAQS: FaqEntry[] = [
     category: "Coverage & WiFi",
     // 4 of 30. "Hi I want starlink for my motorhome to travel to Europe how
     // much does it cost", "I'm wanting a roaming skylink", "who/how we pay for
-    // subscriptions etc please". Prices are Starlink's, from the text the team
-    // sends in the chat; check starlink.com before touching them.
+    // subscriptions etc please". Prices are Starlink's; check starlink.com
+    // before touching them. Updated 2026-10-12 on Will's message (100GB £55,
+    // Unlimited £100, both on starlink.com/gb/service-plans that day; Standby
+    // £9 is his figure). Same numbers as road-plans-section, keep them in step.
     q: "Which plan for touring, does it work abroad, and can I pause it?",
-    a: "Starlink Roam. It works on the move, across the UK and for up to two months at a time abroad, and it renews every 30 days with no minimum term. Starlink's current UK pricing is £50 a month for 50 GB or £96 a month unlimited, and you can pause it from the app for any month you are not touring and restart it when you are. You pay Starlink for the plan; you pay us once for the fitting.",
+    a: "Starlink Roam. It works on the move, across the UK and for up to two months at a time abroad, and it renews every 30 days with no minimum term. Starlink's current UK pricing is £55 a month for 100 GB or £100 a month unlimited. You can pause it from the app for any month you are not touring; a paused plan sits on Standby at £9 a month and restarts when you are. You pay Starlink for the plan; you pay us once for the fitting.",
   },
   {
     category: "Coverage & WiFi",
