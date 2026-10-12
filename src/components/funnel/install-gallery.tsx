@@ -4,8 +4,8 @@
  * The rail of finished installs under the annotated photograph.
  *
  * Same mechanics as ReviewsCarousel, deliberately: native scroll-snap so a
- * thumb swipes it, side arrows from sm up, arrows and dots on a phone, and no
- * autoplay anywhere. A gallery that moves on its own while someone is reading
+ * thumb swipes it, side arrows from sm up, arrows and a "3 / 10" counter on a
+ * phone, and no autoplay anywhere. A gallery that moves on its own while someone is reading
  * a caption is the hero-carousel mistake in a smaller frame.
  *
  * ── EVERY SLIDE IS A REAL INSTALL, AND THAT IS THE RULE ─────────────────────
@@ -378,8 +378,11 @@ export function InstallGallery() {
         </button>
       </div>
 
-      {/* Phone controls: one card at a time, arrows and dots. Five slides, so
-          the dot row is well inside the width where dots still work. */}
+      {/* Phone controls: one card at a time, arrows and a counter. It was a
+          dot per slide while there were five; at ten, Gus (2026-10-12): "no me
+          gusta ver tantos dots". The counter is the one ReviewsCarousel uses
+          past its own dot limit, copied rather than shared because that file
+          renders on /install-quote. */}
       <div className="mt-4 flex items-center justify-center gap-3 sm:hidden">
         <button
           type="button"
@@ -390,24 +393,11 @@ export function InstallGallery() {
         >
           <ChevronLeft className="h-5 w-5" />
         </button>
-        <div className="flex items-center">
-          {SHOTS.map((s, i) => (
-            <button
-              key={s.vehicle}
-              type="button"
-              aria-label={`Go to ${s.vehicle}`}
-              aria-current={i === active}
-              onClick={() => scrollToIndex(i)}
-              className="flex h-8 w-8 items-center justify-center"
-            >
-              <span
-                className={`block h-2 rounded-full transition-all duration-quick ${
-                  i === active ? "w-5 bg-foreground" : "w-2 bg-muted-foreground/40"
-                }`}
-              />
-            </button>
-          ))}
-        </div>
+        <p className="min-w-[52px] text-center text-caption text-muted-foreground" aria-live="polite">
+          <span className="font-medium text-foreground">{Math.min(active + 1, SHOTS.length)}</span>
+          {" / "}
+          {SHOTS.length}
+        </p>
         <button
           type="button"
           aria-label="Next install"
