@@ -137,7 +137,12 @@ export default function CommercialStarlinkInstallationPage() {
             // a key only this page reads. See HeroHeadline for why it is not
             // plain `headline`: on-page experiments are not page-scoped, and
             // that key would rewrite the residential H1s too.
-            headline="What is unreliable internet costing your business?"
+            // The newline is a break that only applies from md up: desktop reads
+            // "What is unreliable internet / costing your business?", which is
+            // where Will wants it, instead of the "... internet costing / your
+            // business?" the text was falling into on its own at every desktop
+            // width from 1280 to 1920. A phone ignores it and wraps to fit.
+            headline={"What is unreliable internet\ncosting your business?"}
             headlineConfigKey="headlineCommercial"
             // Will's opening and his "professionally installed", 8 October. The
             // ending is the one the chat log supports rather than the one any
