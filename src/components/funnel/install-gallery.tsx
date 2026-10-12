@@ -76,9 +76,17 @@ type Shot = {
      - A pop-top campervan, top down, showing the clamp on the seam. It is the
        one mount type with no photograph and the only one that has to survive a
        roof that lifts.
-     - Any roof with the mount OPEN, before the enclosure goes on. Every
-       photograph we have hides the fixing, which is why only the motorhome
-       carries a fixing badge. */
+     - (ARRIVED 2026-10-12, two shots: install-mount-open and
+       install-mount-profile.) The mount open, before the enclosure goes on.
+       What the plate is held to the roof WITH is still not confirmed, so the
+       badge stays off those two until Will names it.
+
+   HELD, NOT PUBLISHED, from the same 2026-10-12 batch:
+     - A Mini tilted on a round black rubber base on a white roof edge. It
+       looks like a suction mount, and this page says in two places that we do
+       not fit those. If Will says it is a magnetic base with a rubber skirt
+       it is the one shot that shows the tilt and it goes in; if it is a
+       suction cup it contradicts the page and cannot. */
 const SHOTS: Shot[] = [
   {
     src: "/funnel/install-motorhome-roof.webp",
@@ -129,6 +137,58 @@ const SHOTS: Shot[] = [
     detail: "Sits this proud of the roof, alongside the bars and the box that were already there.",
     confirm:
       "Which vehicle is it, what is holding it on under the enclosure, and how many centimetres does it stand above the roof line?",
+  },
+  {
+    src: "/funnel/install-mount-open.webp",
+    srcSet: "/funnel/install-mount-open-960.webp 960w, /funnel/install-mount-open.webp 1200w",
+    alt: "The mounting plate on a dark car roof with the enclosure off: a square plate with a bracket screwed at each corner, beside the factory roof rail",
+    // The shot the rail was missing: every other photograph hides the fixing
+    // under a closed enclosure. Cropped from y=352 of the original so the
+    // legible plate of the car parked behind is outside the frame.
+    vehicle: "The mount, before the enclosure",
+    detail: "The plate the Mini sits on, before the enclosure goes over it. What holds the plate to the roof is under it, out of shot.",
+    confirm: "What is under the plate. The black disc at its edge looks like a magnetic base; confirm and the Magnets badge goes on this and the profile shot.",
+  },
+  {
+    src: "/funnel/install-mount-profile.webp",
+    srcSet: "/funnel/install-mount-profile-960.webp 960w, /funnel/install-mount-profile.webp 1200w",
+    alt: "The mounting plate seen edge-on along a dark car roof, with the factory roof rail beside it for scale",
+    // Same mount, seen along the roof line. Twelve of the 48 enquiries ask how
+    // much height it adds; this is the first frame that can answer it, once
+    // the number is in the caption.
+    vehicle: "How much it adds",
+    detail: "Seen along the roof line, with the factory rail for scale. This is the height before the enclosure goes on.",
+    confirm: "The height in centimetres: plate and brackets as shown, and the enclosure over them. It goes in this caption as a plain clause.",
+  },
+  {
+    src: "/funnel/install-motorhome-white.webp",
+    srcSet:
+      "/funnel/install-motorhome-white-960.webp 960w, /funnel/install-motorhome-white-1280.webp 1280w, /funnel/install-motorhome-white.webp 1600w",
+    alt: "A white low-profile Starlink Mini enclosure on the roof of a white coachbuilt motorhome, beside a vent dome",
+    // Will's one instruction with this photograph: "Please blur the connection
+    // at the front of this (the jigsaw piece)". Blurred at source, box
+    // 820,975 to 950,1065 of the original, before the crop.
+    vehicle: "Coachbuilt motorhome, white",
+    detail: "Sited between the rooflight and the vent, clear of the solar panel behind. An enclosure the colour of the roof.",
+    confirm: "Which motorhome, and what is under the enclosure on a GRP roof.",
+  },
+  {
+    src: "/funnel/install-maybach.webp",
+    srcSet: "/funnel/install-maybach.webp 874w",
+    alt: "A dark Mercedes-Maybach GLS at the workshop with its doors open, a small black Starlink enclosure between the roof rails",
+    // A customer's identifiable car, in with the owner's permission, confirmed
+    // 2026-10-12. The plate of the red car parked behind it is blurred at
+    // source. The copy Will sent is 874px wide, so there is no ladder: ask
+    // for the original if this ever needs to be larger than a rail card.
+    //
+    // The caption does not describe the dish because from this angle you
+    // can barely see it, and that is the point for the prestige-car buyer in
+    // the FAQ ("Will it look right on my vehicle?"). The grey shape above the
+    // roof is the open tailgate, not the dish; the dish is the small box
+    // between the rails.
+    vehicle: "Mercedes-Maybach GLS",
+    detail: "Between the rails and low enough that from the front you have to look for it. Fitted at the workshop.",
+    confirm: "What is holding it between the rails on this one, and whether the owner wants the car credited by name.",
   },
 ];
 
