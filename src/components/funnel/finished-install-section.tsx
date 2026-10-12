@@ -48,12 +48,12 @@
  * subject keeps the callouts. Change the photo, change three pairs of numbers.
  *
  * ── PENDING, BEFORE THIS GOES ANYWHERE NEAR PAID TRAFFIC ────────────────────
- * 1. CONFIRM WITH WILL WHAT THE FEET ARE. The photograph and its callouts live
- *    in finished-install-data.ts; the note is on DOTS[2] there.
- * 2. The photograph carries phone portrait-mode blur, which softens the
- *    workshop full of motorhomes behind it — the part that quietly says this
- *    is done all day. Swap in the unprocessed original when it turns up, at
- *    3000px or wider so the dish edge survives the phone crop.
+ * 1. (Resolved 2026-10-12.) The photograph is Will's. The one before it was
+ *    not, and the "bonded feet" callout and the rail badge built on it went
+ *    with it. A higher-resolution original of this one is still worth asking
+ *    for; the copy is 1600px.
+ * 2. The fixing is not visible in this frame and nothing here claims it. If
+ *    Will sends a shot of this enclosure open, that is the callout to add.
  * 3. A second vehicle (a van, or a dark car for the white-dish-on-black-paint
  *    question in the FAQ) turns this into a two-photo section with the vehicle
  *    named under each. One is enough to ship.

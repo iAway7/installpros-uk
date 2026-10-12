@@ -79,7 +79,9 @@ type Shot = {
      - (ARRIVED 2026-10-12, two shots: install-mount-open and
        install-mount-profile.) The mount open, before the enclosure goes on.
        What the plate is held to the roof WITH is still not confirmed, so the
-       badge stays off those two until Will names it.
+       badge stays off those two until Will names it. No slide carries a
+       badge now: the one that did was the Google photograph, removed
+       2026-10-12, and its "Bonded plate" was never confirmed either.
 
    HELD, NOT PUBLISHED, from the same 2026-10-12 batch:
      - A Mini tilted on a round black rubber base on a white roof edge. It
@@ -88,16 +90,6 @@ type Shot = {
        it is the one shot that shows the tilt and it goes in; if it is a
        suction cup it contradicts the page and cannot. */
 const SHOTS: Shot[] = [
-  {
-    src: "/funnel/install-motorhome-roof.webp",
-    srcSet:
-      "/funnel/install-motorhome-roof-960.webp 960w, /funnel/install-motorhome-roof-1280.webp 1280w, /funnel/install-motorhome-roof.webp 1920w",
-    alt: "A Starlink Mini fitted flat to the roof of a coachbuilt motorhome, between a solar panel and a rooflight",
-    vehicle: "Coachbuilt motorhome",
-    fixing: "Bonded plate",
-    detail:
-      "Bonded to the GRP roof between the solar panel and the rooflight. Nothing drilled, nothing overhanging the edge.",
-  },
   {
     src: "/funnel/install-street.webp",
     srcSet:
