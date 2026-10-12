@@ -84,11 +84,12 @@ type Shot = {
      - A pop-top campervan, top down, showing the clamp on the seam. It is the
        one mount type with no photograph and the only one that has to survive a
        roof that lifts.
-     - (ARRIVED 2026-10-12, two shots: install-mount-open and
-       install-mount-profile.) The mount open, before the enclosure goes on.
-       What the plate is held to the roof WITH is still not confirmed, so the
-       badge stays off those two until Will names it. Every slide carries a badge under the 2026-10-12 policy; the borrowed
-       motorhome photograph's "Bonded plate" is marked assumed like the rest.
+     - Any roof with the mount OPEN, before the enclosure goes on. Every
+       photograph we have hides the fixing. The two grey-mount shots of
+       2026-10-12 were filed here by mistake for an afternoon: Will's
+       correction is that the Mini is inside that box, it is a colour-matched
+       mount, so the fixing is as hidden there as everywhere else. Still
+       wanted.
 
    HELD, NOT PUBLISHED, from the same 2026-10-12 batch:
      - An interior shot: a lit red button on an overhead panel, a small dark
@@ -104,32 +105,32 @@ const SHOTS: Shot[] = [
   {
     src: "/funnel/install-mount-open.webp",
     srcSet: "/funnel/install-mount-open-960.webp 960w, /funnel/install-mount-open.webp 1200w",
-    alt: "The mounting plate on a dark car roof with the enclosure off: a square plate with a bracket screwed at each corner, beside the factory roof rail",
-    // Will, 2026-10-12: "This is a colour matched mount and one I would like
-    // near the front". So it leads the rail with its edge-on twin.
-    // The shot the rail was missing: every other photograph hides the fixing
-    // under a closed enclosure. Cropped from y=352 of the original so the
-    // legible plate of the car parked behind is outside the frame.
-    vehicle: "The mount, before the enclosure",
+    alt: "A grey colour-matched Starlink mount on a grey car roof, beside the factory roof rail",
+    // Will, 2026-10-12, correcting the first caption: "focus on the colour
+    // matching on this. The Starlink is inside this thing as it is the
+    // mount". So this is not a plate waiting for an enclosure: the Mini is
+    // inside, and the box IS the mount, finished in the roof's own grey. And
+    // "one I would like near the front", which is why it leads the rail.
+    // Cropped from y=352 of the original so the legible plate of the car
+    // parked behind is outside the frame.
+    vehicle: "Colour-matched mount",
     fixing: "Magnets",
     assumed: true,
-    detail: "A colour-matched plate the Mini sits on, before the enclosure goes over it. What holds the plate to the roof is under it, out of shot.",
-    confirm: "ASSUMED Magnets: the black disc at the plate's edge reads as a magnetic base. " +
-      "What is under the plate. The black disc at its edge looks like a magnetic base; confirm and the Magnets badge goes on this and the profile shot.",
+    detail: "The Mini is inside this. A mount finished in the roof's own grey, so it reads as part of the car rather than something on it.",
+    confirm: "ASSUMED Magnets: the black disc at its edge reads as a magnetic base. Which car?",
   },
   {
     src: "/funnel/install-mount-profile.webp",
     srcSet: "/funnel/install-mount-profile-960.webp 960w, /funnel/install-mount-profile.webp 1200w",
-    alt: "The mounting plate seen edge-on along a dark car roof, with the factory roof rail beside it for scale",
+    alt: "A grey colour-matched Starlink mount seen edge-on along a dark car roof, with the factory roof rail beside it for scale",
     // Same mount, seen along the roof line. Twelve of the 48 enquiries ask how
     // much height it adds; this is the first frame that can answer it, once
     // the number is in the caption.
     vehicle: "How much it adds",
     fixing: "Magnets",
     assumed: true,
-    detail: "Seen along the roof line, with the factory rail for scale. This is the height before the enclosure goes on.",
-    confirm: "ASSUMED Magnets: same mount as the top-down shot. " +
-      "The height in centimetres: plate and brackets as shown, and the enclosure over them. It goes in this caption as a plain clause.",
+    detail: "The same colour-matched mount seen along the roof line, with the factory rail for scale. The Mini is inside it.",
+    confirm: "ASSUMED Magnets: same mount as the top-down shot. The height in centimetres is the number twelve of 48 enquiries ask for; it goes in this caption as a plain clause.",
   },
   {
     src: "/funnel/install-street.webp",
@@ -215,6 +216,7 @@ const SHOTS: Shot[] = [
     // source. The copy Will sent is 874px wide, so there is no ladder: ask
     // for the original if this ever needs to be larger than a rail card.
     //
+    // "rated up to 150mph": Will, 2026-10-12. The one number on this slide.
     // The caption does not describe the dish because from this angle you
     // can barely see it, and that is the point for the prestige-car buyer in
     // the FAQ ("Will it look right on my vehicle?"). The grey shape above the
@@ -223,7 +225,7 @@ const SHOTS: Shot[] = [
     vehicle: "Mercedes-Maybach GLS",
     fixing: "Magnets",
     assumed: true,
-    detail: "Between the rails and low enough that from the front you have to look for it. Fitted at the workshop.",
+    detail: "Between the rails and low enough that from the front you have to look for it. The mount is rated to 150 mph.",
     confirm: "ASSUMED Magnets: between the rails on a steel roof. " +
       "What is holding it between the rails on this one, and whether the owner wants the car credited by name.",
   },
