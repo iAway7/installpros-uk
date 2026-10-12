@@ -107,15 +107,21 @@ export default function CommercialStarlinkInstallationPage() {
             // downtime in the first line, which is the angle he picked on the
             // 7 October call and the one the chat log supports.
             //
-            // Will's exact wording, and it stays that way.
+            // "What is" rather than Will's original "How much is". It was
+            // shortened for phones on 12 October, reverted within the hour
+            // because `headline` is one string for every breakpoint and the
+            // edit reached desktop uninvited, then put back on 12 October when
+            // Will said he preferred the shorter one on desktop as well. So it
+            // is his wording again, just the second version of it.
             //
-            // It was shortened to "What is ..." on 12 October to take the
-            // headline from 4 lines to 3 on a phone, then reverted the same
-            // day: `headline` is one string for every breakpoint, so the edit
-            // landed on desktop too, where the headline was already fine at
-            // 2 lines and nothing needed fixing. Desktop is 45% of this page's
-            // traffic. Changing the mobile rendering without touching desktop
-            // needs two strings and a breakpoint, not a shorter sentence.
+            // It is one string on purpose now. HeroSection grew a badgeNarrow
+            // prop for the pill, which does differ by width; the headline does
+            // not need to, because Will wants the same sentence everywhere.
+            //
+            // What it buys on a phone: 3 lines instead of 4 at every width
+            // from 375 up. At 360 and 320 it stays at 4 and 5, and getting
+            // those down needs words short enough to lose the sentence.
+            // Desktop is 2 lines either way.
             //
             // The option that was genuinely too long for a phone was Will's
             // other one, "Downtime = Downturn. Reliable, high speed internet
@@ -131,7 +137,7 @@ export default function CommercialStarlinkInstallationPage() {
             // a key only this page reads. See HeroHeadline for why it is not
             // plain `headline`: on-page experiments are not page-scoped, and
             // that key would rewrite the residential H1s too.
-            headline="How much is unreliable internet costing your business?"
+            headline="What is unreliable internet costing your business?"
             headlineConfigKey="headlineCommercial"
             // Will's opening and his "professionally installed", 8 October. The
             // ending is the one the chat log supports rather than the one any
