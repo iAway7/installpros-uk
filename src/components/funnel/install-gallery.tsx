@@ -230,13 +230,17 @@ const SHOTS: Shot[] = [
       "What is holding it between the rails on this one, and whether the owner wants the car credited by name.",
   },
   {
-    src: "/funnel/install-motorhome-white.webp",
+    src: "/funnel/install-motorhome-white-clean.webp",
     srcSet:
-      "/funnel/install-motorhome-white-960.webp 960w, /funnel/install-motorhome-white-1280.webp 1280w, /funnel/install-motorhome-white.webp 1600w",
+      "/funnel/install-motorhome-white-clean-960.webp 960w, /funnel/install-motorhome-white-clean.webp 1024w",
     alt: "A white low-profile Starlink Mini enclosure on the roof of a white coachbuilt motorhome, beside a vent dome",
     // Will's one instruction with this photograph: "Please blur the connection
-    // at the front of this (the jigsaw piece)". Blurred at source, box
-    // 820,975 to 950,1065 of the original, before the crop.
+    // at the front of this (the jigsaw piece)". Two in-repo attempts, a
+    // feathered blur and then an inpaint, both showed at card size. Gus
+    // retouched the photograph themselves on 2026-10-12 and this is their
+    // file, under a new name so nothing cached serves the old one. It is
+    // 1024 px square at source, so the rail gets 960w and 1024w here rather
+    // than the usual 1280w and 1600w; a larger export would restore those.
     vehicle: "Coachbuilt motorhome, white",
     fixing: "Bonded plate",
     assumed: true,
