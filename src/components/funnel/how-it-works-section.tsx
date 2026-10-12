@@ -92,7 +92,9 @@ export function HowItWorksSection() {
   return (
     <ProcessStepsSection
       eyebrow="How it works"
-      heading="Quoted from photos. Fitted in a day."
+      // Two sentences, one per line. Without the break, text-balance put
+      // "Fitted" on the first line and "in a day." alone on the second.
+      heading={<>Quoted from photos.<br />Fitted in a day.</>}
       steps={STEPS}
       cta={{ label: "Send us your photos", href: PHOTO_QUOTE_URL }}
     />

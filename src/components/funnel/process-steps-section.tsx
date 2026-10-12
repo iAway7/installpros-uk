@@ -55,7 +55,10 @@ export type ProcessStep = {
 export type ProcessStepsSectionProps = {
   id?: string;
   eyebrow: string;
-  heading: string;
+  /** ReactNode rather than string so a page can break the line itself.
+   *  text-balance split "Quoted from photos. Fitted in a day." after
+   *  "Fitted" on a wide screen; the break belongs after the full stop. */
+  heading: ReactNode;
   subline?: string;
   steps: ProcessStep[];
   cta: { label: string; href: string };
