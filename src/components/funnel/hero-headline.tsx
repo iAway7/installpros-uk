@@ -1,41 +1,24 @@
 "use client";
 
-import { Fragment } from "react";
 import { useExperimentConfig } from "@/components/experiments/experiment-provider";
 
 // Hero H1: 40px → 64px, weight 600, line-height 104%, letter-spacing -3%.
 // All of that now lives in the .h1-hero token class (globals.css), so there is
 // no inline fontWeight fighting the `.theme-editorial h1 { 700 }` rule.
-const CLASS = "h1-hero animate-slide-up animate-delay-100 mb-4 text-white md:mb-6";
-
-/**
- * Renders a headline with its line breaks where the author put them.
- *
- * A newline in the string becomes a <br> that only applies from md up, so
- * desktop breaks where the copy says and a phone still wraps to fit. The
- * component's own default headline has done this since the start with a
- * hardcoded <br className="hidden lg:block" />; this is the same thing for a
- * headline that arrives as a prop.
- *
- * The space before the break is what stops "internet" and "costing" running
- * together on a phone, where the <br> is display:none. At md it sits at the
- * end of a line and collapses.
- */
-function withBreaks(text: string) {
-  const parts = text.split("\n");
-  if (parts.length === 1) return text;
-  return parts.map((part, i) => (
-    <Fragment key={i}>
-      {i > 0 && (
-        <>
-          {" "}
-          <br className="hidden md:block" />
-        </>
-      )}
-      {part}
-    </Fragment>
-  ));
-}
+// text-balance evens out the line lengths instead of filling each line and
+// dumping the remainder on the last one. On the commercial H1 that is the
+// difference between "What is unreliable internet costing / your business?"
+// and "What is unreliable internet / costing your business?", which is the
+// break Will asked for, at 1280, 1440 and 1920 alike.
+//
+// It is on the shared class rather than one page because it is a no-op for the
+// other four: their headlines already break evenly, or carry their own <br>,
+// and all of them render identically with it and without. Checked.
+//
+// A browser that does not support it ignores the declaration and wraps the old
+// way, which is the behaviour this replaces, so there is nothing to fall back
+// to and nothing to guard.
+const CLASS = "h1-hero text-balance animate-slide-up animate-delay-100 mb-4 text-white md:mb-6";
 
 /**
  * Hero H1. Renders the default responsive headline server-side (good for SEO),
@@ -61,11 +44,11 @@ export function HeroHeadline(
 
   const assigned = config[configKey];
   if (typeof assigned === "string" && assigned.length > 0) {
-    return <h1 className={CLASS}>{withBreaks(assigned)}</h1>;
+    return <h1 className={CLASS}>{assigned}</h1>;
   }
 
   if (headline) {
-    return <h1 className={CLASS}>{withBreaks(headline)}</h1>;
+    return <h1 className={CLASS}>{headline}</h1>;
   }
 
   return (
