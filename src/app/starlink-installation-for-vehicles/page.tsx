@@ -131,15 +131,25 @@ export default function StarlinkInstallationForCarsPage() {
             // "mobile": see the header comment.
             badge="Motorhomes, campervans & cars"
             badgeFlag={false}
-            // Leads with the thing they cannot get from a phone hotspot or a
-            // dongle: connection that goes with the vehicle rather than with
-            // a mast. "Wherever you park" is also the answer to the question
-            // the chat log asks most, whether it works away from home.
+            // Will's line, 2026-10-12, 18:41, after Gus said the old H1 was
+            // too long: "Starlink fitted to your vehicle, wherever you roam",
+            // and on the last word, "roam ties it into the plan". Eight words
+            // against the old twelve, and it still carries the thing a hotspot
+            // cannot give: connection that goes with the vehicle rather than
+            // with a mast.
+            //
+            // It says "vehicle", which the header comment above calls our
+            // category word rather than a customer's. Will's call, and on a
+            // paid page whose slug, pill and Roam section all say the same
+            // thing it costs nothing a search term would have cost.
+            //
+            // The old line, for the record: "Starlink fitted to your
+            // motorhome, van or car, working wherever you park".
             //
             // Own key, `headlineVehicles`, so a headline test on this page
             // cannot rewrite the residential or commercial H1s. See
             // HeroHeadline for why the key is per page.
-            headline="Starlink fitted to your motorhome, van or car, working wherever you park"
+            headline="Starlink fitted to your vehicle, wherever you roam"
             headlineConfigKey="headlineVehicles"
             // The four things the chat log asks first, in one breath: which
             // dish, what holds it on, what powers it, and how you get a price.
