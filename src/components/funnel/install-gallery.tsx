@@ -87,9 +87,8 @@ type Shot = {
      - (ARRIVED 2026-10-12, two shots: install-mount-open and
        install-mount-profile.) The mount open, before the enclosure goes on.
        What the plate is held to the roof WITH is still not confirmed, so the
-       badge stays off those two until Will names it. No slide carries a
-       badge now: the one that did was the Google photograph, removed
-       2026-10-12, and its "Bonded plate" was never confirmed either.
+       badge stays off those two until Will names it. Every slide carries a badge under the 2026-10-12 policy; the borrowed
+       motorhome photograph's "Bonded plate" is marked assumed like the rest.
 
    HELD, NOT PUBLISHED, from the same 2026-10-12 batch:
      - An interior shot: a lit red button on an overhead panel, a small dark
@@ -147,19 +146,20 @@ const SHOTS: Shot[] = [
       "Which vehicle is this one, and what is under the enclosure?",
   },
   {
-    src: "/funnel/install-motorhome-white.webp",
+    src: "/funnel/install-motorhome-roof.webp",
     srcSet:
-      "/funnel/install-motorhome-white-960.webp 960w, /funnel/install-motorhome-white-1280.webp 1280w, /funnel/install-motorhome-white.webp 1600w",
-    alt: "A white low-profile Starlink Mini enclosure on the roof of a white coachbuilt motorhome, beside a vent dome",
-    // Will's one instruction with this photograph: "Please blur the connection
-    // at the front of this (the jigsaw piece)". Blurred at source, box
-    // 820,975 to 950,1065 of the original, before the crop.
-    vehicle: "Coachbuilt motorhome, white",
+      "/funnel/install-motorhome-roof-960.webp 960w, /funnel/install-motorhome-roof-1280.webp 1280w, /funnel/install-motorhome-roof.webp 1920w",
+    alt: "A Starlink Mini fitted flat to the roof of a coachbuilt motorhome, between a solar panel and a rooflight",
+    // BORROWED PHOTOGRAPH, permission being asked for: see PROVENANCE on PHOTO
+    // in finished-install-data.ts. Back in the rail on Will's ask, 2026-10-12:
+    // "feel free to leave that in the image scroller section". If permission
+    // is refused this slide goes with the hero.
+    vehicle: "Coachbuilt motorhome",
     fixing: "Bonded plate",
     assumed: true,
-    detail: "Sited between the rooflight and the vent, clear of the solar panel behind. An enclosure the colour of the roof.",
-    confirm: "ASSUMED Bonded plate: a GRP motorhome roof gives magnets nothing to hold; the page's own rule is a bonded plate there. " +
-      "Which motorhome, and what is under the enclosure on a GRP roof.",
+    detail:
+      "Bonded to the GRP roof between the solar panel and the rooflight. Nothing drilled, nothing overhanging the edge.",
+    confirm: "ASSUMED Bonded plate: a reading of the photograph, which is not one of ours.",
   },
   {
     src: "/funnel/install-roof-profile.webp",
@@ -226,6 +226,21 @@ const SHOTS: Shot[] = [
     detail: "Between the rails and low enough that from the front you have to look for it. Fitted at the workshop.",
     confirm: "ASSUMED Magnets: between the rails on a steel roof. " +
       "What is holding it between the rails on this one, and whether the owner wants the car credited by name.",
+  },
+  {
+    src: "/funnel/install-motorhome-white.webp",
+    srcSet:
+      "/funnel/install-motorhome-white-960.webp 960w, /funnel/install-motorhome-white-1280.webp 1280w, /funnel/install-motorhome-white.webp 1600w",
+    alt: "A white low-profile Starlink Mini enclosure on the roof of a white coachbuilt motorhome, beside a vent dome",
+    // Will's one instruction with this photograph: "Please blur the connection
+    // at the front of this (the jigsaw piece)". Blurred at source, box
+    // 820,975 to 950,1065 of the original, before the crop.
+    vehicle: "Coachbuilt motorhome, white",
+    fixing: "Bonded plate",
+    assumed: true,
+    detail: "Sited between the rooflight and the vent, clear of the solar panel behind. An enclosure the colour of the roof.",
+    confirm: "ASSUMED Bonded plate: a GRP motorhome roof gives magnets nothing to hold; the page's own rule is a bonded plate there. " +
+      "Which motorhome, and what is under the enclosure on a GRP roof.",
   },
 ];
 

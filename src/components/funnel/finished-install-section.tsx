@@ -48,12 +48,13 @@
  * subject keeps the callouts. Change the photo, change three pairs of numbers.
  *
  * ── PENDING, BEFORE THIS GOES ANYWHERE NEAR PAID TRAFFIC ────────────────────
- * 1. (Resolved 2026-10-12.) The photograph is Will's. The one before it was
- *    not, and the "bonded feet" callout and the rail badge built on it went
- *    with it. A higher-resolution original of this one is still worth asking
- *    for; the copy is 1600px.
- * 2. The fixing is not visible in this frame and nothing here claims it. If
- *    Will sends a shot of this enclosure open, that is the callout to add.
+ * 1. PERMISSION. The photograph is borrowed; see PROVENANCE on PHOTO in
+ *    finished-install-data.ts. The user is asking the source site. If the
+ *    answer is no, swap to Will's white motorhome (b33a85d has the exact
+ *    data) the same day.
+ * 2. The fixing in DOTS[2] is a reading, not a fact, and on a borrowed photo
+ *    nobody can confirm it. Will's open-mount photographs now lead the rail,
+ *    which is where the fixing is actually shown.
  * 3. A second vehicle (a van, or a dark car for the white-dish-on-black-paint
  *    question in the FAQ) turns this into a two-photo section with the vehicle
  *    named under each. One is enough to ship.

@@ -6,8 +6,9 @@
  * Coordinates are percentages of the photograph, so a re-crop that keeps the
  * subject keeps the callouts.
  *
- * The fixing is not in this frame and no callout claims it; what holds the
- * enclosure to this roof is a question on the rail slide of the same photo.
+ * CONFIRM: DOTS[2] says "bonded feet" because the roof is GRP and a magnetic
+ * base needs steel (permanent-or-removable.tsx says exactly that). It is a
+ * reading of a borrowed photograph; see the PROVENANCE note on PHOTO.
  */
 
 export type Dot = {
@@ -19,47 +20,48 @@ export type Dot = {
 };
 
 export const PHOTO = {
-  // Will's photograph, 2026-10-12. The one it replaced was not ours: it had
-  // been taken from a Google image search, and it carried the "bonded feet"
-  // callout and the rail's only fixing badge with it. Both went with it.
-  // Blurred at source over the connector at the front of the enclosure, on
-  // Will's instruction ("the jigsaw piece"), before the crop. The crop is the
-  // 16:9 window from y=200 of the 1600x1600 original: enclosure complete with
-  // its front lip, the vent beside it, most of the rooflight above. The solar
-  // panel sits below the window, which is why no callout names it.
-  src: "/funnel/install-motorhome-white-hero.webp",
+  // PROVENANCE, READ BEFORE TOUCHING: this photograph is not ours. It came
+  // from a third-party site, was found out on 2026-10-12 and taken down the
+  // same day, and put back the same evening on the user's decision: Will
+  // preferred it ("I actually didn't mind the original mount image you have
+  // with the numbers on"), and the user is contacting the site it came from
+  // to ask for permission. Until that permission exists this is a borrowed
+  // picture on a commercial page. If the answer is no, or no answer comes,
+  // it comes OUT: swap `src`/`srcSet` for install-motorhome-white-hero and
+  // the DOTS below for the "Matched to the roof" set in b33a85d, which is a
+  // one-commit revert.
+  src: "/funnel/install-motorhome-roof.webp",
   srcSet:
-    "/funnel/install-motorhome-white-hero-960.webp 960w, /funnel/install-motorhome-white-hero-1280.webp 1280w, /funnel/install-motorhome-white-hero.webp 1600w",
-  alt: "A white low-profile Starlink Mini enclosure on the roof of a white coachbuilt motorhome, beside a vent dome and below a rooflight",
+    "/funnel/install-motorhome-roof-960.webp 960w, /funnel/install-motorhome-roof-1280.webp 1280w, /funnel/install-motorhome-roof.webp 1920w",
+  alt: "A Starlink Mini fitted flat to the roof of a coachbuilt motorhome, between a solar panel and a rooflight, photographed in the workshop",
   caption: "Starlink Mini on a coachbuilt motorhome.",
 };
 
 export const DOTS: Dot[] = [
   {
-    // On the vent dome: the neighbour it had to clear. Roof space is contested
-    // on a motorhome and the frame answers "will it even fit up there".
-    x: 67.5,
-    y: 59.0,
+    x: 41.7,
+    y: 28.0,
     title: "It shares the roof",
-    detail: "Sited clear of the vent and the rooflight, with the open sky it needs.",
+    // Roof space is contested on a motorhome: solar, rooflight, aerial, vent.
+    // The frame answers "will it even fit up there" without being asked.
+    detail: "Sited clear of the solar panel and the rooflight, with the open sky it needs.",
   },
   {
-    // On the grey edge band at the right, not the white face: the point of
-    // this callout is the slab you can see the thickness of.
-    x: 64.5,
-    y: 82.0,
+    x: 57.3,
+    // On the grey edge band, not on the white face above it: the whole point
+    // of this callout is the slab you can see the thickness of.
+    y: 55.5,
     title: "Low profile",
     detail: "A few centimetres proud of the roof, fixed in place. Nothing to fold away before you drive.",
   },
   {
-    // On the top face. Replaces "No suction cups / bonded feet", which named
-    // something this photograph does not show: the enclosure is closed and
-    // the fixing is under it. What it does show is an enclosure the colour of
-    // the roof, which answers "what will it look like up there".
-    x: 43.7,
-    y: 66.7,
-    title: "Matched to the roof",
-    detail: "A white enclosure on a white roof, so it reads as part of the van rather than a box on it.",
+    x: 46.1,
+    y: 60.1,
+    // "Bonded feet" is a reading of the photograph, not a confirmed fact, and
+    // on somebody else's install it cannot be confirmed by asking Will. It
+    // stays because the page's own rule for GRP is a bonded plate.
+    title: "No suction cups",
+    detail: "Bonded feet spread the load across the GRP roof.",
   },
 ];
 
