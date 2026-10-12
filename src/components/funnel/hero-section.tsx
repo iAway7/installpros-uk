@@ -29,7 +29,7 @@ function HeroPhoto({ image, imageSrcSet }: { image: string; imageSrcSet?: string
 
 /** Full-bleed hero with the funnel, and a full-width trust bar pinned at the bottom. */
 export function HeroSection(
-  { smartCoverage = false, addressMode = false, image = DEFAULT_HERO, imageMobile, imageSrcSet, headline, subheadline, badge = "Nationwide UK Coverage", badgeFlag = true, headlineConfigKey, installs, defaultInstallType, skipServiceStep = false, formName }: {
+  { smartCoverage = false, addressMode = false, image = DEFAULT_HERO, imageMobile, imageSrcSet, headline, subheadline, badge = "Nationwide UK Coverage", badgeNarrow, badgeFlag = true, headlineConfigKey, installs, defaultInstallType, skipServiceStep = false, formName }: {
     smartCoverage?: boolean;
     addressMode?: boolean;
     /** Pre-selects the install type on the hero funnel. Segment landings only. */
@@ -60,6 +60,10 @@ export function HeroSection(
      *  bar and the coverage section all make again further down, so a segment
      *  page can spend it on something the page is not already saying. */
     badge?: string;
+    /** A shorter badge for phones, where the full one wraps to two lines.
+     *  Optional: without it the one badge is used at every width. Both strings
+     *  render and CSS picks one, so they have to say the same thing. */
+    badgeNarrow?: string;
     /** The flag is decorative shorthand for the word UK in the default badge.
      *  A badge that does not talk about coverage should turn it off rather than
      *  carry a flag next to an unrelated label. */
@@ -151,7 +155,23 @@ export function HeroSection(
               semibold on top of that made a 14px chip outweigh the 16px
               sentence underneath. */}
           <div className="animate-slide-up mb-4 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 py-1.5 md:mb-8">
-            <span className="text-body-sm font-medium tracking-wide text-white/95">{badge}</span>
+            {/* Two spans and a breakpoint rather than one shorter string.
+                The headline was shortened for phones on 12 October and the
+                edit landed on desktop too, where nothing was wrong: this prop
+                is one value for every width unless it is told otherwise.
+                Tailwind's `hidden` is display:none, so the unused one is out
+                of the accessibility tree as well as off the screen, and a
+                screen reader hears one label rather than both. */}
+            <span className="text-body-sm font-medium tracking-wide text-white/95">
+              {badgeNarrow ? (
+                <>
+                  <span className="md:hidden">{badgeNarrow}</span>
+                  <span className="hidden md:inline">{badge}</span>
+                </>
+              ) : (
+                badge
+              )}
+            </span>
             {badgeFlag && (
               <>
                 {/* Decorative: the label already says UK. */}

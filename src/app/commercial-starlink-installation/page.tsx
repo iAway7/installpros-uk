@@ -84,14 +84,14 @@ export default function CommercialStarlinkInstallationPage() {
             // Will says the business actually is. Message match survives:
             // someone arriving on "commercial starlink installation" still
             // reads it back, just one line higher.
-            // "UK" rather than "Nationwide", which is the same promise in two
-            // characters instead of ten. Will's version wrapped to two lines at
-            // 320, 360 and 375 and sat on one line everywhere above, so this is
-            // free: it fixes the wrap where there was one and changes nothing
-            // where there was not. It also matches the page title word for
-            // word, and the exact ad keyword now leads the pill rather than
-            // sitting second.
-            badge="Commercial Starlink Installation UK"
+            // Will's full wording on desktop, which is 45% of this page's
+            // traffic and has the room for it. On a phone it wrapped to two
+            // lines at 320, 360 and 375, so narrow screens get "UK" instead of
+            // "Nationwide": the same promise in two characters rather than ten,
+            // on one line at every width measured. It also happens to match the
+            // page title word for word and puts the exact ad keyword first.
+            badge="Nationwide Commercial Starlink Installation"
+            badgeNarrow="Commercial Starlink Installation UK"
             badgeFlag={false}
             // Leads with what Will says the business actually is: not a faster
             // connection, a site that does not go down. It also makes the
