@@ -94,6 +94,18 @@ function localBusinessSchema() {
     telephone: siteConfig.phone,
     email: siteConfig.email,
     areaServed: { "@type": "Country", name: "United Kingdom" },
-    aggregateRating: { "@type": "AggregateRating", ratingValue: "4.9", reviewCount: "2400" },
+    // No aggregateRating. It said 4.9 from 2400 reviews, and both numbers were
+    // invented: the real Trustpilot figures are 5.0 from 460-odd, read from the
+    // database and already shown in the hero trust bar. Fabricated review
+    // counts are a DMCC Act 2024 problem and Google can issue a manual action
+    // against structured data that does not match the page, so this came out
+    // rather than getting corrected in place.
+    //
+    // Putting the real numbers here instead is a separate, deliberate job, and
+    // not in this file: it is the root layout, so it also covers /dashboard and
+    // pages that show no reviews at all, and Google treats a rating marked up
+    // on a page with nothing to back it as self-serving. The place for it is
+    // the pages that actually render TrustpilotSection, reading the same stats
+    // row the trust bar reads.
   };
 }

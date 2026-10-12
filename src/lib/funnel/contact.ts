@@ -10,6 +10,10 @@ export const WHATSAPP_NUMBER = "447446112343";
 export const SUPPORT_EMAIL = "sales@installpros.co.uk";
 export const SUPPORT_PHONE = "020 3397 7003";
 export const SUPPORT_PHONE_HREF = "tel:02033977003";
+/** The same number in international form, for structured data. schema.org's
+ *  telephone wants a country code, and "020 3397 7003" is only dialable from
+ *  inside the UK. */
+export const SUPPORT_PHONE_E164 = "+442033977003";
 
 /** Plain chat link, no prefilled text. Parity with the existing headers. */
 export const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}`;

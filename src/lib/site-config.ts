@@ -1,4 +1,5 @@
 import type { InstallType } from "@/lib/analytics/events";
+import { SUPPORT_EMAIL, SUPPORT_PHONE_E164, WHATSAPP_NUMBER } from "@/lib/funnel/contact";
 
 export const siteConfig = {
   name: "InstallPros",
@@ -7,9 +8,19 @@ export const siteConfig = {
   tagline: "Accredited Starlink installation across the UK",
   description:
     "Professional Starlink installation across the UK. Fast, fully-fitted satellite internet for homes, businesses and rural properties. Free quote in 60 seconds. Check your coverage now.",
-  whatsappNumber: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "447000000000",
-  phone: process.env.NEXT_PUBLIC_CONTACT_PHONE || "+441234567890",
-  email: process.env.NEXT_PUBLIC_CONTACT_EMAIL || "hello@installpros.co.uk",
+  // The fallbacks are the real contact details, not placeholders.
+  //
+  // They used to be "447000000000", "+441234567890" and
+  // "hello@installpros.co.uk". Those are set in .env.local and were never set
+  // in Vercel, so production published all three for months: checked on
+  // 12 October and the live LocalBusiness schema carried the invented phone
+  // number and an email address that does not exist. A fallback that is wrong
+  // fails silently, which is the whole problem with it. These are the values
+  // from lib/funnel/contact.ts, the one place contact details live, so the env
+  // vars are now an override rather than a requirement.
+  whatsappNumber: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || WHATSAPP_NUMBER,
+  phone: process.env.NEXT_PUBLIC_CONTACT_PHONE || SUPPORT_PHONE_E164,
+  email: process.env.NEXT_PUBLIC_CONTACT_EMAIL || SUPPORT_EMAIL,
 } as const;
 
 export function whatsappLink(message = "Hi InstallPros, I'd like a quote for Starlink installation.") {
