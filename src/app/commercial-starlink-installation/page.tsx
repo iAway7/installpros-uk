@@ -107,16 +107,15 @@ export default function CommercialStarlinkInstallationPage() {
             // downtime in the first line, which is the angle he picked on the
             // 7 October call and the one the chat log supports.
             //
-            // "What is" rather than Will's "How much is", which is the only
-            // edit: every word carrying meaning is his. It takes the headline
-            // from 4 lines to 3 at every width from 375 up, which on this
-            // audience is most of the traffic. GA4 for the year to 12 October,
-            // 95,994 users: 78% mobile, and our own lead data agrees at 78%.
-            // The common widths are 390 to 440, and the headline was running
-            // to 4 lines on all of them.
+            // Will's exact wording, and it stays that way.
             //
-            // It does not help at 360 and 320, where it stays at 4 and 5.
-            // Getting those down needs words short enough to lose the sentence.
+            // It was shortened to "What is ..." on 12 October to take the
+            // headline from 4 lines to 3 on a phone, then reverted the same
+            // day: `headline` is one string for every breakpoint, so the edit
+            // landed on desktop too, where the headline was already fine at
+            // 2 lines and nothing needed fixing. Desktop is 45% of this page's
+            // traffic. Changing the mobile rendering without touching desktop
+            // needs two strings and a breakpoint, not a shorter sentence.
             //
             // The option that was genuinely too long for a phone was Will's
             // other one, "Downtime = Downturn. Reliable, high speed internet
@@ -132,7 +131,7 @@ export default function CommercialStarlinkInstallationPage() {
             // a key only this page reads. See HeroHeadline for why it is not
             // plain `headline`: on-page experiments are not page-scoped, and
             // that key would rewrite the residential H1s too.
-            headline="What is unreliable internet costing your business?"
+            headline="How much is unreliable internet costing your business?"
             headlineConfigKey="headlineCommercial"
             // Will's opening and his "professionally installed", 8 October. The
             // ending is the one the chat log supports rather than the one any
