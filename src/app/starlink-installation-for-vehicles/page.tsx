@@ -67,12 +67,12 @@ import { ExperimentProvider } from "@/components/experiments/experiment-provider
 export const metadata: Metadata = {
   title: "Starlink Installation for Cars, Motorhomes & Campervans | UK",
   description:
-    "Starlink Mini fitted to your motorhome, campervan, car or van. Vehicle-specific mount, wired to 12 V, tested before you drive off. Fixed quote from two photos. Call 020 3397 7003.",
+    "Starlink Mini fitted to your motorhome, campervan, car or van. Vehicle-specific mount, wired to 12 V, tested before you drive off. Fitted in a day. Call 020 3397 7003.",
   robots: { index: false, follow: false },
   openGraph: {
     title: "Starlink Installation for Cars, Motorhomes & Campervans | UK",
     description:
-      "Starlink Mini fitted to your motorhome, campervan, car or van. Low-profile mount, 12 V power, fixed quote from two photos.",
+      "Starlink Mini fitted to your motorhome, campervan, car or van. Low-profile mount, 12 V power, fitted in a day.",
     url: "/starlink-installation-for-vehicles",
   },
 };
@@ -163,10 +163,26 @@ export default function StarlinkInstallationForCarsPage() {
             // HeroHeadline for why the key is per page.
             headline="Starlink fitted to your vehicle, wherever you roam"
             headlineConfigKey="headlineVehicles"
-            // The four things the chat log asks first, in one breath: which
-            // dish, what holds it on, what powers it, and how you get a price.
-            // 113 characters, under the two-line limit noted on the parent.
-            subheadline="A Starlink Mini on a low-profile mount, wired to 12 V and tested before you drive off. Fixed quote from two photos."
+            // Will's line, 2026-10-12, chosen from three: "A Starlink Mini on
+            // a low-profile mount, wired to 12 V and tested before you drive
+            // off. Fitted in a day." It followed his question at 18:47, "Do we
+            // need to remove 'Fixed quote from two photos?'", and the same
+            // phrase goes out of the meta and OG descriptions, which is where
+            // he first saw it, in a WhatsApp link preview.
+            //
+            // What it trades. The old line answered the four things the chat
+            // log asks first (which dish, what holds it on, what powers it,
+            // how you get a price); this one drops the fourth, which is the
+            // most asked question of the thirty (13 of 30) and the point where
+            // conversations stall (14 of 30 waiting on a photo). The quote
+            // promise now lives in HowItWorksSection, "Quoted from photos",
+            // and that is where the ask for photos is explained anyway.
+            //
+            // "Fitted in a day" was WordPress's claim (two to five hours), not
+            // Superchat's, and vehicle-landing-decisions.md said the How it
+            // works H2 would fall if Will did not confirm it. Choosing this
+            // line is that confirmation. 102 characters.
+            subheadline="A Starlink Mini on a low-profile mount, wired to 12 V and tested before you drive off. Fitted in a day."
             // They arrived from a vehicle ad on a vehicle page. The install
             // type is set by the page; the step that asks for it goes.
             defaultInstallType="mobile_rv"
