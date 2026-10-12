@@ -71,7 +71,21 @@ export default function CommercialStarlinkInstallationPage() {
       <ExperimentProvider>
         <main id="main" tabIndex={-1} className="flex flex-col outline-none">
           <HeroSection
-            smartCoverage
+            // No smartCoverage here, unlike the residential pages. It replaces
+            // "We're available in Westminster" with a paragraph about the area's
+            // existing broadband, and on a well-served postcode that paragraph
+            // said the area already has strong fixed broadband and that Starlink
+            // "can still make sense as backup, or for a boat, van, or second
+            // property nearby". An argument against buying, with a boat offered
+            // to somebody running a depot.
+            //
+            // It was never a decision for this page: the page was cloned from
+            // /starlink-installation in cded71f, a commit about 4px spacing, and
+            // the prop came along with the clone. Gus called it on 12 October:
+            // postcode in, availability out, nothing else.
+            //
+            // The residential pages keep it. The copy is written for them and
+            // it is their postcodes it was built to argue about.
             // No addressMode, so step zero asks for a postcode rather than a
             // Google Places address. Will on the call, 7 October: a postcode is
             // enough and it matches /install-quote, which is the funnel
