@@ -123,9 +123,21 @@ export default function StarlinkInstallationForCarsPage() {
             // Mini on the roof, which is also what FinishedInstallSection below
             // is waiting on.
             image="/funnel/hero-vehicle-coastal.webp"
-            // 3:4 centred on the vehicle: at 375px the panoramic crop shows a
-            // strip of its flank and nothing else.
-            imageMobile="/funnel/hero-vehicle-coastal-portrait.webp"
+            // The phone crop. It used to be a 3:4 cut of the same plate with
+            // the vehicle centred, and Will, 2026-10-12 on an iPhone 16 Pro
+            // Max: "Starlink completely invisible". On a tall phone the
+            // address field sat exactly over the roof. The hero is 88svh and
+            // the image covers it full-height, so the roof lands at whatever
+            // fraction of the frame it occupies; it was 58 percent, under the
+            // field. This file puts it at 77 percent: the plate's rows 220 to
+            // 960 (sky to just below the bumper) under the top 220 rows of sky
+            // stretched to 629 and blurred, 828x1369 in all. The synthetic sky
+            // sits behind the header and the scrim; the roof and the dish show
+            // between the field and the trust bar on 430x932 and 390x844, and
+            // the bumper goes under the bar. New file name so no cache serves
+            // the old crop. Still the generated scene: a real photograph from
+            // Will, shot for the hero, replaces all of this.
+            imageMobile="/funnel/hero-vehicle-coastal-phone.webp"
             imageSrcSet="/funnel/hero-vehicle-coastal-960.webp 960w, /funnel/hero-vehicle-coastal-1440.webp 1440w, /funnel/hero-vehicle-coastal.webp 1920w"
             // The pill names the segment, in the words the customers use. Not
             // "mobile": see the header comment.
