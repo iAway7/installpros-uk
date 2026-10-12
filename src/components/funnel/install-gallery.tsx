@@ -51,8 +51,13 @@ type Shot = {
    *  would contradict the section it sits in, and these three are what the
    *  photographs actually show. We do drill where a hole is the right answer,
    *  so add "Drill" when a drilled install turns up in this rail. Roof mounts
-   *  only; a slide that is not one, such as the router, leaves it off. */
-  fixing?: "Magnets" | "Clamp" | "Bonded plate" | "Drilled" | "Sealed gland" | "Custom mount";
+   *  only; a slide that is not one, such as the router, leaves it off.
+   *  "Bolted" arrived 2026-10-12 with the touring caravan: Will's word for
+   *  that fixing is bolts, and the badge says the fixing, so it says that.
+   *  He also wrote "Badge: permanent"; permanent goes in the detail, where
+   *  this file has always put it, because the label in front of the badge
+   *  reads "Fixing:" and PermanentOrRemovable below answers permanence. */
+  fixing?: "Magnets" | "Clamp" | "Bonded plate" | "Drilled" | "Bolted" | "Sealed gland" | "Custom mount";
   /** POLICY SINCE 2026-10-12: every slide carries a badge and a caption, and
    *  where nobody has confirmed the fixing they are our best reading of the
    *  photograph, marked `assumed: true` and listed for Will to correct. The
@@ -84,12 +89,13 @@ type Shot = {
      - A pop-top campervan, top down, showing the clamp on the seam. It is the
        one mount type with no photograph and the only one that has to survive a
        roof that lifts.
-     - Any roof with the mount OPEN, before the enclosure goes on. Every
-       photograph we have hides the fixing. The two grey-mount shots of
-       2026-10-12 were filed here by mistake for an afternoon: Will's
-       correction is that the Mini is inside that box, it is a colour-matched
-       mount, so the fixing is as hidden there as everywhere else. Still
-       wanted.
+     - Any roof with the mount OPEN, before the enclosure goes on. The
+       touring caravan of 2026-10-12 is the first photograph that shows a
+       fixing at all (one foot, one bolt). The others still hide theirs: the
+       two grey-mount shots were filed here by mistake for an afternoon, and
+       Will's correction is that the Mini is inside that box, it is a
+       colour-matched mount, so the fixing is as hidden there as everywhere
+       else. A magnet base or a rail clamp seen open is still wanted.
 
    HELD, NOT PUBLISHED, from the same 2026-10-12 batch:
      - An interior shot: a lit red button on an overhead panel, a small dark
@@ -131,6 +137,22 @@ const SHOTS: Shot[] = [
     assumed: true,
     detail: "The same colour-matched mount seen along the roof line, with the factory rail for scale. The Mini is inside it.",
     confirm: "ASSUMED Magnets: same mount as the top-down shot. The height in centimetres is the number twelve of 48 enquiries ask for; it goes in this caption as a plain clause.",
+  },
+  {
+    src: "/funnel/install-touring-caravan.webp",
+    srcSet:
+      "/funnel/install-touring-caravan-960.webp 960w, /funnel/install-touring-caravan-1280.webp 1280w, /funnel/install-touring-caravan.webp 1600w",
+    alt: "A Starlink Mini in a black cradle mount bolted to the flat roof of a touring caravan, shot at roof level, with the single foot and its sealant line visible",
+    // Will, 2026-10-12, 18:37, on the proposed caption: "Just say something
+    // like 'permanently mounted to a touring caravan using bolts'. Badge:
+    // permanent". Confirmed, so no `assumed` and no `confirm`. Third in the
+    // rail because the two profile shots before it hide what holds them and
+    // this one is the only photograph that shows a fixing: one foot, one
+    // bolt, a line of sealant. The background blur is the camera's, not ours.
+    // The original is 2000x1135; five rows trimmed top and bottom for 16:9.
+    vehicle: "What holds it down",
+    fixing: "Bolted",
+    detail: "Permanently mounted to a touring caravan, using bolts. One sealed foot on the roof and the cradle bolted to it.",
   },
   {
     src: "/funnel/install-street.webp",
