@@ -25,6 +25,9 @@ const BY_INSTALL_TYPE: Record<string, string> = {
   // Both vehicle landings pass this, the standard one and the weather-hero
   // variant. They make the same promise, so they get the same page.
   mobile_rv: "/thank-you-vehicles",
+  // The Ajax page. The generic /thank-you asks for roof photos, which is a
+  // Starlink question.
+  security: "/thank-you-security",
 };
 
 export function thankYouPath(installType: string | undefined, leadId: string): string {

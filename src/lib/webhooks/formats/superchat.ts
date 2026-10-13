@@ -37,6 +37,10 @@ export const SUPERCHAT_INSTALL_TYPE: Record<string, string> = {
   marine: "Starlink Marine",
   commercial: "Starlink Commercial",
   mobile_rv: "Starlink Mobile/RV",
+  // Not Starlink, so not "Starlink" anything. The value Will's Zap branches on
+  // for the Ajax alarm and CCTV page; until his Zapier has that branch these
+  // leads arrive untagged in Superchat.
+  security: "Ajax Security",
 };
 const SUPERCHAT_INSTALL_TYPE_FALLBACK = "Starlink Installation";
 

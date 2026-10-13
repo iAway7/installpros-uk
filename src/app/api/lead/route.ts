@@ -88,11 +88,12 @@ const CAPS = {
 } as const;
 
 /**
- * Mirrors the install_type check in 0019. The first three are what the live
- * landings actually submit; the rest are the old enum's vocabulary, kept
- * accepted so nothing that predates the change is refused.
+ * Mirrors the install_type check in 0019, widened by 0021 for `security`
+ * (the Ajax landing). The first five are what the landings actually submit;
+ * the rest are the old enum's vocabulary, kept accepted so nothing that
+ * predates the change is refused.
  */
-const INSTALL_TYPES = ["residential", "commercial", "mobile_rv", "marine", "business", "rural", "events"];
+const INSTALL_TYPES = ["residential", "commercial", "mobile_rv", "marine", "security", "business", "rural", "events"];
 
 const PRECISIONS = ["exact", "approximate", "none"];
 
