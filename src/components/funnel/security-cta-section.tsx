@@ -7,20 +7,21 @@ import { ServiceQuoteForm } from "./service-quote-form";
  * Changed from the original: the heading and line under it (the old Ajax page
  * closed on "Ready To Get Your CCTV Installed?", the Starlink template's line
  * with one word swapped), the Starlink disclaimer, and both badges, which are a
- * Starlink accreditation and a digital TV one.
+ * Starlink accreditation and a digital TV one. "Peace of mind" is Will's own
+ * sales language, and the monthly bill is his main selling point.
  *
- * PENDING (question 3 for Will): the trade mark line says only that Ajax is
- * Ajax's. If InstallPros is an authorised Ajax partner, the partner badge goes
- * where the Starlink one was, and the line can say so.
+ * Not an Ajax partner yet (Will, 13 October: "we can apply asap"), so the
+ * trade mark line says only that Ajax is Ajax's. When the partnership comes
+ * through, the badge goes where the Starlink one was.
  */
 export function SecurityCtaSection({ defaultService, formName }: { defaultService: string; formName: string }) {
   return (
     <section id="quote" className="scroll-mt-24 bg-background py-12 md:py-20">
       <div className="container mx-auto">
         <div className="rounded-3xl bg-secondary px-8 py-16 text-center md:p-16">
-          <h2 className="mb-4 h2-section text-foreground">Ready to get your Ajax system fitted?</h2>
+          <h2 className="mb-4 h2-section text-foreground">Peace of mind, without the monthly bill.</h2>
           <p className="mb-8 text-body text-foreground md:text-lg">
-            Tell us about the property and we will come back with a quote for the kit and the fitting.
+            Tell us about your home and we will come back with one upfront price for the kit and the fitting.
           </p>
           <div className="mx-auto max-w-xl">
             <ServiceQuoteForm defaultService={defaultService} skipServiceStep formName={formName} />

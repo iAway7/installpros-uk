@@ -14,8 +14,8 @@ import type { ReactNode } from "react";
  * In their place, the one coverage claim the old Ajax page and Will's FAQ
  * both make: installs across the UK.
  *
- * PENDING: if InstallPros is an authorised Ajax partner (question 3 for Will),
- * that badge goes in the last slot, where the Starlink one sat.
+ * Not an Ajax partner yet (Will, 13 October 2026, applying). When it comes
+ * through, that badge goes in the last slot, where the Starlink one sat.
  */
 
 /** Google "G" mark. */

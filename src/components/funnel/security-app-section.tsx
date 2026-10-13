@@ -1,77 +1,72 @@
-import { Camera, DoorOpen, Droplets, Flame, ShieldCheck, Footprints } from "lucide-react";
+import { Camera, Grid3x3, KeyRound, ShieldCheck, Siren, Smartphone, UserRound, UserRoundCheck, Users } from "lucide-react";
 import type { ReactNode } from "react";
 
 /**
- * What the system covers, first under the hero.
+ * How it fits into the household: the app, the keypad, the fob, the people.
  *
- * The old Ajax page on installpros.co.uk names the product's four jobs in its
- * FAQ (intrusion, fire, leaks, and cameras in the title) and its one promise
- * in every section: control and alerts from the app. This puts both on one
- * screen. The phone is the picture the page is missing: there is no photograph
- * of an install, and what a buyer is actually buying is what lands on their
- * phone, so that is what is drawn.
+ * Will's fifth question, 13 October 2026: "Accessibility and ease of use and
+ * integration into people's life styles (apps, arming stations, remote
+ * control, ability to use while away from property, adding users, having
+ * temporary users, panic alarms)". Each item in his list is one card here,
+ * in plain words, and "family protection" and "app convenience" from his
+ * sales language are the heading and the phone.
  *
  * THE PHONE IS AN ILLUSTRATION, not a screenshot of the Ajax app. No Ajax logo,
  * no copy of their interface: a generic lock screen with the kind of alert the
- * system sends. Every alert is something the old page or Will's FAQ already
- * claims the system does.
- *
- * The four facts under the list are the old FAQ's "why Ajax over a traditional
- * system" answer, kept to what it said: wireless, no major cabling, pet-friendly,
- * easy to add to. The power-cut line is the one addition, because it is the
- * first thing anyone asks about a wireless alarm.
- *
- * PENDING (question 2 for Will): "monitoring". Nothing here claims a
- * monitoring centre. The alerts go to the phone, which is true of every Ajax
- * system. If Will sells monitored contracts, the fourth fact becomes that.
+ * system sends. The four alerts are one day in one house and each shows one
+ * of Will's points: armed from the app, a temporary user, a key fob, and a
+ * photo to check before anyone panics.
  */
 
-type Cover = { icon: ReactNode; title: string; detail: string };
+type Item = { icon: ReactNode; title: string; detail: string };
 
-const COVERS: Cover[] = [
+const ITEMS: Item[] = [
   {
-    icon: <Footprints className="h-5 w-5" />,
-    title: "Intruders",
-    detail: "Motion detectors in the rooms, contacts on the doors and windows.",
+    icon: <Smartphone className="h-5 w-5" />,
+    title: "The app",
+    detail: "Arm, disarm and check on the house from work or from abroad.",
   },
   {
-    icon: <Flame className="h-5 w-5" />,
-    title: "Fire",
-    detail: "Smoke and heat detectors that tell your phone, not just the hallway.",
+    icon: <Grid3x3 className="h-5 w-5" />,
+    title: "A keypad",
+    detail: "By the door, with a code of their own for everyone who lives there.",
   },
   {
-    icon: <Droplets className="h-5 w-5" />,
-    title: "Leaks",
-    detail: "A sensor under the sink or by the boiler, before the ceiling finds out.",
+    icon: <KeyRound className="h-5 w-5" />,
+    title: "A key fob",
+    detail: "One press to arm or disarm, for anyone who would rather not use a phone.",
   },
   {
-    icon: <Camera className="h-5 w-5" />,
-    title: "Cameras",
-    detail: "In the same app as the alarm, so you can look when an alert comes in.",
+    icon: <Users className="h-5 w-5" />,
+    title: "The whole family",
+    detail: "Everyone added as a user, and you see who armed it and when.",
   },
-];
-
-const FACTS = [
-  "Wireless, so nothing is chased into your walls",
-  "Motion detectors set to ignore pets",
-  "A backup battery in the hub for power cuts",
-  "Add a detector or a camera later, no rewiring",
+  {
+    icon: <UserRoundCheck className="h-5 w-5" />,
+    title: "Temporary access",
+    detail: "For a cleaner, a dog walker or a builder, removed when the job is done.",
+  },
+  {
+    icon: <Siren className="h-5 w-5" />,
+    title: "A panic button",
+    detail: "One press sets off the alarm and alerts the family's phones.",
+  },
 ];
 
 type Alert = { icon: ReactNode; title: string; detail: string; time: string; tone?: "warn" };
 
 const ALERTS: Alert[] = [
-  { icon: <ShieldCheck className="h-4 w-4" />, title: "Armed, away", detail: "By Sarah, from the app", time: "08:12" },
-  { icon: <DoorOpen className="h-4 w-4" />, title: "Front door opened", detail: "Disarmed at the keypad", time: "17:46" },
-  { icon: <Droplets className="h-4 w-4" />, title: "Leak detected", detail: "Kitchen, under the sink", time: "19:03", tone: "warn" },
-  { icon: <Camera className="h-4 w-4" />, title: "Motion outside", detail: "Back garden camera, tap to look", time: "22:31" },
+  { icon: <ShieldCheck className="h-4 w-4" />, title: "Armed, away", detail: "Sarah, from the app", time: "08:12" },
+  { icon: <UserRound className="h-4 w-4" />, title: "Disarmed", detail: "Maria, temporary access", time: "10:02" },
+  { icon: <KeyRound className="h-4 w-4" />, title: "Front door opened", detail: "Tom, key fob", time: "17:46" },
+  { icon: <Camera className="h-4 w-4" />, title: "Motion in the hallway", detail: "Photo attached, tap to check", time: "22:31", tone: "warn" },
 ];
 
 function PhoneMock() {
   return (
     <div
       role="img"
-      aria-label="Illustration of a phone lock screen with four alarm alerts: armed away by Sarah, front door opened, a leak under the kitchen sink, and motion on the back garden camera."
+      aria-label="Illustration of a phone lock screen with four alarm alerts: armed away by Sarah from the app, disarmed by Maria with temporary access, front door opened by Tom with a key fob, and motion in the hallway with a photo to check."
       className="relative mx-auto w-full max-w-[280px] md:max-w-[320px]"
     >
       {/* A soft halo so the dark phone does not sit on white like a hole. */}
@@ -81,7 +76,6 @@ function PhoneMock() {
         className="relative overflow-hidden rounded-[2.75rem] border-[9px] border-[#111] shadow-raised"
         style={{ background: "radial-gradient(120% 60% at 50% 0%, #1d3045 0%, #0d1b2a 55%, #05080c 100%)" }}
       >
-        {/* Notch */}
         <div className="mx-auto mt-2.5 h-[22px] w-[92px] rounded-full bg-[#111]" />
 
         <div className="px-4 pb-6 pt-6 text-center text-white">
@@ -118,19 +112,19 @@ function PhoneMock() {
 
 export function SecurityAppSection() {
   return (
-    <section id="what-it-covers" className="w-full scroll-mt-28 bg-background py-16 md:py-24">
+    <section id="everyday" className="w-full scroll-mt-28 bg-background py-16 md:py-24">
       <div className="container mx-auto">
         {/* Three blocks, not two columns, so a phone can put the picture
-            between the heading and the list instead of after four paragraphs
-            of text. From md the intro and the list share the left column and
-            the phone spans both rows on the right. */}
+            between the heading and the list instead of after six items of
+            text. From md the intro and the list share the left column and the
+            phone spans both rows on the right. */}
         <div className="grid grid-cols-1 gap-y-12 md:grid-cols-2 md:grid-rows-[auto_1fr] md:gap-x-16 md:gap-y-10 lg:gap-x-24">
           <div className="md:col-start-1 md:row-start-1">
-            <p className="eyebrow">One system, one app</p>
-            <h2 className="mt-4 h2-section text-foreground">Every alert on your phone, the moment it happens.</h2>
+            <p className="eyebrow">Easy for the whole family</p>
+            <h2 className="mt-4 h2-section text-foreground">Simple enough for everyone in the house.</h2>
             <p className="mt-5 max-w-xl text-body text-muted-foreground md:text-lg" style={{ lineHeight: "1.6" }}>
-              Ajax is a wireless system: a hub, detectors and cameras that talk by radio. You arm it, disarm it and see
-              what set it off from the free Ajax app.
+              Each person uses it their own way: the app, a code on the keypad or a key fob. Every alert reaches the
+              phones you choose, wherever you are.
             </p>
           </div>
 
@@ -139,7 +133,7 @@ export function SecurityAppSection() {
           </div>
 
           <ul className="grid grid-cols-1 gap-x-8 gap-y-7 sm:grid-cols-2 md:col-start-1 md:row-start-2">
-            {COVERS.map((c) => (
+            {ITEMS.map((c) => (
               <li key={c.title} className="flex gap-4">
                 <span
                   aria-hidden="true"
@@ -155,17 +149,6 @@ export function SecurityAppSection() {
             ))}
           </ul>
         </div>
-
-        <ul className="mt-14 grid grid-cols-1 gap-x-10 gap-y-4 border-t border-border pt-8 sm:grid-cols-2 lg:grid-cols-4 md:mt-20">
-          {FACTS.map((f) => (
-            <li key={f} className="flex items-start gap-2.5 text-body-sm font-medium text-foreground">
-              <svg aria-hidden="true" viewBox="0 0 20 20" className="mt-[3px] h-4 w-4 shrink-0 text-success" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="m5 10.5 3.2 3L15 6.5" />
-              </svg>
-              {f}
-            </li>
-          ))}
-        </ul>
       </div>
     </section>
   );

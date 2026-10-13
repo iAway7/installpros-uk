@@ -13,13 +13,9 @@ import { mailtoUrl, whatsappUrl, SUPPORT_PHONE_HREF } from "@/lib/funnel/contact
  * reasoning, in that file.
  *
  * Why not the generic /thank-you: it asks for roof photos, which is a Starlink
- * question. An alarm quote is made of doors, rooms, floors and pets, and the
- * team gets those on the call, so like commercial this screen asks for
- * nothing.
- *
- * PENDING: if Will's team quotes alarms from photos (of the front door, the
- * hallway, the fuse board), this becomes the place to ask for them, the way
- * the residential card asks for the roof.
+ * question. An alarm quote is made of doors, windows, floors and pets, and the
+ * team gets those on the call (Will, 13 October: usually no survey), so like
+ * commercial this screen asks for nothing.
  */
 export function SecurityThankYouCard() {
   const [lead, setLead] = useState<{ leadId?: string; name?: string; postcode?: string }>({});
@@ -79,8 +75,8 @@ export function SecurityThankYouCard() {
         Thanks, we have your request
       </h1>
       <p className="mt-3.5 text-body md:text-lead leading-[1.55] md:leading-[1.6] text-muted-foreground [text-wrap:pretty]">
-        One of the team will call to go through the property with you: the doors, the rooms, the floors and any pets.
-        Your quote for the kit and the fitting follows from that.
+        One of the team will call to go through your home with you: the doors, the windows, the floors and any pets.
+        No survey visit needed: your quote follows from the call.
       </p>
       <p className="mt-4 text-body md:text-lead leading-[1.55] md:leading-[1.6] text-muted-foreground [text-wrap:pretty]">
         If you would rather reach us first, any of these gets you through to the same team.

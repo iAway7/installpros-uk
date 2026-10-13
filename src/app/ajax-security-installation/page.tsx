@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import { MainHeader } from "@/components/funnel/main-header";
 import { SecurityHeroSection } from "@/components/funnel/security-hero-section";
 import { WhatsAppFab } from "@/components/funnel/whatsapp-fab";
+import { SecurityLayersSection } from "@/components/funnel/security-layers-section";
 import { SecurityAppSection } from "@/components/funnel/security-app-section";
-import { SecurityPackagesSection } from "@/components/funnel/security-packages-section";
+import { SecurityCompareSection } from "@/components/funnel/security-compare-section";
 import { WhyInstallProsSection } from "@/components/funnel/why-installpros-section";
 import { SECURITY_FEATURES } from "@/components/funnel/security-features";
 import { TrustpilotSection } from "@/components/funnel/trustpilot-section";
@@ -16,56 +17,54 @@ import { FunnelFooter } from "@/components/funnel/funnel-footer";
 import { ExperimentProvider } from "@/components/experiments/experiment-provider";
 
 /**
- * Ajax wireless alarms and CCTV, supplied and fitted. Homes and businesses,
- * from a flat to a warehouse.
+ * Ajax smart alarm and CCTV, supplied and fitted, for homes.
  *
  * The first landing that does not sell Starlink. Asked for by Will on
  * 13 October 2026 to replace installpros.co.uk/ajax-vision-installation/, and
  * written from scratch rather than from that page, which is the Starlink
- * template with the words swapped: a CCTV headline over alarm copy, "the only
- * UK-based company using all-metal mounts", the Starlink disclaimer, a closing
- * "Ready To Get Your CCTV Installed?". What it does give, and this page keeps:
- * the audience (homes and businesses, flats to warehouses), the product
- * (wireless, app control and alerts, intrusion, fire and leak sensors,
- * pet-friendly), the promise (quote, supply and install, usually within 7
- * days) and six FAQs, rewritten plainly in lib/funnel/security-faqs.ts.
+ * template with the words swapped (a CCTV headline over alarm copy, "the only
+ * UK-based company using all-metal mounts", the Starlink disclaimer).
  *
- * Alarm and CCTV together, the old page's own title and Gus's call: one Ajax
- * system on one app, the alarm first and the cameras part of it.
+ * ── WHAT WILL SAID, 13 OCTOBER 2026 ─────────────────────────────────────────
+ *   Who:      "let's target residential first as we do not hold all of the
+ *             accreditations to be able to do commercial alarm systems at
+ *             scale". So no business copy anywhere.
+ *   What:     Ajax kit supply plus install. No monitoring. Quote only.
+ *   Process:  usually no survey, install complete within a day, 7 days lead.
+ *   Proof:    no Ajax install photos yet (engineer photos "not great", he
+ *             offers AI renders of a system); not an Ajax partner yet, will
+ *             apply; reviews that mention the alarm, if any exist.
+ *   Sell on:  "our big win for residential is no monthly costs which justify
+ *             our larger upfront". Language: protect vulnerable entry and exit
+ *             points, family protection, peace of mind, clarity, app
+ *             convenience.
+ *   Asked by buyers, in his order, and where each is answered:
+ *     1. how the devices protect, contacts vs vibration, verification
+ *                                              SecurityLayersSection
+ *     2. support costs, no monthly fee         SecurityCompareSection, FAQ
+ *     3. smart vs standard alarm companies     SecurityCompareSection
+ *     4. what the upfront price buys after     WhyInstallProsSection
+ *     5. app, keypad, fob, users, temporary users, panic
+ *                                              SecurityAppSection
+ * He also said monthly support plans could come later for recurring revenue.
+ * If they do, the H1, the compare table and two FAQs all say "no monthly fee"
+ * and have to change with it.
  *
- * Built on the chassis, and none of it changed: MainHeader, the
- * ZipAvailabilityChecker and ServiceQuoteForm funnels, the H1 with its own
- * experiment key, the review sections, the FAQ and the footer. Everything that
- * said Starlink was duplicated instead (hero, trust bar, closing form), because
- * those files render on /install-quote.
+ * Alarm and CCTV together in the H1 is Gus's call (the old page's title);
+ * Will's answers are about the alarm, so the cameras live inside the system
+ * (photo verification, the FAQ) rather than as a section of their own.
  *
- * ── WHAT THIS PAGE IS MISSING ───────────────────────────────────────────────
- * Five questions went to Will before this was written. It was built without
- * the answers, on his ask, so each one has a slot that holds a conservative
- * default and says so in its own file:
- *   1. PRICE. "From", packages, or quote only. Nothing on the page names a
- *      figure; the system cards end on "Fitted price on your quote".
- *      (security-packages-section.tsx, security-faqs.ts)
- *   2. MONITORING. A monitoring centre with a monthly fee, or the app alerts.
- *      The page claims only the app alerts, which every Ajax system sends.
- *      (security-app-section.tsx, security-faqs.ts)
- *   3. AJAX PARTNER. If authorised, it is the badge in the trust bar and the
- *      closing section. Until then the page claims no relationship.
- *      (security-hero-trust-bar.tsx, security-cta-section.tsx)
- *   4. PHOTOGRAPHS AND WHO ANSWERS. No picture of an Ajax install exists, so
- *      the hero is a dark surface and the one visual is a drawn phone, not
- *      stock. Who takes these leads decides who the thank-you page names.
- *   5. KEYWORDS. The H1 says "Ajax alarm and CCTV" because that is the old
- *      page's title. When the ad groups exist, the H1 says what the ad says.
- * Also assumed: the kit lists on the system cards, the SIM backup in the
- * power-cut answer, and "24/7 support" left out until someone says what it
- * means for alarms.
- *
- * NO PROOF OF ITS OWN. The reviews are the company's, and they are about
- * engineers and service; a few name Starlink. There is not one review of an
- * alarm install, so nothing here says there is. Left out on purpose:
- * TrackRecordSection ("3,500+ installations", "start to speed test") and the
- * coverage map, whose numbers are Starlink's.
+ * ── STILL MISSING ───────────────────────────────────────────────────────────
+ *   - Photographs. The hero is a dark surface and the one picture is a drawn
+ *     phone. Will's AI renders, or real installs, go in the hero `image`.
+ *   - Keywords. Research running (ajax-research/keywords-and-serp.md); the H1
+ *     says what the ad says once the ad groups exist.
+ *   - The compare table's right-hand column, checked against what ADT and
+ *     Verisure actually sell (ajax-research/competitors.md).
+ *   - After-install services, warranty, which hub (SIM backup claim).
+ *   - Proof of its own. The reviews are the company's, about engineers and
+ *     service; a few name Starlink. None mentions an alarm. TrackRecordSection
+ *     and the coverage map stay out because their numbers are Starlink's.
  *
  * ── THE LEAD ────────────────────────────────────────────────────────────────
  * install_type `security`, new in migration 0021, which has to be applied
@@ -81,14 +80,14 @@ import { ExperimentProvider } from "@/components/experiments/experiment-provider
  */
 
 export const metadata: Metadata = {
-  title: "Ajax Alarm & CCTV Installation | Supplied and Fitted Across the UK",
+  title: "Ajax Alarm & CCTV Installation for Homes | No Monthly Fees",
   description:
-    "Ajax wireless alarm and CCTV, supplied and fitted. Intruder, fire and leak detectors and cameras on one app, pet-friendly, usually fitted within 7 days. Call 020 3397 7003.",
+    "Ajax smart alarm and CCTV, supplied and fitted in a day. Every door and window protected, alerts on your phone, no monthly contract. Call 020 3397 7003.",
   robots: { index: false, follow: false },
   openGraph: {
-    title: "Ajax Alarm & CCTV Installation | Supplied and Fitted Across the UK",
+    title: "Ajax Alarm & CCTV Installation for Homes | No Monthly Fees",
     description:
-      "One wireless system for intruders, fire, leaks and cameras, run from your phone. Usually fitted within 7 days.",
+      "Every door and window protected, the whole family on one app. Fitted in a day, one upfront price, no monthly contract.",
     url: "/ajax-security-installation",
   },
 };
@@ -114,34 +113,33 @@ export default function AjaxSecurityInstallationPage() {
       <ExperimentProvider>
         <main id="main" tabIndex={-1} className="flex flex-col outline-none">
           <SecurityHeroSection
-            // Both products in the pill so the H1 can sell the outcome. The
-            // short one drops the audience on phones, where the long one wraps.
-            badge="Ajax alarms & CCTV for homes and businesses"
-            badgeNarrow="Ajax alarms & CCTV"
-            // Brand and product first, for whoever searched "Ajax alarm
-            // installer"; then what they get, which is the app.
-            headline="Ajax alarm and CCTV, fitted and running from your phone"
+            // The two process facts a homeowner would not assume, both Will's.
+            badge="No survey needed. Fitted in a day."
+            badgeNarrow="No survey. Fitted in a day."
+            // Brand and product first, for whoever searched "Ajax alarm";
+            // then Will's main selling point. Provisional until the keyword
+            // research says what the ads will say.
+            headline="Ajax alarm and CCTV for your home, with no monthly fees"
             // Own key, so a headline test here cannot rewrite any other H1.
             headlineConfigKey="headlineSecurity"
-            // The four jobs, the two objections, and Will's seven days.
-            subheadline="One wireless system for intruders, fire, leaks and cameras. Pet-friendly, no rewiring, usually fitted within 7 days."
+            // Entry points and family, in Will's sales language, then the lead time.
+            subheadline="Every door and window protected, the whole family on one app, alerts wherever you are. Usually fitted within 7 days."
             defaultInstallType="security"
             // Postcode, not address: Will's call for commercial on 7 October,
             // and the funnel /install-quote runs on.
             formName="ajax_security"
           />
           <WhatsAppFab />
-          {/* What it does, before what it costs: a visitor who does not yet
-              know Ajax covers fire and leaks too has not seen what the quote
-              is for. */}
+          {/* Will's five questions, in the order a buyer gets to them: how it
+              protects, how it fits the household, what it costs against the
+              alternative, what the upfront price buys. */}
+          <SecurityLayersSection />
           <SecurityAppSection />
-          {/* Then which system is theirs. The cards scroll to the closing
-              form and log which property was picked. */}
-          <SecurityPackagesSection />
+          <SecurityCompareSection />
           <WhyInstallProsSection
             features={SECURITY_FEATURES}
-            heading="One team supplies it, fits it and answers for it."
-            intro="We supply the Ajax kit, fit it, test it and set it up on your phone. The same team picks up when you call afterwards."
+            heading="What the upfront price pays for."
+            intro="With no monthly fee, the value is in the install and in what comes after it. One team supplies it, fits it and answers for it."
           />
           {/* Proof before process, as on every segment landing. */}
           <TrustpilotSection />
