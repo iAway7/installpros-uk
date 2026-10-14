@@ -18,6 +18,7 @@ import { validateName, validatePhone, validateEmail, formatPhone, isValidUkPhone
 import { submitLead } from "@/lib/funnel/submit-lead";
 import { thankYouPath } from "@/lib/funnel/thank-you-path";
 import { track, EVENTS } from "@/lib/analytics";
+import { SecurityNeedStep, SecurityNeedSummary, type SecurityNeed } from "./security-need-step";
 
 type CheckStatus = "idle" | "checking" | "available" | "invalid";
 
@@ -56,8 +57,8 @@ const INSTALL_OPTIONS = [
  * Everything else, validation and tracking included, is the original's, so
  * the funnel numbers stay comparable with the other pages.
  *
- * Planned next: a one-tap first step, "What do you need? Alarm / Cameras /
- * Both", before the postcode.
+ * Also changed: a one-tap first step before the postcode, "What do you need?
+ * Alarm / Cameras / Both" (security-need-step.tsx, with the reasons).
  */
 /**
  * CTA form: postcode → name → phone → email → final step.
@@ -115,6 +116,22 @@ export function SecurityQuoteForm({
   const [consent, setConsent] = useState(false); // optional marketing opt-in
 
   const nameRef = useRef<HTMLInputElement>(null);
+
+  // The one-tap first step (security-need-step.tsx), null until chosen. It is
+  // not sent with the lead yet: that needs a column and a Zapier field, which
+  // wait on the team. PostHog has it from the tap event in chooseNeed.
+  const [need, setNeed] = useState<SecurityNeed | null>(null);
+  const postcodeRef = useRef<HTMLInputElement>(null);
+
+  function chooseNeed(value: SecurityNeed) {
+    setNeed(value);
+    track(EVENTS.CTA_CLICKED, { cta_id: `need_${value}`, cta_label: value, cta_location: "final_cta" });
+  }
+
+  // Straight to the postcode once they have picked, so the keyboard is up.
+  useEffect(() => {
+    if (need && step === 0) postcodeRef.current?.focus();
+  }, [need, step]);
   const phoneRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
 
@@ -182,9 +199,15 @@ export function SecurityQuoteForm({
 
   // Per-step funnel tracking for precise drop-off analysis in PostHog.
   useEffect(() => {
+    // Step 0 is still "postcode", as on every other page, so the funnels stay
+    // comparable. The tap before it reports as "need", numbered -1.
+    if (step === 0 && need === null) {
+      track(EVENTS.FORM_STEP_VIEWED, { step_number: -1, step_name: "need", form_name: formName });
+      return;
+    }
     const names = ["postcode", "name", "phone", "email", "service"];
     track(EVENTS.FORM_STEP_VIEWED, { step_number: step, step_name: names[step], form_name: formName });
-  }, [step, formName]);
+  }, [step, need, formName]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -306,10 +329,14 @@ export function SecurityQuoteForm({
     <div className="mx-auto w-full max-w-md">
       <div className="space-y-6">
         <div>
-          {step === 0 && (
+          {step === 0 && need === null && (
+            <SecurityNeedStep tone="light" name="final-need" onChoose={chooseNeed} className={anim} />
+          )}
+          {step === 0 && need !== null && (
             <div className={`space-y-4 ${anim}`}>
               <div className="text-center">
                 <h2 className="h2-form text-foreground">Where&apos;s the property?</h2>
+                <SecurityNeedSummary need={need} tone="light" onChange={() => setNeed(null)} />
               </div>
               <div className="relative">
                 {addressMode ? (
@@ -323,6 +350,7 @@ export function SecurityQuoteForm({
                 ) : (
                   <>
                     <Input
+                      ref={postcodeRef}
                       type="text" value={postcode} onChange={onPostcodeChange} placeholder="e.g. SW1A 1AA"
                       inputSize="lg" maxLength={8} aria-label="Postcode" autoComplete="postal-code"
                       state={status === "invalid" ? "error" : "default"}
