@@ -95,6 +95,11 @@ export function SecurityQuoteForm({
   // nothing is quietly dropped along with the step.
   const skipService = skipServiceStep && defaultService !== "";
   const lastStep = skipService ? 3 : 4;
+  // The postcode is step 1 of the numbered steps now: the "What do you need?"
+  // tap comes before it, unnumbered, the way the postcode used to be. So the
+  // count runs one past the original's and the Back/Next row starts at the
+  // postcode, with Back returning to the tap.
+  const totalSteps = lastStep + 1;
 
   const [step, setStep] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -159,7 +164,7 @@ export function SecurityQuoteForm({
   // their own house, hence `precision: "approximate"` travelling with it all
   // the way to the lead. Nothing that is not a postcode is ever written to the
   // postcode field. We only stop the visitor when even the coordinates gave
-  // nothing, which leaves status "idle" and hides the Get a Quote button.
+  // nothing, which leaves status "idle" and keeps the Next button disabled.
   //
   // coverage_checked fires from here now. This form never reported it at all , 
   // only the hero checker did, so every coverage number we had described the
@@ -334,7 +339,8 @@ export function SecurityQuoteForm({
           )}
           {step === 0 && need !== null && (
             <div className={`space-y-4 ${anim}`}>
-              <div className="text-center">
+              <div className="space-y-2 text-center">
+                <p className="text-body font-semibold text-primary">Step 1 of {totalSteps}</p>
                 <h2 className="h2-form text-foreground">Where&apos;s the property?</h2>
               </div>
               <div className="relative">
@@ -362,7 +368,7 @@ export function SecurityQuoteForm({
                 )}
               </div>
               {error && <p id="cta-err-postcode" role="alert" className="text-center text-body text-error">{error}</p>}
-              <div className="min-h-[100px]">
+              <div className="min-h-7">
                 {status === "checking" && <p className="text-center text-muted-foreground">Checking your postcode...</p>}
                 {status === "available" && (
                   <div className="space-y-4">
@@ -370,7 +376,6 @@ export function SecurityQuoteForm({
                       <Check className="h-5 w-5 rounded bg-success/20 p-0.5 text-success" />
                       <span className="font-semibold text-success">We cover {region}.</span>
                     </p>
-                    <Button onClick={next} className="w-full">Get a Quote <ArrowRight className="ml-2 h-4 w-4" /></Button>
                   </div>
                 )}
               </div>
@@ -378,12 +383,12 @@ export function SecurityQuoteForm({
           )}
 
           {step === 1 && (
-            <StepField anim={anim} label={`Step 1 of ${lastStep}`} title="What's your name?" error={errors.fullName} errorId="cta-err-name">
+            <StepField anim={anim} label={`Step 2 of ${totalSteps}`} title="What's your name?" error={errors.fullName} errorId="cta-err-name">
               <Input ref={nameRef} type="text" value={formData.fullName} onChange={(e) => setFormData((d) => ({ ...d, fullName: e.target.value }))} placeholder="Full Name" inputSize="lg" aria-label="Full name" state={errors.fullName ? "error" : "default"} aria-describedby={errors.fullName ? "cta-err-name" : undefined} className="text-center text-body md:text-[22px]" />
             </StepField>
           )}
           {step === 2 && (
-            <StepField anim={anim} label={`Step 2 of ${lastStep}`} title="What's your phone number?" error={errors.phone} errorId="cta-err-phone">
+            <StepField anim={anim} label={`Step 3 of ${totalSteps}`} title="What's your phone number?" error={errors.phone} errorId="cta-err-phone">
               <div className="relative">
                 <Input ref={phoneRef} type="tel" value={formData.phone} onChange={onPhoneChange}
                   /* Ver zip-availability-checker: el error solo se veia al pulsar. */
@@ -394,7 +399,7 @@ export function SecurityQuoteForm({
             </StepField>
           )}
           {step === 3 && (
-            <StepField anim={anim} label={`Step 3 of ${lastStep}`} title="What's your email?" error={errors.email} errorId="cta-err-email">
+            <StepField anim={anim} label={`Step 4 of ${totalSteps}`} title="What's your email?" error={errors.email} errorId="cta-err-email">
               <div className="relative">
                 <Input ref={emailRef} type="email" value={formData.email} onChange={onEmailChange} placeholder="you@example.com" inputSize="lg" aria-label="Email" state={errors.email ? "error" : "default"} aria-describedby={errors.email ? "cta-err-email" : undefined} className="text-center text-body md:text-[22px]" />
                 {showEmailCheck && <Check className="absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-success" />}
@@ -419,7 +424,7 @@ export function SecurityQuoteForm({
           {step === 4 && (
             <div className={`space-y-4 ${anim}`}>
               <div className="space-y-2 text-center">
-                <p className="text-body font-semibold text-primary">Step 4 of {lastStep}</p>
+                <p className="text-body font-semibold text-primary">Step 5 of {totalSteps}</p>
                 <h2 className="h2-form text-foreground">
                   {serviceMode === "starlink" ? "What are we installing?" : "Which service are you looking for?"}
                 </h2>
@@ -469,12 +474,16 @@ export function SecurityQuoteForm({
           )}
         </div>
 
-        {step > 0 && (
+        {need !== null && (
           <div className="flex gap-3">
-            <Button onClick={back} variant="secondary" disabled={isTransitioning}>
+            <Button onClick={step === 0 ? () => setNeed(null) : back} variant="secondary" disabled={isTransitioning}>
               <ArrowLeft className="mr-2 h-4 w-4" /> Back
             </Button>
-            <Button onClick={stepNext} disabled={!canProceed() || isSubmitting || isTransitioning} className="flex-1">
+            <Button
+              onClick={step === 0 ? next : stepNext}
+              disabled={(step === 0 ? status !== "available" : !canProceed()) || isSubmitting || isTransitioning}
+              className="flex-1"
+            >
               {isSubmitting ? (
                 <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> Submitting...</>
               ) : (

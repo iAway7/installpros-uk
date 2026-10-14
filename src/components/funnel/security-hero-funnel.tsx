@@ -83,6 +83,11 @@ export function SecurityHeroFunnel(
   // now is, so nothing is quietly dropped along with the step.
   const skipService = skipServiceStep && defaultInstallType !== "";
   const lastStep = skipService ? 3 : 4;
+  // The postcode is step 1 of the numbered steps now: the "What do you need?"
+  // tap comes before it, unnumbered, the way the postcode used to be. So the
+  // count runs one past the original's and the Back/Next row starts at the
+  // postcode, with Back returning to the tap.
+  const totalSteps = lastStep + 1;
 
   const [step, setStep] = useState(0);
   const [smartMessage, setSmartMessage] = useState<string | null>(null);
@@ -176,7 +181,7 @@ export function SecurityHeroFunnel(
   // resolves to the nearest real postcode. That is the right area but not
   // necessarily their house, so it is flagged "approximate" and carried as
   // such. Only when that fails too does the step stop: status stays "idle"
-  // and the Get a quote button does not render.
+  // and the Next button stays disabled.
   //
   // The event reports precision either way, so PostHog separates "we knew the
   // house" from "we guessed the street" from "we got nothing".
@@ -395,8 +400,9 @@ export function SecurityHeroFunnel(
           )}
           {step === 0 && need !== null && (
             <div className={`space-y-6 ${anim}`}>
-              <div className="text-center">
-                <h2 className="h2-form mb-2 text-white">Where&apos;s the property?</h2>
+              <div className="space-y-2 text-center">
+                <p className="text-body font-semibold text-white/80">Step 1 of {totalSteps}</p>
+                <h2 className="h2-form text-white">Where&apos;s the property?</h2>
               </div>
               <div className="relative !mt-4">
                 {addressMode ? (
@@ -437,7 +443,7 @@ export function SecurityHeroFunnel(
               {error && (
                 <p id="err-postcode" role="alert" className="text-center text-body text-error">{error}</p>
               )}
-              <div className="min-h-[100px]">
+              <div className="min-h-7">
                 {status === "checking" && <p className="text-center text-white/70">Checking your postcode...</p>}
                 {status === "available" && (
                   <div className="space-y-4">
@@ -453,9 +459,6 @@ export function SecurityHeroFunnel(
                         <span className="font-semibold text-success-bright">We cover {region}.</span>
                       </p>
                     )}
-                    <Button onClick={next} className="w-full">
-                      Get a quote <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
                   </div>
                 )}
               </div>
@@ -463,7 +466,7 @@ export function SecurityHeroFunnel(
           )}
 
           {step === 1 && (
-            <StepField anim={anim} stepLabel={`Step 1 of ${lastStep}`} title="What's your name?" error={errors.fullName} errorId="err-name">
+            <StepField anim={anim} stepLabel={`Step 2 of ${totalSteps}`} title="What's your name?" error={errors.fullName} errorId="err-name">
               <Input
                 ref={nameRef} type="text" value={formData.fullName}
                 onChange={(e) => setFormData((d) => ({ ...d, fullName: e.target.value }))}
@@ -476,7 +479,7 @@ export function SecurityHeroFunnel(
           )}
 
           {step === 2 && (
-            <StepField anim={anim} stepLabel={`Step 2 of ${lastStep}`} title="What's your phone number?" error={errors.phone} errorId="err-phone">
+            <StepField anim={anim} stepLabel={`Step 3 of ${totalSteps}`} title="What's your phone number?" error={errors.phone} errorId="err-phone">
               <div className="relative">
                 <Input
                   ref={phoneRef} type="tel" value={formData.phone} onChange={onPhoneChange}
@@ -494,7 +497,7 @@ export function SecurityHeroFunnel(
           )}
 
           {step === 3 && (
-            <StepField anim={anim} stepLabel={`Step 3 of ${lastStep}`} title="What's your email?" error={errors.email} errorId="err-email">
+            <StepField anim={anim} stepLabel={`Step 4 of ${totalSteps}`} title="What's your email?" error={errors.email} errorId="err-email">
               <div className="relative">
                 <Input
                   ref={emailRef} type="email" value={formData.email} onChange={onEmailChange}
@@ -525,7 +528,7 @@ export function SecurityHeroFunnel(
           {step === 4 && (
             <div className={`space-y-6 ${anim}`}>
               <div className="space-y-2 text-center">
-                <p className="text-body font-semibold text-white/80">Step 4 of {lastStep}</p>
+                <p className="text-body font-semibold text-white/80">Step 5 of {totalSteps}</p>
                 <h2 className="h2-form text-white">What are we installing?</h2>
               </div>
               <div className="grid grid-cols-2 gap-3">
@@ -551,12 +554,16 @@ export function SecurityHeroFunnel(
           )}
         </div>
 
-        {step > 0 && (
+        {need !== null && (
           <div className="flex gap-3">
-            <Button onClick={back} variant="secondary" disabled={isTransitioning}>
+            <Button onClick={step === 0 ? () => setNeed(null) : back} variant="secondary" disabled={isTransitioning}>
               <ArrowLeft className="mr-2 h-4 w-4" /> Back
             </Button>
-            <Button onClick={stepNext} disabled={!canProceed() || isSubmitting || isTransitioning} className="flex-1">
+            <Button
+              onClick={step === 0 ? next : stepNext}
+              disabled={(step === 0 ? status !== "available" : !canProceed()) || isSubmitting || isTransitioning}
+              className="flex-1"
+            >
               {isSubmitting ? (
                 <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> Submitting...</>
               ) : (
