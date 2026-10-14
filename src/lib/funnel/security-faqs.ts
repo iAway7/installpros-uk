@@ -4,31 +4,53 @@
  * In their own file, not in faqs.ts, because faqs.ts is imported by
  * /install-quote and is not edited for another page.
  *
- * Rewritten on Will's answers of 13 October 2026. Residential only: he does
- * not hold the accreditations for commercial alarms at scale, so the business
- * question is gone. No monitoring and quote only, so the cost answers say one
- * upfront price and nothing monthly. Usually no survey and fitted in a day.
- * The rest answer his five buyer questions where the sections above do not
- * already: false alarms, the difference from a standard alarm company,
- * temporary access, the panic button, what happens after the install.
+ * Ordered by how often buyers asked, from the 125 security purchase chats in
+ * Superchat (ajax-research/superchat-security-insights.md, 14 October 2026):
+ * cost first (35), then monthly fees and monitoring (17), then the questions
+ * nobody else's page answers. Will's answers of 13 October set the facts:
+ * residential, no monitoring from us, quote only, usually no survey, fitted
+ * in a day.
+ *
+ * Three answers exist because the research said so:
+ *   - "Who responds when the alarm goes off?" A self-monitored alarm gets no
+ *     automatic police response (NPCC rules for unmonitored systems). No
+ *     competitor page says so; 8 chats asked about monitoring. The quotes
+ *     InstallPros sends already say monitoring "can be added on request".
+ *   - "Can I fit it myself?" 7 asked, 10 raised a DIY kit, 7 objected to the
+ *     installation line.
+ *   - "Can someone visit first?" 8 asked. No price here: the £95+VAT visit is
+ *     in the questions sent to Will.
+ *
+ * The panic button answer was dropped: 1 of 16 bot answers wanted one, and
+ * it stays in the app section.
  *
  * PENDING before paid traffic:
- *   - Power cut: assumes the hubs fitted carry a SIM. True of current Ajax hubs;
- *     confirm which one Will fits.
- *   - After the install: no warranty length or service is named, because Will
- *     has not given one.
- *   - Insurance and grading are not answered. Ajax kit is graded, but whether
- *     an install satisfies an insurer depends on the installer's own
- *     accreditation, which Will says they do not fully hold yet.
+ *   - Power cut: assumes the hub fitted carries a SIM. True of current Ajax
+ *     hubs; confirm which one Will fits.
+ *   - Cameras: Ajax cameras are quoted on request, Hikvision is standard.
+ *   - Insurance and accreditation are not answered until Will confirms what
+ *     is true. Staff have told customers both things.
  */
 export const SECURITY_FAQS: { q: string; a: string }[] = [
   {
     q: "How much does an Ajax system cost?",
-    a: "It depends on your home: how many doors, windows and floors, and whether you want cameras. You get one upfront price for the kit and the fitting before anything is ordered, and nothing to pay monthly after that.",
+    a: "It depends on your home: how many doors, windows and floors, and whether you want cameras. You get one upfront price for the kit and the fitting before anything is ordered, and nothing to pay us monthly after that.",
   },
   {
     q: "Is there a monthly fee?",
     a: "No. You pay once, upfront, and the system is yours. The Ajax app is free, and the alerts come straight to your phone without a subscription or a contract.",
+  },
+  {
+    q: "Who responds when the alarm goes off?",
+    a: "The sirens sound and every phone you choose gets an alert, with a photo where a detector has a camera. You decide what happens next: check the photo, call a neighbour, or call 999. Without a monitoring contract the police are not called automatically. If you want a monitoring centre to watch it, that can be added on request.",
+  },
+  {
+    q: "Can I fit it myself?",
+    a: "You can buy Ajax kit online and fit it yourself. What we add is choosing the right devices for your home, placing and setting them so they cover the ways in without false alarms, setting up the app for everyone, testing every device, and being on the phone afterwards.",
+  },
+  {
+    q: "Do you need to survey my home first?",
+    a: "Usually not. We quote from a call about your doors, windows, floors and pets, then fit everything in one visit, usually within 7 days. If you would rather someone came to look first, tell us when we call.",
   },
   {
     q: "How is this different from a standard alarm company?",
@@ -39,24 +61,16 @@ export const SECURITY_FAQS: { q: string; a: string }[] = [
     a: "Motion detectors are set to ignore pets, so the dog or the cat will not set it off. A detector with a camera sends a photo with the alert, so you can see what triggered it before you do anything.",
   },
   {
-    q: "Do you need to survey my home first?",
-    a: "Usually not. We quote from a call about your doors, windows, floors and pets, then fit everything in one visit, usually within 7 days.",
+    q: "Can you add cameras?",
+    a: "Yes, cameras can be part of the same job, fitted and cabled with the alarm. Ajax cameras sit in the same app as the alarm, so you can look the moment an alert comes in. Tell us which cameras you want when we call.",
   },
   {
     q: "Can I give someone temporary access?",
     a: "Yes. Add a cleaner, a dog walker or a builder as a user with their own access, and remove them when the job is done. The app shows you when they came and went.",
   },
   {
-    q: "Is there a panic button?",
-    a: "Yes. A panic button on a key fob, or one kept by the bed, sets off the alarm and alerts the family's phones with one press.",
-  },
-  {
     q: "What happens in a power cut, or if the broadband goes down?",
     a: "The hub has a backup battery and keeps the system running through a power cut. If the broadband drops, the hub can still send alerts over a mobile SIM.",
-  },
-  {
-    q: "Can you add cameras?",
-    a: "Yes. Ajax cameras show up in the same app as the alarm, so when an alert comes in you can look straight away. We fit and cable them as part of the same job, or add them later.",
   },
   {
     q: "What do I get after the installation?",

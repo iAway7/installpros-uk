@@ -35,7 +35,10 @@ export function SecurityHowItWorksSection() {
           <br className="hidden md:block" /> usually within 7 days.
         </>
       }
-      subline="No survey visit, and one day of fitting."
+      // 17 of the 53 who said why they were buying were moving in or
+      // renovating, the biggest trigger in the chats ("Alarm is the first
+      // thing to go in"), so the line speaks to them.
+      subline="No survey visit, and one day of fitting. Moving house? Book it now for the week you get the keys."
       steps={STEPS}
       cta={{
         label: "Ask us on WhatsApp",

@@ -5,8 +5,6 @@ import { WhatsAppFab } from "@/components/funnel/whatsapp-fab";
 import { SecurityLayersSection } from "@/components/funnel/security-layers-section";
 import { SecurityAppSection } from "@/components/funnel/security-app-section";
 import { SecurityCompareSection } from "@/components/funnel/security-compare-section";
-import { WhyInstallProsSection } from "@/components/funnel/why-installpros-section";
-import { SECURITY_FEATURES } from "@/components/funnel/security-features";
 import { TrustpilotSection } from "@/components/funnel/trustpilot-section";
 import { CustomerStoriesSection } from "@/components/funnel/customer-stories-section";
 import { SecurityHowItWorksSection } from "@/components/funnel/security-how-it-works-section";
@@ -41,27 +39,42 @@ import { ExperimentProvider } from "@/components/experiments/experiment-provider
  *   Asked by buyers, in his order, and where each is answered:
  *     1. how the devices protect, contacts vs vibration, verification
  *                                              SecurityLayersSection
- *     2. support costs, no monthly fee         SecurityCompareSection, FAQ
- *     3. smart vs standard alarm companies     SecurityCompareSection
- *     4. what the upfront price buys after     WhyInstallProsSection
+ *     2. support costs, no monthly fee         H1, FAQ
+ *     3. smart vs standard alarm companies     FAQ
+ *     4. what the upfront price buys after     SecurityCompareSection
  *     5. app, keypad, fob, users, temporary users, panic
  *                                              SecurityAppSection
  * He also said monthly support plans could come later for recurring revenue.
- * If they do, the H1, the compare table and two FAQs all say "no monthly fee"
- * and have to change with it.
+ * If they do, the H1, the CTA and two FAQs all say "no monthly fee" and have
+ * to change with it.
  *
- * Alarm and CCTV together in the H1 is Gus's call (the old page's title);
- * Will's answers are about the alarm, so the cameras live inside the system
- * (photo verification, the FAQ) rather than as a section of their own.
+ * ── WHAT THE RESEARCH CHANGED, 14 OCTOBER 2026 ──────────────────────────────
+ * ajax-research/ holds three reports and the summary for Gus (informe-ajax):
+ * 125 security purchase chats from Superchat, UK search results, and ten
+ * Ajax installers plus the monitored and DIY alternatives.
+ *   - Buyers compare with a kit they could fit themselves, a local installer
+ *     and other Ajax installers. ADT came up in 0 purchase chats. So the
+ *     table is fitted-by-us against a DIY kit, and the ADT question is an FAQ.
+ *   - Customers say "cameras", "alarm" and "CCTV"; nobody says "vulnerable".
+ *   - Moving in or renovating is the biggest stated trigger (17 of 53).
+ *   - The honest answer to who responds when it goes off is in the FAQ: a
+ *     self-monitored alarm gets no automatic police response.
+ *   - Every high-intent search carries an installation word, so the H1 does.
  *
- * ── STILL MISSING ───────────────────────────────────────────────────────────
+ * Alarm and CCTV together in the H1 is Gus's call (the old page's title).
+ * The chats back it: 83 of 125 buyers wanted cameras, 64 an alarm.
+ *
+ * ── STILL MISSING (questions sent to Will, 14 October) ──────────────────────
+ *   - Price. 35 chats ask it first and 23 were lost on it; the median Ajax
+ *     alarm quote is £1,545 inc VAT against £549 to £999 published by other
+ *     installers. Quote only until Will decides.
+ *   - Which cameras: Hikvision is standard, Ajax cameras by exception.
+ *   - One warranty term. The team has quoted five different ones.
+ *   - Accreditation. Staff told 12 customers the install was accredited, 9
+ *     naming SSAIB; an internal note says it is not. The page claims none.
  *   - Photographs. The hero is a dark surface and the one picture is a drawn
  *     phone. Will's AI renders, or real installs, go in the hero `image`.
- *   - Keywords. Research running (ajax-research/keywords-and-serp.md); the H1
- *     says what the ad says once the ad groups exist.
- *   - The compare table's right-hand column, checked against what ADT and
- *     Verisure actually sell (ajax-research/competitors.md).
- *   - After-install services, warranty, which hub (SIM backup claim).
+ *   - Keywords and volumes, which hub, MotionCam as standard or not.
  *   - Proof of its own. The reviews are the company's, about engineers and
  *     service; a few name Starlink. None mentions an alarm. TrackRecordSection
  *     and the coverage map stay out because their numbers are Starlink's.
@@ -116,31 +129,30 @@ export default function AjaxSecurityInstallationPage() {
             // The two process facts a homeowner would not assume, both Will's.
             badge="No survey needed. Fitted in a day."
             badgeNarrow="No survey. Fitted in a day."
-            // Brand and product first, for whoever searched "Ajax alarm";
-            // then Will's main selling point. Provisional until the keyword
-            // research says what the ads will say.
-            headline="Ajax alarm and CCTV for your home, with no monthly fees"
+            // Brand, product and an installation word: every high-intent
+            // query in the keyword research carries one ("installer",
+            // "installation", "fitted"). Then Will's main selling point.
+            // Provisional until the ad groups exist; then one H1 per group.
+            headline="Ajax alarm and CCTV installation, with no monthly fees"
             // Own key, so a headline test here cannot rewrite any other H1.
             headlineConfigKey="headlineSecurity"
-            // Entry points and family, in Will's sales language, then the lead time.
-            subheadline="Every door and window protected, the whole family on one app, alerts wherever you are. Usually fitted within 7 days."
+            // In the customers' words: "cameras" and "alarm" (70 and 42 of 125
+            // chats), not "security system" or "vulnerable entry points".
+            subheadline="Alarm and cameras on one app, every door and window covered, alerts wherever you are. Usually fitted within 7 days."
             defaultInstallType="security"
             // Postcode, not address: Will's call for commercial on 7 October,
             // and the funnel /install-quote runs on.
             formName="ajax_security"
           />
           <WhatsAppFab />
-          {/* Will's five questions, in the order a buyer gets to them: how it
-              protects, how it fits the household, what it costs against the
-              alternative, what the upfront price buys. */}
+          {/* How it protects (Will's Q1), how it fits the household (Q5),
+              then what the installation pays for against fitting a kit
+              yourself (Q4, and the DIY and labour objections in the chats).
+              Monthly fees and standard alarm companies (Q2, Q3) live in the
+              FAQ: buyers in the chats never compared us with ADT. */}
           <SecurityLayersSection />
           <SecurityAppSection />
           <SecurityCompareSection />
-          <WhyInstallProsSection
-            features={SECURITY_FEATURES}
-            heading="What the upfront price pays for."
-            intro="With no monthly fee, the value is in the install and in what comes after it. One team supplies it, fits it and answers for it."
-          />
           {/* Proof before process, as on every segment landing. */}
           <TrustpilotSection />
           <CustomerStoriesSection />

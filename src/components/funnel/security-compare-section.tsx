@@ -1,50 +1,54 @@
 import { Check, Minus } from "lucide-react";
 
 /**
- * Smart against standard, and the money.
+ * What the installation pays for: fitted by us against a kit you fit yourself.
  *
- * Will's second and third questions, 13 October 2026: "Support costs: our big
- * win for residential is no monthly costs which justify our larger upfront",
- * and "How it differs from standard alarm companies such as ADT (smart alarm
- * vs standard alarm benefits)". One table answers both, because the monthly
- * fee is the first row of the difference.
+ * This replaced a smart-versus-standard table (against a monitored alarm
+ * contract) on 14 October 2026, on the Superchat analysis of 125 security
+ * purchase enquiries (ajax-research/superchat-security-insights.md):
  *
- * NO COMPANY IS NAMED. Will names ADT; the page does not. A comparison that
- * names a rival has to be verifiable line by line under UK advertising rules,
- * and "standard alarm" covers two different things anyway: one that only
- * rings, and one watched by a call centre on a contract. The intro says so,
- * and every cell on the right is hedged ("usually", "often") because
- * traditional alarms vary and some now have apps.
+ *   - Nobody compared InstallPros with ADT or any monitored company. Will's
+ *     question 3 appears in 0 purchase chats (his list comes from phone calls,
+ *     which the data cannot see, so the question stays in the FAQ).
+ *   - What buyers did compare with was doing it themselves: 10 raised a DIY
+ *     kit, 7 asked to buy the kit and have it fitted or fit it themselves,
+ *     and 7 objected to the installation line, a median 38% of the quote.
+ *   - Will's question 4, what the upfront price buys after the install, is
+ *     the same question asked the other way round.
  *
- * PENDING: the competitor research in ajax-research/competitors.md checks
- * these lines against what ADT, Verisure and the rest actually sell. Adjust
- * the right-hand column to it before paid traffic.
+ * So the table answers the objection the chats actually raise: the right-hand
+ * column is a kit bought online, not a rival company, which also keeps it
+ * clear of the UK rules on naming competitors. Every left-hand row is
+ * something the quotes or Will's process already include. No price: the kit
+ * and our quote are rarely the same list of devices, so a figure would
+ * compare unlike with unlike.
  */
 
 type Row = { label: string; ours: string; theirs: string };
 
 const ROWS: Row[] = [
-  { label: "Monthly cost", ours: "None. You pay once, upfront", theirs: "A monthly contract, if you want it watched" },
-  { label: "When it goes off", ours: "An alert on every phone you choose", theirs: "A siren, or a call centre on a contract" },
-  { label: "False alarms", ours: "A photo from the detector, in seconds", theirs: "Usually no way to check from away" },
-  { label: "Arming", ours: "App, keypad or key fob, from anywhere", theirs: "Usually a keypad by the door" },
-  { label: "Family and visitors", ours: "Their own access, temporary for visitors", theirs: "Usually one shared code" },
-  { label: "Fitting", ours: "Wireless, fitted in a day", theirs: "Often wired, a cable to each sensor" },
+  { label: "Choosing the kit", ours: "Specified for your doors, windows and rooms", theirs: "You work out what you need" },
+  { label: "Placing it", ours: "Sited to cover the ways in, set for your pets", theirs: "You place and tune each device" },
+  { label: "Setting it up", ours: "App, users and arming modes done before we leave", theirs: "You set up the app and pair every device" },
+  { label: "Testing", ours: "Every device walk-tested on the day", theirs: "Up to you" },
+  { label: "Your time", ours: "One visit, usually a few hours", theirs: "As long as it takes you" },
+  { label: "If something goes wrong", ours: "The team that fitted it, on the phone", theirs: "The manufacturer's helpline" },
+  { label: "Adding to it later", ours: "A short visit, no rewiring", theirs: "Another job for you" },
 ];
 
 export function SecurityCompareSection() {
   return (
-    <section id="compare" className="w-full scroll-mt-28 bg-secondary py-16 md:py-24">
+    <section id="installation" className="w-full scroll-mt-28 bg-secondary py-16 md:py-24">
       <div className="container mx-auto">
         <div className="mx-auto max-w-2xl text-center">
-          <p className="eyebrow">Smart vs standard</p>
+          <p className="eyebrow">Fitted, not flat-packed</p>
           <h2 className="mt-4 h2-section text-foreground">
-            Pay once.
-            <br className="hidden sm:block" /> No monthly contract.
+            What the installation
+            <br className="hidden sm:block" /> pays for.
           </h2>
           <p className="mt-5 text-body text-muted-foreground md:text-lg" style={{ lineHeight: "1.6" }}>
-            A standard alarm either just rings, or is watched by a call centre for a monthly fee. An Ajax system tells
-            you directly, and it is yours from the day it is fitted.
+            You can buy Ajax kit online and fit it yourself. What you pay us for is everything after the box, and
+            someone to call when you need us.
           </p>
         </div>
 
@@ -55,10 +59,10 @@ export function SecurityCompareSection() {
           <div className="grid grid-cols-2 md:grid-cols-[0.9fr_1.2fr_1.2fr]">
             <div className="hidden md:block" />
             <div className="bg-primary/[0.05] px-4 py-4 md:px-6">
-              <p className="text-body-sm font-semibold text-foreground md:text-body">Ajax, fitted by us</p>
+              <p className="text-body-sm font-semibold text-foreground md:text-body">Fitted by us</p>
             </div>
             <div className="px-4 py-4 md:px-6">
-              <p className="text-body-sm font-semibold text-muted-foreground md:text-body">A standard alarm</p>
+              <p className="text-body-sm font-semibold text-muted-foreground md:text-body">A kit you fit yourself</p>
             </div>
           </div>
 
@@ -80,10 +84,6 @@ export function SecurityCompareSection() {
             ))}
           </dl>
         </div>
-
-        <p className="mx-auto mt-5 max-w-4xl text-caption text-muted-foreground">
-          Standard alarms vary, and some now offer an app or photo checks as part of a contract.
-        </p>
       </div>
     </section>
   );
