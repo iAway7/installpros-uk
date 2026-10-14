@@ -36,44 +36,55 @@ export interface Programme {
  * residential one above.
  *
  * Source: the Paperform "INSTALLPROS - COMMERCIAL STARLINK" form on
- * installpros.co.uk/commercial-starlink-installation, and GA4 for the same
- * page. Window 21 July to 14 October 2026, every day the form was live. Gus
- * chose the full window rather than the two complete months: taking the best
- * stretch and calling it the rate is how a baseline becomes a story.
+ * installpros.co.uk/commercial-starlink-installation. Window 21 July to
+ * 14 October 2026, every day the form was live. Gus chose the full window over
+ * the two complete months: taking the best stretch and calling it the rate is
+ * how a baseline becomes a story.
  *
- *   40 leads · 314 GA4 active users · 128 form starts · 526 Paperform viewers
+ *   526 viewers · 128 starts · 40 leads
  *
- * visitorLead is 40/314, the GA4 denominator, so it is built the same way as
- * the residential numbers above and the two can be read side by side.
+ * All three from Paperform, so the two ratios multiply out to the third and
+ * nothing is divided across a seam between tools.
  *
- * Two things are deliberately absent.
+ * This replaced a first version built on GA4's 314 active users for that page,
+ * which gave 12.7% rather than 7.6%. GA4 looked like the cleaner denominator
+ * because the residential baseline above is GA4-based, until the residential
+ * Paperform figures arrived and settled it. For that funnel, 17 July to
+ * 30 September: 26,966 viewers, 8,373 starts, 2,671 leads, which is 31.1% /
+ * 31.9% / 9.9% against the audit's GA4-derived 33.2% / 32.3% / 10.7%. Two
+ * tools, different windows, within two points on all three. Paperform's
+ * viewer count is GA4's visitor count plus about 7%.
  *
- * formStart, because it would be 128/314 and those come from different tools
- * counting different populations: Paperform reports 526 people seeing the form
- * on a page GA4 says had 314 users, and nobody has explained the gap. A ratio
- * across that seam would be invented precision.
+ * Commercial's gap is 526 against 314, which is 67%, an order of magnitude
+ * outside that. With residential as the control the likelier explanation is
+ * that the GA4 figure is short rather than that Paperform is long: the page
+ * filter matched paths containing "commercial", so any page hosting the same
+ * form under another name was never counted. Until somebody confirms which
+ * pages that form sits on, the number that at least agrees with itself is the
+ * one from the single tool.
  *
- * mobileVisitorLead, because Paperform does not give the device split of those
- * 40 leads.
+ * mobileVisitorLead has no row: Paperform does not give the device split.
  *
- * KNOWN FLOOR. 40 counts only the leads through the commercial form. The page
- * also has four "Get a quote" buttons going to /contact-details/, a generic
- * form shared across the site with no record of which page sent each person,
- * so an unknown number of commercial leads are missing. The real rate is
- * higher than 12.7% and this page therefore understates what it has to beat,
- * which is the error in the comfortable direction. Fixed going forward by
- * tagging those links; the history does not come back.
+ * KNOWN FLOOR. 40 counts only the leads through this form. The page also has
+ * four "Get a quote" buttons going to /contact-details/, a generic form shared
+ * across the site with no record of which page sent each person, so an unknown
+ * number of commercial leads are missing. The real rate is higher than 7.6%
+ * and this therefore understates what the new page has to beat, which is the
+ * error in the comfortable direction. Fixed going forward by tagging those
+ * links; the history does not come back.
  */
 export const COMMERCIAL_BASELINE: Programme = {
+  formStart: 0.243,
   completion: 0.3125,
-  visitorLead: 0.127,
+  visitorLead: 0.076,
 };
 
-/** Same rule the residential programme used: hold completion, lift the
- *  headline rate by a fifth. 12.7% to 15.2%. */
+/** Same rule the residential programme used: hold completion, lift the other
+ *  two by a fifth. */
 export const COMMERCIAL_TARGET: Programme = {
+  formStart: 0.292,
   completion: 0.3125,
-  visitorLead: 0.152,
+  visitorLead: 0.091,
 };
 
 export const COMMERCIAL_PAGE = "/commercial-starlink-installation";
