@@ -6,7 +6,7 @@ import { DateFilter, SelectFilter } from "@/components/system/filters";
 import { createClient } from "@/lib/supabase/server";
 import { realLeads } from "@/lib/dashboard/leads";
 import { fetchSources, fetchTargetCounts, isOrganicSource, posthogConfigured, FUNNEL_PAGES, ORGANIC_SOURCE } from "@/lib/posthog/query";
-import { buildTargetsReport, pct, LAUNCH_DATE, type TargetStatus, type TargetsReport } from "@/lib/dashboard/targets";
+import { buildTargetsReport, pct, LAUNCH_DATE, COMMERCIAL_PAGE, type TargetStatus, type TargetsReport } from "@/lib/dashboard/targets";
 import { EmptyState } from "@/components/system/empty-state";
 import { PageHeader } from "@/components/system/page-header";
 import { Pill, type PillVariant } from "@/components/system/badge";
@@ -136,7 +136,9 @@ export default async function TargetsPage({ searchParams }: { searchParams: Sear
   const leads = realLeads(leadsResult.data ?? []).filter(
     (l) => stripSlash(l.landing_page) === stripSlash(page) && matchesSource(l, source),
   );
-  const report = buildTargetsReport(counts, leads);
+  // The page decides which baseline it is judged against: commercial has its
+  // own, measured on the WordPress page it replaces. See targets.ts.
+  const report = buildTargetsReport(counts, leads, page);
 
   return (
     <Shell filters={filters} sources={options}>
@@ -254,7 +256,16 @@ function Shell({ filters, sources, children }: { filters: Filters; sources: [str
   const isDefault = since === LAUNCH_DATE && !until && page === DEFAULT_PAGE && source === DEFAULT_SOURCE;
   return (
     <div className="mx-auto max-w-6xl space-y-6">
-      <PageHeader title="Targets" description="The new landing against the June 2026 baseline and the targets set for it. Rates need at least 30 visitors before they are judged." />
+      {/* The baseline named here has to be the one actually in use, which
+          depends on the page selected below. */}
+      <PageHeader
+        title="Targets"
+        description={
+          page === COMMERCIAL_PAGE
+            ? "The commercial landing against the WordPress page it replaces, 21 July to 14 October 2026. That baseline counts only the leads through the commercial form, so it is a floor. Rates need at least 30 visitors before they are judged."
+            : "The new landing against the June 2026 baseline and the targets set for it. Rates need at least 30 visitors before they are judged."
+        }
+      />
 
       <div className="flex flex-wrap items-end gap-3">
         <DateFilter name="since" label="From" value={since} min={LAUNCH_DATE} placeholder={LAUNCH_DATE} />
