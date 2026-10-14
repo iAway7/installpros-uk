@@ -82,30 +82,3 @@ export function SecurityNeedStep({
     </div>
   );
 }
-
-/** The line under the postcode heading: what they picked, and a way back. */
-export function SecurityNeedSummary({
-  need,
-  tone,
-  onChange,
-}: {
-  need: SecurityNeed;
-  tone: "dark" | "light";
-  onChange: () => void;
-}) {
-  return (
-    <p className={`text-center text-body-sm ${tone === "dark" ? "text-white/75" : "text-muted-foreground"}`}>
-      For: <span className={tone === "dark" ? "font-semibold text-white" : "font-semibold text-foreground"}>{SECURITY_NEED_LABEL[need]}</span>
-      {" · "}
-      <button
-        type="button"
-        onClick={onChange}
-        className={`underline underline-offset-2 transition-colors duration-quick ${
-          tone === "dark" ? "hover:text-white" : "hover:text-foreground"
-        }`}
-      >
-        Change
-      </button>
-    </p>
-  );
-}

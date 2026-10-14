@@ -16,7 +16,7 @@ import { validateName, validatePhone, validateEmail, formatPhone, isValidUkPhone
 import { submitLead } from "@/lib/funnel/submit-lead";
 import { thankYouPath } from "@/lib/funnel/thank-you-path";
 import { track, EVENTS } from "@/lib/analytics";
-import { SecurityNeedStep, SecurityNeedSummary, type SecurityNeed } from "./security-need-step";
+import { SecurityNeedStep, type SecurityNeed } from "./security-need-step";
 
 type CheckStatus = "idle" | "checking" | "available" | "invalid";
 
@@ -397,7 +397,6 @@ export function SecurityHeroFunnel(
             <div className={`space-y-6 ${anim}`}>
               <div className="text-center">
                 <h2 className="h2-form mb-2 text-white">Where&apos;s the property?</h2>
-                <SecurityNeedSummary need={need} tone="dark" onChange={() => setNeed(null)} />
               </div>
               <div className="relative !mt-4">
                 {addressMode ? (
