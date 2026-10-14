@@ -1,4 +1,4 @@
-import { ServiceQuoteForm } from "./service-quote-form";
+import { SecurityQuoteForm } from "./security-quote-form";
 
 /**
  * Closing form for the Ajax landing. A copy of cta-section.tsx, which renders
@@ -24,7 +24,7 @@ export function SecurityCtaSection({ defaultService, formName }: { defaultServic
             Tell us about your home and we will come back with one upfront price for the kit and the fitting.
           </p>
           <div className="mx-auto max-w-xl">
-            <ServiceQuoteForm defaultService={defaultService} skipServiceStep formName={formName} />
+            <SecurityQuoteForm defaultService={defaultService} skipServiceStep formName={formName} />
           </div>
         </div>
 

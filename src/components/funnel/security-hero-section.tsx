@@ -1,4 +1,4 @@
-import { ZipAvailabilityChecker } from "./zip-availability-checker";
+import { SecurityHeroFunnel } from "./security-hero-funnel";
 import { HeroHeadline } from "./hero-headline";
 import { SecurityHeroTrustBar } from "./security-hero-trust-bar";
 
@@ -8,8 +8,8 @@ import { SecurityHeroTrustBar } from "./security-hero-trust-bar";
  * A copy of hero-section.tsx, cut down, rather than new props on it: that
  * file renders /install-quote, the page live in Google Ads, and the rule since
  * 29 September is to duplicate instead of reaching into it. The form and the
- * H1 are still the shared ZipAvailabilityChecker and HeroHeadline, used as
- * they are, so the funnel, its validation and its tracking are the ones the
+ * H1 are the funnel in security-hero-funnel.tsx (a copy, see there) and the
+ * shared HeroHeadline, so the validation and the tracking are the ones the
  * converting page runs on.
  *
  * What changed from the original:
@@ -106,7 +106,7 @@ export function SecurityHeroSection(
           </p>
 
           <div className="animate-slide-up animate-delay-300 mx-auto w-full md:max-w-2xl">
-            <ZipAvailabilityChecker defaultInstallType={defaultInstallType} skipServiceStep formName={formName} />
+            <SecurityHeroFunnel defaultInstallType={defaultInstallType} skipServiceStep formName={formName} />
           </div>
         </div>
       </div>
