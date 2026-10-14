@@ -124,14 +124,59 @@ export const SECURITY_TARGET: Programme = {
   visitorLead: 0.076,
 };
 
+/**
+ * The vehicle page's baseline, from the Paperform vehicle form on the two
+ * WordPress pages it replaces (installpros.co.uk/starlink-installation-for-cars
+ * and /starlink-installation-for-campervan). 29 June to 7 October 2026, the
+ * window Gus read off Paperform's analytics on 14 October.
+ *
+ *   Paperform shows 96 viewers · 12 starts · 8 submissions.
+ *   Two of the eight are Will's own tests of 29 July (name "Will TESTING",
+ *   registration "TEST"), so they come out of both counts:
+ *   96 viewers · 10 starts · 6 leads.
+ *
+ * All three from Paperform, same as commercial and Ajax. The six include
+ * one person who submitted twice three minutes apart on 19 September; the
+ * new page would count that twice as well, so it stays.
+ *
+ * READ THE SAMPLE BEFORE THE RATE. Ninety-six viewers and six leads over a
+ * hundred days: one lead either way moves visitorLead by a full point. This
+ * is the smallest of the four baselines by an order of magnitude, and the
+ * only one where the WordPress page was not getting paid traffic, so it is
+ * an organic baseline measured against a paid page. It is here because a
+ * floor with a known width beats no floor; do not read a beat or a miss of
+ * a point as a result.
+ *
+ * mobileVisitorLead has no row: Paperform does not give the device split.
+ */
+export const VEHICLES_BASELINE: Programme = {
+  formStart: 0.104,
+  completion: 0.6,
+  visitorLead: 0.0625,
+};
+
+/** Same rule as the other three: hold completion, lift the others by a fifth. */
+export const VEHICLES_TARGET: Programme = {
+  formStart: 0.125,
+  completion: 0.6,
+  visitorLead: 0.075,
+};
+
 export const SECURITY_PAGE = "/ajax-security-installation";
 
 export const COMMERCIAL_PAGE = "/commercial-starlink-installation";
+
+export const VEHICLES_PAGE = "/starlink-installation-for-vehicles";
+
+/** The weather-hero variant of the vehicle page: same audience, same ads,
+ *  same baseline. */
+export const VEHICLES_VARIANT_PAGE = "/starlink-installation-for-vehicles-2";
 
 /** Which baseline a landing is measured against. */
 export function programmeFor(page: string): { baseline: Programme; target: Programme } {
   if (page === COMMERCIAL_PAGE) return { baseline: COMMERCIAL_BASELINE, target: COMMERCIAL_TARGET };
   if (page === SECURITY_PAGE) return { baseline: SECURITY_BASELINE, target: SECURITY_TARGET };
+  if (page === VEHICLES_PAGE || page === VEHICLES_VARIANT_PAGE) return { baseline: VEHICLES_BASELINE, target: VEHICLES_TARGET };
   return { baseline: BASELINE, target: TARGET };
 }
 

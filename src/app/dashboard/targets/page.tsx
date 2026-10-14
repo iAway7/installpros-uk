@@ -6,7 +6,7 @@ import { DateFilter, SelectFilter } from "@/components/system/filters";
 import { createClient } from "@/lib/supabase/server";
 import { realLeads } from "@/lib/dashboard/leads";
 import { fetchSources, fetchTargetCounts, isOrganicSource, posthogConfigured, FUNNEL_PAGES, ORGANIC_SOURCE } from "@/lib/posthog/query";
-import { buildTargetsReport, pct, LAUNCH_DATE, COMMERCIAL_PAGE, SECURITY_PAGE, type TargetStatus, type TargetsReport } from "@/lib/dashboard/targets";
+import { buildTargetsReport, pct, LAUNCH_DATE, COMMERCIAL_PAGE, SECURITY_PAGE, VEHICLES_PAGE, VEHICLES_VARIANT_PAGE, type TargetStatus, type TargetsReport } from "@/lib/dashboard/targets";
 import { EmptyState } from "@/components/system/empty-state";
 import { PageHeader } from "@/components/system/page-header";
 import { Pill, type PillVariant } from "@/components/system/badge";
@@ -23,6 +23,10 @@ const BASELINE_NOTE: Record<string, string> = {
     "The commercial landing against the WordPress page it replaces, 21 July to 14 October 2026. That baseline counts only the leads through the commercial form, so it is a floor.",
   [SECURITY_PAGE]:
     "The Ajax landing against the WordPress security form it replaces, 17 July to 30 September 2026.",
+  [VEHICLES_PAGE]:
+    "The vehicle landing against the WordPress vehicle form it replaces, 29 June to 7 October 2026. That baseline is 96 viewers and 6 leads of organic traffic, so a point either way is noise.",
+  [VEHICLES_VARIANT_PAGE]:
+    "The vehicle landing against the WordPress vehicle form it replaces, 29 June to 7 October 2026. That baseline is 96 viewers and 6 leads of organic traffic, so a point either way is noise.",
   default: "The new landing against the June 2026 baseline and the targets set for it.",
 };
 const DEFAULT_SOURCE = "google";
