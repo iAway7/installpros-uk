@@ -6,7 +6,7 @@ import { DateFilter, SelectFilter } from "@/components/system/filters";
 import { createClient } from "@/lib/supabase/server";
 import { realLeads } from "@/lib/dashboard/leads";
 import { fetchSources, fetchTargetCounts, isOrganicSource, posthogConfigured, FUNNEL_PAGES, ORGANIC_SOURCE } from "@/lib/posthog/query";
-import { buildTargetsReport, pct, LAUNCH_DATE, COMMERCIAL_PAGE, type TargetStatus, type TargetsReport } from "@/lib/dashboard/targets";
+import { buildTargetsReport, pct, LAUNCH_DATE, COMMERCIAL_PAGE, SECURITY_PAGE, type TargetStatus, type TargetsReport } from "@/lib/dashboard/targets";
 import { EmptyState } from "@/components/system/empty-state";
 import { PageHeader } from "@/components/system/page-header";
 import { Pill, type PillVariant } from "@/components/system/badge";
@@ -14,6 +14,17 @@ import { Pill, type PillVariant } from "@/components/system/badge";
 export const dynamic = "force-dynamic";
 
 const DEFAULT_PAGE = "/install-quote";
+
+/** Each landing is measured against a different page, over a different window,
+ *  so the line under the title has to say which. See targets.ts for how each
+ *  was built. */
+const BASELINE_NOTE: Record<string, string> = {
+  [COMMERCIAL_PAGE]:
+    "The commercial landing against the WordPress page it replaces, 21 July to 14 October 2026. That baseline counts only the leads through the commercial form, so it is a floor.",
+  [SECURITY_PAGE]:
+    "The Ajax landing against the WordPress security form it replaces, 17 July to 30 September 2026.",
+  default: "The new landing against the June 2026 baseline and the targets set for it.",
+};
 const DEFAULT_SOURCE = "google";
 
 /** The sources people actually reason about, in the order they should
@@ -260,11 +271,7 @@ function Shell({ filters, sources, children }: { filters: Filters; sources: [str
           depends on the page selected below. */}
       <PageHeader
         title="Targets"
-        description={
-          page === COMMERCIAL_PAGE
-            ? "The commercial landing against the WordPress page it replaces, 21 July to 14 October 2026. That baseline counts only the leads through the commercial form, so it is a floor. Rates need at least 30 visitors before they are judged."
-            : "The new landing against the June 2026 baseline and the targets set for it. Rates need at least 30 visitors before they are judged."
-        }
+        description={`${BASELINE_NOTE[page] ?? BASELINE_NOTE.default} Rates need at least 30 visitors before they are judged.`}
       />
 
       <div className="flex flex-wrap items-end gap-3">

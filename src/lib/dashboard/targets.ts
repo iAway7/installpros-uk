@@ -87,13 +87,52 @@ export const COMMERCIAL_TARGET: Programme = {
   visitorLead: 0.091,
 };
 
+/**
+ * The Ajax alarm and CCTV page's baseline, from the Paperform
+ * "INSTALLPROS - SECURITY" form on the WordPress site it replaces.
+ * 17 July to 30 September 2026.
+ *
+ *   2,236 viewers · 390 starts · 140 leads
+ *
+ * All three from Paperform, same as commercial, so the two ratios multiply
+ * out to the third.
+ *
+ * Submissions ran at two to eight a day until roughly 19 August and then fell
+ * to almost nothing. The viewer and start curves fall at the same point, so
+ * the traffic stopped rather than the form, and the rate across the whole
+ * window is unaffected. Worth re-checking if anyone ever finds that September
+ * had viewers and no leads, because then the rate here is too low.
+ *
+ * This is the hardest of the three baselines to beat on completion and the
+ * easiest on the other two: 35.9% of people who start this form finish it,
+ * against 31.9% residential, but only 17.4% of viewers start at all, against
+ * 31.1%. A smaller, more decided audience that the form then struggles to
+ * get going.
+ *
+ * mobileVisitorLead has no row: Paperform does not give the device split.
+ */
+export const SECURITY_BASELINE: Programme = {
+  formStart: 0.174,
+  completion: 0.359,
+  visitorLead: 0.063,
+};
+
+/** Same rule as the other two: hold completion, lift the others by a fifth. */
+export const SECURITY_TARGET: Programme = {
+  formStart: 0.209,
+  completion: 0.359,
+  visitorLead: 0.076,
+};
+
+export const SECURITY_PAGE = "/ajax-security-installation";
+
 export const COMMERCIAL_PAGE = "/commercial-starlink-installation";
 
 /** Which baseline a landing is measured against. */
 export function programmeFor(page: string): { baseline: Programme; target: Programme } {
-  return page === COMMERCIAL_PAGE
-    ? { baseline: COMMERCIAL_BASELINE, target: COMMERCIAL_TARGET }
-    : { baseline: BASELINE, target: TARGET };
+  if (page === COMMERCIAL_PAGE) return { baseline: COMMERCIAL_BASELINE, target: COMMERCIAL_TARGET };
+  if (page === SECURITY_PAGE) return { baseline: SECURITY_BASELINE, target: SECURITY_TARGET };
+  return { baseline: BASELINE, target: TARGET };
 }
 
 /** First day the new landing received paid traffic. The default "since". */
