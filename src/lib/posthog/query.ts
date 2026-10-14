@@ -83,14 +83,14 @@ export interface SegmentFilter {
   days: number;
 }
 
-/** Landing pages worth funnelling separately: the A/B pair, plus each
- *  Ads segment landing. */
+/** Landing pages worth funnelling separately: the live quote page, plus each
+ *  Ads segment landing. The old /starlink-installation and the -2 vehicles
+ *  variant are left out: both still answer, neither takes Ads traffic, so
+ *  they only lengthened the filter. */
 export const FUNNEL_PAGES = [
   "/install-quote",
-  "/starlink-installation",
   "/commercial-starlink-installation",
   "/starlink-installation-for-vehicles",
-  "/starlink-installation-for-vehicles-2",
   "/starlink-installation-for-static-caravans",
   "/starlink-installation-for-boats",
   "/ajax-security-installation",
