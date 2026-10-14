@@ -1,19 +1,47 @@
 import type { TargetCounts } from "@/lib/posthog/query";
 
 /**
- * The funnel programme's baseline and targets, as fixed in the June 2026
- * audit ("Funnel Baseline & Targets", 1 Apr – 17 Jun, 78 days). Leads came
- * from Paperform, visitors and form starts from GA4. These are the numbers
- * the new landing page is measured against, so they are constants here, not
- * something recomputed from live data.
+ * The residential funnel's baseline, from the Paperform "INSTALLPROS LP -
+ * STARLINK" form on the WordPress site, 17 July to 30 September 2026.
+ *
+ *   26,966 viewers · 8,373 starts · 2,671 leads
+ *
+ * Built the same way as the commercial and security baselines below, from one
+ * tool, so the three can be read against each other without an asterisk. That
+ * is the whole reason it changed.
+ *
+ * It replaced the June 2026 audit's figures ("Funnel Baseline & Targets",
+ * 1 Apr to 17 Jun, 78 days), which were 33.2% / 32.3% / 10.7% and took leads
+ * from Paperform but visitors and form starts from GA4. Those are not wrong
+ * and they are worth keeping in mind: a different tool over a different
+ * quarter landed within a point on all three, which is the strongest thing
+ * anyone has said about this baseline. It is not one audit's opinion, it is
+ * what two methods agree on.
+ *
+ * mobileVisitorLead is still the audit's GA4 figure, because Paperform gives
+ * no device split. It is the one row here built from a different source, and
+ * the same gap is why the commercial and security programmes have no mobile
+ * row at all.
  */
 export const BASELINE = {
-  formStart: 0.332,
-  completion: 0.323,
-  visitorLead: 0.107,
+  formStart: 0.311,
+  completion: 0.319,
+  visitorLead: 0.099,
   mobileVisitorLead: 0.18,
 } as const;
 
+/**
+ * Unchanged, and deliberately not recomputed from the baseline above.
+ *
+ * These were set in June against the audit's numbers, at roughly a fifth over
+ * each, and /install-quote launched against them on 22 September. Rebasing
+ * them onto the lower baseline would put visitor-to-lead at 11.9% instead of
+ * 12.9%, which is lowering the bar partway through the thing it is measuring.
+ * Gus's call, on 14 October: the measurement improves, the goal does not move.
+ *
+ * So the targets are no longer baseline plus a fifth. That relationship is
+ * history now, and this comment is where it is recorded.
+ */
 export const TARGET = {
   formStart: 0.4,
   completion: 0.323, // "hold": the guardrail, not a lift
