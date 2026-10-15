@@ -1,6 +1,6 @@
-import { SecurityHeroFunnel } from "./security-hero-funnel";
 import { HeroHeadline } from "./hero-headline";
 import { SecurityHeroTrustBar } from "./security-hero-trust-bar";
+import { SecurityHeroInteractive, type PhotoSpots } from "./security-hero-camera";
 
 /**
  * Hero for the Ajax alarm and CCTV landing.
@@ -24,11 +24,19 @@ import { SecurityHeroTrustBar } from "./security-hero-trust-bar";
  *   - No flag on the badge: it does not talk about coverage.
  */
 export function SecurityHeroSection(
-  { image, imageMobile, headline, subheadline, badge, badgeNarrow, headlineConfigKey, defaultInstallType, formName }: {
+  { image, imageMobile, imageSrcSet, imagePosition, photoSpots, headline, subheadline, badge, badgeNarrow, headlineConfigKey, defaultInstallType, formName }: {
     /** A REAL photograph of an Ajax install. Omit it for the dark surface. */
     image?: string;
-    /** Phone crop of the same photograph. */
+    /** Phone crop of the same photograph (a srcset string is fine). */
     imageMobile?: string;
+    /** Widths of the desktop photograph, e.g. "/a-1280.webp 1280w, ...". */
+    imageSrcSet?: string;
+    /** object-position for the desktop photograph (md and up; the phone crop
+     *  is framed on its own), e.g. "34% 0%" to slide a subject sitting right
+     *  of centre further right, out from under the copy. */
+    imagePosition?: string;
+    /** Where the photograph's camera sits, for the recording light and LIVE. */
+    photoSpots?: PhotoSpots;
     headline: string;
     subheadline: string;
     badge: string;
@@ -47,13 +55,36 @@ export function SecurityHeroSection(
               <picture>
                 <source media="(max-width: 767px)" srcSet={imageMobile} />
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={image} alt="" aria-hidden="true" loading="eager" decoding="sync" fetchPriority="high" className="absolute inset-0 h-full w-full object-cover object-top" />
+                <img src={image} srcSet={imageSrcSet} sizes={imageSrcSet ? "100vw" : undefined} alt="" aria-hidden="true" loading="eager" decoding="sync" fetchPriority="high" className="absolute inset-0 h-full w-full object-cover object-top md:[object-position:var(--hero-pos,50%_0%)]" style={imagePosition ? ({ "--hero-pos": imagePosition } as React.CSSProperties) : undefined} />
               </picture>
             ) : (
               /* eslint-disable-next-line @next/next/no-img-element */
-              <img src={image} alt="" aria-hidden="true" loading="eager" decoding="sync" fetchPriority="high" className="absolute inset-0 h-full w-full object-cover object-top" />
+              <img src={image} srcSet={imageSrcSet} sizes={imageSrcSet ? "100vw" : undefined} alt="" aria-hidden="true" loading="eager" decoding="sync" fetchPriority="high" className="absolute inset-0 h-full w-full object-cover object-top md:[object-position:var(--hero-pos,50%_0%)]" style={imagePosition ? ({ "--hero-pos": imagePosition } as React.CSSProperties) : undefined} />
             )}
-            <div className="hero-overlay absolute inset-0" />
+            {/* Phones: the shared overlay (globals.css, which the live pages
+                use too, so it is not edited) and a darker layer over it. The
+                camera sits behind the copy there, so it stays dark. */}
+            <div className="hero-overlay absolute inset-0 md:hidden" />
+            <div
+              className="absolute inset-0 md:hidden"
+              style={{
+                background:
+                  "radial-gradient(70% 60% at 50% 55%, rgba(5,8,12,0.55) 0%, rgba(5,8,12,0.25) 60%, transparent 100%), linear-gradient(to bottom, rgba(13,27,42,0.35), rgba(13,27,42,0.2) 45%, rgba(5,8,12,0.75) 100%)",
+              }}
+            />
+            {/* md and up, Ajax's own overlay instead of the shared one. Gus,
+                15 October: the camera lighter, the ceiling darker. So it is
+                lightest on the camera and dark everywhere else; the camera's
+                centre and size come from PhotoSpotsLayer as CSS variables,
+                with a guess for before it runs. The top darkens under the
+                header and the bottom fades into the trust bar. */}
+            <div
+              className="absolute inset-0 hidden md:block"
+              style={{
+                background:
+                  "radial-gradient(var(--cam-rx, 30vw) var(--cam-ry, 42vh) at var(--cam-x, 72%) var(--cam-y, 50%), rgba(5,8,12,0.08) 0%, rgba(5,8,12,0.3) 55%, rgba(5,8,12,0.86) 100%), linear-gradient(to bottom, rgba(5,8,12,0.35), transparent 25%, transparent 70%, rgba(5,8,12,0.8))",
+              }}
+            />
           </>
         ) : (
           <>
@@ -67,25 +98,17 @@ export function SecurityHeroSection(
                   "radial-gradient(120% 70% at 50% 0%, #1d3045 0%, #0d1b2a 48%, #05080c 100%)",
               }}
             />
-            {/* Rings centred on the form, not the headline: the eye should end
-                up on the field. Decorative, and faint enough that the white
-                text never sits on anything but dark. */}
-            <svg
-              aria-hidden="true"
-              className="pointer-events-none absolute left-1/2 top-[62%] h-[1400px] w-[1400px] -translate-x-1/2 -translate-y-1/2 md:top-[64%]"
-              viewBox="0 0 1400 1400"
-              fill="none"
-            >
-              {[140, 260, 380, 500, 620, 700].map((r, i) => (
-                <circle key={r} cx="700" cy="700" r={r} stroke="white" strokeOpacity={0.07 - i * 0.009} strokeWidth="1" />
-              ))}
-            </svg>
           </>
         )}
       </div>
 
-      <div className="relative z-20 flex flex-1 justify-center pt-28 pb-16 md:pt-36">
-        <div className="container mx-auto my-auto text-center text-white">
+      <SecurityHeroInteractive
+        photo={Boolean(image)}
+        photoSpots={photoSpots}
+        defaultInstallType={defaultInstallType}
+        formName={formName}
+        intro={
+          <>
           <div className="animate-slide-up mb-4 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 py-1.5 md:mb-8">
             <span className="text-body-sm font-medium tracking-wide text-white/95">
               {badgeNarrow ? (
@@ -105,11 +128,9 @@ export function SecurityHeroSection(
             {subheadline}
           </p>
 
-          <div className="animate-slide-up animate-delay-300 mx-auto w-full md:max-w-2xl">
-            <SecurityHeroFunnel defaultInstallType={defaultInstallType} skipServiceStep formName={formName} />
-          </div>
-        </div>
-      </div>
+          </>
+        }
+      />
 
       <SecurityHeroTrustBar />
     </section>

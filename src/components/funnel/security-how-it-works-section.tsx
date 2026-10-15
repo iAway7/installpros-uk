@@ -9,7 +9,8 @@ import { ProcessStepsSection, type ProcessStep } from "./process-steps-section";
  * required for this product/service and install is complete within a day,
  * lead time is the same as other install services, 7 days". No survey and
  * one day are the two things a homeowner weighing up an alarm would not
- * assume, so each gets a step of its own.
+ * assume, so each gets a step of its own. Jordan added two on 15 October:
+ * the price comes the same day, always, and the engineers are DBS checked.
  *
  * Step one asks about pets because pet-friendly detectors are a selling point,
  * and they only work if the engineer knows before the visit.
@@ -20,8 +21,8 @@ import { ProcessStepsSection, type ProcessStep } from "./process-steps-section";
 
 const STEPS: ProcessStep[] = [
   { title: "Tell us about your home", detail: "The doors, windows and floors, and any pets. A call is enough." },
-  { title: "Get your quote", detail: "No survey visit. One upfront price for the kit and the fitting." },
-  { title: "Fitted in a day", detail: "Usually within 7 days of your quote. Wireless, so no rewiring." },
+  { title: "Get your quote", detail: "The same day, with no survey visit. One upfront price for the kit and the fitting." },
+  { title: "Fitted in a day", detail: "Usually within 7 days, by a DBS checked engineer. Wireless, so no rewiring." },
   { title: "Armed from your phone", detail: "Every device tested, the app set up, your family added." },
 ];
 

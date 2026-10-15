@@ -19,7 +19,9 @@ import { Check, Minus } from "lucide-react";
  * So the table answers the objection the chats actually raise: the right-hand
  * column is a kit bought online, not a rival company, which also keeps it
  * clear of the UK rules on naming competitors. Every left-hand row is
- * something the quotes or Will's process already include. No price: the kit
+ * something the quotes or Will's process already include; the warranty row
+ * is Jordan's answer of 15 October (manufacturer's warranty on the kit, 2 or
+ * 5 years on the workmanship). No price: the kit
  * and our quote are rarely the same list of devices, so a figure would
  * compare unlike with unlike.
  */
@@ -33,6 +35,7 @@ const ROWS: Row[] = [
   { label: "Testing", ours: "Every device walk-tested on the day", theirs: "Up to you" },
   { label: "Your time", ours: "One visit, usually a few hours", theirs: "As long as it takes you" },
   { label: "If something goes wrong", ours: "The team that fitted it, on the phone", theirs: "The manufacturer's helpline" },
+  { label: "Warranty", ours: "The manufacturer's on the kit, plus 2 or 5 years on the fitting", theirs: "The manufacturer's on the kit" },
   { label: "Adding to it later", ours: "A short visit, no rewiring", theirs: "Another job for you" },
 ];
 

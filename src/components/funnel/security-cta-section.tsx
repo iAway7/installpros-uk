@@ -21,7 +21,7 @@ export function SecurityCtaSection({ defaultService, formName }: { defaultServic
         <div className="rounded-3xl bg-secondary px-8 py-16 text-center md:p-16">
           <h2 className="mb-4 h2-section text-foreground">Peace of mind, without the monthly bill.</h2>
           <p className="mb-8 text-body text-foreground md:text-lg">
-            Tell us about your home and we will come back with one upfront price for the kit and the fitting.
+            Tell us about your home and you will have one upfront price for the kit and the fitting the same day.
           </p>
           <div className="mx-auto max-w-xl">
             <SecurityQuoteForm defaultService={defaultService} skipServiceStep formName={formName} />

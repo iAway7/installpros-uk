@@ -24,17 +24,28 @@
  * The panic button answer was dropped: 1 of 16 bot answers wanted one, and
  * it stays in the app section.
  *
- * PENDING before paid traffic:
- *   - Power cut: assumes the hub fitted carries a SIM. True of current Ajax
- *     hubs; confirm which one Will fits.
- *   - Cameras: Ajax cameras are quoted on request, Hikvision is standard.
- *   - Insurance and accreditation are not answered until Will confirms what
- *     is true. Staff have told customers both things.
+ * Jordan's answers of 15 October 2026 set the rest:
+ *   - Monitoring: not offered until the SSAIB accreditation, so the "can be
+ *     added on request" line the quotes carry is gone from here.
+ *   - Accreditation: not SSAIB accredited yet. The page claims none.
+ *   - Price: the same day, always, with the alarm and the cameras priced
+ *     separately when someone wants both.
+ *   - Cameras: Ajax with an Ajax alarm, so it is all one app. Hikvision is
+ *     fitted too, but it has its own page on installpros.co.uk and this is
+ *     the Ajax page, so it is not named here (Gus, 15 October).
+ *   - Hub 2 as standard: backup battery, and a SIM slot. Whether a SIM card
+ *     comes with the install is not known, so the answer says "with a SIM".
+ *   - Warranty: the manufacturer's on the kit, 2 or 5 years on the
+ *     workmanship.
+ *   - Engineers DBS checked and insured.
+ *   - Finance is left out on purpose: Jordan wants it handled carefully, and a
+ *     finance line on a UK page is a regulated promotion. It waits for the
+ *     wording their finance provider approves.
  */
 export const SECURITY_FAQS: { q: string; a: string }[] = [
   {
     q: "How much does an Ajax system cost?",
-    a: "It depends on your home: how many doors, windows and floors, and whether you want cameras. You get one upfront price for the kit and the fitting before anything is ordered, and nothing to pay us monthly after that.",
+    a: "It depends on your home: how many doors, windows and floors, and whether you want cameras. You get your price the same day: one upfront figure for the kit and the fitting, with the alarm and the cameras priced separately if you want both. Nothing is ordered until you say yes, and there is nothing to pay us monthly after that.",
   },
   {
     q: "Is there a monthly fee?",
@@ -42,7 +53,7 @@ export const SECURITY_FAQS: { q: string; a: string }[] = [
   },
   {
     q: "Who responds when the alarm goes off?",
-    a: "The sirens sound and every phone you choose gets an alert, with a photo where a detector has a camera. You decide what happens next: check the photo, call a neighbour, or call 999. Without a monitoring contract the police are not called automatically. If you want a monitoring centre to watch it, that can be added on request.",
+    a: "The sirens sound and every phone you choose gets an alert, with a photo where a detector has a camera. You decide what happens next: check the photo, call a neighbour, or call 999. Without a monitoring contract the police are not called automatically.",
   },
   {
     q: "Can I fit it myself?",
@@ -51,6 +62,10 @@ export const SECURITY_FAQS: { q: string; a: string }[] = [
   {
     q: "Do you need to survey my home first?",
     a: "Usually not. We quote from a call about your doors, windows, floors and pets, then fit everything in one visit, usually within 7 days. If you would rather someone came to look first, tell us when we call.",
+  },
+  {
+    q: "Who comes to fit it?",
+    a: "One of our engineers, DBS checked and insured. They fit and test every device, set up the app on your phones and show everyone in the house how to use it.",
   },
   {
     q: "How is this different from a standard alarm company?",
@@ -62,7 +77,7 @@ export const SECURITY_FAQS: { q: string; a: string }[] = [
   },
   {
     q: "Can you add cameras?",
-    a: "Yes, cameras can be part of the same job, fitted and cabled with the alarm. Ajax cameras sit in the same app as the alarm, so you can look the moment an alert comes in. Tell us which cameras you want when we call.",
+    a: "Yes. Ajax cameras sit in the same app as the alarm, so you can look the moment an alert comes in. They can go in on the same visit, and they are priced separately so you can see what each costs.",
   },
   {
     q: "Can I give someone temporary access?",
@@ -70,7 +85,11 @@ export const SECURITY_FAQS: { q: string; a: string }[] = [
   },
   {
     q: "What happens in a power cut, or if the broadband goes down?",
-    a: "The hub has a backup battery and keeps the system running through a power cut. If the broadband drops, the hub can still send alerts over a mobile SIM.",
+    a: "The Ajax Hub 2 we fit as standard has a backup battery that keeps the system running through a power cut. With a SIM card in the hub, alerts still go out if the broadband drops.",
+  },
+  {
+    q: "What warranty do I get?",
+    a: "Every device carries the manufacturer's warranty. On top of that, our workmanship warranty covers the fitting for 2 or 5 years, depending on the option you choose.",
   },
   {
     q: "What do I get after the installation?",

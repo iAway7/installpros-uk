@@ -3,7 +3,9 @@ import { MainHeader } from "@/components/funnel/main-header";
 import { SecurityHeroSection } from "@/components/funnel/security-hero-section";
 import { WhatsAppFab } from "@/components/funnel/whatsapp-fab";
 import { SecurityLayersSection } from "@/components/funnel/security-layers-section";
+import { SecurityHomeSection } from "@/components/funnel/security-home-section";
 import { SecurityAppSection } from "@/components/funnel/security-app-section";
+import { SecurityEquipmentSection } from "@/components/funnel/security-equipment-section";
 import { SecurityCompareSection } from "@/components/funnel/security-compare-section";
 import { TrustpilotSection } from "@/components/funnel/trustpilot-section";
 import { CustomerStoriesSection } from "@/components/funnel/customer-stories-section";
@@ -64,17 +66,30 @@ import { ExperimentProvider } from "@/components/experiments/experiment-provider
  * Alarm and CCTV together in the H1 is Gus's call (the old page's title).
  * The chats back it: 83 of 125 buyers wanted cameras, 64 an alarm.
  *
- * ── STILL MISSING (questions sent to Will, 14 October) ──────────────────────
- *   - Price. 35 chats ask it first and 23 were lost on it; the median Ajax
- *     alarm quote is £1,545 inc VAT against £549 to £999 published by other
- *     installers. Quote only until Will decides.
- *   - Which cameras: Hikvision is standard, Ajax cameras by exception.
- *   - One warranty term. The team has quoted five different ones.
- *   - Accreditation. Staff told 12 customers the install was accredited, 9
- *     naming SSAIB; an internal note says it is not. The page claims none.
- *   - Photographs. The hero is a dark surface and the one picture is a drawn
- *     phone. Will's AI renders, or real installs, go in the hero `image`.
- *   - Keywords and volumes, which hub, MotionCam as standard or not.
+ * ── JORDAN'S ANSWERS, 15 OCTOBER 2026 ───────────────────────────────────────
+ * To the questions sent on 14 October. On the page now: price the same day,
+ * alarm and cameras priced separately, the warranty (manufacturer's on the
+ * kit, 2 or 5 years on the workmanship), engineers DBS checked and insured,
+ * Hub 2 as standard, Ajax cameras with an Ajax alarm, a visit on request.
+ * Kept off on purpose:
+ *   - Monitoring. Not until the SSAIB accreditation, so the FAQ no longer
+ *     says it can be added on request.
+ *   - Accreditation. Not SSAIB accredited yet. Staff told 12 customers the
+ *     install was accredited, 9 naming SSAIB. The page claims none.
+ *   - Ajax training or partner. Only a couple of engineers would have it,
+ *     and the page cannot promise who turns up.
+ *   - Finance. To be handled carefully, and a finance line is a regulated
+ *     promotion; it waits for wording their provider approves.
+ *   - Price figures and a camera package. Jordan prices each job himself.
+ *   - The Handover & Support Plan. They want fewer of those leads.
+ *   - Checkatrade, TrustATrader: not on either.
+ *   - Hikvision. Fitted on camera-only jobs, but it has its own page on
+ *     installpros.co.uk; this page is Ajax only (Gus, 15 October).
+ *
+ * ── STILL MISSING ───────────────────────────────────────────────────────────
+ *   - Photographs. Ajax's own camera render is the hero, pending the rights.
+ *   - MotionCam as standard or extra (unanswered). Copy says "where a
+ *     detector has a camera", which is true either way.
  *   - Proof of its own. The reviews are the company's, about engineers and
  *     service; a few name Starlink. None mentions an alarm. TrackRecordSection
  *     and the coverage map stay out because their numbers are Starlink's.
@@ -126,6 +141,27 @@ export default function AjaxSecurityInstallationPage() {
       <ExperimentProvider>
         <main id="main" tabIndex={-1} className="flex flex-col outline-none">
           <SecurityHeroSection
+            // Prototype, 15 October 2026: Ajax's own ceiling-mounted DomeCam
+            // render, from the Ajax site, which Gus sent as the look he wants
+            // (a camera fixed to a surface, not floating). Rights to be
+            // confirmed before this goes live; InstallPros is not an Ajax
+            // partner yet. Desktop: the full 2.4:1 frame, camera right of
+            // centre. Phones: a 3:4 crop centred on the camera.
+            image="/funnel/ajax-ceiling-1920.webp"
+            imageSrcSet="/funnel/ajax-ceiling-1280.webp 1280w, /funnel/ajax-ceiling-1920.webp 1920w, /funnel/ajax-ceiling-2560.webp 2560w"
+            imageMobile="/funnel/ajax-ceiling-phone-640.webp 640w, /funnel/ajax-ceiling-phone-828.webp 828w"
+            // Slides the camera right, so the end of the subheadline does not
+            // sit over the lens, without cutting it off at 1440. Phones use
+            // their own crop. Must match photoSpots.desktop.position.
+            imagePosition="44% 0%"
+            // Fractions of each image: the recording light in the small window
+            // on the right of the camera's band, LIVE on the ceiling above the
+            // camera (beside it, it ran off the right edge at 1440). The
+            // phone crop is x 2130 to 3330 of the 3840 frame, full height.
+            photoSpots={{
+              desktop: { width: 3840, height: 1600, position: [0.44, 0], led: [0.779, 0.475], live: [0.7, 0.18], focus: [0.71, 0.5] },
+              mobile: { width: 1200, height: 1600, position: [0.5, 0], led: [0.7175, 0.475] },
+            }}
             // The two process facts a homeowner would not assume, both Will's.
             badge="No survey needed. Fitted in a day."
             badgeNarrow="No survey. Fitted in a day."
@@ -151,7 +187,9 @@ export default function AjaxSecurityInstallationPage() {
               Monthly fees and standard alarm companies (Q2, Q3) live in the
               FAQ: buyers in the chats never compared us with ADT. */}
           <SecurityLayersSection />
+          <SecurityHomeSection />
           <SecurityAppSection />
+          <SecurityEquipmentSection />
           <SecurityCompareSection />
           {/* Proof before process, as on every segment landing. */}
           <TrustpilotSection />

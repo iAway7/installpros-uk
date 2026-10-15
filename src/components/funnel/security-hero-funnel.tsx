@@ -57,7 +57,10 @@ const cleanPostcode = (v: string) => v.toUpperCase().replace(/[^A-Z0-9 ]/g, "").
  * back ("We're available in Westminster") before the lead form begins.
  */
 export function SecurityHeroFunnel(
-  { smartCoverage = false, addressMode = false, defaultInstallType = "", skipServiceStep = false, formName = "hero_funnel" }: {
+  { smartCoverage = false, addressMode = false, defaultInstallType = "", skipServiceStep = false, formName = "hero_funnel", onNeedChange }: {
+    /** Reports the "What do you need?" answer, so the hero's alert cards can
+     *  answer it. Null until chosen, and again after Back. */
+    onNeedChange?: (need: SecurityNeed | null) => void;
     smartCoverage?: boolean;
     addressMode?: boolean;
     /** Pre-selects the install type on a segment landing. Somebody who arrived
@@ -121,6 +124,10 @@ export function SecurityHeroFunnel(
     setNeed(value);
     track(EVENTS.CTA_CLICKED, { cta_id: `need_${value}`, cta_label: value, cta_location: "hero" });
   }
+
+  useEffect(() => {
+    onNeedChange?.(need);
+  }, [need, onNeedChange]);
 
   // Straight to the postcode once they have picked, so the keyboard is up.
   useEffect(() => {
