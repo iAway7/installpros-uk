@@ -49,8 +49,10 @@ export const TARGET = {
   mobileVisitorLead: 0.21,
 } as const;
 
-/** A metric with no baseline simply has no row: better an absent line than a
- *  number nobody can defend. */
+/** A metric a page has no baseline for is simply left out here. The row still
+ *  renders with its live figure; the Baseline and Target cells come up empty
+ *  and the status reads "Not enough data", which is the honest version of
+ *  both "no baseline exists" and "too few visitors to call it". */
 export interface Programme {
   formStart?: number;
   completion?: number;
@@ -91,7 +93,7 @@ export interface Programme {
  * pages that form sits on, the number that at least agrees with itself is the
  * one from the single tool.
  *
- * mobileVisitorLead has no row: Paperform does not give the device split.
+ * mobileVisitorLead has no baseline: Paperform gives no device split.
  *
  * KNOWN FLOOR. 40 counts only the leads through this form. The page also has
  * four "Get a quote" buttons going to /contact-details/, a generic form shared
@@ -137,7 +139,7 @@ export const COMMERCIAL_TARGET: Programme = {
  * 31.1%. A smaller, more decided audience that the form then struggles to
  * get going.
  *
- * mobileVisitorLead has no row: Paperform does not give the device split.
+ * mobileVisitorLead has no baseline: Paperform gives no device split.
  */
 export const SECURITY_BASELINE: Programme = {
   formStart: 0.174,
@@ -175,7 +177,7 @@ export const SECURITY_TARGET: Programme = {
  * floor with a known width beats no floor; do not read a beat or a miss of
  * a point as a result.
  *
- * completion has no row either, and that one is worth explaining because the
+ * completion has no baseline, and that one is worth explaining because the
  * number exists and looks fine. It is 6/10, which prints as 60% against 31%
  * to 36% on the other three. The arithmetic is right; ten starts is simply
  * not enough denominator to make a rate out of, and one person either way
@@ -183,11 +185,13 @@ export const SECURITY_TARGET: Programme = {
  * to hold 60% completion forever, so the row would have read "below" from the
  * first day for a reason that has nothing to do with the page.
  *
- * formStart and visitorLead stay because their denominator is 96. Thin, and
- * the warning above applies, but ninety-six is a number you can argue about.
- * Ten is not. The line is the denominator, not the rate.
+ * formStart and visitorLead keep theirs because their denominator is 96.
+ * Thin, and the warning above applies, but ninety-six is a number you can
+ * argue about. Ten is not. The line is the denominator, not the rate.
  *
- * mobileVisitorLead has no row: Paperform does not give the device split.
+ * mobileVisitorLead has no baseline: Paperform gives no device split. The row
+ * still shows the live figure, as every row does; it just has nothing beside
+ * it to be judged against.
  */
 export const VEHICLES_BASELINE: Programme = {
   formStart: 0.104,
@@ -229,8 +233,11 @@ export type TargetStatus = "beaten" | "below" | "insufficient";
 export interface TargetRow {
   metric: string;
   detail: string;
-  baseline: number;
-  target: number;
+  /** null when this page has no baseline for the metric. The row still shows,
+   *  because the current number is worth seeing even with nothing to judge it
+   *  against; only the comparison is missing. */
+  baseline: number | null;
+  target: number | null;
   /** null when it cannot be computed (no visitors, no starts). */
   actual: number | null;
   status: TargetStatus;
@@ -297,8 +304,10 @@ export function buildTargetsReport(
   const mobile = devices.find((d) => d.device === "mobile");
   const mobileRate = mobile?.rate ?? null;
 
-  // A metric the page has no baseline for does not get a row. The commercial
-  // programme has two of the four; see COMMERCIAL_BASELINE for why.
+  // Every metric gets a row, baseline or not. A page with no baseline for one
+  // of them still has a current number, and that is the number somebody came
+  // to the dashboard to see; hiding the row to avoid an empty cell loses the
+  // measurement to protect the comparison.
   const defs = [
     { key: "formStart", metric: "Form-start rate", detail: "visitors who touch the first field", actual: formStart, sample: visitors },
     { key: "completion", metric: "Form completion", detail: "leads / form starts", actual: completion, sample: starts, hold: true },
@@ -306,19 +315,20 @@ export function buildTargetsReport(
     { key: "mobileVisitorLead", metric: "Mobile visitor → lead", detail: "closing half the gap to desktop", actual: mobileRate, sample: mobile?.visitors ?? 0 },
   ] as const;
 
-  const rows: TargetRow[] = defs.flatMap((d) => {
-    const b = baseline[d.key];
-    const t = target[d.key];
-    if (b === undefined || t === undefined) return [];
-    return [{
+  const rows: TargetRow[] = defs.map((d) => {
+    const b = baseline[d.key] ?? null;
+    const t = target[d.key] ?? null;
+    return {
       metric: d.metric,
       detail: d.detail,
       baseline: b,
       target: t,
       actual: d.actual,
-      status: status(d.actual, t, d.sample),
-      ...("hold" in d ? { hold: d.hold } : {}),
-    }];
+      // Nothing to judge against reads the same way to a reader as too few
+      // visitors to judge: we cannot call it. Both say "Not enough data".
+      status: t === null ? ("insufficient" as TargetStatus) : status(d.actual, t, d.sample),
+      ...("hold" in d && t !== null ? { hold: d.hold } : {}),
+    };
   });
 
   return { visitors, starts, leads: total, rows, devices, whatsappAfterLead: counts.whatsappAfterLead };
