@@ -175,18 +175,28 @@ export const SECURITY_TARGET: Programme = {
  * floor with a known width beats no floor; do not read a beat or a miss of
  * a point as a result.
  *
+ * completion has no row either, and that one is worth explaining because the
+ * number exists and looks fine. It is 6/10, which prints as 60% against 31%
+ * to 36% on the other three. The arithmetic is right; ten starts is simply
+ * not enough denominator to make a rate out of, and one person either way
+ * moves it ten points. Left in as a target it would have asked the new page
+ * to hold 60% completion forever, so the row would have read "below" from the
+ * first day for a reason that has nothing to do with the page.
+ *
+ * formStart and visitorLead stay because their denominator is 96. Thin, and
+ * the warning above applies, but ninety-six is a number you can argue about.
+ * Ten is not. The line is the denominator, not the rate.
+ *
  * mobileVisitorLead has no row: Paperform does not give the device split.
  */
 export const VEHICLES_BASELINE: Programme = {
   formStart: 0.104,
-  completion: 0.6,
   visitorLead: 0.0625,
 };
 
-/** Same rule as the other three: hold completion, lift the others by a fifth. */
+/** Same rule as the other three, minus the completion hold: lift by a fifth. */
 export const VEHICLES_TARGET: Programme = {
   formStart: 0.125,
-  completion: 0.6,
   visitorLead: 0.075,
 };
 
