@@ -164,6 +164,9 @@ export default function AjaxSecurityInstallationPage() {
             // In the customers' words: "cameras" and "alarm" (70 and 42 of 125
             // chats), not "security system" or "vulnerable entry points".
             subheadline="Alarm and cameras on one app, every door and window covered, alerts wherever you are. Usually fitted within 7 days."
+            // Phones: two lines instead of three (Gus, 16 October). The badge
+            // already says fitted in a day, and the 7 days is in How it works.
+            subheadlineNarrow="Alarm and cameras on one app, alerts wherever you are."
             defaultInstallType="security"
             // Postcode, not address: Will's call for commercial on 7 October,
             // and the funnel /install-quote runs on.

@@ -24,7 +24,7 @@ import { SecurityHeroInteractive, type PhotoSpots } from "./security-hero-camera
  *   - No flag on the badge: it does not talk about coverage.
  */
 export function SecurityHeroSection(
-  { image, imageMobile, imageSrcSet, imagePosition, photoSpots, headline, subheadline, badge, badgeNarrow, headlineConfigKey, defaultInstallType, formName }: {
+  { image, imageMobile, imageSrcSet, imagePosition, photoSpots, headline, subheadline, subheadlineNarrow, badge, badgeNarrow, headlineConfigKey, defaultInstallType, formName }: {
     /** A REAL photograph of an Ajax install. Omit it for the dark surface. */
     image?: string;
     /** Phone crop of the same photograph (a srcset string is fine). */
@@ -39,6 +39,11 @@ export function SecurityHeroSection(
     photoSpots?: PhotoSpots;
     headline: string;
     subheadline: string;
+    /** Shorter subheadline for phones, like `badgeNarrow`. Gus, 16 October:
+     *  on a phone the H1 and the subheadline were three lines each and the
+     *  hero read as busy. The H1 is the shared HeroHeadline, so the phone
+     *  line count comes down here. */
+    subheadlineNarrow?: string;
     badge: string;
     badgeNarrow?: string;
     headlineConfigKey: string;
@@ -125,7 +130,14 @@ export function SecurityHeroSection(
           <HeroHeadline headline={headline} configKey={headlineConfigKey} />
 
           <p className="animate-slide-up animate-delay-200 mx-auto mb-8 max-w-3xl text-balance text-lg text-white/95 md:mb-10 md:text-xl lg:mb-12 lg:text-2xl">
-            {subheadline}
+            {subheadlineNarrow ? (
+              <>
+                <span className="md:hidden">{subheadlineNarrow}</span>
+                <span className="hidden md:inline">{subheadline}</span>
+              </>
+            ) : (
+              subheadline
+            )}
           </p>
 
           </>
