@@ -1,41 +1,42 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useInView, useReducedMotion } from "motion/react";
-import { Camera, KeyRound, ShieldCheck, UserRound } from "lucide-react";
+import { Camera, Flashlight, ShieldCheck, TriangleAlert } from "lucide-react";
 
 /**
  * The phone in the Ajax page's "Easy for the whole family" section, animated.
- * 15 October 2026: Gus liked the hero's alert cards and asked for the phone's
- * notifications to move the same way.
+ *
+ * 16 October 2026: drawn in the look of Ajax's own app screenshots, which Gus
+ * shared: a dark lock screen, and the alerts as iPhone notifications from the
+ * Ajax app, in Ajax's wording ("Home: motion detected, MotionCam in
+ * Hallway"), a red "Critical" line when it is an alarm, the cards spilling
+ * over the edge of the phone and narrower the older they are. It stays our
+ * drawing: the app icon is a plain shield, not the Ajax mark, and nothing is
+ * a screenshot.
  *
  * The four alerts are one day in one house, so they arrive as a day would:
- * when the phone scrolls into view, each drops in at the top, the earlier
- * ones slide down, and the lock-screen clock moves to its time, 08:12, 10:02,
- * 17:46, 22:31. Newest on top, the way a phone stacks them. The last one, the
- * photo to check, keeps a soft pulse on its icon.
+ * each drops in at the top, the earlier ones slide down, and the clock moves
+ * to its time, 08:12, 10:02, 17:46, 22:31. The two text versions of the
+ * section quote the first two (Sarah at 08:12, Maria at 10:02), so those keep
+ * their names and times.
  *
  * It loops (Gus, 16 October): once the day is in, it holds for a few seconds,
  * the alerts clear, the clock goes back to the morning and the day starts
  * again. Only while the phone is on screen; scrolled away it stops, and it
  * starts from the morning when it comes back. The phone never changes size
- * while it plays: an invisible copy of the full list holds the space and the
- * animated list sits over it. With prefers-reduced-motion the final state
+ * while it plays: an invisible copy of the full stack, laid out exactly like
+ * the last frame, holds the space. With prefers-reduced-motion the final state
  * shows straight away and stays.
- *
- * THE PHONE IS AN ILLUSTRATION, not a screenshot of the Ajax app: no Ajax logo,
- * no copy of their interface, a generic lock screen with the kind of alert the
- * system sends. Each alert is one of the sales-call points: armed from the
- * app, a temporary user, a key fob, a photo to check before anyone panics.
  */
 
-type Alert = { icon: ReactNode; title: string; detail: string; time: string; tone?: "warn" };
+type Alert = { message: string; time: string; critical?: boolean };
 
 const ALERTS: Alert[] = [
-  { icon: <ShieldCheck className="h-4 w-4" />, title: "Armed, away", detail: "Sarah, from the app", time: "08:12" },
-  { icon: <UserRound className="h-4 w-4" />, title: "Disarmed", detail: "Maria, temporary access", time: "10:02" },
-  { icon: <KeyRound className="h-4 w-4" />, title: "Front door opened", detail: "Tom, key fob", time: "17:46" },
-  { icon: <Camera className="h-4 w-4" />, title: "Motion in the hallway", detail: "Photo attached, tap to check", time: "22:31", tone: "warn" },
+  { message: "Home: armed by Sarah, from the app", time: "08:12" },
+  { message: "Home: disarmed by Maria, temporary access", time: "10:02" },
+  { message: "Home: disarmed by Tom, key fob", time: "17:46" },
+  { message: "Home: motion detected, MotionCam in Hallway. Photo attached", time: "22:31", critical: true },
 ];
 
 /** Before the first alert lands. */
@@ -44,36 +45,44 @@ const FIRST_DELAY = 450;
 const STEP = 1150;
 /** How long the whole day stays on screen before the next one starts. */
 const HOLD = 3500;
+/** How much narrower each older card is, per side, in px. */
+const STEP_IN = 12;
 
-function AlertRow({ alert, pulse }: { alert: Alert; pulse?: boolean }) {
+function Notice({ alert, pulse }: { alert: Alert; pulse?: boolean }) {
   return (
-    <>
-      <span
-        className={`relative mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${
-          alert.tone === "warn" ? "bg-[#C70505] text-white" : "bg-white/15 text-white"
-        }`}
-      >
+    <div className="flex items-start gap-2.5 rounded-[18px] bg-[#2a2b2d]/90 px-3 py-2.5 text-left text-white shadow-[0_12px_30px_-12px_rgba(0,0,0,0.7)] ring-1 ring-white/10 backdrop-blur-md">
+      {/* The app icon: white like Ajax's, with a plain shield, not their mark. */}
+      <span className="relative mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-[9px] bg-white text-[#111]">
         {pulse && (
           <motion.span
-            className="absolute inset-0 rounded-lg"
-            animate={{ boxShadow: ["0 0 0 0 rgba(199,5,5,0.55)", "0 0 0 8px rgba(199,5,5,0)"] }}
+            className="absolute inset-0 rounded-[9px]"
+            animate={{ boxShadow: ["0 0 0 0 rgba(255,69,58,0.6)", "0 0 0 8px rgba(255,69,58,0)"] }}
             transition={{ duration: 1.6, ease: "easeOut", repeat: Infinity }}
           />
         )}
-        {alert.icon}
+        <ShieldCheck className="h-5 w-5" strokeWidth={2.25} />
       </span>
       <span className="min-w-0 flex-1">
         <span className="flex items-baseline justify-between gap-2">
-          <span className="truncate text-[14px] font-semibold leading-tight">{alert.title}</span>
-          <span className="shrink-0 text-[11px] text-white/60">{alert.time}</span>
+          {alert.critical ? (
+            <span className="flex items-center gap-1 text-[11px] font-semibold uppercase tracking-wide text-[#ff453a]">
+              <TriangleAlert className="h-3 w-3" strokeWidth={2.5} />
+              Critical
+            </span>
+          ) : (
+            <span className="text-[13px] font-semibold leading-tight">Ajax</span>
+          )}
+          <span className="shrink-0 text-[11px] tabular-nums text-white/55">{alert.time}</span>
         </span>
-        <span className="mt-0.5 block truncate text-[13px] leading-snug text-white/75">{alert.detail}</span>
+        {alert.critical && <span className="block text-[13px] font-semibold leading-tight">Ajax</span>}
+        <span className="mt-0.5 block text-[12.5px] leading-snug text-white/85">{alert.message}</span>
       </span>
-    </>
+    </div>
   );
 }
 
-const ROW = "flex items-start gap-3 rounded-2xl bg-white/[0.12] px-3 py-2.5 text-left text-white backdrop-blur";
+/** Newest on top at full width, each older one a step narrower. */
+const inset = (i: number) => ({ marginLeft: i * STEP_IN, marginRight: i * STEP_IN });
 
 export function SecurityPhoneMock() {
   const reduce = useReducedMotion();
@@ -96,6 +105,7 @@ export function SecurityPhoneMock() {
   }, [inView, reduce, day]);
 
   const visible = ALERTS.slice(0, shown).reverse();
+  const finalStack = [...ALERTS].reverse();
   const clock = shown > 0 ? ALERTS[shown - 1].time : START_TIME;
   const done = shown === ALERTS.length;
 
@@ -103,66 +113,90 @@ export function SecurityPhoneMock() {
     <div
       ref={ref}
       role="img"
-      aria-label="Illustration of a phone lock screen with four alarm alerts: armed away by Sarah from the app, disarmed by Maria with temporary access, front door opened by Tom with a key fob, and motion in the hallway with a photo to check."
+      aria-label="Illustration of a phone lock screen with four Ajax app notifications: armed by Sarah from the app, disarmed by Maria with temporary access, disarmed by Tom with a key fob, and a critical alert for motion in the hallway with a photo attached."
       className="relative mx-auto w-full max-w-[280px] md:max-w-[320px]"
     >
       {/* A soft halo so the dark phone does not sit on white like a hole. */}
       <div aria-hidden="true" className="absolute -inset-10 rounded-[4rem] bg-[radial-gradient(closest-side,rgba(13,27,42,0.10),transparent)]" />
+
+      {/* The phone. Not clipped, so the notifications can spill over its
+          edges; the wallpaper is clipped on its own layer. */}
       <div
         aria-hidden="true"
-        className="relative overflow-hidden rounded-[2.75rem] border-[9px] border-[#111] shadow-raised"
-        style={{ background: "radial-gradient(120% 60% at 50% 0%, #1d3045 0%, #0d1b2a 55%, #05080c 100%)" }}
+        className="relative rounded-[2.75rem] border-[9px] border-[#0c100e] shadow-raised ring-1 ring-[#5ce0a4]/25"
       >
-        <div className="mx-auto mt-2.5 h-[22px] w-[92px] rounded-full bg-[#111]" />
+        <div
+          className="absolute inset-0 overflow-hidden rounded-[2.2rem]"
+          style={{
+            background:
+              "repeating-linear-gradient(135deg, rgba(255,255,255,0.025) 0 2px, transparent 2px 26px), repeating-linear-gradient(45deg, rgba(255,255,255,0.02) 0 2px, transparent 2px 26px), radial-gradient(120% 70% at 50% 0%, #26292c 0%, #121416 55%, #050607 100%)",
+          }}
+        />
 
-        <div className="px-4 pb-6 pt-6 text-center text-white">
-          <p className="text-body-sm font-medium text-white/70">Tuesday</p>
-          <div className="relative mt-0.5 h-[56px] overflow-hidden">
-            <AnimatePresence initial={false} mode="popLayout">
-              <motion.p
-                key={clock}
-                className="absolute inset-x-0 text-[56px] font-semibold leading-none tracking-[-0.03em] tabular-nums"
-                initial={reduce ? false : { y: 18, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: -18, opacity: 0 }}
-                transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-              >
-                {clock}
-              </motion.p>
-            </AnimatePresence>
-          </div>
-        </div>
+        <div className="relative">
+          <div className="mx-auto mt-2.5 h-[22px] w-[92px] rounded-full bg-[#0c100e]" />
 
-        <div className="relative px-3 pb-8">
-          {/* Holds the space of the full stack, so the phone keeps its size. */}
-          <ul className="invisible space-y-2">
-            {ALERTS.map((a) => (
-              <li key={a.title} className={ROW}>
-                <AlertRow alert={a} />
-              </li>
-            ))}
-          </ul>
-
-          <ul className="absolute inset-x-3 top-0 space-y-2">
-            <AnimatePresence initial={false}>
-              {visible.map((a) => (
-                <motion.li
-                  key={a.title}
-                  layout={!reduce}
-                  className={ROW}
-                  initial={reduce ? false : { opacity: 0, y: -18, scale: 0.96 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, transition: { duration: 0.35 } }}
-                  transition={{ type: "spring", stiffness: 380, damping: 32 }}
+          <div className="px-4 pb-5 pt-5 text-center text-white">
+            <p className="text-body-sm font-medium text-white/65">Tuesday</p>
+            <div className="relative mt-0.5 h-[56px] overflow-hidden">
+              <AnimatePresence initial={false} mode="popLayout">
+                <motion.p
+                  key={clock}
+                  className="absolute inset-x-0 text-[56px] font-semibold leading-none tracking-[-0.03em] text-white/85 tabular-nums"
+                  initial={reduce ? false : { y: 18, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={{ y: -18, opacity: 0 }}
+                  transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
                 >
-                  <AlertRow alert={a} pulse={done && !reduce && a.tone === "warn"} />
-                </motion.li>
-              ))}
-            </AnimatePresence>
-          </ul>
-        </div>
+                  {clock}
+                </motion.p>
+              </AnimatePresence>
+            </div>
+          </div>
 
-        <div className="mx-auto mb-2.5 h-[5px] w-[110px] rounded-full bg-white/50" />
+          {/* The stack runs past the phone on each side, like the cards in
+              Ajax's own screenshots. The invisible copy and the live list
+              span exactly the same width. */}
+          <div className="relative px-3 pb-4">
+            <ul className="invisible -mx-[32px] space-y-2">
+              {finalStack.map((a, i) => (
+                <li key={a.time} style={inset(i)}>
+                  <Notice alert={a} />
+                </li>
+              ))}
+            </ul>
+
+            <ul className="absolute -inset-x-[20px] top-0 space-y-2">
+              <AnimatePresence initial={false}>
+                {visible.map((a, i) => (
+                  <motion.li
+                    key={a.time}
+                    layout={!reduce}
+                    style={inset(i)}
+                    initial={reduce ? false : { opacity: 0, y: -18, scale: 0.96 }}
+                    animate={{ opacity: 1 - i * 0.08, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, transition: { duration: 0.35 } }}
+                    transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                  >
+                    <Notice alert={a} pulse={done && !reduce && a.critical} />
+                  </motion.li>
+                ))}
+              </AnimatePresence>
+            </ul>
+          </div>
+
+          {/* The lock screen's two buttons. */}
+          <div className="flex items-center justify-between px-7 pb-3">
+            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white/75">
+              <Flashlight className="h-4 w-4" />
+            </span>
+            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white/75">
+              <Camera className="h-4 w-4" />
+            </span>
+          </div>
+
+          <div className="mx-auto mb-2.5 h-[5px] w-[110px] rounded-full bg-white/50" />
+        </div>
       </div>
     </div>
   );
