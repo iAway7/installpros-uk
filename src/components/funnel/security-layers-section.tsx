@@ -22,6 +22,13 @@ import { SecurityLayersScene, type LayerCard } from "./security-layers-scene";
  * rights, no real home. It is 1376 px wide, soft at full width on large
  * retina screens; a 2K or 4K version goes in at the same paths.
  *
+ * 16 October: the first two cards say where the devices go rather than what
+ * they are. The buyer arriving here often names the parts before we do (Hub 2,
+ * MotionCam, DoorProtect in their first message), so explaining a vibration
+ * sensor talks down to them; placement is the part they cannot buy online.
+ * Pet-friendly and photo verification keep their wording: they answer real
+ * objections.
+ *
  * Fire and leaks are a line under the cards: they are not about anyone
  * getting in.
  */
@@ -32,13 +39,13 @@ const CARDS: LayerCard[] = [
   {
     icon: <Vibrate className="h-5 w-5" />,
     title: "Vibration sensors",
-    detail: "A contact knows when a door or window opens. This feels someone forcing it, before it gives.",
+    detail: "Placed on the doors and windows a break-in would try first.",
     litAt: 1,
   },
   {
     icon: <Footprints className="h-5 w-5" />,
     title: "Motion detectors",
-    detail: "They cover the rooms anyone would have to cross to get through the house.",
+    detail: "Sited on the routes anyone has to take through the house.",
     litAt: 3,
   },
   {

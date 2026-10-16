@@ -16,6 +16,12 @@ import { Check, Minus } from "lucide-react";
  *   - Will's question 4, what the upfront price buys after the install, is
  *     the same question asked the other way round.
  *
+ * "Your time" is the first row (16 October). The price objection in the
+ * chats is aimed at the labour line ("it's a maximum half day job and you're
+ * charging 1000 just for installation"), so the table opens on the visit
+ * being a few hours against however long it takes you, and the rows under it
+ * are what happens in those hours. Its wording is unchanged.
+ *
  * So the table answers the objection the chats actually raise: the right-hand
  * column is a kit bought online, not a rival company, which also keeps it
  * clear of the UK rules on naming competitors. Every left-hand row is
@@ -29,11 +35,11 @@ import { Check, Minus } from "lucide-react";
 type Row = { label: string; ours: string; theirs: string };
 
 const ROWS: Row[] = [
+  { label: "Your time", ours: "One visit, usually a few hours", theirs: "As long as it takes you" },
   { label: "Choosing the kit", ours: "Specified for your doors, windows and rooms", theirs: "You work out what you need" },
   { label: "Placing it", ours: "Sited to cover the ways in, set for your pets", theirs: "You place and tune each device" },
   { label: "Setting it up", ours: "App, users and arming modes done before we leave", theirs: "You set up the app and pair every device" },
   { label: "Testing", ours: "Every device walk-tested on the day", theirs: "Up to you" },
-  { label: "Your time", ours: "One visit, usually a few hours", theirs: "As long as it takes you" },
   { label: "If something goes wrong", ours: "The team that fitted it, on the phone", theirs: "The manufacturer's helpline" },
   { label: "Warranty", ours: "The manufacturer's on the kit, plus 2 or 5 years on the fitting", theirs: "The manufacturer's on the kit" },
   { label: "Adding to it later", ours: "A short visit, no rewiring", theirs: "Another job for you" },
