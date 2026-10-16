@@ -52,8 +52,9 @@ const INSTALL_OPTIONS = [
  * "Check Availability" is a Starlink question, where coverage is the real
  * doubt. Alarms and cameras are fitted UK-wide, and only 5 of 125 security
  * buyers in the chats asked whether we cover their area, so the step asks
- * where the property is instead, and the answer says "We cover {area}"
- * rather than "Great! We're available in". The checking line follows.
+ * where the property is instead. Since 17 October nothing is said once
+ * the postcode checks out (Gus): no "We cover {area}", no checking line,
+ * only the tick in the field and Next coming on.
  * Everything else, validation and tracking included, is the original's, so
  * the funnel numbers stay comparable with the other pages.
  *
@@ -389,17 +390,6 @@ export function SecurityQuoteForm({
                 )}
               </div>
               {error && <p id="cta-err-postcode" role="alert" className="text-center text-body text-error">{error}</p>}
-              <div className="min-h-7">
-                {status === "checking" && <p className="text-center text-muted-foreground">Checking your postcode...</p>}
-                {status === "available" && (
-                  <div className="space-y-4">
-                    <p className="flex flex-wrap items-center justify-center gap-x-1.5 text-center text-body text-foreground">
-                      <Check className="h-5 w-5 rounded bg-success/20 p-0.5 text-success" />
-                      <span className="font-semibold text-success">We cover {region}.</span>
-                    </p>
-                  </div>
-                )}
-              </div>
             </div>
           )}
 

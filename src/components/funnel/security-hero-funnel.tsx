@@ -43,8 +43,9 @@ const cleanPostcode = (v: string) => v.toUpperCase().replace(/[^A-Z0-9 ]/g, "").
  * "Check Availability" is a Starlink question, where coverage is the real
  * doubt. Alarms and cameras are fitted UK-wide, and only 5 of 125 security
  * buyers in the chats asked whether we cover their area, so the step asks
- * where the property is instead, and the answer says "We cover {area}"
- * rather than "Great! We're available in". The checking line follows.
+ * where the property is instead. Since 17 October nothing is said once
+ * the postcode checks out (Gus): no "We cover {area}", no checking line,
+ * only the tick in the field and Next coming on.
  * Everything else, validation and tracking included, is the original's, so
  * the funnel numbers stay comparable with the other pages.
  *
@@ -53,15 +54,14 @@ const cleanPostcode = (v: string) => v.toUpperCase().replace(/[^A-Z0-9 ]/g, "").
  */
 /**
  * Hero multi-step funnel: postcode availability → name → phone → email → install
- * type. The postcode is validated against postcodes.io and the area is echoed
- * back ("We're available in Westminster") before the lead form begins.
+ * type. The postcode is validated against postcodes.io before the lead form
+ * begins.
  */
 export function SecurityHeroFunnel(
-  { smartCoverage = false, addressMode = false, defaultInstallType = "", skipServiceStep = false, formName = "hero_funnel", onNeedChange }: {
+  { addressMode = false, defaultInstallType = "", skipServiceStep = false, formName = "hero_funnel", onNeedChange }: {
     /** Reports the "What do you need?" answer, so the hero's alert cards can
      *  answer it. Null until chosen, and again after Back. */
     onNeedChange?: (need: SecurityNeed | null) => void;
-    smartCoverage?: boolean;
     addressMode?: boolean;
     /** Pre-selects the install type on a segment landing. Somebody who arrived
      *  on the commercial page and read a commercial headline should not be
@@ -93,7 +93,6 @@ export function SecurityHeroFunnel(
   const totalSteps = lastStep + 1;
 
   const [step, setStep] = useState(0);
-  const [smartMessage, setSmartMessage] = useState<string | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [direction, setDirection] = useState<"forward" | "backward">("forward");
   const [postcode, setPostcode] = useState("");
@@ -268,7 +267,6 @@ export function SecurityHeroFunnel(
   async function check(pc: string) {
     setError("");
     setStatus("checking");
-    setSmartMessage(null);
     const res = await checkUkPostcode(pc);
     if (res.status === "available") {
       setRegion(res.region);
@@ -278,20 +276,6 @@ export function SecurityHeroFunnel(
         postcode: pc, coverage_result: "available", location_name: res.region,
         form_name: formName, form_position: "hero",
       });
-      // A/B variant: swap in a data-driven coverage message when available.
-      // Fire-and-forget, the generic copy stays if this fails or is slow.
-      if (smartCoverage) {
-        fetch("/api/broadband-coverage", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ postcode: pc }),
-        })
-          .then((r) => (r.ok ? r.json() : null))
-          .then((json: { state?: string; message?: string | null } | null) => {
-            if (json?.message && json.state !== "invalid") setSmartMessage(json.message);
-          })
-          .catch(() => {});
-      }
     } else if (res.status === "invalid") {
       setStatus("invalid");
       setError("That doesn't look like a valid UK postcode. Please check and try again.");
@@ -471,25 +455,6 @@ export function SecurityHeroFunnel(
               {error && (
                 <p id="err-postcode" role="alert" className="text-center text-body text-error">{error}</p>
               )}
-              <div className="min-h-7">
-                {status === "checking" && <p className="text-center text-white/70">Checking your postcode...</p>}
-                {status === "available" && (
-                  <div className="space-y-4">
-                    {smartMessage ? (
-                      <p className="flex flex-wrap items-center justify-center gap-x-1.5 text-center text-body text-white">
-                        <Check className="h-5 w-5 rounded bg-success-bright/20 p-0.5 text-success-bright" />
-                        <span className="font-semibold text-success-bright">We cover {region}.</span>
-                        <span>{smartMessage}</span>
-                      </p>
-                    ) : (
-                      <p className="flex flex-wrap items-center justify-center gap-x-1.5 text-center text-body text-white">
-                        <Check className="h-5 w-5 rounded bg-success-bright/20 p-0.5 text-success-bright" />
-                        <span className="font-semibold text-success-bright">We cover {region}.</span>
-                      </p>
-                    )}
-                  </div>
-                )}
-              </div>
             </div>
           )}
 
