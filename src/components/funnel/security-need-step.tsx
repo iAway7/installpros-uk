@@ -1,6 +1,6 @@
 "use client";
 
-import { Cctv, ShieldCheck, Siren } from "lucide-react";
+import { ArrowRight, Cctv, ShieldCheck, Siren } from "lucide-react";
 
 /**
  * First step of the Ajax funnels: one tap, before the postcode.
@@ -26,6 +26,12 @@ import { Cctv, ShieldCheck, Siren } from "lucide-react";
  * the tap is the answer, and in the closing form's narrower card the circle
  * collided with the icon at 375. FormOption is shared with /install-quote, so
  * it is not the place to change that.
+ *
+ * Under the chips, when the form passes `onRepair`, one small line:
+ * "Existing system not working?" (17 October). Someone whose system has
+ * stopped working finds none of the three chips is theirs, and used to
+ * answer wrong or leave. It is a button, not a link: the form skips this step
+ * with the intent set to "repair" and no need, then runs as normal.
  */
 
 export type SecurityNeed = "alarm" | "cameras" | "both";
@@ -46,6 +52,7 @@ export function SecurityNeedStep({
   tone,
   name,
   onChoose,
+  onRepair,
   className = "",
 }: {
   /** "dark" for the hero, "light" for the closing form. */
@@ -53,6 +60,8 @@ export function SecurityNeedStep({
   /** Radio group name; must differ between the two forms on the page. */
   name: string;
   onChoose: (need: SecurityNeed) => void;
+  /** Shows "Existing system not working?" under the chips. */
+  onRepair?: () => void;
   className?: string;
 }) {
   return (
@@ -79,6 +88,20 @@ export function SecurityNeedStep({
           </button>
         ))}
       </div>
+      {onRepair && (
+        <div className="text-center">
+          <button
+            type="button"
+            onClick={onRepair}
+            className={`focus-ring inline-flex min-h-[44px] items-center gap-1.5 rounded-md px-2 text-body-sm font-medium underline-offset-4 transition-colors duration-quick ease-ds hover:underline ${
+              tone === "dark" ? "text-white/65 hover:text-white" : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            Existing system not working?
+            <ArrowRight aria-hidden="true" className="h-3.5 w-3.5" />
+          </button>
+        </div>
+      )}
     </div>
   );
 }

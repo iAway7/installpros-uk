@@ -141,10 +141,27 @@ export function SecurityQuoteForm({
     track(EVENTS.CTA_CLICKED, { cta_id: `need_${value}`, cta_label: value, cta_location: "final_cta" });
   }
 
+  // "Existing system not working?" under the chips: straight to the postcode
+  // with the intent "repair" and no need. Tracked beside need_* and intent_*.
+  function chooseRepair() {
+    setNeed(null);
+    setIntent("repair");
+    track(EVENTS.CTA_CLICKED, { cta_id: "intent_repair", cta_label: "repair", cta_location: "final_cta" });
+  }
+
+  // Past the first step: a need was picked, or the repair line was tapped.
+  const started = need !== null || intent === "repair";
+
+  // Back from the postcode undoes either.
+  function backToStart() {
+    setNeed(null);
+    setIntent(null);
+  }
+
   // Straight to the postcode once they have picked, so the keyboard is up.
   useEffect(() => {
-    if (need && step === 0) postcodeRef.current?.focus();
-  }, [need, step]);
+    if (started && step === 0) postcodeRef.current?.focus();
+  }, [started, step]);
   const phoneRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
 
@@ -214,13 +231,13 @@ export function SecurityQuoteForm({
   useEffect(() => {
     // Step 0 is still "postcode", as on every other page, so the funnels stay
     // comparable. The tap before it reports as "need", numbered -1.
-    if (step === 0 && need === null) {
+    if (step === 0 && !started) {
       track(EVENTS.FORM_STEP_VIEWED, { step_number: -1, step_name: "need", form_name: formName });
       return;
     }
     const names = ["postcode", "name", "phone", "email", "service"];
     track(EVENTS.FORM_STEP_VIEWED, { step_number: step, step_name: names[step], form_name: formName });
-  }, [step, need, formName]);
+  }, [step, started, formName]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -343,10 +360,10 @@ export function SecurityQuoteForm({
     <div className="mx-auto w-full max-w-md">
       <div className="space-y-6">
         <div>
-          {step === 0 && need === null && (
-            <SecurityNeedStep tone="light" name="final-need" onChoose={chooseNeed} className={anim} />
+          {step === 0 && !started && (
+            <SecurityNeedStep tone="light" name="final-need" onChoose={chooseNeed} onRepair={chooseRepair} className={anim} />
           )}
-          {step === 0 && need !== null && (
+          {step === 0 && started && (
             <div className={`space-y-4 ${anim}`}>
               <div className="space-y-2 text-center">
                 <p className="text-body font-semibold text-primary">Step 1 of {totalSteps}</p>
@@ -488,9 +505,9 @@ export function SecurityQuoteForm({
           )}
         </div>
 
-        {need !== null && (
+        {started && (
           <div className="flex gap-3">
-            <Button onClick={step === 0 ? () => setNeed(null) : back} variant="secondary" disabled={isTransitioning}>
+            <Button onClick={step === 0 ? backToStart : back} variant="secondary" disabled={isTransitioning}>
               <ArrowLeft className="mr-2 h-4 w-4" /> Back
             </Button>
             <Button
