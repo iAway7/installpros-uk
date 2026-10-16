@@ -14,6 +14,11 @@ import type { ReactNode } from "react";
  * In their place, the one coverage claim the old Ajax page and Will's FAQ
  * both make: installs across the UK.
  *
+ * "As featured in THE TIMES" went on 16 October: whatever that coverage was,
+ * it is not about security and does no work here. Its slot says the engineers
+ * are DBS checked and insured, which Jordan confirmed on 15 October and which
+ * matters more to someone letting a stranger fit their alarm.
+ *
  * Not an Ajax partner yet (Will, 13 October 2026, applying). When it comes
  * through, that badge goes in the last slot, where the Starlink one sat.
  */
@@ -62,11 +67,9 @@ const BADGES: ReactNode[] = [
     <span className="text-body font-semibold">UK-wide</span>
     <span className="whitespace-nowrap text-body text-white/70">installs</span>
   </div>,
-  <div key="times" className="flex flex-col items-center gap-0.5">
-    <span className="text-[8.5px] font-medium uppercase tracking-[0.24em] text-white/70">As featured in</span>
-    <span className="text-body-sm font-semibold text-white" style={{ fontFamily: "Georgia, serif", letterSpacing: "0.03em" }}>
-      THE TIMES
-    </span>
+  <div key="dbs" className="flex items-center gap-2">
+    <span className="text-body font-semibold">DBS checked</span>
+    <span className="whitespace-nowrap text-body text-white/70">&amp; insured</span>
   </div>,
 ];
 
