@@ -1,4 +1,17 @@
-import { Check, Minus } from "lucide-react";
+import type { ReactNode } from "react";
+import {
+  ArrowRight,
+  BadgeCheck,
+  CircleCheck,
+  CirclePlus,
+  Clock,
+  ListChecks,
+  MapPin,
+  PhoneCall,
+  Settings2,
+  ShieldCheck,
+  X,
+} from "lucide-react";
 
 /**
  * What the installation pays for: fitted by us against a kit you fit yourself.
@@ -30,20 +43,45 @@ import { Check, Minus } from "lucide-react";
  * 5 years on the workmanship). No price: the kit
  * and our quote are rarely the same list of devices, so a figure would
  * compare unlike with unlike.
+ *
+ * Redesigned 16 October (Gus: "es muy simple"). Same rows, same words. From
+ * md, "Fitted by us" is a dark card that stands out of the table, taller
+ * than it and with a shadow, closing on the quote button; the kit column
+ * stays plain, with a grey cross. Each row label has a line icon. The dark
+ * card is a layer behind the middle column, so it reads as one card while
+ * the cells stay in a single grid. On phones each row is a small comparison
+ * of its own: the label, our line with a tick, the kit's with a cross.
  */
 
-type Row = { label: string; ours: string; theirs: string };
+type Row = { icon: ReactNode; label: string; ours: string; theirs: string };
+
+const ICON = "h-4 w-4 shrink-0";
 
 const ROWS: Row[] = [
-  { label: "Your time", ours: "One visit, usually a few hours", theirs: "As long as it takes you" },
-  { label: "Choosing the kit", ours: "Specified for your doors, windows and rooms", theirs: "You work out what you need" },
-  { label: "Placing it", ours: "Sited to cover the ways in, set for your pets", theirs: "You place and tune each device" },
-  { label: "Setting it up", ours: "App, users and arming modes done before we leave", theirs: "You set up the app and pair every device" },
-  { label: "Testing", ours: "Every device walk-tested on the day", theirs: "Up to you" },
-  { label: "If something goes wrong", ours: "The team that fitted it, on the phone", theirs: "The manufacturer's helpline" },
-  { label: "Warranty", ours: "The manufacturer's on the kit, plus 2 or 5 years on the fitting", theirs: "The manufacturer's on the kit" },
-  { label: "Adding to it later", ours: "A short visit, no rewiring", theirs: "Another job for you" },
+  { icon: <Clock className={ICON} />, label: "Your time", ours: "One visit, usually a few hours", theirs: "As long as it takes you" },
+  { icon: <ListChecks className={ICON} />, label: "Choosing the kit", ours: "Specified for your doors, windows and rooms", theirs: "You work out what you need" },
+  { icon: <MapPin className={ICON} />, label: "Placing it", ours: "Sited to cover the ways in, set for your pets", theirs: "You place and tune each device" },
+  { icon: <Settings2 className={ICON} />, label: "Setting it up", ours: "App, users and arming modes done before we leave", theirs: "You set up the app and pair every device" },
+  { icon: <BadgeCheck className={ICON} />, label: "Testing", ours: "Every device walk-tested on the day", theirs: "Up to you" },
+  { icon: <PhoneCall className={ICON} />, label: "If something goes wrong", ours: "The team that fitted it, on the phone", theirs: "The manufacturer's helpline" },
+  { icon: <ShieldCheck className={ICON} />, label: "Warranty", ours: "The manufacturer's on the kit, plus 2 or 5 years on the fitting", theirs: "The manufacturer's on the kit" },
+  { icon: <CirclePlus className={ICON} />, label: "Adding to it later", ours: "A short visit, no rewiring", theirs: "Another job for you" },
 ];
+
+/** The middle column of `grid-cols-[0.9fr_1.2fr_1.2fr]`, for the dark card. */
+const COLS = "md:grid-cols-[0.9fr_1.2fr_1.2fr]";
+
+function QuoteButton({ className = "" }: { className?: string }) {
+  return (
+    <a
+      href="#quote"
+      className={`focus-ring-solid flex h-control-lg items-center justify-center gap-2 rounded-lg bg-primary px-5 text-button font-[var(--button-weight)] uppercase tracking-[var(--button-tracking)] text-primary-foreground transition-colors duration-quick ease-ds hover:bg-brand-hover ${className}`}
+    >
+      Get my free quote
+      <ArrowRight aria-hidden="true" className="h-4 w-4" />
+    </a>
+  );
+}
 
 export function SecurityCompareSection() {
   return (
@@ -61,37 +99,89 @@ export function SecurityCompareSection() {
           </p>
         </div>
 
-        <div className="mx-auto mt-12 max-w-4xl overflow-hidden rounded-2xl border border-border bg-background md:mt-16">
-          {/* Column heads. On phones the row label sits above its two cells,
-              so the heads only need the two value columns; from md the label
-              gets a column of its own. */}
-          <div className="grid grid-cols-2 md:grid-cols-[0.9fr_1.2fr_1.2fr]">
-            <div className="hidden md:block" />
-            <div className="bg-primary/[0.05] px-4 py-4 md:px-6">
-              <p className="text-body-sm font-semibold text-foreground md:text-body">Fitted by us</p>
+        {/* md and up: one grid, three columns. Behind it, the white table and,
+            over that, the dark card for the middle column (27.27% in, 36.36%
+            wide, from 0.9 / 1.2 / 1.2), taller than the table. */}
+        <div className="relative mx-auto mt-16 hidden max-w-5xl md:mt-20 md:block">
+          <div aria-hidden="true" className="absolute inset-0 rounded-2xl border border-border bg-background" />
+          <div
+            aria-hidden="true"
+            className="absolute -bottom-6 -top-6 left-[27.2727%] w-[36.3636%] rounded-3xl bg-foreground shadow-raised"
+          />
+
+          <div className={`relative grid ${COLS}`}>
+            <div />
+            <div className="px-7 pb-6 pt-2">
+              <p className="text-label font-semibold uppercase tracking-[0.14em] text-background/55">InstallPros</p>
+              <p className="mt-1 text-lead font-semibold text-background">Fitted by us</p>
             </div>
-            <div className="px-4 py-4 md:px-6">
-              <p className="text-body-sm font-semibold text-muted-foreground md:text-body">A kit you fit yourself</p>
+            <div className="px-7 pb-6 pt-2">
+              <p className="text-label font-semibold uppercase tracking-[0.14em] text-muted-foreground/70">Bought online</p>
+              <p className="mt-1 text-lead font-semibold text-muted-foreground">A kit you fit yourself</p>
             </div>
           </div>
 
-          <dl>
+          <dl className="relative">
             {ROWS.map((r) => (
-              <div key={r.label} className="grid grid-cols-2 border-t border-border md:grid-cols-[0.9fr_1.2fr_1.2fr]">
-                <dt className="col-span-2 px-4 pt-4 text-label font-semibold uppercase tracking-[0.12em] text-muted-foreground md:col-span-1 md:flex md:items-center md:px-6 md:py-5 md:text-body-sm md:normal-case md:tracking-normal md:text-foreground">
+              <div key={r.label} className={`grid ${COLS}`}>
+                <dt className="flex items-center gap-3 border-t border-border px-7 py-5 text-body-sm font-semibold text-foreground">
+                  <span aria-hidden="true" className="text-muted-foreground">
+                    {r.icon}
+                  </span>
                   {r.label}
                 </dt>
-                <dd className="flex items-start gap-2 bg-primary/[0.05] px-4 pb-4 pt-2 text-body-sm font-medium text-foreground md:px-6 md:py-5">
-                  <Check aria-hidden="true" className="mt-[3px] h-4 w-4 shrink-0 text-success" />
+                <dd className="flex items-start gap-3 border-t border-background/10 px-7 py-5 text-body-sm font-medium text-background">
+                  <CircleCheck aria-hidden="true" className="mt-[2px] h-[18px] w-[18px] shrink-0 text-success-bright" />
                   {r.ours}
                 </dd>
-                <dd className="flex items-start gap-2 px-4 pb-4 pt-2 text-body-sm text-muted-foreground md:px-6 md:py-5">
-                  <Minus aria-hidden="true" className="mt-[3px] h-4 w-4 shrink-0 text-muted-foreground/60" />
+                <dd className="flex items-start gap-3 border-t border-border px-7 py-5 text-body-sm text-muted-foreground">
+                  <X aria-hidden="true" className="mt-[2px] h-[18px] w-[18px] shrink-0 text-muted-foreground/50" />
                   {r.theirs}
                 </dd>
               </div>
             ))}
           </dl>
+
+          <div className={`relative grid ${COLS}`}>
+            <div />
+            <div className="px-7 pb-2 pt-4">
+              <QuoteButton />
+            </div>
+            <div />
+          </div>
+        </div>
+
+        {/* Phones and small tablets: each row a comparison of its own. */}
+        <div className="mx-auto mt-12 max-w-xl md:hidden">
+          <div className="flex items-center justify-center gap-5 text-caption font-medium text-muted-foreground">
+            <span className="flex items-center gap-1.5">
+              <CircleCheck aria-hidden="true" className="h-4 w-4 text-success" />
+              Fitted by us
+            </span>
+            <span className="flex items-center gap-1.5">
+              <X aria-hidden="true" className="h-4 w-4 text-muted-foreground/60" />
+              A kit you fit yourself
+            </span>
+          </div>
+          <dl className="mt-5 overflow-hidden rounded-2xl border border-border bg-background">
+            {ROWS.map((r, i) => (
+              <div key={r.label} className={`px-5 py-4 ${i > 0 ? "border-t border-border" : ""}`}>
+                <dt className="flex items-center gap-2 text-label font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+                  <span aria-hidden="true">{r.icon}</span>
+                  {r.label}
+                </dt>
+                <dd className="mt-2 flex items-start gap-2 text-body-sm font-semibold text-foreground">
+                  <CircleCheck aria-hidden="true" className="mt-[2px] h-4 w-4 shrink-0 text-success" />
+                  {r.ours}
+                </dd>
+                <dd className="mt-1 flex items-start gap-2 text-body-sm text-muted-foreground">
+                  <X aria-hidden="true" className="mt-[2px] h-4 w-4 shrink-0 text-muted-foreground/50" />
+                  {r.theirs}
+                </dd>
+              </div>
+            ))}
+          </dl>
+          <QuoteButton className="mt-5" />
         </div>
       </div>
     </section>
