@@ -104,7 +104,10 @@ import { ExperimentProvider } from "@/components/experiments/experiment-provider
  * ────────────────────────────────────────────────────────────────────────────
  *
  * noindex, like every segment landing: installpros.co.uk ranks its own Ajax
- * page and this subdomain is for paid clicks. Not in sitemap.ts.
+ * page and this subdomain is for paid clicks. Not in sitemap.ts. For the
+ * same reason no FAQPage JSON-LD (removed 16 October): a page that is never
+ * indexed never gets rich results, and Google has shown FAQ rich results only
+ * for government and health sites since 2023.
  */
 
 export const metadata: Metadata = {
@@ -120,23 +123,9 @@ export const metadata: Metadata = {
   },
 };
 
-const faqStructuredData = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: SECURITY_FAQS.map((f) => ({
-    "@type": "Question",
-    name: f.q,
-    acceptedAnswer: { "@type": "Answer", text: f.a },
-  })),
-};
-
 export default function AjaxSecurityInstallationPage() {
   return (
     <div className="theme-editorial min-h-screen bg-background text-foreground">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqStructuredData) }}
-      />
       <MainHeader />
       <ExperimentProvider>
         <main id="main" tabIndex={-1} className="flex flex-col outline-none">
