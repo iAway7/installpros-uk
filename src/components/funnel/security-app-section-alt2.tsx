@@ -8,7 +8,7 @@ import { SecurityPhoneMock } from "./security-phone-mock";
  * the page. Two of them go once Gus picks.
  *
  * Same layout as security-app-section.tsx (three items, the phone, three
- * items, each column's flush edge facing the phone), with two changes:
+ * items), with two changes:
  *
  *   - The columns are swapped and labelled. Left, "What you see and
  *     control", quotes the feed on purpose ("Sarah armed it from the app at
@@ -23,12 +23,11 @@ import { SecurityPhoneMock } from "./security-phone-mock";
  * imports it too, so nothing had to be copied). It keeps its own entry
  * animation, so no second stagger is added.
  *
- * Phones and tablets: header, phone, then the two groups, both left aligned.
- * Right alignment only from lg, where the left column sits against the phone.
+ * Every text block is left aligned, the column left of the phone included
+ * (Gus, 16 October): no right alignment at any size.
  */
 
 type Item = { icon: ReactNode; title: string; detail: ReactNode };
-type Side = "left" | "right";
 
 const ICON = "h-4 w-4 shrink-0";
 
@@ -71,23 +70,16 @@ const WAYS_IN: Item[] = [
   { icon: <KeyRound className={ICON} />, title: "A key fob.", detail: "One press, for anyone who would rather not use a phone." },
 ];
 
-function Group({ id, label, items, side }: { id: string; label: string; items: Item[]; side: Side }) {
-  // On the left of the phone the text, the label and the icon all sit against
-  // the phone; everywhere else, and on smaller screens, left to right.
-  const align = side === "left" ? "lg:text-right" : "";
+function Group({ id, label, items }: { id: string; label: string; items: Item[] }) {
   return (
     <div role="group" aria-labelledby={id}>
-      <h3 id={id} className={`text-label font-semibold uppercase tracking-[0.14em] text-muted-foreground ${align}`}>
+      <h3 id={id} className="text-label font-semibold uppercase tracking-[0.14em] text-muted-foreground">
         {label}
       </h3>
       <ul className="mt-6 space-y-7">
         {items.map((i) => (
-          <li key={i.title} className={align}>
-            <p
-              className={`flex items-center gap-2 text-lead font-semibold text-foreground ${
-                side === "left" ? "lg:flex-row-reverse" : ""
-              }`}
-            >
+          <li key={i.title}>
+            <p className="flex items-center gap-2 text-lead font-semibold text-foreground">
               <span aria-hidden="true">{i.icon}</span>
               {i.title}
             </p>
@@ -119,10 +111,10 @@ export function SecurityAppSectionAlt2() {
             <SecurityPhoneMock />
           </div>
           <div className="order-2 lg:order-1">
-            <Group id="alt2-you-see" label="What you see and control" items={YOU_SEE} side="left" />
+            <Group id="alt2-you-see" label="What you see and control" items={YOU_SEE} />
           </div>
           <div className="order-3">
-            <Group id="alt2-ways-in" label="How each person uses it" items={WAYS_IN} side="right" />
+            <Group id="alt2-ways-in" label="How each person uses it" items={WAYS_IN} />
           </div>
         </div>
       </div>
