@@ -176,10 +176,13 @@ export default function AjaxSecurityInstallationPage() {
               Monthly fees and standard alarm companies (Q2, Q3) live in the
               FAQ: buyers in the chats never compared us with ADT. */}
           <SecurityLayersSection />
-          <SecurityHomeSection />
           <SecurityAppSection />
           <SecurityEquipmentSection />
           <SecurityCompareSection />
+          {/* After the cost comparison, not before it (16 October): a tidy
+              install is reassurance, it does not decide the purchase, and
+              third place pushed the labour objection down to sixth. */}
+          <SecurityHomeSection />
           {/* Proof before process, as on every segment landing.
               The reviews are the company's, about its installation service,
               and none of them mentions an alarm yet, so one line says what

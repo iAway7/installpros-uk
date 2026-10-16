@@ -20,6 +20,13 @@
  *
  * The black set because it is the only complete one: the white versions came
  * for the hallway and the outside, not for the living room.
+ *
+ * 16 October: the eyebrow carries the section's strongest fact, that nothing
+ * gets chased into the walls, which for a finished or rented home is a
+ * blocker rather than a matter of looks. It was buried in the paragraph under
+ * an eyebrow ("At home in yours") that said nothing. "Wireless alarm", not
+ * just "wireless": the Ajax cameras are wired, and this section shows only
+ * alarm devices. The paragraph keeps the tidiness point.
  */
 
 type Shot = { src: string; srcSet: string; sizes: string; alt: string; title: string; detail: string; position: string; wide?: boolean };
@@ -63,14 +70,13 @@ export function SecurityHomeSection() {
     <section id="at-home" className="w-full scroll-mt-28 bg-background py-16 md:py-24">
       <div className="container mx-auto">
         <div className="mx-auto max-w-2xl text-center">
-          <p className="eyebrow">At home in yours</p>
+          <p className="eyebrow">Wireless alarm, no chasing walls</p>
           <h2 className="mt-4 h2-section text-foreground">
             Fitted neatly,
             <br className="hidden sm:block" /> in the right places.
           </h2>
           <p className="mx-auto mt-5 max-w-xl text-body text-muted-foreground md:text-lg" style={{ lineHeight: "1.6" }}>
-            The alarm is wireless, so nothing is chased into your walls. Each device goes where it covers the most and
-            still sits tidily in the room.
+            Each device goes where it covers the most and still sits tidily in the room.
           </p>
         </div>
 
