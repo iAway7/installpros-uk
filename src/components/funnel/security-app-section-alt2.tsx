@@ -25,6 +25,12 @@ import { SecurityPhoneMock } from "./security-phone-mock";
  *
  * Every text block is left aligned, the column left of the phone included
  * (Gus, 16 October): no right alignment at any size.
+ *
+ * Every description fits two lines on desktop (Gus, 16 October). The columns
+ * stop at 352px from 1280 up and the text is 14px, so about 50 characters a
+ * line: the two feed quotes were cut to under 100 characters, keeping the
+ * names and times the phone shows. At 1024 the columns are 290px and the
+ * longer ones take three.
  */
 
 type Item = { icon: ReactNode; title: string; detail: ReactNode };
@@ -42,8 +48,7 @@ const YOU_SEE: Item[] = [
     title: "Everyone is a user.",
     detail: (
       <>
-        Sarah armed it from the app at <Time>08:12</Time>, and the log tells you so. Each person gets their own way in
-        and their own record.
+        Sarah armed it from the app at <Time>08:12</Time>, and the log tells you so. Everyone has their own record.
       </>
     ),
   },
@@ -52,8 +57,7 @@ const YOU_SEE: Item[] = [
     title: "Temporary access.",
     detail: (
       <>
-        Maria disarmed at <Time>10:02</Time> on temporary access. Add a cleaner, a dog walker or a builder, and remove
-        them when the job is done.
+        Maria disarmed at <Time>10:02</Time> on temporary access. Add a cleaner or a builder, then remove them.
       </>
     ),
   },
