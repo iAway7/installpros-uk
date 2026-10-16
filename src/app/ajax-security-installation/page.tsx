@@ -5,6 +5,7 @@ import { WhatsAppFab } from "@/components/funnel/whatsapp-fab";
 import { SecurityLayersSection } from "@/components/funnel/security-layers-section";
 import { SecurityHomeSection } from "@/components/funnel/security-home-section";
 import { SecurityAppSection } from "@/components/funnel/security-app-section";
+import { SecurityAppSectionAlt } from "@/components/funnel/security-app-section-alt";
 import { SecurityEquipmentSection } from "@/components/funnel/security-equipment-section";
 import { SecurityCompareSection } from "@/components/funnel/security-compare-section";
 import { TrustpilotSection } from "@/components/funnel/trustpilot-section";
@@ -177,6 +178,7 @@ export default function AjaxSecurityInstallationPage() {
               FAQ: buyers in the chats never compared us with ADT. */}
           <SecurityLayersSection />
           <SecurityAppSection />
+          <SecurityAppSectionAlt />
           <SecurityEquipmentSection />
           <SecurityCompareSection />
           {/* After the cost comparison, not before it (16 October): a tidy
