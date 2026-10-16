@@ -15,9 +15,13 @@ import { Camera, KeyRound, ShieldCheck, UserRound } from "lucide-react";
  * 17:46, 22:31. Newest on top, the way a phone stacks them. The last one, the
  * photo to check, keeps a soft pulse on its icon.
  *
- * It plays once. The phone never changes size while it plays: an invisible
- * copy of the full list holds the space and the animated list sits over it.
- * With prefers-reduced-motion the final state shows straight away.
+ * It loops (Gus, 16 October): once the day is in, it holds for a few seconds,
+ * the alerts clear, the clock goes back to the morning and the day starts
+ * again. Only while the phone is on screen; scrolled away it stops, and it
+ * starts from the morning when it comes back. The phone never changes size
+ * while it plays: an invisible copy of the full list holds the space and the
+ * animated list sits over it. With prefers-reduced-motion the final state
+ * shows straight away and stays.
  *
  * THE PHONE IS AN ILLUSTRATION, not a screenshot of the Ajax app: no Ajax logo,
  * no copy of their interface, a generic lock screen with the kind of alert the
@@ -38,6 +42,8 @@ const ALERTS: Alert[] = [
 const START_TIME = "07:58";
 const FIRST_DELAY = 450;
 const STEP = 1150;
+/** How long the whole day stays on screen before the next one starts. */
+const HOLD = 3500;
 
 function AlertRow({ alert, pulse }: { alert: Alert; pulse?: boolean }) {
   return (
@@ -72,8 +78,9 @@ const ROW = "flex items-start gap-3 rounded-2xl bg-white/[0.12] px-3 py-2.5 text
 export function SecurityPhoneMock() {
   const reduce = useReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.45 });
+  const inView = useInView(ref, { amount: 0.45 });
   const [shown, setShown] = useState(0);
+  const [day, setDay] = useState(0);
 
   useEffect(() => {
     if (reduce) {
@@ -81,9 +88,12 @@ export function SecurityPhoneMock() {
       return;
     }
     if (!inView) return;
+    setShown(0);
     const timers = ALERTS.map((_, i) => window.setTimeout(() => setShown(i + 1), FIRST_DELAY + i * STEP));
+    // The next day, once this one has been on screen for a while.
+    timers.push(window.setTimeout(() => setDay((d) => d + 1), FIRST_DELAY + (ALERTS.length - 1) * STEP + HOLD));
     return () => timers.forEach((t) => window.clearTimeout(t));
-  }, [inView, reduce]);
+  }, [inView, reduce, day]);
 
   const visible = ALERTS.slice(0, shown).reverse();
   const clock = shown > 0 ? ALERTS[shown - 1].time : START_TIME;
@@ -142,6 +152,7 @@ export function SecurityPhoneMock() {
                   className={ROW}
                   initial={reduce ? false : { opacity: 0, y: -18, scale: 0.96 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, transition: { duration: 0.35 } }}
                   transition={{ type: "spring", stiffness: 380, damping: 32 }}
                 >
                   <AlertRow alert={a} pulse={done && !reduce && a.tone === "warn"} />
