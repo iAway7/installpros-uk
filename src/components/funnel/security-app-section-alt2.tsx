@@ -70,15 +70,50 @@ const WAYS_IN: Item[] = [
   { icon: <KeyRound className={ICON} />, title: "A key fob.", detail: "One press, for anyone who would rather not use a phone." },
 ];
 
-function Group({ id, label, items }: { id: string; label: string; items: Item[] }) {
+/**
+ * Where each piece sits. The two columns share one grid, so the labels sit on
+ * the same row and each item sits on the same row as its partner across the
+ * phone: tops line up and every row is the same height (Gus, 16 October,
+ * "pixel perfect"). Tailwind needs whole class names, so they are spelt out.
+ *
+ *   Phones   one column in DOM order: phone, left group, right group.
+ *   md       the phone across the top, then label row and three item rows,
+ *            left group in column 1, right group in column 2.
+ *   lg       label row and three item rows, left group, phone across all
+ *            four rows in the middle, right group.
+ */
+const SLOT = {
+  left: {
+    label: "md:col-start-1 md:row-start-2 lg:row-start-1",
+    items: [
+      "md:col-start-1 md:row-start-3 lg:row-start-2",
+      "md:col-start-1 md:row-start-4 lg:row-start-3",
+      "md:col-start-1 md:row-start-5 lg:row-start-4",
+    ],
+  },
+  right: {
+    // On phones the second group needs a gap above its label.
+    label: "mt-6 md:mt-0 md:col-start-2 md:row-start-2 lg:col-start-3 lg:row-start-1",
+    items: [
+      "md:col-start-2 md:row-start-3 lg:col-start-3 lg:row-start-2",
+      "md:col-start-2 md:row-start-4 lg:col-start-3 lg:row-start-3",
+      "md:col-start-2 md:row-start-5 lg:col-start-3 lg:row-start-4",
+    ],
+  },
+} as const;
+
+/** `contents` keeps the group and the list for screen readers while their
+ *  children sit in the shared grid. */
+function Group({ id, label, items, side }: { id: string; label: string; items: Item[]; side: "left" | "right" }) {
+  const slot = SLOT[side];
   return (
-    <div role="group" aria-labelledby={id}>
-      <h3 id={id} className="text-label font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+    <div role="group" aria-labelledby={id} className="contents">
+      <h3 id={id} className={`text-label font-semibold uppercase tracking-[0.14em] text-muted-foreground ${slot.label}`}>
         {label}
       </h3>
-      <ul className="mt-6 space-y-7">
-        {items.map((i) => (
-          <li key={i.title}>
+      <ul role="list" className="contents">
+        {items.map((i, n) => (
+          <li key={i.title} className={slot.items[n]}>
             <p className="flex items-center gap-2 text-lead font-semibold text-foreground">
               <span aria-hidden="true">{i.icon}</span>
               {i.title}
@@ -103,19 +138,16 @@ export function SecurityAppSectionAlt2() {
           </p>
         </div>
 
-        {/* Phones: the phone, then the two groups. Tablets: the phone across
-            the top, the two groups side by side below. From lg: a group, the
-            phone, a group. */}
-        <div className="mt-12 grid grid-cols-1 gap-y-12 md:mt-16 md:grid-cols-2 md:gap-x-10 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] lg:items-center lg:gap-x-12 xl:gap-x-16">
-          <div className="order-1 md:col-span-2 lg:order-2 lg:col-span-1 lg:w-[300px] xl:w-[320px]">
+        {/* One grid for both columns (see SLOT). The item rows are equal
+            fractions, so every row is as tall as the tallest item in any of
+            them, and on lg the phone, spanning all four rows, stretches those
+            rows rather than the label row. */}
+        <div className="mt-12 grid grid-cols-1 gap-y-7 md:mt-16 md:grid-cols-2 md:grid-rows-[auto_auto_repeat(3,minmax(0,1fr))] md:gap-x-10 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] lg:grid-rows-[auto_repeat(3,minmax(0,1fr))] lg:gap-x-12 xl:gap-x-16">
+          <div className="mb-5 md:col-span-2 md:row-start-1 lg:col-span-1 lg:col-start-2 lg:row-span-4 lg:row-start-1 lg:mb-0 lg:w-[300px] lg:self-center xl:w-[320px]">
             <SecurityPhoneMock />
           </div>
-          <div className="order-2 lg:order-1">
-            <Group id="alt2-you-see" label="What you see and control" items={YOU_SEE} />
-          </div>
-          <div className="order-3">
-            <Group id="alt2-ways-in" label="How each person uses it" items={WAYS_IN} />
-          </div>
+          <Group id="alt2-you-see" label="What you see and control" items={YOU_SEE} side="left" />
+          <Group id="alt2-ways-in" label="How each person uses it" items={WAYS_IN} side="right" />
         </div>
       </div>
     </section>
