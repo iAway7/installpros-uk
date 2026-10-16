@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useInView, useReducedMotion } from "motion/react";
-import { Camera, Flashlight, ShieldCheck, TriangleAlert } from "lucide-react";
+import { Camera, Flashlight, TriangleAlert } from "lucide-react";
 
 /**
  * The phone in the Ajax page's "Easy for the whole family" section, animated.
@@ -11,9 +11,15 @@ import { Camera, Flashlight, ShieldCheck, TriangleAlert } from "lucide-react";
  * shared: a dark lock screen, and the alerts as iPhone notifications from the
  * Ajax app, in Ajax's wording ("Home: motion detected, MotionCam in
  * Hallway"), a red "Critical" line when it is an alarm, the cards spilling
- * over the edge of the phone and narrower the older they are. It stays our
- * drawing: the app icon is a plain shield, not the Ajax mark, and nothing is
- * a screenshot.
+ * over the edge of the phone and narrower the older they are. Nothing is a
+ * screenshot.
+ *
+ * Later the same day, Gus: at that speed all you read was "Ajax" and an
+ * icon, not what happened. So the event is now the bold line ("Armed by
+ * Sarah", "Motion detected") with the place and the means under it, the app
+ * name is a small label above, each alert stays about two seconds before the
+ * next, and the icon is the Ajax mark on a white tile, as on their app
+ * (ajax-mark.png, cut from the mark Gus sent).
  *
  * The four alerts are one day in one house, so they arrive as a day would:
  * each drops in at the top, the earlier ones slide down, and the clock moves
@@ -30,29 +36,30 @@ import { Camera, Flashlight, ShieldCheck, TriangleAlert } from "lucide-react";
  * shows straight away and stays.
  */
 
-type Alert = { message: string; time: string; critical?: boolean };
+type Alert = { title: string; detail: string; time: string; critical?: boolean };
 
 const ALERTS: Alert[] = [
-  { message: "Home: armed by Sarah, from the app", time: "08:12" },
-  { message: "Home: disarmed by Maria, temporary access", time: "10:02" },
-  { message: "Home: disarmed by Tom, key fob", time: "17:46" },
-  { message: "Home: motion detected, MotionCam in Hallway. Photo attached", time: "22:31", critical: true },
+  { title: "Armed by Sarah", detail: "Home, from the app", time: "08:12" },
+  { title: "Disarmed by Maria", detail: "Home, temporary access", time: "10:02" },
+  { title: "Disarmed by Tom", detail: "Home, key fob", time: "17:46" },
+  { title: "Motion detected", detail: "Home, MotionCam in Hallway. Photo attached", time: "22:31", critical: true },
 ];
 
 /** Before the first alert lands. */
 const START_TIME = "07:58";
-const FIRST_DELAY = 450;
-const STEP = 1150;
+const FIRST_DELAY = 600;
+/** Long enough to read each one before the next arrives. */
+const STEP = 2200;
 /** How long the whole day stays on screen before the next one starts. */
-const HOLD = 3500;
+const HOLD = 5000;
 /** How much narrower each older card is, per side, in px. */
 const STEP_IN = 12;
 
 function Notice({ alert, pulse }: { alert: Alert; pulse?: boolean }) {
   return (
     <div className="flex items-start gap-2.5 rounded-[18px] bg-[#2a2b2d]/90 px-3 py-2.5 text-left text-white shadow-[0_12px_30px_-12px_rgba(0,0,0,0.7)] ring-1 ring-white/10 backdrop-blur-md">
-      {/* The app icon: white like Ajax's, with a plain shield, not their mark. */}
-      <span className="relative mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-[9px] bg-white text-[#111]">
+      {/* The app icon, as on Ajax's own: their mark on a white tile. */}
+      <span className="relative mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-[9px] bg-white">
         {pulse && (
           <motion.span
             className="absolute inset-0 rounded-[9px]"
@@ -60,7 +67,8 @@ function Notice({ alert, pulse }: { alert: Alert; pulse?: boolean }) {
             transition={{ duration: 1.6, ease: "easeOut", repeat: Infinity }}
           />
         )}
-        <ShieldCheck className="h-5 w-5" strokeWidth={2.25} />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/funnel/ajax-mark.png" alt="" className="w-[26px]" />
       </span>
       <span className="min-w-0 flex-1">
         <span className="flex items-baseline justify-between gap-2">
@@ -70,12 +78,12 @@ function Notice({ alert, pulse }: { alert: Alert; pulse?: boolean }) {
               Critical
             </span>
           ) : (
-            <span className="text-[13px] font-semibold leading-tight">Ajax</span>
+            <span className="text-[11px] font-semibold uppercase tracking-wide text-white/55">Ajax</span>
           )}
           <span className="shrink-0 text-[11px] tabular-nums text-white/55">{alert.time}</span>
         </span>
-        {alert.critical && <span className="block text-[13px] font-semibold leading-tight">Ajax</span>}
-        <span className="mt-0.5 block text-[12.5px] leading-snug text-white/85">{alert.message}</span>
+        <span className="mt-0.5 block text-[14px] font-semibold leading-tight">{alert.title}</span>
+        <span className="mt-0.5 block text-[12.5px] leading-snug text-white/75">{alert.detail}</span>
       </span>
     </div>
   );
@@ -113,7 +121,7 @@ export function SecurityPhoneMock() {
     <div
       ref={ref}
       role="img"
-      aria-label="Illustration of a phone lock screen with four Ajax app notifications: armed by Sarah from the app, disarmed by Maria with temporary access, disarmed by Tom with a key fob, and a critical alert for motion in the hallway with a photo attached."
+      aria-label="Illustration of a phone lock screen with four Ajax app notifications: armed by Sarah from the app, disarmed by Maria with temporary access, disarmed by Tom with a key fob, and a critical alert, motion detected in the hallway, with a photo attached."
       className="relative mx-auto w-full max-w-[280px] md:max-w-[320px]"
     >
       {/* A soft halo so the dark phone does not sit on white like a hole. */}
