@@ -83,25 +83,28 @@ const WAYS_IN: Item[] = [
  *   Phones   one column in DOM order: phone, left group, right group.
  *   md       the phone across the top, then label row and three item rows,
  *            left group in column 1, right group in column 2.
- *   lg       label row and three item rows, left group, phone across all
- *            four rows in the middle, right group.
+ *   lg       label row and three item rows, left group, phone in the
+ *            middle. The rows keep their own height and the block is centred
+ *            on the phone by an empty flexible row above and below it, which
+ *            take up the phone's extra height (16 October: rows stretched to
+ *            the phone left the items too far apart).
  */
 const SLOT = {
   left: {
-    label: "md:col-start-1 md:row-start-2 lg:row-start-1",
+    label: "md:col-start-1 md:row-start-2 lg:row-start-2",
     items: [
-      "md:col-start-1 md:row-start-3 lg:row-start-2",
-      "md:col-start-1 md:row-start-4 lg:row-start-3",
-      "md:col-start-1 md:row-start-5 lg:row-start-4",
+      "md:col-start-1 md:row-start-3 lg:row-start-3",
+      "md:col-start-1 md:row-start-4 lg:row-start-4",
+      "md:col-start-1 md:row-start-5 lg:row-start-5",
     ],
   },
   right: {
     // On phones the second group needs a gap above its label.
-    label: "mt-6 md:mt-0 md:col-start-2 md:row-start-2 lg:col-start-3 lg:row-start-1",
+    label: "mt-6 md:mt-0 md:col-start-2 md:row-start-2 lg:col-start-3 lg:row-start-2",
     items: [
-      "md:col-start-2 md:row-start-3 lg:col-start-3 lg:row-start-2",
-      "md:col-start-2 md:row-start-4 lg:col-start-3 lg:row-start-3",
-      "md:col-start-2 md:row-start-5 lg:col-start-3 lg:row-start-4",
+      "md:col-start-2 md:row-start-3 lg:col-start-3 lg:row-start-3",
+      "md:col-start-2 md:row-start-4 lg:col-start-3 lg:row-start-4",
+      "md:col-start-2 md:row-start-5 lg:col-start-3 lg:row-start-5",
     ],
   },
 } as const;
@@ -142,12 +145,12 @@ export function SecurityAppSectionAlt2() {
           </p>
         </div>
 
-        {/* One grid for both columns (see SLOT). The item rows are equal
-            fractions, so every row is as tall as the tallest item in any of
-            them, and on lg the phone, spanning all four rows, stretches those
-            rows rather than the label row. */}
-        <div className="mt-12 grid grid-cols-1 gap-y-7 md:mt-16 md:grid-cols-2 md:grid-rows-[auto_auto_repeat(3,minmax(0,1fr))] md:gap-x-10 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] lg:grid-rows-[auto_repeat(3,minmax(0,1fr))] lg:gap-x-12 xl:gap-x-16">
-          <div className="mb-5 md:col-span-2 md:row-start-1 lg:col-span-1 lg:col-start-2 lg:row-span-4 lg:row-start-1 lg:mb-0 lg:w-[300px] lg:self-center xl:w-[320px]">
+        {/* One grid for both columns (see SLOT). On md the item rows are
+            equal fractions, as tall as the tallest item. On lg the label and
+            item rows keep their own height and the two empty flexible rows
+            around them centre the block on the phone, which spans all six. */}
+        <div className="mt-12 grid grid-cols-1 gap-y-7 md:mt-16 md:grid-cols-2 md:grid-rows-[auto_auto_repeat(3,minmax(0,1fr))] md:gap-x-10 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] lg:grid-rows-[minmax(0,1fr)_repeat(4,auto)_minmax(0,1fr)] lg:gap-x-12 lg:gap-y-8 xl:gap-x-16">
+          <div className="mb-5 md:col-span-2 md:row-start-1 lg:col-span-1 lg:col-start-2 lg:row-span-6 lg:row-start-1 lg:mb-0 lg:w-[300px] lg:self-center xl:w-[320px]">
             <SecurityPhoneMock />
           </div>
           <Group id="alt2-you-see" label="What you see and control" items={YOU_SEE} side="left" />
