@@ -6,6 +6,7 @@ import { SecurityLayersSection } from "@/components/funnel/security-layers-secti
 import { SecurityHomeSection } from "@/components/funnel/security-home-section";
 import { SecurityAppSection } from "@/components/funnel/security-app-section";
 import { SecurityAppSectionAlt } from "@/components/funnel/security-app-section-alt";
+import { SecurityAppSectionAlt2 } from "@/components/funnel/security-app-section-alt2";
 import { SecurityEquipmentSection } from "@/components/funnel/security-equipment-section";
 import { SecurityCompareSection } from "@/components/funnel/security-compare-section";
 import { TrustpilotSection } from "@/components/funnel/trustpilot-section";
@@ -179,6 +180,7 @@ export default function AjaxSecurityInstallationPage() {
           <SecurityLayersSection />
           <SecurityAppSection />
           <SecurityAppSectionAlt />
+          <SecurityAppSectionAlt2 />
           <SecurityEquipmentSection />
           <SecurityCompareSection />
           {/* After the cost comparison, not before it (16 October): a tidy
