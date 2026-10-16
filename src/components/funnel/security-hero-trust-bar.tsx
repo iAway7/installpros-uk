@@ -72,6 +72,9 @@ const BADGES: ReactNode[] = [
     <span className="whitespace-nowrap text-body text-white/70">installs</span>
   </div>,
   <div key="dbs" className="flex items-center gap-2">
+    {/* Same shield-and-tick as the warranty strip, line only, so it sits with
+        the flag and the stars rather than shouting over them. */}
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-white/90" aria-hidden="true"><path d="M12 3 5 6v5.5c0 4.3 2.9 8.2 7 9.5 4.1-1.3 7-5.2 7-9.5V6l-7-3z" /><path d="m9 12 2 2 4-4" /></svg>
     <span className="text-body font-semibold">DBS checked</span>
     <span className="whitespace-nowrap text-body text-white/70">&amp; insured</span>
   </div>,
