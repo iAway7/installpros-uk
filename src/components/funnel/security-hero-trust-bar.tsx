@@ -64,6 +64,10 @@ const BADGES: ReactNode[] = [
     </span>
   </a>,
   <div key="uk" className="flex items-center gap-2">
+    {/* Decorative: the label already says UK. The asset the Starlink hero
+        badge uses, at its own 800 x 578 proportions rather than squared. */}
+    {/* eslint-disable-next-line @next/next/no-img-element */}
+    <img src="/funnel/uk-flag.svg" alt="" aria-hidden="true" className="h-3.5 w-auto rounded-[2px]" />
     <span className="text-body font-semibold">UK-wide</span>
     <span className="whitespace-nowrap text-body text-white/70">installs</span>
   </div>,
