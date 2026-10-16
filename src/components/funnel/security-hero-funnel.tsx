@@ -17,7 +17,6 @@ import { submitLead } from "@/lib/funnel/submit-lead";
 import { thankYouPath } from "@/lib/funnel/thank-you-path";
 import { track, EVENTS } from "@/lib/analytics";
 import { SecurityNeedStep, type SecurityNeed } from "./security-need-step";
-import { SecurityIntentRow, type SecurityIntent } from "./security-intent-row";
 
 type CheckStatus = "idle" | "checking" | "available" | "invalid";
 
@@ -118,14 +117,10 @@ export function SecurityHeroFunnel(
   // The one-tap first step (security-need-step.tsx), null until chosen. Sent
   // with the lead since 16 October (leads.need, migration 0022).
   const [need, setNeed] = useState<SecurityNeed | null>(null);
-  // The optional row on the email step (security-intent-row.tsx): new system,
-  // add to what I have, something stopped working. leads.intent.
-  const [intent, setIntent] = useState<SecurityIntent | null>(null);
-
-  function chooseIntent(value: SecurityIntent | null) {
-    setIntent(value);
-    if (value) track(EVENTS.CTA_CLICKED, { cta_id: `intent_${value}`, cta_label: value, cta_location: "hero" });
-  }
+  // "repair" once the line under the chips is tapped, otherwise null
+  // (leads.intent). The column also takes new and add, from the email
+  // step row removed on 17 October.
+  const [intent, setIntent] = useState<"repair" | null>(null);
   const postcodeRef = useRef<HTMLInputElement>(null);
 
   function chooseNeed(value: SecurityNeed) {
@@ -134,7 +129,7 @@ export function SecurityHeroFunnel(
   }
 
   // "Existing system not working?" under the chips: straight to the postcode
-  // with the intent "repair" and no need. Tracked beside need_* and intent_*.
+  // with the intent "repair" and no need. Tracked like the chips.
   function chooseRepair() {
     setNeed(null);
     setIntent("repair");
@@ -542,11 +537,6 @@ export function SecurityHeroFunnel(
                 {showEmailCheck && <Check className="absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-success-bright" />}
               </div>
             </StepField>
-          )}
-
-          {/* Optional, under the email, never earlier (security-intent-row.tsx). */}
-          {skipService && step === 3 && (
-            <SecurityIntentRow tone="dark" name="hero" value={intent} onChange={chooseIntent} className={`mt-5 ${anim}`} />
           )}
 
           {/* The consent box and the legal notice belong to the last step,

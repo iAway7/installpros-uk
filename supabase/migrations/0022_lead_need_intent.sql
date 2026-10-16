@@ -3,11 +3,13 @@
 --   need    "What do you need?", the first tap: alarm, cameras or both. It
 --           was asked from the start but stored nowhere, so the lead reached
 --           the team without saying which.
---   intent  the optional row on the email step: new (a new system), add (add
---           to what I have) or repair (something stopped working). About a
---           fifth of security enquiries are repairs, additions or takeovers
---           of someone else's system, and they used to arrive looking like
---           new installs.
+--   intent  new (a new system), add (add to what I have) or repair
+--           (something stopped working). The forms set only repair, from
+--           "Existing system not working?" under the chips; new and add came
+--           from a row on the email step, removed on 17 October, and stay
+--           allowed. About a fifth of security enquiries are repairs,
+--           additions or takeovers of someone else's system, and they used
+--           to arrive looking like new installs.
 --
 -- Both nullable and set only by the Ajax forms, so every other lead is
 -- untouched. The API sends them only when they have a value, and if this
