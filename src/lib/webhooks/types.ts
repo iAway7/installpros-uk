@@ -93,6 +93,10 @@ export interface WebhookPayload {
     sector: string | null;
     form_name: string | null;
     notes: string | null;
+    /** Ajax forms only: alarm | cameras | both. Null elsewhere. */
+    need: string | null;
+    /** Ajax forms only, optional: new | add | repair. Null elsewhere. */
+    intent: string | null;
     status: string | null;
     /** 1-10. Null on lead.created — enrichment hasn't run yet. */
     score: number | null;

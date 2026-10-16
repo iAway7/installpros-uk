@@ -40,6 +40,12 @@ export interface ZapierLeadPayload {
   postcode: string;
   /** Only present when the visitor picked one, so the key can be absent. */
   address?: string;
+  /** Ajax leads only, so absent on every other lead and the Starlink payload
+   *  is byte for byte what it was: "Alarm", "Cameras" or "Alarm and cameras". */
+  need?: string;
+  /** Ajax leads, and only when answered: "New system", "Add to what I have"
+   *  or "Something stopped working". */
+  intent?: string;
   install_type: string;
   marketing_consent: boolean;
   landing_page: string | null;
@@ -51,6 +57,14 @@ export interface ZapierLeadPayload {
   gclid: string | null;
   device_type: string | null;
 }
+
+/** The Ajax answers in the words the form shows (migration 0022). */
+const NEED_LABEL: Record<string, string> = { alarm: "Alarm", cameras: "Cameras", both: "Alarm and cameras" };
+const INTENT_LABEL: Record<string, string> = {
+  new: "New system",
+  add: "Add to what I have",
+  repair: "Something stopped working",
+};
 
 export function toZapier(payload: WebhookPayload): ZapierLeadPayload {
   const [first_name, last_name] = splitName(payload.lead.name);
@@ -81,5 +95,7 @@ export function toZapier(payload: WebhookPayload): ZapierLeadPayload {
   };
 
   if (payload.lead.address) out.address = payload.lead.address;
+  if (payload.lead.need && NEED_LABEL[payload.lead.need]) out.need = NEED_LABEL[payload.lead.need];
+  if (payload.lead.intent && INTENT_LABEL[payload.lead.intent]) out.intent = INTENT_LABEL[payload.lead.intent];
   return out;
 }

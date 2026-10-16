@@ -91,6 +91,11 @@ export async function buildPayload(event: WebhookEvent, leadId: string): Promise
   const lead = data as unknown as LeadRow | null;
   if (!lead) return null;
 
+  // The Ajax answers (migration 0022) in a query of their own: if the columns
+  // do not exist yet this one fails alone, and the lead still goes out.
+  const { data: answers } = await supabase.from("leads").select("need, intent").eq("id", leadId).maybeSingle();
+  const extra = (answers as { need?: string | null; intent?: string | null } | null) ?? null;
+
   // Only fetch intel for the enriched event — on lead.created it can't exist yet.
   let intel: Record<string, unknown> | null = null;
   if (event === "lead.enriched") {
@@ -123,6 +128,8 @@ export async function buildPayload(event: WebhookEvent, leadId: string): Promise
       sector: lead.sector ?? null,
       form_name: lead.form_name ?? null,
       notes: lead.notes ?? null,
+      need: extra?.need ?? null,
+      intent: extra?.intent ?? null,
       status: lead.status ?? null,
       score: (lead.lead_score as number | null) ?? null,
     },
@@ -171,6 +178,8 @@ export function testPayload(): WebhookPayload {
       sector: null,
       form_name: "starlink_residential",
       notes: "This is a test delivery from the InstallPros dashboard.",
+      need: null,
+      intent: null,
       status: "new",
       score: 9,
     },

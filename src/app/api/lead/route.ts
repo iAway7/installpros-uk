@@ -21,6 +21,10 @@ interface LeadBody {
   postcode_precision?: "exact" | "approximate" | "none" | null;
   sector?: string;
   form_name?: string;
+  /** Ajax forms only (migration 0022): alarm | cameras | both. */
+  need?: string;
+  /** Ajax forms only, optional (migration 0022): new | add | repair. */
+  intent?: string;
   meta?: {
     traffic_source?: string | null;
     campaign?: string | null;
@@ -130,6 +134,14 @@ function valid(b: Partial<LeadBody>): b is LeadBody {
  * generated id so the funnel still works in local/dev without a backend.
  * Server-side is also where you'd forward the lead to email / CRM / WhatsApp.
  */
+const NEEDS = new Set(["alarm", "cameras", "both"]);
+const INTENTS = new Set(["new", "add", "repair"]);
+
+/** Postgres "undefined column", or PostgREST not finding it in its cache. */
+function isMissingColumn(error: { code?: string; message?: string }): boolean {
+  return error.code === "42703" || error.code === "PGRST204" || /column/i.test(error.message ?? "");
+}
+
 export async function POST(req: Request) {
   const limited = rateLimit(req, LIMITS.lead);
   if (limited) return limited;
@@ -154,46 +166,55 @@ export async function POST(req: Request) {
 
   try {
     const supabase = createServiceClient();
-    const { data, error } = await supabase
-      .from("leads")
-      .insert({
-        name: cap(body.name, CAPS.name),
-        email: cap(body.email, CAPS.email),
-        phone: cap(body.phone, CAPS.phone),
-        postcode: cap(normalisePostcode(body.postcode), CAPS.postcode),
-        install_type: body.install_type,
-        address: body.address ? cap(body.address, CAPS.address) : null,
-        town: body.town ? cap(body.town, CAPS.town) : null,
-        service: clean(body.service),
-        notes: body.notes ? cap(body.notes, CAPS.notes) : null,
-        // Null means nobody was asked; false means asked and declined. Keep the
-        // two apart: collapsing them loses the only evidence of which it was.
-        marketing_consent: typeof body.marketing_consent === "boolean" ? body.marketing_consent : null,
-        consent_at: typeof body.marketing_consent === "boolean" ? new Date().toISOString() : null,
-        postcode_precision: body.postcode_precision ?? null,
-        sector: body.sector ? cap(body.sector, CAPS.sector) : null,
-        form_name: body.form_name ? cap(body.form_name, CAPS.form_name) : null,
-        device_type: clean(body.meta?.device_type),
-        landing_page: clean(body.meta?.landing_page),
-        traffic_source: clean(body.meta?.traffic_source),
-        campaign: clean(body.meta?.campaign),
-        source_url: clean(body.meta?.page_url),
-        utm_source: clean(body.meta?.utm_source),
-        utm_medium: clean(body.meta?.utm_medium),
-        utm_campaign: clean(body.meta?.utm_campaign),
-        utm_term: clean(body.meta?.utm_term),
-        utm_content: clean(body.meta?.utm_content),
-        gclid: clean(body.meta?.gclid),
-        fbclid: clean(body.meta?.fbclid),
-        session_id: clean(body.meta?.session_id),
-        variant_id: clean(body.meta?.variant_id),
-        experiment_id: clean(body.meta?.experiment_id),
-        status: "new",
-      })
-      .select("id")
-      .single();
+    const row = {
+      name: cap(body.name, CAPS.name),
+      email: cap(body.email, CAPS.email),
+      phone: cap(body.phone, CAPS.phone),
+      postcode: cap(normalisePostcode(body.postcode), CAPS.postcode),
+      install_type: body.install_type,
+      address: body.address ? cap(body.address, CAPS.address) : null,
+      town: body.town ? cap(body.town, CAPS.town) : null,
+      service: clean(body.service),
+      notes: body.notes ? cap(body.notes, CAPS.notes) : null,
+      // Null means nobody was asked; false means asked and declined. Keep the
+      // two apart: collapsing them loses the only evidence of which it was.
+      marketing_consent: typeof body.marketing_consent === "boolean" ? body.marketing_consent : null,
+      consent_at: typeof body.marketing_consent === "boolean" ? new Date().toISOString() : null,
+      postcode_precision: body.postcode_precision ?? null,
+      sector: body.sector ? cap(body.sector, CAPS.sector) : null,
+      form_name: body.form_name ? cap(body.form_name, CAPS.form_name) : null,
+      device_type: clean(body.meta?.device_type),
+      landing_page: clean(body.meta?.landing_page),
+      traffic_source: clean(body.meta?.traffic_source),
+      campaign: clean(body.meta?.campaign),
+      source_url: clean(body.meta?.page_url),
+      utm_source: clean(body.meta?.utm_source),
+      utm_medium: clean(body.meta?.utm_medium),
+      utm_campaign: clean(body.meta?.utm_campaign),
+      utm_term: clean(body.meta?.utm_term),
+      utm_content: clean(body.meta?.utm_content),
+      gclid: clean(body.meta?.gclid),
+      fbclid: clean(body.meta?.fbclid),
+      session_id: clean(body.meta?.session_id),
+      variant_id: clean(body.meta?.variant_id),
+      experiment_id: clean(body.meta?.experiment_id),
+      status: "new",
+    };
+    // The two Ajax answers (migration 0022), added only when they hold an
+    // allowed value, so every other lead inserts exactly as before.
+    const extra: { need?: string; intent?: string } = {};
+    if (body.need && NEEDS.has(body.need)) extra.need = body.need;
+    if (body.intent && INTENTS.has(body.intent)) extra.intent = body.intent;
 
-    if (error) throw error;
+    let { data, error } = await supabase.from("leads").insert({ ...row, ...extra }).select("id").single();
+    // If 0022 has not been applied the columns do not exist yet. Losing the
+    // lead over two optional answers would be the wrong trade, so it is saved
+    // without them.
+    if (error && Object.keys(extra).length > 0 && isMissingColumn(error)) {
+      ({ data, error } = await supabase.from("leads").insert(row).select("id").single());
+    }
+
+    if (error || !data) throw error ?? new Error("no_row");
 
     fireLeadCreated(data.id);
 

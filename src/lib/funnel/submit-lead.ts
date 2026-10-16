@@ -25,6 +25,10 @@ export interface LeadInput {
    *  page. Both are needed: the hero form on the commercial landing and the
    *  hero form on the residential one are the same component. */
   formName?: string;
+  /** Ajax forms only: "What do you need?" (alarm, cameras, both). */
+  need?: string;
+  /** Ajax forms only, optional: new, add or repair. */
+  intent?: string;
 }
 
 declare global {
@@ -78,6 +82,9 @@ export async function submitLead(input: LeadInput): Promise<string> {
       postcode_precision: input.postcodePrecision ?? null,
       sector: sector || null,
       form_name: input.formName ?? null,
+      // Only when set, so no other form's request changes shape (0022).
+      ...(input.need ? { need: input.need } : {}),
+      ...(input.intent ? { intent: input.intent } : {}),
       // Nothing synthetic goes in here any more. Every value this string used
       // to carry has its own column as of 0019, so `notes` is free for actual
       // notes rather than a pipe-delimited record nothing could read back.
