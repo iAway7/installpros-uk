@@ -34,22 +34,31 @@ export function MainHeader() {
       }`}
     >
       <div className="container mx-auto flex items-center justify-between py-4">
-        <a href="/install-quote" className="flex min-h-[48px] items-center" aria-label="Install Pros">
+        <a href="/install-quote" className="flex min-h-[48px] min-w-0 shrink items-center" aria-label="Install Pros">
           {/* Inline SVG, not <img src>: this is the LCP element and as a file it
               put a network round trip on the critical path. Swapping colour with
               a text-* class also removes the second download that used to happen
               the moment the user scrolled and the header went white.
               Sized by width on mobile: the lockup is wider than its height
               suggests, and at h-8 it left no room for the phone link at 360px.
-              w-32 is the footprint the previous logo had there. */}
+              w-32 is the footprint the previous logo had there.
+
+              THE LOGO IS WHAT GIVES WAY. Measured 2026-10-18: the row needs
+              345px at 375 and has 343, so the phone number wrapped to two
+              lines on every 375 and 360 phone (hidden inside the link's 48px
+              minimum) and to three at 320, where the header grew to 104px.
+              The number now never wraps; this link can shrink (min-w-0) and
+              the SVG follows it (max-w-full), so at 375 the logo loses 2px, at
+              360 about 17, and under 350 the number steps down to its icon
+              before the logo gets too small to read. */}
           <InstallProsLogo
-            className={`h-auto w-32 transition-colors duration-card ease-ds md:h-10 md:w-auto ${
+            className={`h-auto w-32 max-w-full transition-colors duration-card ease-ds md:h-10 md:w-auto md:max-w-none ${
               scrolled ? "text-black" : "text-white"
             }`}
           />
         </a>
 
-        <div className="flex items-center gap-5 md:gap-8">
+        <div className="flex shrink-0 items-center gap-5 md:gap-8">
           <a
             href={WHATSAPP_URL}
             target="_blank"
@@ -67,10 +76,18 @@ export function MainHeader() {
           <a
             href="tel:02033977003"
             onClick={() => track(EVENTS.PHONE_CLICKED, { channel: "phone", cta_location: "header" })}
-            className={`${linkBase} ${linkTone} ${scrolled ? "hover:text-primary" : "hover:text-white/80"}`}
+            className={`${linkBase} ${linkTone} min-w-[48px] justify-center min-[350px]:min-w-0 min-[350px]:justify-start ${
+              scrolled ? "hover:text-primary" : "hover:text-white/80"
+            }`}
           >
             <Phone className="h-4 w-4 md:h-5 md:w-5" />
-            <span>020 3397 7003</span>
+            {/* Same pattern as the WhatsApp label: sr-only under 350px keeps
+                the number in the accessible name while only the icon shows.
+                not-sr-only resets white-space to normal, hence the nowrap
+                at the same breakpoint. */}
+            <span className="sr-only min-[350px]:not-sr-only min-[350px]:inline min-[350px]:whitespace-nowrap">
+              020 3397 7003
+            </span>
           </a>
         </div>
       </div>
