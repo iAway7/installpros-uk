@@ -21,13 +21,17 @@ export function FunnelHeaderLight({ ctaLocation = "thank_you" }: { ctaLocation?:
   return (
     <header className="border-b border-border/60 bg-white">
       <div className="container mx-auto flex items-center justify-between gap-4 py-3 md:py-4">
-        <a href="/install-quote" className="flex min-h-[48px] items-center" aria-label="Install Pros">
+        <a href="/install-quote" className="flex min-h-[48px] min-w-0 shrink items-center" aria-label="Install Pros">
           {/* Width-capped on mobile, same footprint as the previous logo, so
-              the two contact links keep their room at 360px. */}
-          <InstallProsLogo className="h-auto w-28 text-black md:h-10 md:w-auto" />
+              the two contact links keep their room at 360px. Same three
+              layers as MainHeader (2026-10-18): the number never wraps, this
+              logo shrinks first (min-w-0 on the link, max-w-full on the SVG),
+              and under 350px the number steps down to its icon. Measured
+              before the change: three lines at 320, two at 350. */}
+          <InstallProsLogo className="h-auto w-28 max-w-full text-black md:h-10 md:w-auto md:max-w-none" />
         </a>
 
-        <div className="flex items-center gap-4 md:gap-8">
+        <div className="flex shrink-0 items-center gap-4 md:gap-8">
           <a
             href={WHATSAPP_URL}
             target="_blank"
@@ -43,10 +47,15 @@ export function FunnelHeaderLight({ ctaLocation = "thank_you" }: { ctaLocation?:
           <a
             href={SUPPORT_PHONE_HREF}
             onClick={() => track(EVENTS.PHONE_CLICKED, { channel: "phone", cta_location: `${ctaLocation}_header` })}
-            className={`${linkBase} hover:text-primary`}
+            className={`${linkBase} min-w-[48px] justify-center hover:text-primary min-[350px]:min-w-0 min-[350px]:justify-start`}
           >
             <Phone className="h-4 w-4 md:h-5 md:w-5" />
-            <span>{SUPPORT_PHONE}</span>
+            {/* sr-only under 350px, like the WhatsApp label: the number stays
+                in the accessible name while only the icon shows. not-sr-only
+                resets white-space, hence the nowrap at the same breakpoint. */}
+            <span className="sr-only min-[350px]:not-sr-only min-[350px]:inline min-[350px]:whitespace-nowrap">
+              {SUPPORT_PHONE}
+            </span>
           </a>
         </div>
       </div>
