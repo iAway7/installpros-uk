@@ -1,4 +1,13 @@
 import { Check, Minus } from "lucide-react";
+import { Button } from "@/components/system/button";
+import { WhatsAppIcon } from "./ui/whatsapp-icon";
+
+/** The same prefilled WhatsApp thread HowItWorksSection opens, kept as a
+ *  copy rather than an import between sections (the page's rule). If the
+ *  wording changes there, change it here. */
+const PHOTO_QUOTE_URL =
+  "https://wa.me/447446112343?text=" +
+  encodeURIComponent("Hi, I'd like a quote for Starlink on my vehicle. Photos of the roof and inside to follow.");
 
 type Option = {
   name: string;
@@ -114,10 +123,23 @@ export function PermanentOrRemovable() {
         ))}
       </div>
 
-      <p className="mt-4 text-caption text-muted-foreground">
-        Not sure? Tell us how you use the vehicle when you send the photo and we recommend one before
-        we quote.
-      </p>
+      {/* Gus, 2026-10-18: a CTA here. The line already told the reader what to
+          do ("tell us how you use the vehicle when you send the photo") and
+          gave them nowhere to do it; the nearest button was three sections
+          down. Same action and same thread as the How it works button, so the
+          two never disagree on where a photo goes. */}
+      <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <p className="text-caption text-muted-foreground sm:max-w-md">
+          Not sure? Tell us how you use the vehicle when you send the photo and we recommend one
+          before we quote.
+        </p>
+        <Button asChild className="w-full sm:w-auto sm:shrink-0">
+          <a href={PHOTO_QUOTE_URL} target="_blank" rel="noopener noreferrer">
+            <WhatsAppIcon className="mr-2 h-5 w-5" />
+            Send us your photos
+          </a>
+        </Button>
+      </div>
     </div>
   );
 }
