@@ -2,10 +2,11 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
 import { Check, Loader2, ArrowRight, ArrowLeft, Home, Ship, Building2, Caravan } from "lucide-react";
 import { toast } from "sonner";
 import { Input } from "@/components/system/input";
-import { AddressAutocomplete, type AddressSelection } from "./ui/address-autocomplete";
+import type { AddressSelection } from "./ui/address-autocomplete";
 import { Button } from "@/components/system/button";
 import { FormOption } from "@/components/system/form-option";
 import { ConsentCheckbox, MarketingConsentLabel } from "./consent-checkbox";
@@ -17,6 +18,11 @@ import { submitLead } from "@/lib/funnel/submit-lead";
 import { thankYouPath } from "@/lib/funnel/thank-you-path";
 import { track, EVENTS } from "@/lib/analytics";
 import { SecurityNeedStep, type SecurityNeed } from "./security-need-step";
+
+// Never on screen on the Ajax page (no address mode, no service dropdown), so
+// their code loads only if a form ever renders them instead of on every visit
+// (Lighthouse, 19 October 2026: about 40 KB gzipped of the first load).
+const AddressAutocomplete = dynamic(() => import("./ui/address-autocomplete").then((m) => m.AddressAutocomplete));
 
 type CheckStatus = "idle" | "checking" | "available" | "invalid";
 

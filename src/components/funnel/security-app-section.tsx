@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { Grid3x3, KeyRound, Siren, Smartphone, UserRoundCheck, Users } from "lucide-react";
-import { SecurityPhoneMock } from "./security-phone-mock";
+import { LazyPhoneMock } from "./security-lazy";
 
 /**
  * "Simple enough for everyone in the house": how each person uses the
@@ -158,7 +158,7 @@ export function SecurityAppSection() {
             around them centre the block on the phone, which spans all six. */}
         <div className="mt-12 grid grid-cols-1 gap-y-7 md:mt-16 md:grid-cols-2 md:grid-rows-[auto_auto_repeat(3,minmax(0,1fr))] md:gap-x-10 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] lg:grid-rows-[minmax(0,1fr)_repeat(4,auto)_minmax(0,1fr)] lg:gap-x-12 lg:gap-y-8 xl:gap-x-16">
           <div className="mb-5 md:col-span-2 md:row-start-1 lg:col-span-1 lg:col-start-2 lg:row-span-6 lg:row-start-1 lg:mb-0 lg:w-[300px] lg:self-center xl:w-[320px]">
-            <SecurityPhoneMock />
+            <LazyPhoneMock />
           </div>
           <Group id="app-you-see" label="What you see and control" items={YOU_SEE} side="left" />
           <Group id="app-ways-in" label="How each person uses it" items={WAYS_IN} side="right" />

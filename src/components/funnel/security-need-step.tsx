@@ -36,6 +36,12 @@ import { ArrowRight, Cctv, ShieldCheck, Siren } from "lucide-react";
 
 export type SecurityNeed = "alarm" | "cameras" | "both";
 
+/** Fired by "Inherited a system that isn't working?" in the moving section
+ *  (security-moving-section.tsx) to open the closing form on its repair
+ *  path. Here rather than in security-quote-form.tsx so the section does not
+ *  pull the whole form into the page chunk (security-lazy.tsx). */
+export const SECURITY_REPAIR_EVENT = "security:repair";
+
 export const SECURITY_NEED_LABEL: Record<SecurityNeed, string> = {
   alarm: "Alarm",
   cameras: "Cameras",

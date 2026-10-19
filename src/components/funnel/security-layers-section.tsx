@@ -1,5 +1,6 @@
 import { Camera, Footprints, PawPrint, Vibrate } from "lucide-react";
-import { SecurityLayersScene, type LayerCard } from "./security-layers-scene";
+import type { LayerCard } from "./security-layers-scene";
+import { LazyLayersScene } from "./security-lazy";
 
 /**
  * How the devices protect the home, first under the hero.
@@ -67,7 +68,7 @@ const BAND = "#070b10";
 export function SecurityLayersSection() {
   return (
     <section id="protection" className="w-full scroll-mt-28 text-white" style={{ backgroundColor: BAND }}>
-      <SecurityLayersScene
+      <LazyLayersScene
         band={BAND}
         cards={CARDS}
         heading={

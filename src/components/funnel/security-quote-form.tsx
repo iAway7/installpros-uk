@@ -2,13 +2,13 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
 import { Check, Loader2, ArrowRight, ArrowLeft, Home, Ship, Building2, Caravan } from "lucide-react";
 import { toast } from "sonner";
 import { Input } from "@/components/system/input";
-import { AddressAutocomplete, type AddressSelection } from "./ui/address-autocomplete";
+import type { AddressSelection } from "./ui/address-autocomplete";
 import { Button } from "@/components/system/button";
 import { FormOption } from "@/components/system/form-option";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/system/select";
 import { ConsentCheckbox, MarketingConsentLabel } from "./consent-checkbox";
 import { FormLegalNotice } from "./form-legal-notice";
 import { SERVICE_OPTIONS } from "@/lib/funnel/states";
@@ -18,7 +18,17 @@ import { validateName, validatePhone, validateEmail, formatPhone, isValidUkPhone
 import { submitLead } from "@/lib/funnel/submit-lead";
 import { thankYouPath } from "@/lib/funnel/thank-you-path";
 import { track, EVENTS } from "@/lib/analytics";
-import { SecurityNeedStep, type SecurityNeed } from "./security-need-step";
+import { SecurityNeedStep, SECURITY_REPAIR_EVENT, type SecurityNeed } from "./security-need-step";
+
+// Never on screen on the Ajax page (no address mode, no service dropdown), so
+// their code loads only if a form ever renders them instead of on every visit
+// (Lighthouse, 19 October 2026: about 40 KB gzipped of the first load).
+const AddressAutocomplete = dynamic(() => import("./ui/address-autocomplete").then((m) => m.AddressAutocomplete));
+const Select = dynamic(() => import("@/components/system/select").then((m) => m.Select));
+const SelectContent = dynamic(() => import("@/components/system/select").then((m) => m.SelectContent));
+const SelectItem = dynamic(() => import("@/components/system/select").then((m) => m.SelectItem));
+const SelectTrigger = dynamic(() => import("@/components/system/select").then((m) => m.SelectTrigger));
+const SelectValue = dynamic(() => import("@/components/system/select").then((m) => m.SelectValue));
 
 type CheckStatus = "idle" | "checking" | "available" | "invalid";
 
@@ -61,10 +71,6 @@ const INSTALL_OPTIONS = [
  * Also changed: a one-tap first step before the postcode, "What do you need?
  * Alarm / Cameras / Both" (security-need-step.tsx, with the reasons).
  */
-
-/** Fired by "Inherited a system that isn't working?" in the moving section
- *  (security-moving-section.tsx) to open this form on its repair path. */
-export const SECURITY_REPAIR_EVENT = "security:repair";
 
 /**
  * CTA form: postcode → name → phone → email → final step.

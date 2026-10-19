@@ -3,7 +3,7 @@
 import type { ReactNode } from "react";
 import { ArrowRight, CalendarCheck, KeyRound, ScanSearch } from "lucide-react";
 import { track, EVENTS } from "@/lib/analytics";
-import { SECURITY_REPAIR_EVENT } from "./security-quote-form";
+import { SECURITY_REPAIR_EVENT } from "./security-need-step";
 
 /**
  * "Moving in?" for the Ajax landing: a three-step line from before completion
