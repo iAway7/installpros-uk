@@ -54,6 +54,9 @@ const SENSOR = {
 /** The person, for the camera's frame. */
 const PERSON = { x0: 798, y0: 226, x1: 948, y1: 580 };
 
+/** Width of the "Intruder" tag over the frame, in image pixels. */
+const TAG_W = 86;
+
 /** The person, cropped for the photo in the last alert: x, y, width, height. */
 const THUMB = { x: 760, y: 225, w: 240, h: 338 };
 
@@ -275,9 +278,19 @@ export function SecurityLayersScene({ heading, cards, band }: { heading: ReactNo
                     vectorEffect="non-scaling-stroke"
                   />
                   <g className="hidden md:inline">
-                    <rect x={x0} y={y0 - 30} width="82" height="24" rx="5" fill="#C70505" />
-                    <text x={x0 + 10} y={y0 - 13} fill="white" fontSize="15" fontWeight="600" letterSpacing="0.3">
-                      Person
+                    {/* Centred in the tag, so the padding is the same both sides. */}
+                    <rect x={x0} y={y0 - 30} width={TAG_W} height="24" rx="5" fill="#C70505" />
+                    <text
+                      x={x0 + TAG_W / 2}
+                      y={y0 - 18}
+                      textAnchor="middle"
+                      dominantBaseline="central"
+                      fill="white"
+                      fontSize="15"
+                      fontWeight="600"
+                      letterSpacing="0.3"
+                    >
+                      Intruder
                     </text>
                   </g>
                 </motion.g>
