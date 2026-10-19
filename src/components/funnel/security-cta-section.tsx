@@ -18,7 +18,7 @@ export function SecurityCtaSection({ defaultService, formName }: { defaultServic
   return (
     <section id="quote" className="scroll-mt-24 bg-background py-12 md:py-20">
       <div className="container mx-auto">
-        <div className="rounded-3xl bg-secondary px-8 py-16 text-center md:p-16">
+        <div className="rounded-3xl bg-secondary px-4 py-16 text-center min-[350px]:px-8 md:p-16">
           <h2 className="mb-4 h2-section text-foreground">Peace of mind, without the monthly bill.</h2>
           <p className="mb-8 text-body text-foreground md:text-lg">
             Tell us about your home and you will have one upfront price for the kit and the fitting the same day.

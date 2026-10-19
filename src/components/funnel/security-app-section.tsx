@@ -140,7 +140,9 @@ function Group({ id, label, items, side }: { id: string; label: string; items: I
 
 export function SecurityAppSection() {
   return (
-    <section id="everyday" className="w-full scroll-mt-28 bg-background py-16 md:py-24">
+    // overflow-x-clip: the halo round the phone is wider than a 320px screen
+    // and would widen the whole page.
+    <section id="everyday" className="w-full scroll-mt-28 overflow-x-clip bg-background py-16 md:py-24">
       <div className="container mx-auto">
         <div className="mx-auto max-w-2xl text-center">
           <p className="eyebrow">Easy for the whole family</p>

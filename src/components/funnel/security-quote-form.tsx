@@ -487,13 +487,18 @@ export function SecurityQuoteForm({
 
         {started && (
           <div className="flex gap-3">
+            {/* "Back" plus "Get My Free Quote" need 309px, which this card only
+                has from 405px. Narrower, Back keeps only its arrow (the word
+                stays for screen readers) and the submit may wrap rather than
+                run off the edge. */}
             <Button onClick={step === 0 ? backToStart : back} variant="secondary" disabled={isTransitioning}>
-              <ArrowLeft className="mr-2 h-4 w-4" /> Back
+              <ArrowLeft className="h-4 w-4 sm:mr-2" />
+              <span className="sr-only sm:not-sr-only">Back</span>
             </Button>
             <Button
               onClick={step === 0 ? next : stepNext}
               disabled={(step === 0 ? status !== "available" : !canProceed()) || isSubmitting || isTransitioning}
-              className="flex-1"
+              className="min-w-0 flex-1 whitespace-normal text-center"
             >
               {isSubmitting ? (
                 <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> Submitting...</>

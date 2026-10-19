@@ -77,7 +77,7 @@ export function SecurityNeedStep({
             key={o.value}
             type="button"
             onClick={() => onChoose(o.value)}
-            className={`focus-ring-solid flex h-[76px] flex-col items-center justify-center gap-1.5 rounded-lg border-[length:var(--border-control)] text-body font-semibold transition-all duration-quick ease-ds sm:h-20 ${
+            className={`focus-ring-solid flex h-[76px] flex-col items-center justify-center gap-1.5 rounded-lg border-[length:var(--border-control)] text-body-sm font-semibold min-[350px]:text-body transition-all duration-quick ease-ds sm:h-20 ${
               tone === "dark"
                 ? "border-white/80 bg-white text-foreground hover:border-white hover:bg-secondary"
                 : "border-field bg-background text-foreground hover:border-selection-border hover:bg-card"
@@ -93,12 +93,19 @@ export function SecurityNeedStep({
           <button
             type="button"
             onClick={onRepair}
-            className={`focus-ring inline-flex min-h-[44px] items-center gap-1.5 rounded-md px-2 text-body-sm font-medium underline-offset-4 transition-colors duration-quick ease-ds hover:underline ${
+            className={`focus-ring inline-flex min-h-[44px] items-center rounded-md px-2 text-body-sm font-medium underline-offset-4 transition-colors duration-quick ease-ds hover:underline ${
               tone === "dark" ? "text-white/65 hover:text-white" : "text-muted-foreground hover:text-foreground"
             }`}
           >
-            Existing system not working?
-            <ArrowRight aria-hidden="true" className="h-3.5 w-3.5" />
+            {/* One inline run, so on a narrow screen the line wraps before
+                "working?" and the arrow stays with it, never on its own. */}
+            <span>
+              Existing system not{" "}
+              <span className="whitespace-nowrap">
+                working?
+                <ArrowRight aria-hidden="true" className="ml-1.5 inline h-3.5 w-3.5 align-[-0.125em]" />
+              </span>
+            </span>
           </button>
         </div>
       )}
