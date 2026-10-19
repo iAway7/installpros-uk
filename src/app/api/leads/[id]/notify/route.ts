@@ -18,11 +18,25 @@ const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
  * Safe to leave unauthenticated: dispatchLeadEvent is idempotent per
  * (lead, event, destination), so a real lead can only ever be forwarded once,
  * and an id that doesn't exist produces no payload and therefore no request.
+ *
+ * Responds `{ delivered, failed, statusCodes }`. All zeros means nothing was
+ * attempted: already delivered, no destination for `lead.created`, or an
+ * unknown id.
  */
 export async function POST(_req: Request, { params }: { params: { id: string } }) {
   if (!UUID_RE.test(params.id)) {
     return NextResponse.json({ error: "invalid_id" }, { status: 400 });
   }
   const results = await dispatchLeadEvent("lead.created", params.id);
-  return NextResponse.json({ delivered: results.length });
+  // `results` has one entry per destination attempted, failures included, so
+  // its length alone reports a 404 from a switched-off zap as a delivery.
+  const delivered = results.filter((r) => r.ok).length;
+  return NextResponse.json({
+    delivered,
+    failed: results.length - delivered,
+    // One per destination attempted, null when no HTTP response came back
+    // (timeout, network error). Endpoint URLs and payloads stay out of the
+    // response because this route is public.
+    statusCodes: results.map((r) => r.statusCode),
+  });
 }
