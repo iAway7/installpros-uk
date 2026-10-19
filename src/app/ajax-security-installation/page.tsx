@@ -3,6 +3,7 @@ import { MainHeader } from "@/components/funnel/main-header";
 import { SecurityHeroSection } from "@/components/funnel/security-hero-section";
 import { WhatsAppFab } from "@/components/funnel/whatsapp-fab";
 import { SecurityLayersSection } from "@/components/funnel/security-layers-section";
+import { SecurityMovingSection } from "@/components/funnel/security-moving-section";
 import { SecurityHomeSection } from "@/components/funnel/security-home-section";
 import { SecurityAppSection } from "@/components/funnel/security-app-section";
 import { SecurityEquipmentSection } from "@/components/funnel/security-equipment-section";
@@ -179,6 +180,9 @@ export default function AjaxSecurityInstallationPage() {
               Monthly fees and standard alarm companies (Q2, Q3) live in the
               FAQ: buyers in the chats never compared us with ADT. */}
           <SecurityLayersSection />
+          {/* Who it is for, straight after how it protects (19 October):
+              moving in is the largest stated reason to get in touch. */}
+          <SecurityMovingSection />
           <SecurityAppSection />
           <SecurityEquipmentSection />
           <SecurityCompareSection />

@@ -61,6 +61,11 @@ const INSTALL_OPTIONS = [
  * Also changed: a one-tap first step before the postcode, "What do you need?
  * Alarm / Cameras / Both" (security-need-step.tsx, with the reasons).
  */
+
+/** Fired by "Inherited a system that isn't working?" in the moving section
+ *  (security-moving-section.tsx) to open this form on its repair path. */
+export const SECURITY_REPAIR_EVENT = "security:repair";
+
 /**
  * CTA form: postcode → name → phone → email → final step.
  *
@@ -153,6 +158,17 @@ export function SecurityQuoteForm({
     setNeed(null);
     setIntent(null);
   }
+
+  // The moving section's repair link (SECURITY_REPAIR_EVENT). Only from the
+  // first step, so it never undoes an enquiry already under way.
+  useEffect(() => {
+    const onRepair = () => {
+      if (step === 0) chooseRepair();
+    };
+    window.addEventListener(SECURITY_REPAIR_EVENT, onRepair);
+    return () => window.removeEventListener(SECURITY_REPAIR_EVENT, onRepair);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [step]);
 
   // Straight to the postcode once they have picked, so the keyboard is up.
   useEffect(() => {
