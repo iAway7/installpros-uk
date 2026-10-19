@@ -82,6 +82,7 @@ export const metadata: Metadata = {
   description:
     "Starlink fitted to your boat at the berth. No holes in the roof, runs off 12 V or shore power, cable in the way the last one came. One fitting fee you can spread, a plan you can pause. Call 020 3397 7003.",
   robots: { index: false, follow: false },
+  alternates: { canonical: "/starlink-installation-for-boats" },
   openGraph: {
     title: "Starlink Installation for Boats | Narrowboats, Houseboats & Yachts UK",
     description:

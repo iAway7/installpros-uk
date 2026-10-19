@@ -35,6 +35,8 @@ export const metadata: Metadata = {
   description:
     "UK-wide Starlink installation by accredited engineers. Real broadband check for your postcode, fixed pricing, same-week fitting. Call 020 3397 7003.",
   robots: { index: false, follow: false },
+  // A/B variant of /install-quote: canonical to the original.
+  alternates: { canonical: "/install-quote" },
   openGraph: {
     title: "Starlink Installation UK | Same-Week Professional Setup",
     description:

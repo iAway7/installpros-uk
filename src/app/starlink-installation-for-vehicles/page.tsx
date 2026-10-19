@@ -69,6 +69,7 @@ export const metadata: Metadata = {
   description:
     "Starlink Mini fitted to your motorhome, campervan, car or van. Vehicle-specific mount, wired to 12 V, tested before you drive off. Fitted in a day. Call 020 3397 7003.",
   robots: { index: false, follow: false },
+  alternates: { canonical: "/starlink-installation-for-vehicles" },
   openGraph: {
     title: "Starlink Installation for Cars, Motorhomes & Campervans | UK",
     description:

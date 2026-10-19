@@ -42,6 +42,7 @@ export const metadata: Metadata = {
   description:
     "Commercial Starlink installation across the UK. Site survey, fixed quote and full install for offices, warehouses, depots and rural sites. Call 020 3397 7003.",
   robots: { index: false, follow: false },
+  alternates: { canonical: "/commercial-starlink-installation" },
   openGraph: {
     title: "Commercial Starlink Installation UK | Offices, Warehouses & Sites",
     description:

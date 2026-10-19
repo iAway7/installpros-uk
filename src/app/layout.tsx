@@ -33,7 +33,9 @@ export const metadata: Metadata = {
     "Starlink setup",
     "professional Starlink fitting",
   ],
-  alternates: { canonical: "/" },
+  // No canonical here: set at this level it was inherited by every page, so
+  // each landing pointed at "/", which only redirects to /install-quote. Each
+  // landing sets its own (19 October 2026); pages without one emit none.
   openGraph: {
     type: "website",
     locale: "en_GB",

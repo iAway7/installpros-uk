@@ -116,6 +116,7 @@ export const metadata: Metadata = {
   description:
     "Ajax smart alarm and CCTV, supplied and fitted in a day. Every door and window protected, alerts on your phone, no monthly contract. Call 020 3397 7003.",
   robots: { index: false, follow: false },
+  alternates: { canonical: "/ajax-security-installation" },
   openGraph: {
     title: "Ajax Alarm & CCTV Installation for Homes | No Monthly Fees",
     description:

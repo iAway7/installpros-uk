@@ -75,6 +75,7 @@ export const metadata: Metadata = {
   description:
     "Starlink fitted to your static caravan, park home or lodge. One fitting fee you can spread, a plan you can pause out of season, and a mount that does not touch the unit. Call 020 3397 7003.",
   robots: { index: false, follow: false },
+  alternates: { canonical: "/starlink-installation-for-static-caravans" },
   openGraph: {
     title: "Starlink for Static Caravans, Park Homes & Lodges | UK",
     description:
