@@ -18,7 +18,10 @@ const supabaseOrigin = (() => {
  *
  * To promote: watch the console on the funnel, the dashboard and /login for a
  * few days, fold in whatever legitimately reports, then rename the header to
- * "Content-Security-Policy".
+ * "Content-Security-Policy", and add "upgrade-insecure-requests" back to the
+ * list. In Report-Only browsers ignore that directive and log a console error
+ * for it on every page (Lighthouse Best Practices, 19 October 2026); HSTS
+ * already keeps the site on HTTPS meanwhile.
  *
  * 'unsafe-inline' in script-src is load-bearing for now: GTM injects inline
  * snippets and the pages carry inline JSON-LD. Removing it needs nonces, which
@@ -88,7 +91,6 @@ const csp = [
   `frame-src 'self' ${sources("frame")}`,
   "worker-src 'self' blob:",
   "manifest-src 'self'",
-  "upgrade-insecure-requests",
 ].join("; ");
 
 /**
