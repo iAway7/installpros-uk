@@ -183,9 +183,6 @@ export default function AjaxSecurityInstallationPage() {
               Monthly fees and standard alarm companies (Q2, Q3) live in the
               FAQ: buyers in the chats never compared us with ADT. */}
           <SecurityLayersSection />
-          {/* Who it is for, straight after how it protects (19 October):
-              moving in is the largest stated reason to get in touch. */}
-          <SecurityMovingSection />
           <SecurityAppSection />
           <SecurityEquipmentSection />
           <SecurityCompareSection />
@@ -193,6 +190,12 @@ export default function AjaxSecurityInstallationPage() {
               install is reassurance, it does not decide the purchase, and
               third place pushed the labour objection down to sixth. */}
           <SecurityHomeSection />
+          {/* Moving in, after the home photos (20 October). Third on the page
+              it split the night scene from the app with a message for a
+              minority (13 of 125 chats were moving in, 17 with renovations);
+              here it follows "no cables in your walls" with "nothing on the
+              fresh paint", and How it works already carries the movers' line. */}
+          <SecurityMovingSection />
           {/* Proof before process, as on every segment landing.
               The reviews are the company's, about its installation service,
               and none of them mentions an alarm yet, so one line says what
