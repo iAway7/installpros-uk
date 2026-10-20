@@ -59,6 +59,7 @@ const STEPS: Step[] = [
  * nodes are version A's (white circles with a brand icon on a dashed line,
  * the keys step filled red), the cards are version C's (white, no border,
  * rounded, the keys card ringed in red). No black card: he did not like it.
+ * Then a short dashed drop joins each icon to its card (his ask, same day).
  */
 export function SecurityMovingSection() {
   return (
@@ -79,7 +80,7 @@ export function SecurityMovingSection() {
           {/* md and up: one dashed line through the centre of the three icons. */}
           <div
             aria-hidden="true"
-            className="absolute left-[16.67%] right-[16.67%] top-6 hidden h-0 border-t border-dashed border-border md:block"
+            className="absolute left-[16.67%] right-[16.67%] top-6 hidden h-0 border-t border-dashed border-muted-foreground/35 md:block"
           />
 
           <ol className="md:grid md:grid-cols-3 md:gap-6">
@@ -92,7 +93,7 @@ export function SecurityMovingSection() {
                 {i < STEPS.length - 1 && (
                   <span
                     aria-hidden="true"
-                    className="absolute bottom-0 left-[23.5px] top-12 w-0 border-l border-dashed border-border md:hidden"
+                    className="absolute bottom-0 left-[23.5px] top-12 w-0 border-l border-dashed border-muted-foreground/35 md:hidden"
                   />
                 )}
                 <span
@@ -103,8 +104,14 @@ export function SecurityMovingSection() {
                 >
                   {s.icon}
                 </span>
+                {/* md and up: a short dashed drop from the icon to its card, red
+                    on the keys step to tie the red icon to the red ring. */}
+                <span
+                  aria-hidden="true"
+                  className={`hidden h-5 w-0 border-l border-dashed md:block ${s.keys ? "border-primary/50" : "border-muted-foreground/35"}`}
+                />
                 <div
-                  className={`pt-1 md:mt-5 md:w-full md:flex-1 md:rounded-3xl md:bg-background md:p-7 ${
+                  className={`pt-1 md:w-full md:flex-1 md:rounded-3xl md:bg-background md:p-7 ${
                     s.keys ? "md:ring-2 md:ring-primary/25" : ""
                   }`}
                 >
