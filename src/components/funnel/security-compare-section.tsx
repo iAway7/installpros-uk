@@ -23,9 +23,10 @@ import {
  * afterwards and the warranty (Jordan's answer of 15 October), titled as
  * benefits. "Choosing the kit" and "Placing it" went, being what any
  * installer would say; set-up is in How it works, adding to it later in the
- * FAQ. Two by two, icon on top in a rounded square. No "few hours": some
- * jobs run over a day. No price: the quotes rarely list the same devices,
- * so a figure would mislead.
+ * FAQ. One row of four from 1280px (Gus; at 1024 the text ran to three
+ * lines), two by two below, icon on top in a rounded square.
+ * No "few hours": some jobs run over a day. No price: the quotes rarely
+ * list the same devices, so a figure would mislead.
  */
 
 type Row = { icon: ReactNode; label: string; text: string };
@@ -35,9 +36,9 @@ const ICON = "h-4 w-4 shrink-0";
 const ROWS: Row[] = [
   { icon: <CalendarClock className={ICON} />, label: "Fitted fast", text: "Usually within 7 days of your go\u2011ahead" },
   { icon: <BadgeCheck className={ICON} />, label: "Tested before we leave", text: "Every device checked, then a full system handover" },
-  { icon: <PhoneCall className={ICON} />, label: "Your own account manager", text: "A dedicated contact for tech support once it is fitted" },
+  { icon: <PhoneCall className={ICON} />, label: "Your account manager", text: "A dedicated contact for tech support once it is fitted" },
   // Jordan, 15 October: 2 or 5 years on the workmanship, the maker's on the kit.
-  { icon: <ShieldCheck className={ICON} />, label: "Kit and fitting guaranteed", text: "2 years on our fitting, extendable to 5, plus Ajax's warranty on the kit" },
+  { icon: <ShieldCheck className={ICON} />, label: "Warranty included", text: "Ajax's warranty on the kit, plus up to 5 years on our fitting" },
 ];
 
 export function SecurityCompareSection() {
@@ -52,7 +53,7 @@ export function SecurityCompareSection() {
           </h2>
         </div>
 
-        <ul className="mx-auto mt-12 grid max-w-4xl grid-cols-1 gap-3 sm:auto-rows-fr sm:grid-cols-2 sm:gap-4 md:mt-16">
+        <ul className="mx-auto mt-12 grid max-w-6xl grid-cols-1 gap-3 sm:auto-rows-fr sm:grid-cols-2 sm:gap-4 md:mt-16 xl:grid-cols-4">
           {ROWS.map((r) => (
             <li key={r.label} className="flex flex-col rounded-2xl bg-background p-5 sm:rounded-3xl sm:p-6">
               <span
