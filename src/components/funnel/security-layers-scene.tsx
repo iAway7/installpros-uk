@@ -41,8 +41,12 @@ import { Camera, DoorOpen, Radar, RotateCcw, ShieldCheck, Vibrate } from "lucide
 
 const IMG_W = 1376;
 const IMG_H = 768;
-const SRC = "/funnel/ajax-intruder-1376.webp";
-const SRCSET = "/funnel/ajax-intruder-960.webp 960w, /funnel/ajax-intruder-1376.webp 1376w";
+// 20 October: the same frame with a sofa, rug, plant and pictures added and a
+// hallway through the door (Gemini edit), because Jordan read the empty room
+// as a bedroom. Window, door, sensors, camera and person measured unmoved
+// against the first version (0px shift), so every point below still holds.
+const SRC = "/funnel/ajax-intruder-living-1376.webp";
+const SRCSET = "/funnel/ajax-intruder-living-960.webp 960w, /funnel/ajax-intruder-living-1376.webp 1376w";
 
 const SENSOR = {
   window: [386, 271],
@@ -65,7 +69,7 @@ const EVENTS = {
   armed: { key: "armed", icon: <ShieldCheck className="h-4 w-4" />, title: "Armed, away", detail: "Every door and window closed", time: "21:54", calm: true },
   forced: { key: "forced", icon: <Vibrate className="h-4 w-4" />, title: "Back window being forced", detail: "Vibration sensor", time: "22:30:58" },
   opened: { key: "opened", icon: <DoorOpen className="h-4 w-4" />, title: "Back window opened", detail: "Window contact", time: "22:30:59" },
-  motion: { key: "motion", icon: <Radar className="h-4 w-4" />, title: "Motion in the bedroom", detail: "Motion detector", time: "22:31:01" },
+  motion: { key: "motion", icon: <Radar className="h-4 w-4" />, title: "Motion in the living room", detail: "Motion detector", time: "22:31:01" },
   photo: { key: "photo", icon: <Camera className="h-4 w-4" />, title: "Photo attached", detail: "Tap to check it", time: "22:31:02", photo: true },
 } satisfies Record<string, SceneEvent>;
 
@@ -207,7 +211,7 @@ export function SecurityLayersScene({ heading, cards, band }: { heading: ReactNo
         <div ref={ref} className="relative aspect-[4/3] w-full overflow-hidden md:aspect-[1376/768]">
           <div
             role="img"
-            aria-label="Illustration of a bedroom at night. Someone forces the back window and opens it, the motion detector picks them up and a detector with a camera sends a photo with the alert."
+            aria-label="Illustration of a living room at night. Someone forces the back window and opens it, the motion detector picks them up and a detector with a camera sends a photo with the alert."
             className="absolute inset-0"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -372,7 +376,7 @@ export function SecurityLayersScene({ heading, cards, band }: { heading: ReactNo
                 transition={reduce ? undefined : { duration: 1.2, repeat: Infinity }}
               />
               Live
-              <span className="font-medium normal-case tracking-normal text-white/60">Bedroom</span>
+              <span className="font-medium normal-case tracking-normal text-white/60">Living room</span>
               <span className="font-medium tabular-nums tracking-normal text-white/80">{clock(CLOCK_START + elapsed)}</span>
             </div>
             {phase === DONE && !reduce && (
