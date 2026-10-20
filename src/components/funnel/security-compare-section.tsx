@@ -3,7 +3,6 @@ import {
   ArrowRight,
   BadgeCheck,
   CalendarClock,
-  CircleCheck,
   CirclePlus,
   ListChecks,
   MapPin,
@@ -13,8 +12,8 @@ import {
 } from "lucide-react";
 
 /**
- * What the installation pays for: everything the fitting includes, in one
- * dark card.
+ * What the installation pays for: everything the fitting includes, as eight
+ * cards.
  *
  * It answers the objection the chats raise most against an installed alarm:
  * 7 of 125 security buyers objected to the installation line (a median 38%
@@ -23,8 +22,10 @@ import {
  *
  * Until 20 October it was a table against "A kit you fit yourself". Jordan's
  * feedback that day rewrote the rows as what we do rather than how we
- * compare, and asked whether the DIY column was needed; Gus took it out. The
- * card also replaced the phone version Gus disliked (a list of grey boxes).
+ * compare, and asked whether the DIY column was needed; Gus took it out.
+ * A table of one column is a list, so the rows became cards (Gus, same day):
+ * four across on desktop, two on tablets, and on phones one per row with
+ * the icon beside the text so the section stays short.
  * Row wording is Jordan's where he gave it; "Lead time" replaces "One visit,
  * usually a few hours", since some jobs run over a day. The warranty row is
  * his answer of 15 October. No price: the quotes rarely list the same
@@ -58,31 +59,29 @@ export function SecurityCompareSection() {
           </h2>
         </div>
 
-        <div className="mx-auto mt-12 max-w-3xl rounded-3xl bg-foreground px-6 py-8 shadow-raised sm:px-8 md:mt-16 md:px-10 md:py-10">
-          <p className="text-label font-semibold uppercase tracking-[0.14em] text-background/55">InstallPros</p>
-          <p className="mt-1 text-lead font-semibold text-background">Fitted by us</p>
-
-          <dl className="mt-6">
-            {ROWS.map((r) => (
-              <div
-                key={r.label}
-                className="border-t border-background/10 py-4 md:grid md:grid-cols-[minmax(0,13rem)_minmax(0,1fr)] md:gap-6 md:py-5"
+        <ul className="mx-auto mt-12 grid max-w-6xl grid-cols-1 gap-3 sm:auto-rows-fr sm:grid-cols-2 sm:gap-4 md:mt-16 lg:grid-cols-4">
+          {ROWS.map((r) => (
+            <li key={r.label} className="flex gap-4 rounded-2xl bg-background px-4 py-4 sm:flex-col sm:gap-0 sm:rounded-3xl sm:p-6">
+              <span
+                aria-hidden="true"
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-border bg-background text-brand-icon [&>svg]:h-5 [&>svg]:w-5"
               >
-                <dt className="flex items-center gap-2 text-label font-semibold uppercase tracking-[0.12em] text-background/55 md:gap-3 md:text-body-sm md:normal-case md:tracking-normal md:text-background/70">
-                  <span aria-hidden="true">{r.icon}</span>
-                  {r.label}
-                </dt>
-                <dd className="mt-2 flex items-start gap-2.5 text-pretty text-body-sm font-medium text-background md:mt-0 md:gap-3">
-                  <CircleCheck aria-hidden="true" className="mt-[2px] h-[18px] w-[18px] shrink-0 text-success-bright" />
+                {r.icon}
+              </span>
+              <div className="min-w-0 sm:mt-5">
+                <h3 className="text-balance text-base font-bold leading-tight text-foreground sm:text-lg">{r.label}</h3>
+                <p className="mt-1 text-pretty text-body-sm text-muted-foreground sm:mt-1.5" style={{ lineHeight: "1.5" }}>
                   {r.text}
-                </dd>
+                </p>
               </div>
-            ))}
-          </dl>
+            </li>
+          ))}
+        </ul>
 
+        <div className="mt-10 flex justify-center md:mt-12">
           <a
             href="#quote"
-            className="focus-ring-solid mt-6 flex h-control-lg w-full items-center justify-center gap-2 rounded-lg bg-primary px-6 text-button font-[var(--button-weight)] uppercase tracking-[var(--button-tracking)] text-primary-foreground transition-colors duration-quick ease-ds hover:bg-brand-hover sm:w-auto sm:inline-flex md:mt-8"
+            className="focus-ring-solid flex h-control-lg w-full items-center justify-center gap-2 rounded-lg bg-primary px-6 text-button font-[var(--button-weight)] uppercase tracking-[var(--button-tracking)] text-primary-foreground transition-colors duration-quick ease-ds hover:bg-brand-hover sm:w-auto"
           >
             Get my free quote
             <ArrowRight aria-hidden="true" className="h-4 w-4" />
