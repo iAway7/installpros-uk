@@ -196,23 +196,14 @@ export default function AjaxSecurityInstallationPage() {
               here it follows "no cables in your walls" with "nothing on the
               fresh paint", and How it works already carries the movers' line. */}
           <SecurityMovingSection />
-          {/* Proof before process, as on every segment landing.
-              The reviews are the company's, about its installation service,
-              and none of them mentions an alarm yet, so one line says what
-              they are before anyone reads them as proof of alarm work
-              (16 October). Both review sections are shared with
-              /install-quote, so the line lives here, and the wrapper only
-              trims the first section's top padding so the two read as one. */}
-          <div className="bg-background pt-16 md:pt-24">
-            <div className="container mx-auto">
-              <p className="text-body-sm text-muted-foreground">
-                Reviews of our installation service, across every kind of install we do.
-              </p>
-            </div>
-          </div>
-          <div className="[&>section]:pt-5 md:[&>section]:pt-6">
-            <TrustpilotSection />
-          </div>
+          {/* Proof before process, as on every segment landing. The reviews
+              are the company's, about its installation work, and none of them
+              mentions an alarm yet. A line above them said so from 16 October
+              to 20 October; Gus took it out (it read as stuck on). The heading
+              ("Five stars, everywhere we go") makes no alarm claim, so the
+              page stays honest without it. What must not be added: any copy
+              presenting these as alarm or "homes we have protected" reviews. */}
+          <TrustpilotSection />
           <CustomerStoriesSection />
           <SecurityHowItWorksSection />
           <FaqSectionAlt faqs={SECURITY_FAQS} />
