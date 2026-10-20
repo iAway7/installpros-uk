@@ -11,6 +11,9 @@ import { ProcessStepsSection, type ProcessStep } from "./process-steps-section";
  * one day are the two things a homeowner weighing up an alarm would not
  * assume, so each gets a step of its own. Jordan added two on 15 October:
  * the price comes the same day, always, and the engineers are DBS checked.
+ * Jordan again, 20 October: most homes are surveyed by video call but some
+ * need a visit, and some jobs run over a day, so no "no survey" and no "one
+ * day" anywhere.
  *
  * Step one asks about pets because pet-friendly detectors are a selling point,
  * and they only work if the engineer knows before the visit.
@@ -21,8 +24,8 @@ import { ProcessStepsSection, type ProcessStep } from "./process-steps-section";
 
 const STEPS: ProcessStep[] = [
   { title: "Tell us about your home", detail: "The doors, windows and floors, and any pets. A call is enough." },
-  { title: "Get your quote", detail: "The same day, with no survey visit. One upfront price for the kit and the fitting." },
-  { title: "Fitted in a day", detail: "Usually within 7 days, by a DBS checked engineer. Wireless, so no rewiring." },
+  { title: "Get your quote", detail: "The same day, after a video survey for most homes. One upfront price for the kit and the fitting." },
+  { title: "Professionally fitted", detail: "Usually within 7 days, by a DBS checked engineer. Wireless, so no rewiring." },
   { title: "Armed from your phone", detail: "Every device tested, the app set up, your family added." },
 ];
 
@@ -32,14 +35,14 @@ export function SecurityHowItWorksSection() {
       eyebrow="How it works"
       heading={
         <>
-          From quote to armed,
+          From quote to install,
           <br className="hidden md:block" /> usually within 7 days.
         </>
       }
       // 17 of the 53 who said why they were buying were moving in or
       // renovating, the biggest trigger in the chats ("Alarm is the first
       // thing to go in"), so the line speaks to them.
-      subline="No survey visit, and one day of fitting. Moving house? Book it now for the week you get the keys."
+      subline="Most homes surveyed by video call. Moving house? Book it now for the week you get the keys."
       steps={STEPS}
       cta={{
         label: "Ask us on WhatsApp",

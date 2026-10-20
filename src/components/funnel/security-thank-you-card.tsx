@@ -76,7 +76,7 @@ export function SecurityThankYouCard() {
       </h1>
       <p className="mt-3.5 text-body md:text-lead leading-[1.55] md:leading-[1.6] text-muted-foreground [text-wrap:pretty]">
         One of the team will call to go through your home with you: the doors, the windows, the floors and any pets.
-        No survey visit needed, and you will have your price the same day.
+        Most homes need nothing more than that, and you will have your price the same day.
       </p>
       <p className="mt-4 text-body md:text-lead leading-[1.55] md:leading-[1.6] text-muted-foreground [text-wrap:pretty]">
         If you would rather reach us first, any of these gets you through to the same team.

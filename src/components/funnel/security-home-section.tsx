@@ -60,7 +60,7 @@ const SHOTS: Shot[] = [
     sizes: "(min-width: 768px) min(100vw, 1200px), 200vw",
     alt: "The brick front of a house at dusk, with a black outdoor siren on the wall beside a lit window.",
     title: "On the front of the house",
-    detail: "An outdoor siren the whole street can hear, and a sign the house is protected.",
+    detail: "An outdoor sounder: your first line of defence, and the ultimate deterrent.",
     position: "70% 50%",
   },
 ];
@@ -70,13 +70,13 @@ export function SecurityHomeSection() {
     <section id="at-home" className="w-full scroll-mt-28 bg-background py-16 md:py-24">
       <div className="container mx-auto">
         <div className="mx-auto max-w-2xl text-center">
-          <p className="eyebrow">Wireless alarm, no chasing walls</p>
+          <p className="eyebrow">Wireless, no cables in your walls</p>
           <h2 className="mt-4 h2-section text-foreground">
             Fitted neatly,
             <br className="hidden sm:block" /> in the right places.
           </h2>
           <p className="mx-auto mt-5 max-w-xl text-body text-muted-foreground md:text-lg" style={{ lineHeight: "1.6" }}>
-            Each device goes where it covers the most and still sits tidily in the room.
+            Each device installed for optimal coverage and protection.
           </p>
         </div>
 

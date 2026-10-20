@@ -45,7 +45,6 @@ const SRC = "/funnel/ajax-intruder-1376.webp";
 const SRCSET = "/funnel/ajax-intruder-960.webp 960w, /funnel/ajax-intruder-1376.webp 1376w";
 
 const SENSOR = {
-  camera: [305, 87],
   window: [386, 271],
   door: [999, 187],
   motion: [1255, 97],
@@ -66,7 +65,7 @@ const EVENTS = {
   armed: { key: "armed", icon: <ShieldCheck className="h-4 w-4" />, title: "Armed, away", detail: "Every door and window closed", time: "21:54", calm: true },
   forced: { key: "forced", icon: <Vibrate className="h-4 w-4" />, title: "Back window being forced", detail: "Vibration sensor", time: "22:30:58" },
   opened: { key: "opened", icon: <DoorOpen className="h-4 w-4" />, title: "Back window opened", detail: "Window contact", time: "22:30:59" },
-  motion: { key: "motion", icon: <Radar className="h-4 w-4" />, title: "Motion in the living room", detail: "Motion detector", time: "22:31:01" },
+  motion: { key: "motion", icon: <Radar className="h-4 w-4" />, title: "Motion in the bedroom", detail: "Motion detector", time: "22:31:01" },
   photo: { key: "photo", icon: <Camera className="h-4 w-4" />, title: "Photo attached", detail: "Tap to check it", time: "22:31:02", photo: true },
 } satisfies Record<string, SceneEvent>;
 
@@ -208,7 +207,7 @@ export function SecurityLayersScene({ heading, cards, band }: { heading: ReactNo
         <div ref={ref} className="relative aspect-[4/3] w-full overflow-hidden md:aspect-[1376/768]">
           <div
             role="img"
-            aria-label="Illustration of a living room at night. Someone forces the back window and opens it, the motion detector picks them up and a detector with a camera sends a photo with the alert."
+            aria-label="Illustration of a bedroom at night. Someone forces the back window and opens it, the motion detector picks them up and a detector with a camera sends a photo with the alert."
             className="absolute inset-0"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -296,16 +295,9 @@ export function SecurityLayersScene({ heading, cards, band }: { heading: ReactNo
                 </motion.g>
               )}
 
-              {/* The camera's recording light, and the three sensors. */}
-              <motion.circle
-                cx={SENSOR.camera[0]}
-                cy={SENSOR.camera[1]}
-                r={5}
-                fill="#ff3b30"
-                style={{ filter: "drop-shadow(0 0 6px rgba(255,59,48,0.9))" }}
-                animate={reduce ? { opacity: 0.9 } : { opacity: [0.35, 1, 0.35] }}
-                transition={reduce ? { duration: 0 } : { duration: 1.6, ease: "easeInOut", repeat: Infinity }}
-              />
+              {/* The three sensors. The camera's blinking light came off on
+                  20 October: the heading covers the camera, so it read as a
+                  stray dot (Jordan). */}
               <SensorDot at={SENSOR.window} active={phase >= 1} reduce={reduce} />
               <SensorDot at={SENSOR.door} active={false} reduce={reduce} />
               <SensorDot at={SENSOR.motion} active={phase >= 3} reduce={reduce} />
@@ -380,7 +372,7 @@ export function SecurityLayersScene({ heading, cards, band }: { heading: ReactNo
                 transition={reduce ? undefined : { duration: 1.2, repeat: Infinity }}
               />
               Live
-              <span className="font-medium normal-case tracking-normal text-white/60">Living room</span>
+              <span className="font-medium normal-case tracking-normal text-white/60">Bedroom</span>
               <span className="font-medium tabular-nums tracking-normal text-white/80">{clock(CLOCK_START + elapsed)}</span>
             </div>
             {phase === DONE && !reduce && (

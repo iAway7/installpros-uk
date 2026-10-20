@@ -46,7 +46,7 @@ const CARDS: LayerCard[] = [
   {
     icon: <Footprints className="h-5 w-5" />,
     title: "Motion detectors",
-    detail: "Sited on the routes anyone has to take through the house.",
+    detail: "Installed to cover the vulnerable entry and exit points.",
     litAt: 3,
   },
   {

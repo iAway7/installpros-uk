@@ -24,8 +24,8 @@ import { SECURITY_REPAIR_EVENT } from "./security-need-step";
  * PENDING JORDAN (19 October): "Book it now / around your completion date",
  * "the week you get the keys" and "We take it over or take it out" are not in
  * his answers yet. The page elsewhere says "usually fitted within 7 days".
- * Wi-Fi is left out until he confirms the hub works without it. "A few hours"
- * and "no chasing walls" are already on the page.
+ * Wi-Fi is left out until he confirms the hub works without it. No "few
+ * hours" or "one visit" (Jordan, 20 October: some jobs run over a day).
  */
 
 type Step = { icon: ReactNode; when: string; title: string; body: string; keys?: boolean };
@@ -42,8 +42,8 @@ const STEPS: Step[] = [
   {
     icon: <KeyRound className={ICON} />,
     when: "The week you get the keys",
-    title: "Fitted in a few hours",
-    body: "Wireless, so no chasing walls and nothing on the fresh paint.",
+    title: "Fitted and handed over",
+    body: "Wireless, so no cables in your walls and nothing on the fresh paint.",
     keys: true,
   },
   {
@@ -65,7 +65,7 @@ export function SecurityMovingSection() {
             <br className="hidden sm:block" /> you get the keys.
           </h2>
           <p className="mt-5 text-balance text-body text-muted-foreground md:text-lg" style={{ lineHeight: "1.6" }}>
-            Book it around your completion date. We fit it in one visit, before the boxes are unpacked.
+            Book it around your completion date, and we fit it as you move in.
           </p>
         </div>
 

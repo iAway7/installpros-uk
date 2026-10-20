@@ -114,13 +114,13 @@ import { ExperimentProvider } from "@/components/experiments/experiment-provider
 export const metadata: Metadata = {
   title: "Ajax Alarm & CCTV Installation for Homes | No Monthly Fees",
   description:
-    "Ajax smart alarm and CCTV, supplied and fitted in a day. Every door and window protected, alerts on your phone, no monthly contract. Call 020 3397 7003.",
+    "Ajax smart alarm and CCTV, supplied and fitted by DBS checked engineers. Every door and window protected, alerts on your phone, no monthly contract. Call 020 3397 7003.",
   robots: { index: false, follow: false },
   alternates: { canonical: "/ajax-security-installation" },
   openGraph: {
     title: "Ajax Alarm & CCTV Installation for Homes | No Monthly Fees",
     description:
-      "Every door and window protected, the whole family on one app. Fitted in a day, one upfront price, no monthly contract.",
+      "Every door and window protected, the whole family on one app. Same-day quote, one upfront price, no monthly contract.",
     url: "/ajax-security-installation",
   },
 };
@@ -153,9 +153,11 @@ export default function AjaxSecurityInstallationPage() {
               desktop: { width: 3840, height: 1600, position: [0.44, 0], led: [0.779, 0.475], live: [0.7, 0.18], focus: [0.71, 0.5] },
               mobile: { width: 1200, height: 1600, position: [0.5, 0], led: [0.7175, 0.475] },
             }}
-            // The two process facts a homeowner would not assume, both Will's.
-            badge="No survey needed. Fitted in a day."
-            badgeNarrow="No survey. Fitted in a day."
+            // Same-day quotes, always (Jordan, 15 October). "No survey" and
+            // "Fitted in a day" came off on 20 October: some homes need a
+            // visit first and some jobs run over a day (Jordan).
+            badge="Same-day quote, one upfront price"
+            badgeNarrow="Same-day quote"
             // Brand, product and an installation word: every high-intent
             // query in the keyword research carries one ("installer",
             // "installation", "fitted"). Then Will's main selling point.
