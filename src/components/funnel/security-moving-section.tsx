@@ -54,10 +54,93 @@ const STEPS: Step[] = [
   },
 ];
 
-export function SecurityMovingSection() {
+/**
+ * Three looks for the same section, 20 October: Gus liked the layout but not
+ * the black card, the colours or the sizes. TEMPORARY until he picks one; then
+ * the other two, the `variant` and `label` props and this table go.
+ *
+ *   a  light cards, the keys step in brand red (filled icon, red outline)
+ *   b  no cards, bigger icons in a soft red tint, larger type, white section
+ *   c  numbered steps, soft white cards, the keys card ringed in red
+ */
+type Variant = "a" | "b" | "c";
+
+type Look = {
+  section: string;
+  node: string;
+  nodeIdle: string;
+  nodeKeys: string;
+  /** Phones: icon column width, same as the node. */
+  cols: string;
+  /** md and up: the line through the nodes (position at node centre, style). */
+  railMd: string;
+  /** Phones: the line down to the next node (x at node centre, starts under it). */
+  railSm: string;
+  content: string;
+  contentKeys: string;
+  whenKeys: string;
+  title: string;
+  body: string;
+  /** Number in the node, icon moved into the text. */
+  numbered?: boolean;
+};
+
+const LOOKS: Record<Variant, Look> = {
+  a: {
+    section: "bg-secondary",
+    node: "h-12 w-12 rounded-full",
+    nodeIdle: "border border-border bg-background text-brand-icon",
+    nodeKeys: "bg-primary text-primary-foreground shadow-raised",
+    cols: "grid-cols-[48px_minmax(0,1fr)]",
+    railMd: "top-6 h-0 border-t border-dashed border-border",
+    railSm: "left-[23.5px] top-12 w-0 border-l border-dashed border-border",
+    content: "md:mt-6 md:rounded-2xl md:border md:border-border md:bg-background md:p-7",
+    contentKeys: "md:mt-6 md:rounded-2xl md:border-2 md:border-brand-soft md:bg-background md:p-7 md:shadow-raised",
+    whenKeys: "text-brand-deep",
+    title: "text-xl",
+    body: "text-body",
+  },
+  b: {
+    section: "bg-background",
+    node: "h-16 w-16 rounded-full [&>svg]:h-6 [&>svg]:w-6",
+    nodeIdle: "bg-primary/10 text-primary",
+    nodeKeys: "bg-primary text-primary-foreground ring-8 ring-primary/10",
+    cols: "grid-cols-[64px_minmax(0,1fr)]",
+    railMd: "top-8 h-0.5 bg-primary/15",
+    railSm: "left-[31px] top-16 w-0.5 bg-primary/15",
+    content: "md:mx-auto md:mt-7 md:max-w-[17rem] md:text-center",
+    contentKeys: "md:mx-auto md:mt-7 md:max-w-[17rem] md:text-center",
+    whenKeys: "text-brand-deep",
+    title: "text-2xl",
+    body: "text-body",
+  },
+  c: {
+    section: "bg-secondary",
+    node: "h-11 w-11 rounded-full text-body font-bold tabular-nums",
+    nodeIdle: "border border-border bg-background text-foreground",
+    nodeKeys: "bg-primary text-primary-foreground",
+    cols: "grid-cols-[44px_minmax(0,1fr)]",
+    railMd: "top-[22px] h-px bg-border",
+    railSm: "left-[21.5px] top-11 w-px bg-border",
+    content: "md:mt-5 md:rounded-3xl md:bg-background md:p-7",
+    contentKeys: "md:mt-5 md:rounded-3xl md:bg-background md:p-7 md:ring-2 md:ring-primary/25",
+    whenKeys: "text-brand-deep",
+    title: "text-lg",
+    body: "text-body-sm",
+    numbered: true,
+  },
+};
+
+export function SecurityMovingSection({ variant = "a", label }: { variant?: Variant; label?: string }) {
+  const L = LOOKS[variant];
   return (
-    <section id="moving" className="w-full scroll-mt-28 bg-secondary py-16 md:py-24">
+    <section id={variant === "a" ? "moving" : `moving-${variant}`} className={`w-full scroll-mt-28 py-16 md:py-24 ${L.section}`}>
       <div className="container mx-auto">
+        {label && (
+          <p className="mx-auto mb-8 w-fit rounded-full border border-dashed border-border px-3 py-1 text-caption font-semibold text-muted-foreground">
+            {label}
+          </p>
+        )}
         <div className="mx-auto max-w-2xl text-center">
           <p className="eyebrow">Moving in?</p>
           <h2 className="mt-4 h2-section text-foreground">
@@ -70,46 +153,38 @@ export function SecurityMovingSection() {
         </div>
 
         <div className="relative mx-auto mt-12 max-w-md md:mt-16 md:max-w-5xl">
-          {/* md and up: one line through the three icons. */}
-          <div aria-hidden="true" className="absolute left-[16.67%] right-[16.67%] top-[22px] hidden h-px bg-border md:block" />
+          {/* md and up: one line through the three nodes. */}
+          <div aria-hidden="true" className={`absolute left-[16.67%] right-[16.67%] hidden md:block ${L.railMd}`} />
 
           <ol className="md:grid md:grid-cols-3 md:gap-6">
             {STEPS.map((s, i) => (
               <li
                 key={s.when}
-                className="relative grid grid-cols-[44px_minmax(0,1fr)] gap-4 pb-8 last:pb-0 md:flex md:flex-col md:items-center md:gap-0 md:pb-0"
+                className={`relative grid gap-4 pb-8 last:pb-0 md:flex md:flex-col md:items-center md:gap-0 md:pb-0 ${L.cols}`}
               >
-                {/* Phones: the line runs down to the next icon. */}
-                {i < STEPS.length - 1 && (
-                  <span aria-hidden="true" className="absolute bottom-0 left-[21.5px] top-11 w-px bg-border md:hidden" />
-                )}
+                {/* Phones: the line runs down to the next node. */}
+                {i < STEPS.length - 1 && <span aria-hidden="true" className={`absolute bottom-0 md:hidden ${L.railSm}`} />}
                 <span
                   aria-hidden="true"
-                  className={`relative flex h-11 w-11 items-center justify-center rounded-full ${
-                    s.keys ? "bg-foreground text-background" : "border border-border bg-background text-muted-foreground"
-                  }`}
+                  className={`relative flex items-center justify-center ${L.node} ${s.keys ? L.nodeKeys : L.nodeIdle}`}
                 >
-                  {s.icon}
+                  {L.numbered ? i + 1 : s.icon}
                 </span>
-                <div
-                  className={`pt-1 md:mt-5 md:w-full md:flex-1 md:rounded-2xl md:p-6 ${
-                    s.keys ? "md:bg-foreground md:shadow-raised" : "md:border md:border-border md:bg-background"
-                  }`}
-                >
+                <div className={`pt-1 md:w-full md:flex-1 ${s.keys ? L.contentKeys : L.content}`}>
+                  {L.numbered && (
+                    <span aria-hidden="true" className="mb-3 hidden text-brand-icon md:block">
+                      {s.icon}
+                    </span>
+                  )}
                   <p
                     className={`text-label font-semibold uppercase tracking-[0.14em] ${
-                      s.keys ? "text-brand-deep md:text-background/55" : "text-muted-foreground/80"
+                      s.keys ? L.whenKeys : "text-muted-foreground/80"
                     }`}
                   >
                     {s.when}
                   </p>
-                  <h3 className={`mt-1.5 text-lg font-bold leading-tight text-foreground ${s.keys ? "md:text-background" : ""}`}>
-                    {s.title}
-                  </h3>
-                  <p
-                    className={`mt-2 text-pretty text-body-sm text-muted-foreground ${s.keys ? "md:text-background/70" : ""}`}
-                    style={{ lineHeight: "1.55" }}
-                  >
+                  <h3 className={`mt-1.5 text-balance font-bold leading-tight text-foreground ${L.title}`}>{s.title}</h3>
+                  <p className={`mt-2 text-pretty text-muted-foreground ${L.body}`} style={{ lineHeight: "1.55" }}>
                     {s.body}
                   </p>
                 </div>

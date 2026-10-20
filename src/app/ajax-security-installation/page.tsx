@@ -185,7 +185,11 @@ export default function AjaxSecurityInstallationPage() {
           <SecurityLayersSection />
           {/* Who it is for, straight after how it protects (19 October):
               moving in is the largest stated reason to get in touch. */}
-          <SecurityMovingSection />
+          {/* TEMPORARY (20 October): three looks for Gus to pick from. Keep one,
+              drop the other two and the labels. */}
+          <SecurityMovingSection variant="a" label="Versión A: tarjetas claras, acento rojo" />
+          <SecurityMovingSection variant="b" label="Versión B: sin tarjetas, íconos grandes" />
+          <SecurityMovingSection variant="c" label="Versión C: pasos numerados, tarjetas suaves" />
           <SecurityAppSection />
           <SecurityEquipmentSection />
           <SecurityCompareSection />
