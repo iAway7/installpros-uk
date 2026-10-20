@@ -61,7 +61,7 @@ export const SECURITY_FAQS: { q: string; a: string }[] = [
   },
   {
     q: "Do you need to survey my home first?",
-    a: "Most homes we survey by video call: your doors, windows, floors and pets. Some need a visit first, and we will tell you when we call. Fitting is usually within 7 days.",
+    a: "Most homes we survey virtually: your doors, windows, floors and pets. Some need a visit first, and we will tell you when we call. Fitting is usually within 7 days.",
   },
   {
     q: "Who comes to fit it?",
