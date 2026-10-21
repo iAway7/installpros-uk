@@ -35,19 +35,26 @@ function GoogleG({ size = 20 }: { size?: number }) {
   );
 }
 
+/** The Google rating, as in the bar; `light` for a white card (the Ajax
+ *  thank-you page). On the dark bar the text takes the bar's white. */
+export function GoogleRatingBadge({ tone = "dark" }: { tone?: "dark" | "light" }) {
+  return (
+    <a
+      href="https://maps.app.goo.gl/UvqYwqVrAV6R9T5m6"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Read our reviews on Google"
+      className="flex items-center gap-2 transition-opacity hover:opacity-80"
+    >
+      <GoogleG size={20} />
+      <span className={`text-body font-semibold ${tone === "light" ? "text-foreground" : ""}`}>5.0</span>
+      <span className="text-body tracking-[2px] text-gold">★★★★★</span>
+    </a>
+  );
+}
+
 const BADGES: ReactNode[] = [
-  <a
-    key="google"
-    href="https://maps.app.goo.gl/UvqYwqVrAV6R9T5m6"
-    target="_blank"
-    rel="noopener noreferrer"
-    aria-label="Read our reviews on Google"
-    className="flex items-center gap-2 transition-opacity hover:opacity-80"
-  >
-    <GoogleG size={20} />
-    <span className="text-body font-semibold">5.0</span>
-    <span className="text-body tracking-[2px] text-gold">★★★★★</span>
-  </a>,
+  <GoogleRatingBadge key="google" />,
   <a
     key="trustpilot"
     href="https://uk.trustpilot.com/review/installpros.co.uk"

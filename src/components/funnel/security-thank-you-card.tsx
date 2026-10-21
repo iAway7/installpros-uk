@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { CheckCircle2, Phone, Mail } from "lucide-react";
 import { WhatsAppIcon } from "./ui/whatsapp-icon";
+import { GoogleRatingBadge } from "./security-hero-trust-bar";
 import { track, EVENTS } from "@/lib/analytics";
 import { mailtoUrl, whatsappUrl, SUPPORT_PHONE_HREF } from "@/lib/funnel/contact";
 
@@ -16,12 +17,11 @@ import { mailtoUrl, whatsappUrl, SUPPORT_PHONE_HREF } from "@/lib/funnel/contact
  * question. An alarm quote is made of doors, windows, floors and pets.
  *
  * The words are Jordan's structure of 21 October: when we call and from which
- * number, what the call is for, and WhatsApp as the faster way to a price,
- * with photos of the front door, hallway and any existing kit. Then cut down
- * the same day (Gus: too busy), keeping each point in fewer words. Photos are
- * optional and the line says what they are for, because two security buyers
- * in the chats refused to send photos of their home. No accreditation line
- * yet: Jordan means Ajax logos once he is through the Ajax portal.
+ * number, what the call is for, and WhatsApp as the faster way to a price.
+ * Cut down the same day (Gus: too busy): the photo request and "Fixed prices,
+ * no hidden extras" went, and the Google rating is the hero's badge in its
+ * light version rather than typed text. No accreditation line yet: Jordan
+ * means Ajax logos once he is through the Ajax portal.
  */
 export function SecurityThankYouCard() {
   const [lead, setLead] = useState<{ leadId?: string; name?: string; postcode?: string }>({});
@@ -62,8 +62,8 @@ export function SecurityThankYouCard() {
     .filter(Boolean)
     .join(", ");
   const message = details
-    ? `Hi InstallPros, I have just requested an Ajax alarm quote (${details}). Here are some photos of my home:`
-    : "Hi InstallPros, I have just requested an Ajax alarm quote. Here are some photos of my home:";
+    ? `Hi InstallPros, I have just requested an Ajax alarm quote (${details}).`
+    : "Hi InstallPros, I have just requested an Ajax alarm quote.";
   const waHref = whatsappUrl(message);
   const emailHref = mailtoUrl(
     lead.postcode ? `Ajax alarm quote (${lead.postcode})` : "Ajax alarm quote",
@@ -102,9 +102,6 @@ export function SecurityThankYouCard() {
         <WhatsAppIcon className="h-[19px] w-[19px]" />
         Get your price on WhatsApp
       </a>
-      <p className="mt-2.5 text-center text-body-sm leading-[1.5] text-muted-foreground [text-wrap:pretty]">
-        Send photos of your door, hallway and any existing alarm. Only used for your quote.
-      </p>
 
       {/* "Call now", Will's own label, in quotes in his message of 8 October.
           This read "Call 020 3397 7003" first, on the reasoning that somebody
@@ -146,9 +143,9 @@ export function SecurityThankYouCard() {
         </a>
       </div>
 
-      <p className="mt-5 text-center text-caption text-muted-foreground">
-        Fixed prices, no hidden extras &middot; 5.0 on Google
-      </p>
+      <div className="mt-5 flex justify-center">
+        <GoogleRatingBadge tone="light" />
+      </div>
     </div>
   );
 }
