@@ -75,12 +75,9 @@ export function SecurityThankYouCard() {
         Thanks, we have your request
       </h1>
       <p className="mt-3.5 text-body md:text-lead leading-[1.55] md:leading-[1.6] text-muted-foreground [text-wrap:pretty]">
-        {/* Two short lines (Gus, 21 October: the old four were too long to
-            read on this screen). */}
+        {/* One short line (Gus, 21 October: the old paragraphs were too long
+            to read here, and "Rather talk now?" above the buttons went too). */}
         We&apos;ll call you about your home, and price it the same day.
-      </p>
-      <p className="mt-4 text-body md:text-lead leading-[1.55] md:leading-[1.6] font-medium text-foreground [text-wrap:pretty]">
-        Rather talk now?
       </p>
 
       {/* Real anchors, 56px tall: long-press, open in a new tab and the iOS app
