@@ -13,9 +13,14 @@ import { mailtoUrl, whatsappUrl, SUPPORT_PHONE_HREF } from "@/lib/funnel/contact
  * reasoning, in that file.
  *
  * Why not the generic /thank-you: it asks for roof photos, which is a Starlink
- * question. An alarm quote is made of doors, windows, floors and pets, and the
- * team gets those on the call (Will, 13 October: usually no survey), so like
- * commercial this screen asks for nothing.
+ * question. An alarm quote is made of doors, windows, floors and pets.
+ *
+ * The words are Jordan's structure of 21 October: when we call and from which
+ * number, what the call is for, and WhatsApp as the faster way to a price,
+ * with photos of the front door, hallway and any existing kit. Photos are
+ * optional and the line says what they are for, because two security buyers
+ * in the chats refused to send photos of their home. No accreditation line
+ * yet: Jordan means Ajax logos once he is through the Ajax portal.
  */
 export function SecurityThankYouCard() {
   const [lead, setLead] = useState<{ leadId?: string; name?: string; postcode?: string }>({});
@@ -56,8 +61,8 @@ export function SecurityThankYouCard() {
     .filter(Boolean)
     .join(", ");
   const message = details
-    ? `Hi InstallPros, I have just requested an Ajax alarm quote (${details}).`
-    : "Hi InstallPros, I have just requested an Ajax alarm quote.";
+    ? `Hi InstallPros, I have just requested an Ajax alarm quote (${details}). Here are some photos of my home:`
+    : "Hi InstallPros, I have just requested an Ajax alarm quote. Here are some photos of my home:";
   const waHref = whatsappUrl(message);
   const emailHref = mailtoUrl(
     lead.postcode ? `Ajax alarm quote (${lead.postcode})` : "Ajax alarm quote",
@@ -72,12 +77,11 @@ export function SecurityThankYouCard() {
       </p>
 
       <h1 className="mt-4 md:mt-5 text-[29px] md:text-[36px] font-bold leading-[1.15] md:leading-[1.12] tracking-[-0.02em] md:tracking-[-0.025em] text-foreground [text-wrap:pretty]">
-        Thanks, we have your request
+        We&apos;ll call you within 2 hours
       </h1>
       <p className="mt-3.5 text-body md:text-lead leading-[1.55] md:leading-[1.6] text-muted-foreground [text-wrap:pretty]">
-        {/* One line, Jordan's words (21 October). The old paragraphs were too
-            long to read here (Gus), and "Rather talk now?" went too. */}
-        We&apos;ll call you to help you design your security system and provide a quote today.
+        We will call you from 020 3397 7003 to help you design your system. The call takes about 10 minutes.
+        We&apos;ll ask a few questions about your home and send you a fixed price the same day.
       </p>
 
       {/* Real anchors, 56px tall: long-press, open in a new tab and the iOS app
@@ -96,8 +100,12 @@ export function SecurityThankYouCard() {
         className="focus-ring-solid mt-6 md:mt-7 flex h-control-lg items-center justify-center gap-2.5 rounded-lg bg-primary text-button font-[var(--button-weight)] uppercase tracking-[var(--button-tracking)] text-primary-foreground transition-colors duration-quick ease-ds hover:bg-brand-hover"
       >
         <WhatsAppIcon className="h-[19px] w-[19px]" />
-        Message us on WhatsApp
+        Get your price on WhatsApp
       </a>
+      <p className="mt-2.5 text-center text-body-sm leading-[1.5] text-muted-foreground [text-wrap:pretty]">
+        Send photos of your front door, hallway and any existing alarm or cameras. They help us design your system,
+        are only used for your quote, and we can often price from them alone.
+      </p>
 
       {/* "Call now", Will's own label, in quotes in his message of 8 October.
           This read "Call 020 3397 7003" first, on the reasoning that somebody
@@ -138,6 +146,10 @@ export function SecurityThankYouCard() {
           <span className="border-b border-field">or email us instead</span>
         </a>
       </div>
+
+      <p className="mt-6 border-t border-border pt-4 text-center text-caption text-muted-foreground">
+        Fixed prices, no hidden extras &middot; 5.0 on Google
+      </p>
     </div>
   );
 }
