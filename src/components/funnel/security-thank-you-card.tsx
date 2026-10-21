@@ -17,7 +17,8 @@ import { mailtoUrl, whatsappUrl, SUPPORT_PHONE_HREF } from "@/lib/funnel/contact
  *
  * The words are Jordan's structure of 21 October: when we call and from which
  * number, what the call is for, and WhatsApp as the faster way to a price,
- * with photos of the front door, hallway and any existing kit. Photos are
+ * with photos of the front door, hallway and any existing kit. Then cut down
+ * the same day (Gus: too busy), keeping each point in fewer words. Photos are
  * optional and the line says what they are for, because two security buyers
  * in the chats refused to send photos of their home. No accreditation line
  * yet: Jordan means Ajax logos once he is through the Ajax portal.
@@ -80,8 +81,7 @@ export function SecurityThankYouCard() {
         We&apos;ll call you within 2 hours
       </h1>
       <p className="mt-3.5 text-body md:text-lead leading-[1.55] md:leading-[1.6] text-muted-foreground [text-wrap:pretty]">
-        We will call you from 020 3397 7003 to help you design your system. The call takes about 10 minutes.
-        We&apos;ll ask a few questions about your home and send you a fixed price the same day.
+        From 020 3397 7003, to help design your system. You&apos;ll get a fixed price the same day.
       </p>
 
       {/* Real anchors, 56px tall: long-press, open in a new tab and the iOS app
@@ -103,8 +103,7 @@ export function SecurityThankYouCard() {
         Get your price on WhatsApp
       </a>
       <p className="mt-2.5 text-center text-body-sm leading-[1.5] text-muted-foreground [text-wrap:pretty]">
-        Send photos of your front door, hallway and any existing alarm or cameras. They help us design your system,
-        are only used for your quote, and we can often price from them alone.
+        Send photos of your door, hallway and any existing alarm. Only used for your quote.
       </p>
 
       {/* "Call now", Will's own label, in quotes in his message of 8 October.
@@ -147,7 +146,7 @@ export function SecurityThankYouCard() {
         </a>
       </div>
 
-      <p className="mt-6 border-t border-border pt-4 text-center text-caption text-muted-foreground">
+      <p className="mt-5 text-center text-caption text-muted-foreground">
         Fixed prices, no hidden extras &middot; 5.0 on Google
       </p>
     </div>
