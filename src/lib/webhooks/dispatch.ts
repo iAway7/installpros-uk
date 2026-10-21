@@ -208,8 +208,16 @@ export async function dispatchLeadEvent(event: WebhookEvent, leadId: string): Pr
     const payload = await buildPayload(event, leadId);
     if (!payload) return [];
 
+    // An endpoint can be limited to some install types (0023): since 21
+    // October security leads go to a Zap of their own. No list, or an empty
+    // one, keeps the old behaviour of every lead to every endpoint.
+    const forThisLead = targets.filter(
+      (t) => !t.install_types?.length || t.install_types.includes(payload.lead.install_type ?? ""),
+    );
+    if (forThisLead.length === 0) return [];
+
     return await Promise.all(
-      targets.map(async (t) => {
+      forThisLead.map(async (t) => {
         const outcome = await deliver(t, payload);
         await logDelivery(t.id === "env" ? null : t.id, payload, outcome);
         return outcome;

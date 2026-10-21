@@ -50,6 +50,9 @@ export interface WebhookEndpoint {
   events: WebhookEvent[];
   format: WebhookFormat;
   headers: Record<string, string>;
+  /** Raw install_type values this endpoint takes (migration 0023). Null,
+   *  empty or absent means every lead. */
+  install_types?: string[] | null;
   active: boolean;
   created_at: string;
   last_delivery_at: string | null;
