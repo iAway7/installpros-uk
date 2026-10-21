@@ -319,9 +319,12 @@ export function SecurityLayersScene({ heading, cards, band }: { heading: ReactNo
               />
             )}
 
-            {/* xl and up: each alert next to its sensor. */}
+            {/* xl and up: each alert next to its sensor. The window one never
+                rises above 356px: the heading over the picture ends at 331px
+                since it gained a subhead (21 October), and at 1280 and 1440 36%
+                put the card under it. From about 1920 36% is lower anyway. */}
             <div aria-hidden="true" className="hidden xl:block">
-              <div className="absolute right-[75.5%] top-[36%] w-[272px]">
+              <div className="absolute right-[75.5%] top-[max(36%,356px)] w-[272px]">
                 <AnimatePresence mode="wait">
                   {windowEvent && (
                     <motion.div key={windowEvent.key} {...CARD_MOTION}>

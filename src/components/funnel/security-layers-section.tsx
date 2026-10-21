@@ -73,11 +73,16 @@ export function SecurityLayersSection() {
         cards={CARDS}
         heading={
           <>
-            <p className="eyebrow !text-[#ff6a5f]">Layers of protection</p>
+            {/* Jordan's heading, 21 October, in his words. */}
+            <p className="eyebrow !text-[#ff6a5f]">Ajax intruder alarms</p>
             <h2 className="mt-4 max-w-[640px] h2-section text-white">
-              Every way in,
-              <br className="hidden sm:block" /> protected in layers.
+              Know the second
+              <br className="hidden sm:block" /> someone breaks in.
             </h2>
+            <p className="mt-4 max-w-[540px] text-pretty text-body text-white/70 md:mt-5 md:text-lg" style={{ lineHeight: "1.6" }}>
+              Ajax alarms alert your phone, sound the siren and can send photos of who&apos;s inside, before they get past
+              the first room. Professionally fitted, no messy wiring, priced the same day.
+            </p>
           </>
         }
       />
