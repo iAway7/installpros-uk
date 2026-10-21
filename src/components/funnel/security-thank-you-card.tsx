@@ -75,11 +75,12 @@ export function SecurityThankYouCard() {
         Thanks, we have your request
       </h1>
       <p className="mt-3.5 text-body md:text-lead leading-[1.55] md:leading-[1.6] text-muted-foreground [text-wrap:pretty]">
-        One of the team will call to go through your home with you: the doors, the windows, the floors and any pets.
-        Most homes need nothing more than that, and you will have your price the same day.
+        {/* Two short lines (Gus, 21 October: the old four were too long to
+            read on this screen). */}
+        We&apos;ll call you about your home, and price it the same day.
       </p>
-      <p className="mt-4 text-body md:text-lead leading-[1.55] md:leading-[1.6] text-muted-foreground [text-wrap:pretty]">
-        If you would rather reach us first, any of these gets you through to the same team.
+      <p className="mt-4 text-body md:text-lead leading-[1.55] md:leading-[1.6] font-medium text-foreground [text-wrap:pretty]">
+        Rather talk now?
       </p>
 
       {/* Real anchors, 56px tall: long-press, open in a new tab and the iOS app
