@@ -221,6 +221,10 @@ export function SecurityLayersScene({ heading, cards, band }: { heading: ReactNo
               sizes="100vw"
               alt=""
               loading="lazy"
+              // On a slow phone Chrome starts lazy images up to 2500px ahead,
+              // so this one, just under the hero, was downloading alongside
+              // the hero photo. Low priority lets the photo finish first.
+              fetchPriority="low"
               decoding="async"
               className="absolute inset-0 h-full w-full object-cover"
             />

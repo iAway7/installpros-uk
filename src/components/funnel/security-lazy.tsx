@@ -16,6 +16,10 @@ import dynamic from "next/dynamic";
  * page chunk does not pull them back in.
  */
 
+// The hero's decoration, the one island on the first screen: Motion's only
+// user up there, so the hero's own chunk no longer carries it (22 October).
+export const LazyHeroDecor = dynamic(() => import("./security-hero-decor").then((m) => m.SecurityHeroDecor));
+
 export const LazyLayersScene = dynamic(() => import("./security-layers-scene").then((m) => m.SecurityLayersScene));
 
 export const LazyPhoneMock = dynamic(() => import("./security-phone-mock").then((m) => m.SecurityPhoneMock));
