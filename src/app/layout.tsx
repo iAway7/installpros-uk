@@ -6,10 +6,20 @@ import "./globals.css";
 
 // Self-hosted via next/font — no render-blocking request to Google, and the
 // size-adjusted fallback metrics eliminate the font-swap layout shift (CLS).
-const inter = Inter({ subsets: ["latin"], display: "swap", variable: "--font-inter" });
+//
+// What gets preloaded matters on a slow phone: every preloaded file downloads
+// alongside the hero photo, the largest thing on the first screen. On
+// 22 October 2026 the landings preloaded 8 files (140 kB) before it.
+//   - Inter is not preloaded. On the landings it only sets the cookie banner
+//     and the hidden skip link; the pages are Be Vietnam Pro (theme-editorial).
+//     It still loads, on demand, wherever it is used (dashboard, auth).
+//   - Be Vietnam Pro without 300: no class, style or rendered element used it
+//     (checked in the code and on the live landings). 800 stays, for the
+//     weather hero's title (weather-hero.module.css).
+const inter = Inter({ subsets: ["latin"], display: "swap", variable: "--font-inter", preload: false });
 const beVietnamPro = Be_Vietnam_Pro({
   subsets: ["latin"],
-  weight: ["200", "300", "400", "500", "600", "700", "800"],
+  weight: ["200", "400", "500", "600", "700", "800"],
   display: "swap",
   variable: "--font-be-vietnam",
 });
