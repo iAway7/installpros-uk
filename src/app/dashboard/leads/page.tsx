@@ -1,4 +1,5 @@
 import { createClient, createServiceClient } from "@/lib/supabase/server";
+import { fetchAll } from "@/lib/supabase/fetch-all";
 import { type Lead } from "@/lib/dashboard/leads";
 import type { LeadIntel } from "@/lib/intel/types";
 import { lookupLocations } from "@/lib/dashboard/locations";
@@ -10,12 +11,14 @@ export const dynamic = "force-dynamic";
 
 export default async function LeadsPage() {
   const supabase = createClient();
-  const { data, error } = await supabase
-    .from("leads")
-    .select(
-      "id, created_at, name, email, phone, postcode, address, town, marketing_consent, postcode_precision, sector, form_name, install_type, notes, status, traffic_source, campaign, source_url, estimated_value, utm_source, utm_medium, utm_campaign, utm_term, utm_content, gclid, fbclid, session_id, variant_id, experiment_id, device_type, landing_page, service, contacted_at, quoted_at, lead_score, is_test",
-    )
-    .order("created_at", { ascending: false });
+  const { data, error } = await fetchAll<Lead>(() =>
+    supabase
+      .from("leads")
+      .select(
+        "id, created_at, name, email, phone, postcode, address, town, marketing_consent, postcode_precision, sector, form_name, install_type, notes, status, traffic_source, campaign, source_url, estimated_value, utm_source, utm_medium, utm_campaign, utm_term, utm_content, gclid, fbclid, session_id, variant_id, experiment_id, device_type, landing_page, service, contacted_at, quoted_at, lead_score, is_test",
+      )
+      .order("created_at", { ascending: false }),
+  );
 
   const leads = (data as Lead[]) ?? [];
 

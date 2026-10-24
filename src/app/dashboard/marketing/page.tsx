@@ -1,5 +1,6 @@
 import { MousePointerClick, Eye, Percent, TrendingUp, Users, PoundSterling, Search, ExternalLink } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
+import { fetchAll } from "@/lib/supabase/fetch-all";
 import { getSearchConsole } from "@/lib/google/search-console";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/system/card";
 import { Table, TableHead, TableBody, TableRow, TableHeaderCell, TableCell } from "@/components/system/table";
@@ -16,7 +17,7 @@ export const dynamic = "force-dynamic";
 export default async function MarketingPage() {
   const supabase = createClient();
   const [{ data: leadRows }, sc] = await Promise.all([
-    supabase.from("leads").select("id, created_at, status, is_test"),
+    fetchAll(() => supabase.from("leads").select("id, created_at, status, is_test").order("created_at", { ascending: false })),
     getSearchConsole(28),
   ]);
 

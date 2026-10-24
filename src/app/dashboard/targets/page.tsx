@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/system/ca
 import { Table, TableHead, TableBody, TableRow, TableHeaderCell, TableCell } from "@/components/system/table";
 import { DateFilter, SelectFilter } from "@/components/system/filters";
 import { createClient } from "@/lib/supabase/server";
+import { fetchAll } from "@/lib/supabase/fetch-all";
 import { realLeads } from "@/lib/dashboard/leads";
 import { fetchSources, fetchTargetCounts, isOrganicSource, posthogConfigured, FUNNEL_PAGES, ORGANIC_SOURCE } from "@/lib/posthog/query";
 import { buildTargetsReport, pct, LAUNCH_DATE, COMMERCIAL_PAGE, SECURITY_PAGE, VEHICLES_PAGE, VEHICLES_VARIANT_PAGE, type TargetStatus, type TargetsReport } from "@/lib/dashboard/targets";
@@ -115,15 +116,19 @@ export default async function TargetsPage({ searchParams }: { searchParams: Sear
   // purpose. PostHog loses roughly a tenth of people to blockers, the DB
   // has every submission.
   const supabase = createClient();
-  let leadsQuery = supabase
-    .from("leads")
-    .select("id, created_at, device_type, landing_page, traffic_source, is_test")
-    .gte("created_at", since);
-  if (until) leadsQuery = leadsQuery.lt("created_at", dayAfter(until));
+  const leadsQuery = () => {
+    let q = supabase
+      .from("leads")
+      .select("id, created_at, device_type, landing_page, traffic_source, is_test")
+      .gte("created_at", since)
+      .order("created_at", { ascending: true });
+    if (until) q = q.lt("created_at", dayAfter(until));
+    return q;
+  };
   const [counts, sources, leadsResult] = await Promise.all([
     fetchTargetCounts({ since, until, page, source }),
     fetchSources(365),
-    leadsQuery,
+    fetchAll(leadsQuery),
   ]);
   const options = sourceOptions(sources, source);
 

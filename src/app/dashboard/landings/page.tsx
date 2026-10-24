@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import { fetchAll } from "@/lib/supabase/fetch-all";
 import { Card, CardContent } from "@/components/system/card";
 import { Table, TableHead, TableBody, TableRow, TableHeaderCell, TableCell } from "@/components/system/table";
 import { aggregateLandings, totals, RANGES, type LandingLeadRow } from "@/lib/dashboard/landings";
@@ -18,18 +19,17 @@ export default async function LandingsPage({
   const range = RANGES.find((r) => r.days === days) ?? RANGES[1];
 
   const supabase = createClient();
-  let query = supabase
-    .from("leads")
-    .select("landing_page, lead_score, gclid, traffic_source, device_type, status, created_at")
-    .eq("is_test", false)
-    .order("created_at", { ascending: false });
+  const since = range.days > 0 ? new Date(Date.now() - range.days * 86400000).toISOString() : null;
+  const query = () => {
+    const q = supabase
+      .from("leads")
+      .select("landing_page, lead_score, gclid, traffic_source, device_type, status, created_at")
+      .eq("is_test", false)
+      .order("created_at", { ascending: false });
+    return since ? q.gte("created_at", since) : q;
+  };
 
-  if (range.days > 0) {
-    const since = new Date(Date.now() - range.days * 86400000).toISOString();
-    query = query.gte("created_at", since);
-  }
-
-  const { data } = await query;
+  const { data } = await fetchAll(query);
   const rows = (data as unknown as LandingLeadRow[] | null) ?? [];
   const stats = aggregateLandings(rows);
   const sum = totals(stats);

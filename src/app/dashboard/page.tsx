@@ -1,5 +1,6 @@
 import { Users, Sparkles, CalendarClock, CalendarDays, TrendingUp } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
+import { fetchAll } from "@/lib/supabase/fetch-all";
 import { TrendChart } from "@/components/system/chart";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/system/card";
 import { type Lead, serviceOf } from "@/lib/dashboard/leads";
@@ -17,10 +18,12 @@ const DAY = 864e5;
 
 export default async function OverviewPage() {
   const supabase = createClient();
-  const { data, error } = await supabase
-    .from("leads")
-    .select("id, created_at, status, traffic_source, service, notes, is_test")
-    .order("created_at", { ascending: false });
+  const { data, error } = await fetchAll<Row>(() =>
+    supabase
+      .from("leads")
+      .select("id, created_at, status, traffic_source, service, notes, is_test")
+      .order("created_at", { ascending: false }),
+  );
 
   // Test submissions are flagged, not deleted; they never count here.
   const leads = realLeads((data as Row[] | null) ?? []);

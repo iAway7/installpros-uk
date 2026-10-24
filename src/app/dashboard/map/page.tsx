@@ -1,5 +1,6 @@
 import { MapPin } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
+import { fetchAll } from "@/lib/supabase/fetch-all";
 import { Card, CardContent } from "@/components/system/card";
 import { lookupLocations } from "@/lib/dashboard/locations";
 import { WON_STATUSES, type LeadStatus } from "@/lib/dashboard/leads";
@@ -48,7 +49,9 @@ interface DistrictStats {
 export default async function MapPage({ searchParams }: { searchParams: { tab?: string } }) {
   const initialTab: MapTab = searchParams.tab === "gaps" ? "gaps" : "districts";
   const supabase = createClient();
-  const { data, error } = await supabase.from("leads").select("postcode, status").eq("is_test", false);
+  const { data, error } = await fetchAll<{ postcode: string; status: LeadStatus }>(() =>
+    supabase.from("leads").select("postcode, status, created_at").eq("is_test", false).order("created_at", { ascending: false }),
+  );
   const leads = ((data as { postcode: string; status: LeadStatus }[] | null) ?? []);
 
   const locations = error ? {} : await lookupLocations(leads.map((l) => l.postcode));

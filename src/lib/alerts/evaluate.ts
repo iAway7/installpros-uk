@@ -1,4 +1,5 @@
 import { createServiceClient } from "@/lib/supabase/server";
+import { fetchAll } from "@/lib/supabase/fetch-all";
 import { posthogConfigured, hogql } from "@/lib/posthog/query";
 import type { LeadStatus } from "@/lib/dashboard/leads";
 
@@ -35,11 +36,14 @@ export async function evaluateAlerts(): Promise<void> {
     await supabase.from("alert_state").upsert({ key: "last_check", value: new Date().toISOString(), updated_at: new Date().toISOString() });
 
     const since14d = new Date(Date.now() - 14 * DAY).toISOString();
-    const { data } = await supabase
-      .from("leads")
-      .select("id, name, postcode, status, created_at")
-      .eq("is_test", false)
-      .gte("created_at", since14d);
+    const { data } = await fetchAll(() =>
+      supabase
+        .from("leads")
+        .select("id, name, postcode, status, created_at")
+        .eq("is_test", false)
+        .gte("created_at", since14d)
+        .order("created_at", { ascending: false }),
+    );
     const leads = (data as { id: string; name: string; postcode: string; status: LeadStatus; created_at: string }[] | null) ?? [];
 
     const alerts: NewAlert[] = [];
