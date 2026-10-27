@@ -128,12 +128,13 @@ export default function HikvisionCctvInstallationPage() {
               from buyers, and an owner who sees nothing for them below the
               hero leaves. */}
           <HikvisionExistingSection />
+          {/* Only if Jordan's question 1 keeps businesses in. Between the
+              two dark bands, so they never run together (27 October). */}
+          <HikvisionBusinessSection />
           {/* "Why not Wi-Fi cameras?" where "What the fitting includes" was
               (Gus, 27 October: did not like it). Price and DIY cameras are
               what lost quotes; this is what the fitting buys. */}
           <HikvisionWiredSection />
-          {/* Only if Jordan's question 1 keeps businesses in. */}
-          <HikvisionBusinessSection />
           {/* The company's reviews, about its engineers and service. Same
               rule as the Ajax page: no copy presenting them as camera
               reviews. */}
