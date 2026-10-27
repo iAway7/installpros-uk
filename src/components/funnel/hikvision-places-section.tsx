@@ -1,4 +1,5 @@
 import { Gap } from "./hikvision-gap";
+import { LazyCameraPlanner } from "./hikvision-lazy";
 
 /**
  * Where the cameras go, in the place of the Ajax page's home photos
@@ -26,73 +27,6 @@ const PLACES: Place[] = [
   { title: "Down the side", detail: "The passage and the bins, where people cut through." },
   { title: "At the back", detail: "The back door, the garden and the shed.", wide: true },
 ];
-
-/**
- * How many cameras, without a price. Added 27 October (Gus approved the
- * section review): 9 of the general CCTV pages reviewed compare systems by
- * camera count first, and in the chats the median was 3 cameras, "Is there a
- * big price difference between 4 and 6?" and "where would you suggest
- * positioning them" were asked, and staff had to confirm positions in 28
- * threads. No £ anywhere: the tiers say what each covers, not what it costs.
- *
- * The plan is a house seen from above: back garden at the top, the street at
- * the bottom with a car on the drive and one on the road. Camera spots are
- * the same in all three, lit or not.
- */
-type Spot = "frontDoor" | "drive" | "side" | "backDoor" | "garden" | "otherSide";
-
-const SPOTS: Record<Spot, [number, number]> = {
-  frontDoor: [62, 60],
-  drive: [32, 58],
-  side: [92, 44],
-  backDoor: [62, 26],
-  garden: [92, 26],
-  otherSide: [32, 32],
-};
-
-type Tier = { count: string; covers: string; spots: Spot[] };
-
-const TIERS: Tier[] = [
-  { count: "2 cameras", covers: "The front door and the back door.", spots: ["frontDoor", "backDoor"] },
-  {
-    count: "3 to 4 cameras",
-    covers: "The front, the drive and the car on the street, the side and the back.",
-    spots: ["frontDoor", "drive", "side", "backDoor"],
-  },
-  {
-    count: "6 or more",
-    covers: "The whole outside, and inside too if you want it.",
-    spots: ["frontDoor", "drive", "side", "backDoor", "garden", "otherSide"],
-  },
-];
-
-function HousePlan({ lit }: { lit: Spot[] }) {
-  return (
-    <svg viewBox="0 0 124 92" className="h-auto w-full" aria-hidden="true">
-      {/* Lawn front and back, then the back garden's shed */}
-      <rect x="0" y="0" width="124" height="78" fill="#e6efe2" />
-      <rect x="100" y="6" width="16" height="11" rx="1.5" fill="#ffffff" stroke="#9aa5b1" strokeWidth="1" />
-      {/* Drive with a car, the street with a parked car */}
-      <rect x="8" y="44" width="22" height="34" fill="#dde1e6" />
-      <rect x="12" y="62" width="14" height="10" rx="2.5" fill="#8e98a3" />
-      <rect x="0" y="78" width="124" height="14" fill="#c7cdd4" />
-      <line x1="0" y1="85" x2="124" y2="85" stroke="#ffffff" strokeWidth="0.8" strokeDasharray="4 4" />
-      <rect x="44" y="80.5" width="18" height="8" rx="2.5" fill="#8e98a3" />
-      {/* House */}
-      <rect x="32" y="26" width="60" height="34" rx="2" fill="#ffffff" stroke="#5b6672" strokeWidth="1.4" />
-      {(Object.keys(SPOTS) as Spot[]).map((s) => {
-        const [x, y] = SPOTS[s];
-        const on = lit.includes(s);
-        return (
-          <g key={s}>
-            {on && <circle cx={x} cy={y} r="6" className="fill-primary/15" />}
-            <circle cx={x} cy={y} r="2.8" className={on ? "fill-primary" : "fill-foreground/15"} />
-          </g>
-        );
-      })}
-    </svg>
-  );
-}
 
 export function HikvisionPlacesSection() {
   return (
@@ -127,33 +61,10 @@ export function HikvisionPlacesSection() {
           ))}
         </div>
 
-        <div className="mx-auto mt-16 max-w-5xl md:mt-20">
-          <div className="mx-auto max-w-xl text-center">
-            <h3 className="text-2xl font-bold leading-tight text-foreground md:text-3xl">How many cameras?</h3>
-            <p className="mt-3 text-body text-muted-foreground md:text-lg" style={{ lineHeight: "1.6" }}>
-              Most homes ask for three or four. Not sure? Send photos and we will suggest the positions.
-            </p>
-          </div>
-          <ul className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3 md:mt-10 md:gap-5">
-            {TIERS.map((t) => (
-              // Phones: a row each, the plan small on the left, so the three
-              // tiers fit in about one screen. From sm, three cards.
-              <li
-                key={t.count}
-                className="grid grid-cols-[112px_minmax(0,1fr)] items-center gap-4 rounded-3xl border border-border bg-background p-4 sm:block sm:p-5 md:p-6"
-              >
-                <div className="overflow-hidden rounded-xl border border-border sm:rounded-2xl">
-                  <HousePlan lit={t.spots} />
-                </div>
-                <div className="min-w-0">
-                  <p className="text-lg font-bold leading-tight text-foreground sm:mt-5">{t.count}</p>
-                  <p className="mt-1 text-pretty text-body-sm text-muted-foreground sm:mt-1.5" style={{ lineHeight: "1.55" }}>
-                    {t.covers}
-                  </p>
-                </div>
-              </li>
-            ))}
-          </ul>
+        {/* The planner replaced the static 2 / 3 to 4 / 6+ tiers (27 October):
+            the same count, from the places people tap. */}
+        <div className="mx-auto mt-16 max-w-6xl md:mt-20">
+          <LazyCameraPlanner />
         </div>
       </div>
     </section>

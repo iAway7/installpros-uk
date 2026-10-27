@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { CheckCircle2, Phone, Mail } from "lucide-react";
 import { WhatsAppIcon } from "./ui/whatsapp-icon";
 import { GoogleRatingBadge } from "./security-hero-trust-bar";
+import { readPlan, describePlan, type HikvisionPlan } from "@/lib/funnel/hikvision-plan";
 import { track, EVENTS } from "@/lib/analytics";
 import { mailtoUrl, whatsappUrl, SUPPORT_PHONE_HREF } from "@/lib/funnel/contact";
 
@@ -17,17 +18,18 @@ import { mailtoUrl, whatsappUrl, SUPPORT_PHONE_HREF } from "@/lib/funnel/contact
  * quote is made from them (most homes in the chats were quoted from photos).
  * Someone who picked "Fix my system" or "Add to mine" is asked for the
  * recorder's label instead, which tells the team the model and how many
- * channels are free. The intent comes in the query string from the form.
+ * channels are free. The intent comes in the query string from the form;
+ * the camera plan, if they made one, from sessionStorage.
  */
 export function HikvisionThankYouCard() {
-  const [lead, setLead] = useState<{ leadId?: string; name?: string; postcode?: string; intent?: string }>({});
+  const [lead, setLead] = useState<{ leadId?: string; name?: string; postcode?: string; intent?: string; plan?: HikvisionPlan }>({});
 
   useEffect(() => {
     // The id is for analytics, so this screen's events join to the lead. The
     // name and postcode are so the message they send identifies them without
     // being asked twice: whoever picks it up should not have to say "which
     // property is this?" to someone who filled a form sixty seconds ago.
-    const next: { leadId?: string; name?: string; postcode?: string; intent?: string } = {};
+    const next: { leadId?: string; name?: string; postcode?: string; intent?: string; plan?: HikvisionPlan } = {};
     try {
       const raw = sessionStorage.getItem("quoteFormData");
       if (raw) {
@@ -46,6 +48,8 @@ export function HikvisionThankYouCard() {
       const fromUrl = params.get("leadId");
       if (fromUrl) next.leadId = fromUrl;
       next.intent = params.get("intent") ?? undefined;
+      // The camera planner's plan, if they made one (hikvision-camera-planner.tsx).
+      next.plan = readPlan() ?? undefined;
     } catch {
       /* noop */
     }
@@ -61,7 +65,8 @@ export function HikvisionThankYouCard() {
     .join(", ");
   const owner = lead.intent === "repair" || lead.intent === "add";
   const subject = owner ? "help with my Hikvision cameras" : "a Hikvision CCTV quote";
-  const ask = owner ? " Here is a photo of my recorder's label." : " Here are photos of where I'd like cameras.";
+  const plan = !owner && lead.plan ? ` My plan: ${describePlan(lead.plan)}.` : "";
+  const ask = owner ? " Here is a photo of my recorder's label." : `${plan} Here are photos of where I'd like cameras.`;
   const message = details
     ? `Hi InstallPros, I have just asked for ${subject} (${details}).${ask}`
     : `Hi InstallPros, I have just asked for ${subject}.${ask}`;

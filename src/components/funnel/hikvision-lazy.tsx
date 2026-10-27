@@ -10,3 +10,7 @@ import dynamic from "next/dynamic";
  * form back in.
  */
 export const LazyHikvisionQuoteForm = dynamic(() => import("./hikvision-quote-form").then((m) => m.HikvisionQuoteForm));
+
+// The camera planner, below the first screen: its own chunk, server-rendered
+// as usual so the plan is on the page before any script runs.
+export const LazyCameraPlanner = dynamic(() => import("./hikvision-camera-planner").then((m) => m.HikvisionCameraPlanner));
