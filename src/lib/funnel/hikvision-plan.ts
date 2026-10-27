@@ -3,7 +3,7 @@
  * kept in sessionStorage so the thank-you page can put it in the WhatsApp
  * message. Its own file so the thank-you page doesn't load the planner.
  */
-export type HikvisionPlan = { spots: string[]; inside: boolean; count: number };
+export type HikvisionPlan = { spots: string[]; inside: boolean; rooms?: string[]; count: number };
 
 const STORAGE_KEY = "hikvisionPlan";
 
@@ -20,7 +20,7 @@ export function readPlan(): HikvisionPlan | null {
     const raw = sessionStorage.getItem(STORAGE_KEY);
     if (!raw) return null;
     const plan = JSON.parse(raw) as HikvisionPlan;
-    return Array.isArray(plan.spots) && plan.spots.length > 0 ? plan : null;
+    return Array.isArray(plan.spots) && (plan.spots.length > 0 || (plan.rooms?.length ?? 0) > 0) ? plan : null;
   } catch {
     return null;
   }
@@ -35,5 +35,7 @@ function sentenceList(items: string[]): string {
 export function describePlan(plan: HikvisionPlan): string {
   const where = sentenceList(plan.spots.map((s) => s.toLowerCase()));
   const count = `${plan.count} camera${plan.count === 1 ? "" : "s"}`;
+  const rooms = plan.rooms?.length ? sentenceList(plan.rooms.map((r) => r.toLowerCase())) : "";
+  if (rooms) return `${where}, and inside: ${rooms}. ${count}`;
   return plan.inside ? `${where}, plus one inside: ${count}` : `${where}: ${count}`;
 }

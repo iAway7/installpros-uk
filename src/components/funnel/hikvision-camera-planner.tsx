@@ -68,6 +68,16 @@ const SPOTS: Spot[] = [
 
 const DEFAULT: SpotId[] = ["front", "drive", "back"];
 
+/** Inside works like outside: one camera per room (Gus, 27 October: "inside"
+ *  should not be a single camera). The hall opens ticked. */
+type RoomId = "hall" | "living" | "kitchen" | "garage";
+const ROOMS: { id: RoomId; label: string }[] = [
+  { id: "hall", label: "Hall" },
+  { id: "living", label: "Living room" },
+  { id: "kitchen", label: "Kitchen" },
+  { id: "garage", label: "Garage" },
+];
+
 const W = 1264;
 const H = 848;
 
@@ -149,12 +159,14 @@ function Plan({ on, onToggle }: { on: Set<SpotId>; onToggle: (id: SpotId) => voi
 export function HikvisionCameraPlanner() {
   const [on, setOn] = useState<Set<SpotId>>(() => new Set(DEFAULT));
   const [inside, setInside] = useState(false);
+  const [rooms, setRooms] = useState<Set<RoomId>>(() => new Set<RoomId>(["hall"]));
   // Only a plan someone has touched is passed on: the default three are the
   // page's suggestion, not theirs.
   const touched = useRef(false);
 
   const chosen = SPOTS.filter((s) => on.has(s.id));
-  const count = chosen.length + (inside ? 1 : 0);
+  const indoors = inside ? ROOMS.filter((r) => rooms.has(r.id)) : [];
+  const count = chosen.length + indoors.length;
 
   function toggle(id: SpotId) {
     touched.current = true;
@@ -171,27 +183,39 @@ export function HikvisionCameraPlanner() {
     setInside(value);
   }
 
+  function toggleRoom(id: RoomId) {
+    touched.current = true;
+    setRooms((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }
+
+  const plan = (): HikvisionPlan => ({
+    spots: chosen.map((s) => s.label),
+    inside: indoors.length > 0,
+    rooms: indoors.map((r) => r.label),
+    count,
+  });
+
   useEffect(() => {
     if (!touched.current) return;
-    const plan: HikvisionPlan = { spots: chosen.map((s) => s.label), inside, count };
-    savePlan(plan);
-    // chosen and count derive from on and inside.
+    savePlan(plan());
+    // The plan derives from on, inside and rooms.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [on, inside]);
+  }, [on, inside, rooms]);
 
   function getPrice() {
     touched.current = true;
-    savePlan({ spots: chosen.map((s) => s.label), inside, count });
-    track(EVENTS.CTA_CLICKED, { cta_id: "planner_quote", cta_label: `${count}_cameras${inside ? "_inside" : ""}`, cta_location: "planner" });
+    savePlan(plan());
+    track(EVENTS.CTA_CLICKED, { cta_id: "planner_quote", cta_label: `${count}_cameras_${indoors.length}_inside`, cta_location: "planner" });
     window.dispatchEvent(new CustomEvent<HikvisionIntent>(HIKVISION_INTENT_EVENT, { detail: "new" }));
   }
 
-  const summary =
-    chosen.length > 0
-      ? `${sentence(chosen.map((s) => s.label))}${inside ? ", plus one inside" : ""}.`
-      : inside
-        ? "One inside. Tap the plan to add the outside."
-        : "Tap a place on the plan to start.";
+  const places = [...chosen.map((s) => s.label), ...indoors.map((r) => r.label)];
+  const summary = places.length > 0 ? `${sentence(places)}.` : "Tap a place on the plan to start.";
 
   return (
     <section id="planner" className="w-full scroll-mt-28 bg-[#0d1b2a] py-16 text-white md:py-24">
@@ -265,6 +289,28 @@ export function HikvisionCameraPlanner() {
                 </button>
               ))}
             </div>
+
+            {inside && (
+              <div role="group" aria-label="Rooms inside" className="-mt-2 flex flex-wrap gap-2">
+                {ROOMS.map((r) => {
+                  const active = rooms.has(r.id);
+                  return (
+                    <button
+                      key={r.id}
+                      type="button"
+                      aria-pressed={active}
+                      onClick={() => toggleRoom(r.id)}
+                      className={`focus-ring-solid inline-flex min-h-[36px] items-center gap-1 rounded-full border px-3 text-body-sm font-semibold transition-colors duration-quick ease-ds ${
+                        active ? "border-transparent bg-[#c70505] text-white" : "border-white/25 text-white/80 hover:border-white/60 hover:text-white"
+                      }`}
+                    >
+                      <span aria-hidden="true">{active ? "✓" : "+"}</span>
+                      {r.label}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
 
             <div>
               <a
