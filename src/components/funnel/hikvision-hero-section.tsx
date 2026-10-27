@@ -11,7 +11,9 @@ import { Gap } from "./hikvision-gap";
  * decoration is an Ajax camera (security-hero-decor.tsx), and this page sells
  * a different one. Until there is a photograph the hero is the same navy
  * surface Ajax started from. The trust bar is the Ajax one, imported as it
- * is: Google, Trustpilot, DBS checked, UK, none of it about the product.
+ * is: Google, Trustpilot, UK-wide, DBS checked, none of it about the product.
+ * "UK-wide installs" stays (Gus, 27 October), although two camera owners in
+ * the chats were lost for want of an engineer near them.
  *
  * PHOTOGRAPH: Jordan's question 8 (a real install), otherwise a generated
  * render with no Hikvision logo (hikvision-research/estructura-y-borrador.md,

@@ -8,6 +8,13 @@
  * then the questions almost no competitor answers (wired versus a recorder,
  * existing systems, neighbours, whether Hikvision is safe).
  *
+ * 27 October, from all 138 camera chats read in full
+ * (hikvision-research/conversaciones-decision.md): "Why wired" moved into the
+ * wired card on the page; added audio (10 threads), cameras the customer
+ * bought (8), cover my area (7, 2 lost for no engineer), Wi-Fi (6), the
+ * screen (5, merged with the recorder), "Can InstallPros see my cameras?"
+ * (15 threads about logins and admin accounts) and what happens later.
+ *
  * DRAFT. "[Jordan Qn]" marks an answer that waits on that question
  * (hikvision-research/preguntas-jordan-will.md); the text after it is the
  * draft's best guess. FaqSectionAlt takes plain strings, so the marks are
@@ -37,12 +44,16 @@ export const HIKVISION_FAQS: { q: string; a: string }[] = [
     a: "[Jordan Q2] We size the hard drive for how many days you want to keep, usually [X] days of recording around the clock.",
   },
   {
-    q: "Why wired, not wireless?",
-    a: "A wireless camera still needs a plug or a battery, and several cameras on Wi-Fi can drop out. A wired camera gets its power and its picture down one cable, and keeps recording to the recorder even if the broadband goes down.",
+    q: "Do the cameras need Wi-Fi?",
+    a: "No. Each camera records to the recorder in your home down its own cable, with or without the internet. To watch them on your phone when you are out, the recorder needs your broadband.",
   },
   {
-    q: "Do I need a recorder?",
-    a: "Yes, with wired cameras. It records every camera at once to a hard drive in your home, so nothing depends on a cloud subscription or a memory card in each camera.",
+    q: "Do I need a recorder, or a screen?",
+    a: "You need the recorder: it records every camera at once to a hard drive in your home, so nothing depends on a cloud subscription or a memory card in each camera. You don't need a screen. The app on your phone is the screen, and a monitor is optional.",
+  },
+  {
+    q: "Do the cameras have audio?",
+    a: "[Jordan Q2] Some cameras record sound, and some let you talk through them. Tell us if you want either and we will tell you which cameras do it before you decide.",
   },
   {
     q: "Will it see clearly at night?",
@@ -57,8 +68,16 @@ export const HIKVISION_FAQS: { q: string; a: string }[] = [
     a: "[Jordan Q4] Usually, yes. Send us a photo of the recorder's label and of the cameras, and we will tell you what can be added or fixed before anyone comes out.",
   },
   {
+    q: "Can you fit cameras I have already bought?",
+    a: "[Jordan, not asked yet] Tell us the make and model, and we will tell you whether they work with a wired system before anyone comes out.",
+  },
+  {
     q: "I moved in and there are no logins. Can you help?",
     a: "[Jordan Q4, Q6] Yes. We reset the system, set it up in your name and give you the admin account, so nobody else has access to it.",
+  },
+  {
+    q: "Can InstallPros see my cameras?",
+    a: "[Jordan Q6] No. The system is registered to you, and nobody can view it without your permission. If you ever want our help remotely, you approve it in the app for as long as you choose, and you can switch it off.",
   },
   {
     q: "Can my cameras look at the street or next door?",
@@ -69,12 +88,20 @@ export const HIKVISION_FAQS: { q: string; a: string }[] = [
     a: "[Jordan Q7] Most homes we quote from photos. Some need a visit, and we will tell you when we call.",
   },
   {
+    q: "Do you cover my area?",
+    a: "[Jordan Q11] Put your postcode in the form and we will confirm it when we call, along with the earliest date we can fit.",
+  },
+  {
     q: "Who comes to fit it?",
     a: "One of our engineers, DBS checked and insured. They fit and test every camera, set up the app on your phones and show you how to play recordings back.",
   },
   {
     q: "What warranty do I get?",
     a: "[Jordan Q5] Every camera and recorder carries the manufacturer's warranty, and our workmanship warranty covers the fitting for [X] years.",
+  },
+  {
+    q: "What if something stops working later?",
+    a: "[Jordan Q4, Q5] Message us on WhatsApp. A new router, a new phone or an app that logs you out can usually be sorted remotely, and the fitting is under our warranty for [X] years.",
   },
   {
     q: "Can you fit an alarm as well?",

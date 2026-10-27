@@ -78,7 +78,7 @@ export function HikvisionExistingSection() {
             <br className="hidden sm:block" /> working again.
           </h2>
           <p className="mt-5 text-balance text-body text-muted-foreground md:text-lg" style={{ lineHeight: "1.6" }}>
-            <Gap q="Q4">Including systems someone else fitted.</Gap>
+            <Gap q="Q4">Yes, even if someone else fitted it.</Gap>
           </p>
         </div>
 
@@ -132,7 +132,15 @@ export function HikvisionExistingSection() {
           </ol>
         </div>
 
-        <div className="mx-auto mt-10 flex max-w-md justify-center md:mt-12">
+        <div className="mx-auto mt-10 flex max-w-md flex-col items-center gap-4 md:mt-12">
+          {/* What owners needed before booking (57 threads): to know whether
+              it can be fixed and what it takes before anyone comes. A photo
+              of the label tells the model and the free channels. */}
+          <p className="text-balance text-center text-body text-muted-foreground">
+            <Gap q="Q4">
+              Start with a photo of the label on your recorder. We tell you what it needs before anyone comes out.
+            </Gap>
+          </p>
           <a
             href={whatsappUrl("Hi, I have a Hikvision system and need help with it. Here is a photo of the recorder's label.")}
             target="_blank"

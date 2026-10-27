@@ -22,7 +22,9 @@ export function Gap({ q, children, tone = "light" }: { q: string; children?: Rea
       }}
     >
       <span className="text-[0.8em] font-bold uppercase tracking-wide" style={{ color: dark ? "#fcd34d" : "#b45309" }}>
-        Jordan {q}
+        {/* "Q2" reads as Jordan's question; anything else is shown as is
+            (a team change, for one). */}
+        {/^Q\d/.test(q) ? `Jordan ${q}` : q}
       </span>
       {children ? <> {children}</> : null}
     </mark>

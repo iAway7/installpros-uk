@@ -10,6 +10,12 @@ import { Gap } from "./hikvision-gap";
  * you do the hikvison night colour vu", 13 of 81 camera buyers), and the
  * birds-and-foxes alerts are what owners of other systems complain about.
  *
+ * Section review, 27 October: what people asked to judge was clarity, not
+ * megapixels ("So are they still quite clear", 13 threads), and one real
+ * comparison image settled a 4MP or 8MP doubt. So real stills from an
+ * InstallPros job, day and night, near and far, beat the render when Jordan
+ * has them (question 8).
+ *
  * DRAFT, 27 October 2026. The picture is a placeholder: a generated night
  * scene of the front of a house, in colour, with a car on the drive and
  * someone at the gate (prompt in hikvision-research/prompts-imagenes.md).
@@ -69,7 +75,7 @@ export function HikvisionNightSection() {
             door, with a large lens and a soft warm light.
           </p>
           <p className="mt-6 text-body-sm text-white/60">
-            <Gap q="Q8" tone="dark">Night scene image: the front of a house, in colour.</Gap>
+            <Gap q="Q8" tone="dark">Real stills from a job, by day and at night, near and far. Otherwise the night render.</Gap>
           </p>
         </div>
       </div>

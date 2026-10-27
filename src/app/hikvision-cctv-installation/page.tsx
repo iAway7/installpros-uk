@@ -8,7 +8,8 @@ import { HikvisionAppSection } from "@/components/funnel/hikvision-app-section";
 import { HikvisionPlacesSection } from "@/components/funnel/hikvision-places-section";
 import { HikvisionEquipmentSection } from "@/components/funnel/hikvision-equipment-section";
 import { HikvisionExistingSection } from "@/components/funnel/hikvision-existing-section";
-import { HikvisionIncludedSection } from "@/components/funnel/hikvision-included-section";
+import { HikvisionWiredSection } from "@/components/funnel/hikvision-wired-section";
+import { HikvisionBusinessSection } from "@/components/funnel/hikvision-business-section";
 import { TrustpilotSection } from "@/components/funnel/trustpilot-section";
 import { CustomerStoriesSection } from "@/components/funnel/customer-stories-section";
 import { HikvisionHowItWorksSection } from "@/components/funnel/hikvision-how-it-works-section";
@@ -47,6 +48,16 @@ import { ExperimentProvider } from "@/components/experiments/experiment-provider
  *   - Paid surveys lost leads; quotes from photos worked. No competitor
  *     offers that, states days of recording, explains the neighbours, takes
  *     over another installer's system or answers "is Hikvision safe".
+ *
+ * ── SECTION REVIEW, 27 OCTOBER 2026 ─────────────────────────────────────────
+ * hikvision-research/analisis-secciones.md: all 138 camera chats read in
+ * full, 11 Hikvision installer pages and 10 general CCTV pages audited. Gus
+ * kept everything from the hero to "Already have cameras?" as built. Below
+ * it: the fitting cards became the wired card, a businesses block came in,
+ * How it works became quote, booking and the day (no "7 days": it held in 1
+ * of 6 paid camera jobs), and the FAQ gained the questions the chats asked
+ * and the page did not answer. Proposed for the top half, not applied: see
+ * that file.
  *
  * ── STILL MISSING ───────────────────────────────────────────────────────────
  *   - Jordan's answers (hikvision-research/preguntas-jordan-will.md). Each
@@ -91,15 +102,19 @@ export default function HikvisionCctvInstallationPage() {
       <ExperimentProvider>
         <main id="main" tabIndex={-1} className="flex flex-col outline-none">
           <HikvisionHeroSection
-            badge="Same-day quote, one upfront price"
+            // "Nothing to pay monthly": 12 camera chats asked about monthly costs.
+            // Holds while nothing is sold on a cloud plan (question 2).
+            badge="Same-day quote, nothing to pay monthly"
             badgeNarrow="Same-day quote"
             // Brand, product and an installation word, which every high-intent
             // search carries. ColorVu as the promise waits on question 2; if
             // it is not standard, "Hikvision CCTV installation for your home".
             headline="Hikvision CCTV installation, in colour day and night"
             headlineConfigKey="headlineHikvision"
-            // "Around the clock" and "7 days" wait on questions 2 and 11.
-            subheadline="Wired cameras that record around the clock, with the drive, the door and the car on the street on your phone. Usually fitted within 7 days."
+            // "Around the clock" waits on question 2. No "Usually fitted
+            // within 7 days": it held in 1 of 6 paid camera jobs, and a buyer
+            // chose InstallPros for it. Back only with Jordan's figure (Q11).
+            subheadline="Wired cameras that record around the clock, with the drive, the door and the car on the street on your phone."
             subheadlineNarrow="Wired cameras, recording 24/7, live on your phone."
             defaultInstallType="security"
             formName="hikvision_cctv"
@@ -113,7 +128,12 @@ export default function HikvisionCctvInstallationPage() {
               from buyers, and an owner who sees nothing for them below the
               hero leaves. */}
           <HikvisionExistingSection />
-          <HikvisionIncludedSection />
+          {/* "Why not Wi-Fi cameras?" where "What the fitting includes" was
+              (Gus, 27 October: did not like it). Price and DIY cameras are
+              what lost quotes; this is what the fitting buys. */}
+          <HikvisionWiredSection />
+          {/* Only if Jordan's question 1 keeps businesses in. */}
+          <HikvisionBusinessSection />
           {/* The company's reviews, about its engineers and service. Same
               rule as the Ajax page: no copy presenting them as camera
               reviews. */}
