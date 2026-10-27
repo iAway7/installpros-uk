@@ -99,7 +99,7 @@ export function HikvisionHeroSection({
 
           {!image && (
             <p className="mx-auto mt-8 max-w-md text-body-sm text-white/70">
-              <Gap q="Q8" tone="dark">Hero photo: a real install, or a render with no logo.</Gap>
+              <Gap q="Image" tone="dark">Hero photo: a real install, or a render with no logo.</Gap>
             </p>
           )}
         </div>

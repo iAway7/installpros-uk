@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
 import { Bell, History, KeyRound, MonitorPlay, UserCheck, Users } from "lucide-react";
 import { HikvisionPhoneMock } from "./hikvision-phone-mock";
-import { Gap } from "./hikvision-gap";
 
 /**
  * Hik-Connect, in the layout Gus chose for the Ajax app section
@@ -36,12 +35,7 @@ const WHO_SEES: Item[] = [
   {
     icon: <KeyRound className={ICON} />,
     title: "Yours, not ours.",
-    detail: (
-      <Gap q="Q6">
-        The system is registered to you. If you ever want us to help remotely, you approve it in the app, for as long as you
-        choose.
-      </Gap>
-    ),
+    detail: "The system is registered to you. If you ever want us to help remotely, you approve it in the app, for as long as you choose.",
   },
 ];
 

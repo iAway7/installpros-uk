@@ -6,7 +6,6 @@ import { track, EVENTS } from "@/lib/analytics";
 import { whatsappUrl } from "@/lib/funnel/contact";
 import { WhatsAppIcon } from "./ui/whatsapp-icon";
 import { HIKVISION_INTENT_EVENT, type HikvisionIntent } from "./hikvision-need-step";
-import { Gap } from "./hikvision-gap";
 
 /**
  * "Already have cameras?", where the Ajax page has "Moving in?"
@@ -52,12 +51,7 @@ const CARDS: Card[] = [
     icon: <KeyRound className={ICON} />,
     intent: "repair",
     title: "Take it over",
-    body: (
-      <Gap q="Q6" tone="dark">
-        Moved in with no logins, or the installer has gone? We reset it, set it up in your name and hand you the admin
-        account.
-      </Gap>
-    ),
+    body: "Moved in with no logins, or the installer has gone? We reset it, set it up in your name and hand you the admin account.",
     cta: "Take it over",
   },
 ];
@@ -81,7 +75,7 @@ export function HikvisionExistingSection() {
             <br className="hidden sm:block" /> working again.
           </h2>
           <p className="mt-5 text-balance text-body text-white/70 md:text-lg" style={{ lineHeight: "1.6" }}>
-            <Gap q="Q4" tone="dark">Yes, even if someone else fitted it.</Gap>
+            Yes, even if someone else fitted it.
           </p>
         </div>
 
@@ -140,9 +134,7 @@ export function HikvisionExistingSection() {
               it can be fixed and what it takes before anyone comes. A photo
               of the label tells the model and the free channels. */}
           <p className="text-balance text-center text-body text-white/70">
-            <Gap q="Q4" tone="dark">
-              Start with a photo of the label on your recorder. We tell you what it needs before anyone comes out.
-            </Gap>
+            Start with a photo of the label on your recorder. We tell you what it needs before anyone comes out.
           </p>
           <a
             href={whatsappUrl("Hi, I have a Hikvision system and need help with it. Here is a photo of the recorder's label.")}

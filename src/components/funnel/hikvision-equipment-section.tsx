@@ -32,7 +32,7 @@ const ITEMS: Item[] = [
   {
     icon: <Cctv className={ICON} strokeWidth={1.25} />,
     title: "The camera",
-    detail: <Gap q="Q2">Hikvision ColorVu [model], in white or black, for outside and in.</Gap>,
+    detail: "Hikvision ColorVu 4MP, in white or black, for outside and in. 8MP on request.",
     photo: "Product photo of the standard camera (Q12)",
   },
   {
@@ -75,7 +75,7 @@ export function HikvisionEquipmentSection() {
                 <span aria-hidden="true">{e.icon}</span>
                 {e.photo && (
                   <span className="absolute inset-x-2 bottom-2 text-center text-[11px] leading-tight text-foreground/70">
-                    <Gap q="Q8">{e.photo}</Gap>
+                    <Gap q="Image">{e.photo}</Gap>
                   </span>
                 )}
               </div>
@@ -88,7 +88,7 @@ export function HikvisionEquipmentSection() {
         </div>
 
         <p className="mx-auto mt-8 max-w-3xl text-center text-body text-muted-foreground">
-          <Gap q="Team: quote template">The make and model of every camera are on your quote, so you know exactly what you are getting.</Gap>
+          The make and model of every camera are on your quote, so you know exactly what you are getting.
         </p>
       </div>
     </section>

@@ -38,17 +38,17 @@ const CARDS: Card[] = [
   {
     icon: <Bell className="h-5 w-5" />,
     title: "People and cars, not cats",
-    detail: <Gap q="Q2" tone="dark">Alerts for a person or a vehicle, not every bird and fox.</Gap>,
+    detail: "Alerts for a person or a vehicle, not every bird and fox.",
   },
   {
     icon: <Lightbulb className="h-5 w-5" />,
     title: "A light and a warning",
-    detail: <Gap q="Q2" tone="dark">The camera can light up and sound a warning when someone steps onto the drive.</Gap>,
+    detail: "The camera can light up and sound a warning when someone steps onto the drive.",
   },
   {
     icon: <Clock className="h-5 w-5" />,
     title: "Recorded around the clock",
-    detail: <Gap q="Q2" tone="dark">Every camera, kept for [X] days on the recorder in your home.</Gap>,
+    detail: "Every camera, kept for about 30 days on the recorder in your home.",
   },
 ];
 
@@ -67,7 +67,7 @@ export function HikvisionNightSection() {
         />
         <div className="container relative mx-auto py-20 md:py-28">
           <p className="eyebrow !text-[#ff6a5f]">
-            <Gap q="Q2" tone="dark">Hikvision ColorVu</Gap>
+            Hikvision ColorVu
           </p>
           <h2 className="mt-4 max-w-[640px] h2-section text-white">In colour, even at 3am.</h2>
           <p className="mt-4 max-w-[540px] text-pretty text-body text-white/70 md:mt-5 md:text-lg" style={{ lineHeight: "1.6" }}>
@@ -75,7 +75,7 @@ export function HikvisionNightSection() {
             door, with a large lens and a soft warm light.
           </p>
           <p className="mt-6 text-body-sm text-white/60">
-            <Gap q="Q8" tone="dark">Real stills from a job, by day and at night, near and far. Otherwise the night render.</Gap>
+            <Gap q="Image" tone="dark">Real stills from a job, by day and at night, near and far. Otherwise the night render.</Gap>
           </p>
         </div>
       </div>

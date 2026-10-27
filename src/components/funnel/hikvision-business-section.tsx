@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 import { Building2, FileText, LayoutGrid, Receipt } from "lucide-react";
-import { Gap } from "./hikvision-gap";
 
 /**
  * For businesses. New, from the chats: 24 camera threads were businesses (16
@@ -11,8 +10,8 @@ import { Gap } from "./hikvision-gap";
  * ("Because he wants to make sure we getting what we pay"), and an invoice to
  * the company. Five of eleven Hikvision installers split homes and businesses.
  *
- * THE WHOLE SECTION WAITS ON JORDAN'S QUESTION 1. If camera work is homes
- * only, it comes out. "The make and model on your quote" is only true once
+ * Assumed: you fit CCTV for businesses (question 1; 16 business buyers in the
+ * chats were quoted). If Jordan says homes only, the section comes out. "The make and model on your quote" is only true once
  * the quote template names them (today 24 of 63 camera quotes never say
  * Hikvision), so it waits on the team as well.
  */
@@ -35,7 +34,7 @@ const ITEMS: Item[] = [
   {
     icon: <FileText className={ICON} />,
     title: "The make and model on the quote",
-    detail: <Gap q="Team: quote template">So whoever signs it off knows exactly what they are paying for.</Gap>,
+    detail: "So whoever signs it off knows exactly what they are paying for.",
   },
   {
     icon: <Receipt className={ICON} />,
@@ -49,9 +48,7 @@ export function HikvisionBusinessSection() {
     <section id="business" className="w-full scroll-mt-28 bg-secondary py-16 md:py-24">
       <div className="container mx-auto">
         <div className="mx-auto max-w-2xl text-center">
-          <p className="eyebrow">
-            <Gap q="Q1">For businesses</Gap>
-          </p>
+          <p className="eyebrow">For businesses</p>
           <h2 className="mt-4 h2-section text-foreground">
             Shops, pubs and offices,
             <br className="hidden sm:block" /> on the same app.
@@ -76,7 +73,7 @@ export function HikvisionBusinessSection() {
         </ul>
 
         <p className="mx-auto mt-8 max-w-2xl text-center text-body-sm text-muted-foreground">
-          <Gap q="Q7">A larger site may need a visit first. We will tell you when we call.</Gap>
+          A larger site may need a visit first. We will tell you when we call.
         </p>
       </div>
     </section>

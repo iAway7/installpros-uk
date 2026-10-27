@@ -18,7 +18,8 @@ import { ProcessStepsSection, type ProcessStep } from "./process-steps-section";
  *   - Step 4 carries what the old "What the fitting includes" cards said:
  *     aimed with you, tested, the app on your phones.
  *
- * ProcessStep details are plain strings, so the gaps are "[Jordan Qn]" text.
+ * Steps 3 and 4 and the subline assume answers Jordan has not given yet
+ * (hikvision-research/supuestos-para-jordan.md).
  */
 
 const STEPS: ProcessStep[] = [
@@ -32,11 +33,11 @@ const STEPS: ProcessStep[] = [
   },
   {
     title: "Book your date",
-    detail: "Planned around a move or building work, so the cables go in before you decorate. [Jordan Q11]",
+    detail: "Planned around a move or building work, so the cables go in before you decorate.",
   },
   {
     title: "The day itself",
-    detail: "A few hours for a typical home. Every camera aimed and tested, and the app put on your phone before we leave. [Jordan Q11]",
+    detail: "A few hours for a typical home. Every camera aimed and tested, and the app put on your phone before we leave.",
   },
 ];
 
@@ -50,7 +51,7 @@ export function HikvisionHowItWorksSection() {
           <br className="hidden md:block" /> to cameras on your phone.
         </>
       }
-      subline="Most homes quoted from photos, no visit needed. Be home at the end of the day to get the app. [Jordan Q7]"
+      subline="Most homes quoted from photos, no visit needed. Be home at the end of the day to get the app."
       steps={STEPS}
       cta={{
         label: "Send photos on WhatsApp",

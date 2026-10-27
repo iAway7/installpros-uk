@@ -29,10 +29,12 @@ import { ExperimentProvider } from "@/components/experiments/experiment-provider
  * footer).
  *
  * ── DRAFT GUARD ─────────────────────────────────────────────────────────────
- * The page 404s on the production deployment until Jordan has answered: the
- * amber [Jordan Qn] marks are holes in the copy, and a push of main for any
- * other change must not put them in front of a visitor. Local dev and
- * preview deployments render it. Remove the guard with the last Gap.
+ * The page 404s on the production deployment until it launches. Since 27
+ * October the copy assumes Jordan's answers (Gus: assume, Jordan corrects;
+ * the list is hikvision-research/supuestos-para-jordan.md), so the amber
+ * marks left are the missing images. A push of main for any other change
+ * must not put those in front of a visitor. Local dev and preview
+ * deployments render it. Remove the guard with the last Gap.
  *
  * ── WHAT THE RESEARCH SAID, 27 OCTOBER 2026 ─────────────────────────────────
  * hikvision-research/ (outside the repo) holds it: 261 Superchat threads

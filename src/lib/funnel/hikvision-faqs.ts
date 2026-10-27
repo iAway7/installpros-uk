@@ -24,10 +24,10 @@
  * later folded into the warranty answer. What stays is what the chats asked
  * and the page does not otherwise answer, roughly in order of how often.
  *
- * DRAFT. "[Jordan Qn]" marks an answer that waits on that question
- * (hikvision-research/preguntas-jordan-will.md); the text after it is the
- * draft's best guess. FaqSectionAlt takes plain strings, so the marks are
- * text here, not the amber Gap.
+ * 27 October, Gus: assume the answers Jordan hasn't given yet and let him
+ * correct them. Every assumption is listed in
+ * hikvision-research/supuestos-para-jordan.md, against the questions in
+ * hikvision-research/preguntas-jordan-will.md.
  *
  * Kept off on purpose: prices, accreditation, "approved/certified installer",
  * monitoring, finance, face or number plate recognition, and any claim that
@@ -42,27 +42,27 @@ export const HIKVISION_FAQS: { q: string; a: string }[] = [
   },
   {
     q: "Is there a monthly fee?",
-    a: "[Jordan Q2] No. You pay once and the system is yours. The Hik-Connect app is free, and the recordings are kept on the recorder in your home, so there is no subscription.",
+    a: "No. You pay once and the system is yours. The Hik-Connect app is free, and the recordings are kept on the recorder in your home, so there is no subscription.",
   },
   {
     q: "How long are the recordings kept?",
-    a: "[Jordan Q2] We size the hard drive for how many days you want to keep, usually [X] days of recording around the clock.",
+    a: "We size the hard drive for how many days you want to keep, usually about 30 days of recording around the clock.",
   },
   {
     q: "Do the cameras have audio?",
-    a: "[Jordan Q2] Some cameras record sound, and some let you talk through them. Tell us if you want either and we will tell you which cameras do it before you decide.",
+    a: "Some cameras record sound, and some let you talk through them. Tell us if you want either and we will tell you which cameras do it before you decide.",
   },
   {
     q: "Do you need to visit first?",
-    a: "[Jordan Q7] Most homes we quote from photos. Some need a visit, and we will tell you when we call.",
+    a: "Most homes we quote from photos. Some need a visit, and we will tell you when we call.",
   },
   {
     q: "Can you fit cameras I have already bought?",
-    a: "[Jordan, not asked yet] Tell us the make and model, and we will tell you whether they work with a wired system before anyone comes out.",
+    a: "Often, yes. Tell us the make and model, and we will tell you whether they work with a wired system before anyone comes out.",
   },
   {
     q: "Do you cover my area?",
-    a: "[Jordan Q11] Put your postcode in the form and we will confirm it when we call, along with the earliest date we can fit.",
+    a: "We fit across the UK. Put your postcode in the form and we will confirm the earliest date we can fit when we call.",
   },
   {
     q: "Can my cameras look at the street or next door?",
@@ -70,14 +70,14 @@ export const HIKVISION_FAQS: { q: string; a: string }[] = [
   },
   {
     q: "Can you fit an alarm as well?",
-    a: "[Jordan Q3] Yes. We fit Ajax alarms, and with an alarm we use Ajax cameras so everything is in one app.",
+    a: "Yes. We fit Ajax alarms, and with an alarm we use Ajax cameras so everything is in one app.",
   },
   {
     q: "What warranty do I get?",
-    a: "[Jordan Q4, Q5] Every camera and recorder carries the manufacturer's warranty, and our workmanship warranty covers the fitting for [X] years. If something stops working later, message us on WhatsApp: a new router, a new phone or an app that logs you out can usually be sorted remotely.",
+    a: "Every camera and recorder carries the manufacturer's warranty, and our workmanship warranty covers the fitting for up to 5 years. If something stops working later, message us on WhatsApp: a new router, a new phone or an app that logs you out can usually be sorted remotely.",
   },
   {
     q: "Is Hikvision safe to use?",
-    a: "[Jordan Q9] Yes, you can have Hikvision at home. In 2022 the UK government told its own departments to stop putting cameras from Chinese manufacturers on sensitive government sites, and it has said that does not apply to private individuals or businesses. There is no UK ban on using Hikvision at home. Whatever the brand, the real risks are weak passwords, old firmware and cameras left open to the internet, so we set every system up with its own strong passwords and current firmware, with no open ports on your router, and your recordings stay on the recorder in your home.",
+    a: "Yes, you can have Hikvision at home. In 2022 the UK government told its own departments to stop putting cameras from Chinese manufacturers on sensitive government sites, and it has said that does not apply to private individuals or businesses. There is no UK ban on using Hikvision at home. Whatever the brand, the real risks are weak passwords, old firmware and cameras left open to the internet, so we set every system up with its own strong passwords and current firmware, with no open ports on your router, and your recordings stay on the recorder in your home.",
   },
 ];

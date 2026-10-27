@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 import { ArrowRight, BatteryCharging, HardDrive, Moon, PlugZap, ShieldCheck, Wrench } from "lucide-react";
-import { Gap } from "./hikvision-gap";
 
 /**
  * "Why not Wi-Fi cameras?", in the slot where the draft had "What the fitting
@@ -49,7 +48,7 @@ const ITEMS: Item[] = [
   {
     icon: <Moon className={ICON} />,
     title: "Colour at night",
-    detail: <Gap q="Q2" tone="dark">ColorVu cameras, not a grey picture after dark.</Gap>,
+    detail: "ColorVu cameras, not a grey picture after dark.",
   },
   {
     icon: <Wrench className={ICON} />,
@@ -59,7 +58,7 @@ const ITEMS: Item[] = [
   {
     icon: <ShieldCheck className={ICON} />,
     title: "Warranty on the fitting too",
-    detail: <Gap q="Q5" tone="dark">The maker&apos;s warranty on the kit, plus [X] years on our work.</Gap>,
+    detail: "The maker's warranty on the kit, plus up to 5 years on our work.",
   },
 ];
 
@@ -79,18 +78,17 @@ export function HikvisionWiredSection() {
             </p>
           </div>
 
-          <ul className="mt-10 grid grid-cols-1 gap-x-10 gap-y-7 sm:grid-cols-2 md:mt-12 lg:grid-cols-3 lg:gap-y-9">
+          {/* Cards, the same as the night section's (Gus, 27 October). */}
+          <ul className="mt-10 grid grid-cols-1 gap-3 sm:auto-rows-fr sm:grid-cols-2 sm:gap-4 md:mt-12 lg:grid-cols-3">
             {ITEMS.map((i) => (
-              <li key={i.title} className="flex gap-4">
+              <li key={i.title} className="flex flex-col rounded-2xl border border-white/10 bg-white/[0.04] p-5 sm:p-6">
                 <span aria-hidden="true" className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/10 text-white">
                   {i.icon}
                 </span>
-                <div className="min-w-0">
-                  <h3 className="text-lg font-bold leading-tight text-white">{i.title}</h3>
-                  <p className="mt-1.5 text-pretty text-body-sm text-white/70" style={{ lineHeight: "1.55" }}>
-                    {i.detail}
-                  </p>
-                </div>
+                <h3 className="mt-4 text-lg font-bold leading-tight text-white">{i.title}</h3>
+                <p className="mt-1.5 text-pretty text-body-sm text-white/70" style={{ lineHeight: "1.55" }}>
+                  {i.detail}
+                </p>
               </li>
             ))}
           </ul>

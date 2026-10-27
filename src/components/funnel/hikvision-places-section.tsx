@@ -48,7 +48,7 @@ export function HikvisionPlacesSection() {
             <figure key={p.title} className={`overflow-hidden rounded-3xl bg-secondary ${p.wide ? "md:col-span-3" : "md:col-span-2"}`}>
               <div className="flex aspect-[4/3] items-center justify-center bg-[linear-gradient(160deg,#dfe4ea,#c9d0d8)] p-6 text-center md:aspect-auto md:h-[300px]">
                 <span className="text-body-sm text-foreground/70">
-                  <Gap q="Q8">Photo or render: {p.title.toLowerCase()}.</Gap>
+                  <Gap q="Image">Photo or render: {p.title.toLowerCase()}.</Gap>
                 </span>
               </div>
               <figcaption className="p-5 md:p-6">
