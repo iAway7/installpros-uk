@@ -25,19 +25,19 @@ import { ProcessStepsSection, type ProcessStep } from "./process-steps-section";
 const STEPS: ProcessStep[] = [
   {
     title: "Send a few photos",
-    detail: "On WhatsApp: the front, the drive, the back and the side. Got a system already? A photo of the recorder's label.",
+    detail: "Front, drive, back and side, on WhatsApp.",
   },
   {
     title: "Your quote, the same day",
-    detail: "One upfront price for the cameras, the recorder and the fitting, with the positions agreed on your photos.",
+    detail: "One upfront price, positions marked.",
   },
   {
     title: "Book your date",
-    detail: "Planned around a move or building work, so the cables go in before you decorate.",
+    detail: "Around a move or building work.",
   },
   {
     title: "The day itself",
-    detail: "A few hours for a typical home. Every camera aimed and tested, and the app put on your phone before we leave.",
+    detail: "A few hours. The app on your phone before we leave.",
   },
 ];
 
@@ -51,7 +51,7 @@ export function HikvisionHowItWorksSection() {
           <br className="hidden md:block" /> to cameras on your phone.
         </>
       }
-      subline="Most homes quoted from photos, no visit needed. Be home at the end of the day to get the app."
+      subline="Most homes quoted from photos. No visit."
       steps={STEPS}
       cta={{
         label: "Send photos on WhatsApp",

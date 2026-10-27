@@ -12,10 +12,12 @@ import { savePlan, type HikvisionPlan } from "@/lib/funnel/hikvision-plan";
  * from the places people want covered, chosen over a crime checker like
  * Securico's.
  *
- * The look is the second attempt. The first, a coloured cartoon of a house
- * with chips beside it, Gus did not like at all. This one is a plan in thin
- * lines on the page's night navy, like a monitoring screen, and the places
- * are labels you tap on the plan itself, so the drawing is the control. The
+ * The look is the third attempt. A coloured cartoon of a house, then a
+ * thin-line plan, both read as flat and cheap (Gus: "parece hecho en
+ * Paint"). Now the base is a real-looking aerial photo of a semi at dusk,
+ * with glowing coverage beams and glass labels over it, like a monitoring
+ * app. The places are labels you tap on the photo, so the photo is the
+ * control. The
  * panel only carries the result: the count, the places in words, inside or
  * not, and the button.
  *
@@ -52,24 +54,27 @@ type Spot = {
   tag: [number, number];
 };
 
+// Positions are pixels on the aerial photo (1264 x 848): a British semi at
+// dusk, generated in Figma on 27 October (prompt 10 in
+// hikvision-research/prompts-imagenes.md). Move them if the photo changes.
 const SPOTS: Spot[] = [
-  { id: "front", short: "Front door", label: "Front door", at: [180, 150], dir: 90, reach: 46, tag: [150, 166] },
-  { id: "drive", short: "Drive", label: "Drive and car", at: [110, 148], dir: 130, reach: 50, tag: [12, 84] },
-  { id: "street", short: "Street", label: "Car on the street", at: [242, 150], dir: 95, reach: 62, tag: [262, 170] },
-  { id: "side", short: "Side gate", label: "Side and gate", at: [250, 108], dir: 25, reach: 46, tag: [264, 96] },
-  { id: "back", short: "Back door", label: "Back door", at: [160, 70], dir: 270, reach: 44, tag: [58, 36] },
-  { id: "garden", short: "Garden", label: "Garden and shed", at: [250, 72], dir: 315, reach: 48, tag: [264, 56] },
+  { id: "front", short: "Front door", label: "Front door", at: [483, 482], dir: 90, reach: 170, tag: [445, 592] },
+  { id: "drive", short: "Drive", label: "Drive and car", at: [414, 446], dir: 135, reach: 230, tag: [262, 612] },
+  { id: "street", short: "Street", label: "Car on the street", at: [736, 490], dir: 95, reach: 300, tag: [880, 786] },
+  { id: "side", short: "Side gate", label: "Side and gate", at: [882, 440], dir: 70, reach: 170, tag: [930, 560] },
+  { id: "back", short: "Back door", label: "Back door", at: [520, 214], dir: 245, reach: 180, tag: [392, 92] },
+  { id: "garden", short: "Garden", label: "Garden and shed", at: [872, 214], dir: 305, reach: 170, tag: [905, 182] },
 ];
 
 const DEFAULT: SpotId[] = ["front", "drive", "back"];
 
-const W = 360;
-const H = 240;
+const W = 1264;
+const H = 848;
 
 function wedge([cx, cy]: [number, number], dir: number, r: number): string {
   const rad = Math.PI / 180;
   const p = (a: number) => `${(cx + r * Math.cos(a * rad)).toFixed(1)} ${(cy + r * Math.sin(a * rad)).toFixed(1)}`;
-  return `M${cx} ${cy}L${p(dir - 36)}A${r} ${r} 0 0 1 ${p(dir + 36)}Z`;
+  return `M${cx} ${cy}L${p(dir - 34)}A${r} ${r} 0 0 1 ${p(dir + 34)}Z`;
 }
 
 /** "Front door, drive and car and back door". */
@@ -79,61 +84,65 @@ function sentence(items: string[]): string {
   return `${words.slice(0, -1).join(", ")} and ${words[words.length - 1]}`;
 }
 
-const LINE = "rgba(255,255,255,0.18)";
-
+/** The photo, and over it what each chosen camera covers: a red beam that
+ *  fades with distance, edged so it reads on light and dark parts alike. */
 function Plan({ on, onToggle }: { on: Set<SpotId>; onToggle: (id: SpotId) => void }) {
   return (
-    <svg viewBox={`0 0 ${W} ${H}`} className="absolute inset-0 h-full w-full" aria-hidden="true">
-      {/* The street, the kerb and a car parked on it */}
-      <rect x="0" y="198" width={W} height="42" fill="rgba(255,255,255,0.05)" />
-      <line x1="0" y1="198" x2={W} y2="198" stroke={LINE} />
-      <line x1="0" y1="219" x2={W} y2="219" stroke="rgba(255,255,255,0.22)" strokeDasharray="10 8" />
-      <rect x="232" y="205" width="44" height="18" rx="5" fill="none" stroke="rgba(255,255,255,0.4)" />
-      <line x1="244" y1="207" x2="244" y2="221" stroke="rgba(255,255,255,0.25)" />
-      <line x1="264" y1="207" x2="264" y2="221" stroke="rgba(255,255,255,0.25)" />
-      {/* The plot, the drive with the car, the path, the shed */}
-      <rect x="20" y="16" width="320" height="176" fill="none" stroke={LINE} strokeDasharray="3 4" />
-      <rect x="40" y="108" width="56" height="86" fill="rgba(255,255,255,0.03)" stroke={LINE} />
-      <rect x="52" y="130" width="32" height="54" rx="7" fill="none" stroke="rgba(255,255,255,0.45)" />
-      <line x1="54" y1="146" x2="82" y2="146" stroke="rgba(255,255,255,0.3)" />
-      <line x1="54" y1="170" x2="82" y2="170" stroke="rgba(255,255,255,0.3)" />
-      <rect x="172" y="150" width="16" height="48" fill="rgba(255,255,255,0.04)" />
-      <rect x="288" y="26" width="36" height="24" fill="none" stroke="rgba(255,255,255,0.3)" />
-
-      {/* What each chosen camera covers, under the house */}
-      {SPOTS.map((s) => (
-        <path
-          key={s.id}
-          d={wedge(s.at, s.dir, s.reach)}
-          fill="#ff3b30"
-          fillOpacity={0.16}
-          stroke="#ff6a5f"
-          strokeOpacity={0.6}
-          strokeWidth={0.8}
-          opacity={on.has(s.id) ? 1 : 0}
-          className="transition-opacity duration-300 ease-out motion-reduce:transition-none"
-        />
-      ))}
-
-      {/* The house, a hipped roof seen from above */}
-      <rect x="110" y="70" width="140" height="80" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.75)" strokeWidth="1.4" />
-      <path d="M110 70L150 110H210L250 70M110 150L150 110M210 110L250 150" fill="none" stroke="rgba(255,255,255,0.25)" />
-
-      {/* Camera spots: tap to add or remove (the labels are the keyboard control) */}
-      {SPOTS.map((s) => {
-        const active = on.has(s.id);
-        return (
-          <g key={s.id} onClick={() => onToggle(s.id)} className="cursor-pointer">
-            <circle cx={s.at[0]} cy={s.at[1]} r="10" fill="transparent" />
-            {active ? (
-              <circle cx={s.at[0]} cy={s.at[1]} r="5" fill="#ff3b30" stroke="#ffffff" strokeWidth="1.5" />
-            ) : (
-              <circle cx={s.at[0]} cy={s.at[1]} r="3.5" fill="rgba(255,255,255,0.55)" />
-            )}
-          </g>
-        );
-      })}
-    </svg>
+    <>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/funnel/hikvision-planner-aerial-1264.webp"
+        srcSet="/funnel/hikvision-planner-aerial-828.webp 828w, /funnel/hikvision-planner-aerial-1264.webp 1264w"
+        sizes="(min-width: 1024px) 60vw, 100vw"
+        alt="A British semi-detached house at dusk, seen from above, with its drive, gardens and the street"
+        loading="lazy"
+        decoding="async"
+        className="absolute inset-0 h-full w-full object-cover"
+      />
+      <div aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(120%_90%_at_50%_45%,transparent_55%,rgba(13,27,42,0.55))]" />
+      <svg viewBox={`0 0 ${W} ${H}`} className="absolute inset-0 h-full w-full" aria-hidden="true">
+        <defs>
+          {SPOTS.map((s) => (
+            <radialGradient key={s.id} id={`beam-${s.id}`} gradientUnits="userSpaceOnUse" cx={s.at[0]} cy={s.at[1]} r={s.reach}>
+              <stop offset="0%" stopColor="#ff3b30" stopOpacity="0.7" />
+              <stop offset="65%" stopColor="#ff3b30" stopOpacity="0.38" />
+              <stop offset="100%" stopColor="#ff3b30" stopOpacity="0.12" />
+            </radialGradient>
+          ))}
+        </defs>
+        <g>
+          {SPOTS.map((s) => (
+            <path
+              key={s.id}
+              d={wedge(s.at, s.dir, s.reach)}
+              fill={`url(#beam-${s.id})`}
+              stroke="#ff6a5f"
+              strokeOpacity={0.85}
+              strokeWidth={2}
+              opacity={on.has(s.id) ? 1 : 0}
+              className="transition-opacity duration-500 ease-out motion-reduce:transition-none"
+            />
+          ))}
+        </g>
+        {SPOTS.map((s) => {
+          const active = on.has(s.id);
+          return (
+            <g key={s.id} onClick={() => onToggle(s.id)} className="cursor-pointer">
+              <circle cx={s.at[0]} cy={s.at[1]} r="26" fill="transparent" />
+              {active && <circle cx={s.at[0]} cy={s.at[1]} r="18" fill="#ff3b30" fillOpacity="0.3" />}
+              <circle
+                cx={s.at[0]}
+                cy={s.at[1]}
+                r={active ? 9 : 7}
+                fill={active ? "#ff3b30" : "rgba(255,255,255,0.85)"}
+                stroke={active ? "#ffffff" : "rgba(13,27,42,0.7)"}
+                strokeWidth={active ? 3 : 2}
+              />
+            </g>
+          );
+        })}
+      </svg>
+    </>
   );
 }
 
@@ -197,7 +206,7 @@ export function HikvisionCameraPlanner() {
 
         <div className="mt-10 grid grid-cols-1 gap-6 md:mt-12 lg:grid-cols-[minmax(0,1.55fr)_minmax(0,1fr)] lg:items-stretch lg:gap-0">
           {/* The plan, with its labels as real buttons laid over it */}
-          <div className="relative w-full overflow-hidden rounded-3xl bg-white/[0.02] ring-1 ring-white/10 lg:rounded-r-none" style={{ aspectRatio: `${W} / ${H}` }}>
+          <div className="relative w-full overflow-hidden rounded-3xl bg-[#0b1520] ring-1 ring-white/10 lg:rounded-r-none" style={{ aspectRatio: `${W} / ${H}` }}>
             <Plan on={on} onToggle={toggle} />
             <div role="group" aria-label="Places to cover" className="absolute inset-0">
               {SPOTS.map((s) => {
@@ -212,8 +221,8 @@ export function HikvisionCameraPlanner() {
                     style={{ left: `${(s.tag[0] / W) * 100}%`, top: `${(s.tag[1] / H) * 100}%` }}
                     className={`focus-ring-solid absolute inline-flex items-center gap-1 whitespace-nowrap rounded-full border px-2 py-0.5 text-[11px] font-semibold leading-5 transition-colors duration-quick ease-ds sm:px-2.5 sm:py-1 sm:text-xs md:text-[13px] ${
                       active
-                        ? "border-[#c70505] bg-[#c70505] text-white"
-                        : "border-white/35 bg-[#0d1b2a]/80 text-white/85 hover:border-white/70 hover:text-white"
+                        ? "border-transparent bg-[#c70505]/95 text-white shadow-[0_6px_18px_-6px_rgba(199,5,5,0.8)]"
+                        : "border-white/25 bg-black/45 text-white/90 backdrop-blur-md hover:border-white/60 hover:text-white"
                     }`}
                   >
                     <span aria-hidden="true">{active ? "✓" : "+"}</span>
