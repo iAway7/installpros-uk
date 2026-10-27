@@ -65,9 +65,11 @@ const ITEMS: Item[] = [
 
 export function HikvisionWiredSection() {
   return (
-    <section id="wired" className="w-full scroll-mt-28 bg-background py-12 md:py-20">
+    // Full width, like the hero and the night section (Gus, 27 October: same
+    // content, the dark background edge to edge instead of a card).
+    <section id="wired" className="w-full scroll-mt-28 bg-[#0d1b2a] py-16 text-white md:py-24">
       <div className="container mx-auto">
-        <div className="rounded-3xl bg-[#0d1b2a] px-5 py-12 text-white min-[350px]:px-7 md:px-12 md:py-16 lg:px-16">
+        <div>
           <div className="max-w-2xl">
             <p className="eyebrow !text-[#ff6a5f]">Why not Wi-Fi cameras?</p>
             <h2 className="mt-4 h2-section text-white">Wired, so it keeps working.</h2>
