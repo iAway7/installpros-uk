@@ -332,8 +332,10 @@ export interface TargetCounts {
 /** Visitors and form starts over a date range, for one landing and one
  *  traffic source, split by device. One HogQL round-trip. `until` is
  *  inclusive and optional: without it the range runs to now. The page filter
- *  applies to the landing events only, so the thank-you WhatsApp count still
- *  comes through; the source filter applies to everything. */
+ *  applies to the landing events; the thank-you WhatsApp click happens on a
+ *  different path, so it is tied back to the landing through the lead_id it
+ *  carries, matched against lead_created events under the same filters. The
+ *  source filter applies to everything. */
 export async function fetchTargetCounts(f: { since: string; until?: string; page?: string; source?: string }): Promise<TargetCounts> {
   const since = f.since.replace(/[^0-9-]/g, "");
   const until = (f.until ?? "").replace(/[^0-9-]/g, "");
@@ -345,7 +347,11 @@ export async function fetchTargetCounts(f: { since: string; until?: string; page
     `SELECT properties.device_type AS device,
             count(DISTINCT if(event = 'page_view'${onPage}, distinct_id, NULL)) AS visitors,
             count(DISTINCT if(event = 'quote_started'${onPage}, distinct_id, NULL)) AS starts,
-            count(DISTINCT if(event = 'whatsapp_clicked' AND startsWith(properties.page_path, '/thank-you'), distinct_id, NULL)) AS wa
+            count(DISTINCT if(event = 'whatsapp_clicked' AND startsWith(properties.page_path, '/thank-you')
+                 AND toString(properties.lead_id) IN (
+                   SELECT toString(properties.lead_id) FROM events
+                   WHERE event = 'lead_created' AND ${where.join(" AND ")}${onPage}
+                 ), distinct_id, NULL)) AS wa
      FROM events WHERE ${where.join(" AND ")}
      GROUP BY device`,
   );
