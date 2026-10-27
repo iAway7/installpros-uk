@@ -1,5 +1,4 @@
 import { Gap } from "./hikvision-gap";
-import { LazyCameraPlanner } from "./hikvision-lazy";
 
 /**
  * Where the cameras go, in the place of the Ajax page's home photos
@@ -61,11 +60,6 @@ export function HikvisionPlacesSection() {
           ))}
         </div>
 
-        {/* The planner replaced the static 2 / 3 to 4 / 6+ tiers (27 October):
-            the same count, from the places people tap. */}
-        <div className="mx-auto mt-16 max-w-6xl md:mt-20">
-          <LazyCameraPlanner />
-        </div>
       </div>
     </section>
   );
