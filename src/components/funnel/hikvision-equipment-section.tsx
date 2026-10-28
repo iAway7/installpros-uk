@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { Cable, Smartphone } from "lucide-react";
 
 /**
- * The exact camera and the box it records to. Started as a copy of the Ajax
+ * The exact camera and the recorder. Started as a copy of the Ajax
  * equipment cards (security-equipment-section.tsx, the live Ajax page);
  * reworked 27 October from the chats (hikvision-research/
  * conversaciones-decision.md, sections 2 and 5), Gus approving.
@@ -12,7 +12,9 @@ import { Cable, Smartphone } from "lucide-react";
  *     we'll get with the purchase"). In 2 purchases the yes came within a day
  *     of staff sending a picture of the exact camera.
  *   - The recorder puzzled people ("What is nvr", "So does it come with a
- *     recording box??", "Do I need a monitor?"), so it is "the box", where it
+ *     recording box??", "Do I need a monitor?"), so it is "the recorder",
+ *     named as a Hikvision NVR the way the camera card names ColorVu (Gus,
+ *     28 October; it was "the box" before), where it
  *     goes, and no screen needed.
  *   - The Wi-Fi line that sat under the cards moved to the wired card.
  *
@@ -50,13 +52,13 @@ const ITEMS: Item[] = [
   },
   {
     visual: <Photo name="recorder" alt="A black Hikvision network video recorder." contain />,
-    title: "The box",
-    detail: "The recorder. It sits by your router, in a cupboard or the loft, and records every camera to a hard drive.",
+    title: "The recorder",
+    detail: "A Hikvision NVR. It sits by your router, in a cupboard or the loft, and records every camera to a hard drive.",
   },
   {
     visual: <Cable aria-hidden="true" className="h-12 w-12 text-brand-icon" strokeWidth={1.25} />,
     title: "One cable per camera",
-    detail: "Power and picture down the same cable, from the box to each camera.",
+    detail: "Power and picture down the same cable, from the recorder to each camera.",
   },
   {
     visual: <Smartphone aria-hidden="true" className="h-12 w-12 text-brand-icon" strokeWidth={1.25} />,
@@ -73,7 +75,7 @@ export function HikvisionEquipmentSection() {
           <p className="eyebrow">What you get</p>
           <h2 className="mt-4 h2-section text-foreground">
             The exact camera,
-            <br className="hidden sm:block" /> and the box it records to.
+            <br className="hidden sm:block" /> and the recorder.
           </h2>
         </div>
 

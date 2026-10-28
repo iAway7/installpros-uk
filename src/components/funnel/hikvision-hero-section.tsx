@@ -8,7 +8,7 @@ import { HikvisionHeroFunnel } from "./hikvision-hero-funnel";
  *
  * Changed from the Ajax hero: no drawn camera, rings or alert cards. That
  * decoration is an Ajax camera (security-hero-decor.tsx), and this page sells
- * a different one. Until there is a photograph the hero is the same navy
+ * a different one. Until there is a photograph the hero is the same dark
  * surface Ajax started from. The trust bar is the Ajax one, imported as it
  * is: Google, Trustpilot, UK-wide, DBS checked, none of it about the product.
  * "UK-wide installs" stays (Gus, 27 October), although two camera owners in
@@ -16,7 +16,7 @@ import { HikvisionHeroFunnel } from "./hikvision-hero-funnel";
  *
  * PHOTOGRAPH: a Gemini render of a Hikvision dome under a soffit at dusk,
  * logo visible (Gus, 28 October). A real install from Jordan (question 8)
- * replaces it. Without `image` the hero falls back to the navy surface.
+ * replaces it. Without `image` the hero falls back to the dark surface.
  */
 export function HikvisionHeroSection({
   image,
@@ -59,21 +59,23 @@ export function HikvisionHeroSection({
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={image} srcSet={imageSrcSet} sizes={imageSrcSet ? "100vw" : undefined} alt="" aria-hidden="true" loading="eager" decoding="sync" fetchPriority="high" className="absolute inset-0 h-full w-full object-cover object-top md:[object-position:var(--hero-pos,50%_0%)]" style={imagePosition ? ({ "--hero-pos": imagePosition } as React.CSSProperties) : undefined} />
             </picture>
-            <div className="hero-overlay absolute inset-0 md:hidden" />
+            {/* The page's one dark, #0e1013 (Gus, 28 October), not the blue
+                hero-overlay the other landings share. */}
+            <div className="absolute inset-0 md:hidden" style={{ background: "linear-gradient(to bottom, rgba(14,16,19,0.6), rgba(14,16,19,0.7), rgba(0,0,0,0.85))" }} />
             {/* From md up the overlay thins over the camera, so the logo
                 reads; the text never reaches that side. */}
             <div
               className="absolute inset-0 hidden md:block"
               style={{
                 background:
-                  "linear-gradient(to bottom, transparent 55%, rgba(0,0,0,0.6)), radial-gradient(26% 42% at 84% 44%, rgba(10,25,41,0.12) 0%, rgba(10,25,41,0.62) 100%)",
+                  "linear-gradient(to bottom, transparent 55%, rgba(0,0,0,0.6)), radial-gradient(26% 42% at 84% 44%, rgba(14,16,19,0.12) 0%, rgba(14,16,19,0.62) 100%)",
               }}
             />
           </>
         ) : (
           <div
             className="absolute inset-0"
-            style={{ background: "radial-gradient(120% 70% at 50% 0%, #1d3045 0%, #0d1b2a 48%, #05080c 100%)" }}
+            style={{ background: "radial-gradient(120% 70% at 50% 0%, #22262c 0%, #0e1013 48%, #050607 100%)" }}
           />
         )}
       </div>

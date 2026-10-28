@@ -377,13 +377,13 @@ export function HikvisionQuoteForm({
       <div className="space-y-6">
         <div>
           {step === 0 && !started && (
-            <HikvisionNeedStep tone="light" name="final-intent" onChoose={chooseIntent} className={anim} />
+            <HikvisionNeedStep tone="dark" name="final-intent" onChoose={chooseIntent} className={anim} />
           )}
           {step === 0 && started && (
             <div className={`space-y-4 ${anim}`}>
               <div className="space-y-2 text-center">
-                <p className="text-body font-semibold text-primary">Step 1 of {totalSteps}</p>
-                <h2 className="h2-form text-foreground">Where&apos;s the property?</h2>
+                <p className="text-body font-semibold text-white/80">Step 1 of {totalSteps}</p>
+                <h2 className="h2-form text-white">Where&apos;s the property?</h2>
               </div>
               <div className="relative">
                 {addressMode ? (
@@ -445,9 +445,9 @@ export function HikvisionQuoteForm({
               <ConsentCheckbox
                 checked={consent}
                 onChange={setConsent}
-                tone="light"
+                tone="dark"
                 id="cta-marketing"
-                label={<MarketingConsentLabel tone="light" />}
+                label={<MarketingConsentLabel tone="dark" />}
               />
             </div>
           )}
@@ -455,12 +455,12 @@ export function HikvisionQuoteForm({
           {step === 4 && (
             <div className={`space-y-4 ${anim}`}>
               <div className="space-y-2 text-center">
-                <p className="text-body font-semibold text-primary">Step 5 of {totalSteps}</p>
-                <h2 className="h2-form text-foreground">
+                <p className="text-body font-semibold text-white/80">Step 5 of {totalSteps}</p>
+                <h2 className="h2-form text-white">
                   {serviceMode === "starlink" ? "What are we installing?" : "Which service are you looking for?"}
                 </h2>
                 {serviceMode === "any" && (
-                  <p className="text-body text-muted-foreground">Select the service you want a quote for.</p>
+                  <p className="text-body text-white/70">Select the service you want a quote for.</p>
                 )}
               </div>
               {serviceMode === "starlink" ? (
@@ -497,9 +497,9 @@ export function HikvisionQuoteForm({
               <ConsentCheckbox
                 checked={consent}
                 onChange={setConsent}
-                tone="light"
+                tone="dark"
                 id="cta-marketing"
-                label={<MarketingConsentLabel tone="light" />}
+                label={<MarketingConsentLabel tone="dark" />}
               />
             </div>
           )}
@@ -529,7 +529,7 @@ export function HikvisionQuoteForm({
           </div>
         )}
 
-        {step === lastStep && <FormLegalNotice tone="light" />}
+        {step === lastStep && <FormLegalNotice tone="dark" />}
       </div>
     </div>
   );
@@ -539,8 +539,8 @@ function StepField({ anim, label, title, error, errorId, children }: { anim: str
   return (
     <div className={`space-y-4 ${anim}`}>
       <div className="space-y-2 text-center">
-        <p className="text-body font-semibold text-primary">{label}</p>
-        <h2 className="h2-form text-foreground">{title}</h2>
+        <p className="text-body font-semibold text-white/80">{label}</p>
+        <h2 className="h2-form text-white">{title}</h2>
       </div>
       {children}
       {error && (

@@ -1,13 +1,18 @@
 /**
- * The phone in the Hikvision page's app section: four live tiles and one alert, in the spirit of Hik-Connect's
- * own screens, drawn here rather than a screenshot (no Hikvision assets;
- * their brand guidelines want written permission, and the store screenshots
- * show an Italian city, a US porch and business-only features). Static, so
- * no Motion.
+ * The phone in the Hikvision page's app section: four live tiles and the
+ * alerts, in the spirit of Hik-Connect's own screens, drawn here rather than
+ * a screenshot (no Hikvision assets; their brand guidelines want written
+ * permission, and the store screenshots show an Italian city, a US porch and
+ * business-only features). Static, so no Motion.
+ *
+ * Shaped like the Ajax page's phone (security-phone-mock.tsx, Gus, 28
+ * October): the same frame and about the same height, and the newest alert
+ * runs past the phone's edges the way Ajax's critical one does. The tiles
+ * are as they were.
  *
  * The feeds are crops of the placement renders (28 October), framed as what
- * each camera sees rather than the camera itself. The alert is the night
- * scene, hence its earlier time.
+ * each camera sees rather than the camera itself. The 02:14 alert is the
+ * night scene; the 23:40 one is the car on the drive.
  */
 
 const TILES: { name: string; src: string }[] = [
@@ -17,15 +22,44 @@ const TILES: { name: string; src: string }[] = [
   { name: "Garden", src: "/funnel/hikvision-feed-garden.webp" },
 ];
 
+type Alert = { place: string; time: string; title: string; detail: string; thumb: string; top?: boolean };
+
+const ALERTS: Alert[] = [
+  { place: "Drive", time: "02:14", title: "Person detected", detail: "Tap to watch it back.", thumb: "/funnel/hikvision-feed-alert.webp", top: true },
+  { place: "Drive", time: "23:40", title: "Vehicle detected", detail: "Snapshot attached.", thumb: "/funnel/hikvision-feed-drive.webp" },
+];
+
+function AlertCard({ a }: { a: Alert }) {
+  return (
+    <div
+      className={`flex items-start gap-3 rounded-[20px] px-3.5 py-3 text-left text-white ring-1 ring-white/10 ${
+        a.top ? "bg-[#303133] shadow-raised" : "bg-[#2a2b2d]/90"
+      }`}
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={a.thumb} alt="" loading="lazy" decoding="async" className="mt-0.5 h-10 w-10 shrink-0 rounded-[10px] object-cover" />
+      <span className="min-w-0 flex-1">
+        <span className="flex items-baseline justify-between gap-2">
+          <span className={`text-[11px] font-semibold uppercase tracking-wide ${a.top ? "text-[#ff6a5f]" : "text-white/55"}`}>{a.place}</span>
+          <span className="shrink-0 text-[11px] tabular-nums text-white/55">{a.time}</span>
+        </span>
+        <span className="mt-0.5 block text-[14px] font-semibold leading-tight">{a.title}</span>
+        <span className="mt-0.5 block text-[12.5px] leading-snug text-white/75">{a.detail}</span>
+      </span>
+    </div>
+  );
+}
+
 export function HikvisionPhoneMock() {
   return (
     <div aria-hidden="true" className="relative mx-auto w-full max-w-[280px] md:max-w-[320px]">
-      <div className="absolute -inset-10 rounded-[4rem] bg-[radial-gradient(closest-side,rgba(13,27,42,0.10),transparent)]" />
-      <div className="relative overflow-hidden rounded-[2.75rem] border-[9px] border-[#0c100e] bg-[#101418] shadow-raised">
+      <div className="absolute -inset-10 rounded-[4rem] bg-[radial-gradient(closest-side,rgba(14,16,19,0.10),transparent)]" />
+      {/* Not clipped, so the top alert can run past the edges. */}
+      <div className="relative rounded-[2.75rem] border-[9px] border-[#0c100e] bg-[#101418] shadow-raised">
         <div className="mx-auto mt-2.5 h-[22px] w-[92px] rounded-full bg-[#0c100e]" />
 
-        <div className="flex items-center justify-between px-4 pb-3 pt-4 text-white">
-          <span className="text-[15px] font-semibold">Home</span>
+        <div className="flex items-center justify-between px-4 pb-4 pt-6 text-white">
+          <span className="text-[17px] font-semibold">Home</span>
           <span className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide text-white/60">
             <span className="h-1.5 w-1.5 rounded-full bg-[#ff453a]" />
             Live
@@ -45,20 +79,13 @@ export function HikvisionPhoneMock() {
           ))}
         </ul>
 
-        <div className="px-3 pb-4 pt-4">
-          <div className="flex items-start gap-2.5 rounded-[18px] bg-[#2a2b2d]/90 px-3 py-2.5 text-left text-white ring-1 ring-white/10">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/funnel/hikvision-feed-alert.webp" alt="" loading="lazy" decoding="async" className="mt-0.5 h-9 w-9 shrink-0 rounded-[9px] object-cover" />
-            <span className="min-w-0 flex-1">
-              <span className="flex items-baseline justify-between gap-2">
-                <span className="text-[11px] font-semibold uppercase tracking-wide text-white/55">Drive</span>
-                <span className="shrink-0 text-[11px] tabular-nums text-white/55">02:14</span>
-              </span>
-              <span className="mt-0.5 block text-[14px] font-semibold leading-tight">Person detected</span>
-              <span className="mt-0.5 block text-[12.5px] leading-snug text-white/75">Tap to watch it back.</span>
-            </span>
-          </div>
-        </div>
+        <ul className="space-y-2.5 px-3 pb-9 pt-8">
+          {ALERTS.map((a) => (
+            <li key={a.time} className={a.top ? "-mx-[26px]" : undefined}>
+              <AlertCard a={a} />
+            </li>
+          ))}
+        </ul>
 
         <div className="mx-auto mb-2.5 h-[5px] w-[110px] rounded-full bg-white/50" />
       </div>

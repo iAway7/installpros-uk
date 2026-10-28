@@ -66,8 +66,27 @@ export function HikvisionWiredSection() {
   return (
     // Full width, like the hero and the night section (Gus, 27 October: same
     // content, the dark background edge to edge instead of a card).
-    <section id="wired" className="w-full scroll-mt-28 bg-[#0d1b2a] py-16 text-white md:py-24">
-      <div className="container mx-auto">
+    <section id="wired" className="relative w-full scroll-mt-28 overflow-hidden bg-[#0e1013] py-16 text-white md:py-24">
+      {/* A wired ColorVu in the top-right corner (Gemini render on a flat
+          background close to #0e1013, Gus, 28 October), its edges masked
+          into the band so the photo has no visible border. From lg up only:
+          narrower, the heading runs across where it would sit. */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/funnel/hikvision-wired-camera-1100.webp"
+        srcSet="/funnel/hikvision-wired-camera-640.webp 640w, /funnel/hikvision-wired-camera-1100.webp 1100w"
+        sizes="30vw"
+        alt=""
+        aria-hidden="true"
+        loading="lazy"
+        decoding="async"
+        className="pointer-events-none absolute right-[2vw] top-0 hidden w-[30vw] max-w-[520px] lg:block"
+        style={{
+          maskImage: "radial-gradient(70% 62% at 55% 40%, #000 55%, transparent 100%)",
+          WebkitMaskImage: "radial-gradient(70% 62% at 55% 40%, #000 55%, transparent 100%)",
+        }}
+      />
+      <div className="container relative mx-auto">
         <div>
           <div className="max-w-2xl">
             <p className="eyebrow !text-[#ff6a5f]">Why not Wi-Fi cameras?</p>

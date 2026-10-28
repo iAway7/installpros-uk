@@ -109,7 +109,7 @@ function Plan({ on, onToggle }: { on: Set<SpotId>; onToggle: (id: SpotId) => voi
         decoding="async"
         className="absolute inset-0 h-full w-full object-cover"
       />
-      <div aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(120%_90%_at_50%_45%,transparent_55%,rgba(13,27,42,0.55))]" />
+      <div aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(120%_90%_at_50%_45%,transparent_55%,rgba(14,16,19,0.55))]" />
       <svg viewBox={`0 0 ${W} ${H}`} className="absolute inset-0 h-full w-full" aria-hidden="true">
         <defs>
           {SPOTS.map((s) => (
@@ -145,7 +145,7 @@ function Plan({ on, onToggle }: { on: Set<SpotId>; onToggle: (id: SpotId) => voi
                 cy={s.at[1]}
                 r={active ? 9 : 7}
                 fill={active ? "#ff3b30" : "rgba(255,255,255,0.85)"}
-                stroke={active ? "#ffffff" : "rgba(13,27,42,0.7)"}
+                stroke={active ? "#ffffff" : "rgba(14,16,19,0.7)"}
                 strokeWidth={active ? 3 : 2}
               />
             </g>
@@ -218,7 +218,7 @@ export function HikvisionCameraPlanner() {
   const summary = places.length > 0 ? `${sentence(places)}.` : "Tap a place on the plan to start.";
 
   return (
-    <section id="planner" className="w-full scroll-mt-28 bg-[#0d1b2a] py-16 text-white md:py-24">
+    <section id="planner" className="w-full scroll-mt-28 bg-[#0e1013] py-16 text-white md:py-24">
       <div className="container mx-auto">
         <div className="max-w-2xl">
           <p className="eyebrow !text-[#ff6a5f]">Plan your cameras</p>
@@ -282,7 +282,7 @@ export function HikvisionCameraPlanner() {
                   aria-checked={inside === o.value}
                   onClick={() => chooseInside(o.value)}
                   className={`focus-ring-solid min-h-[40px] rounded-full text-body-sm font-semibold transition-colors duration-quick ease-ds ${
-                    inside === o.value ? "bg-white text-[#0d1b2a]" : "text-white/70 hover:text-white"
+                    inside === o.value ? "bg-white text-[#0e1013]" : "text-white/70 hover:text-white"
                   }`}
                 >
                   {o.label}

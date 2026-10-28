@@ -50,7 +50,8 @@ const CARDS: Card[] = [
   },
 ];
 
-const BAND = "#070b10";
+// The page's one dark (Gus, 28 October).
+const BAND = "#0e1013";
 
 export function HikvisionNightSection() {
   return (
@@ -81,7 +82,7 @@ export function HikvisionNightSection() {
           <div
             aria-hidden="true"
             className="absolute inset-0 hidden md:block"
-            style={{ background: `linear-gradient(90deg, ${BAND} 0%, rgba(7,11,16,0.85) 30%, rgba(7,11,16,0.2) 62%, transparent 80%)` }}
+            style={{ background: `linear-gradient(90deg, ${BAND} 0%, rgba(14,16,19,0.85) 30%, rgba(14,16,19,0.2) 62%, transparent 80%)` }}
           />
           <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-1/4" style={{ background: `linear-gradient(to top, ${BAND}, transparent)` }} />
         </div>
