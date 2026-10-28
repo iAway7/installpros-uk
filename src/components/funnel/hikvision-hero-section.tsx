@@ -60,8 +60,18 @@ export function HikvisionHeroSection({
               <img src={image} srcSet={imageSrcSet} sizes={imageSrcSet ? "100vw" : undefined} alt="" aria-hidden="true" loading="eager" decoding="sync" fetchPriority="high" className="absolute inset-0 h-full w-full object-cover object-top md:[object-position:var(--hero-pos,50%_0%)]" style={imagePosition ? ({ "--hero-pos": imagePosition } as React.CSSProperties) : undefined} />
             </picture>
             {/* The page's one dark, #0e1013 (Gus, 28 October), not the blue
-                hero-overlay the other landings share. */}
-            <div className="absolute inset-0 md:hidden" style={{ background: "linear-gradient(to bottom, rgba(14,16,19,0.6), rgba(14,16,19,0.7), rgba(0,0,0,0.85))" }} />
+                hero-overlay the other landings share. On phones the photo is
+                a crop with the camera small at the top and the rest fading
+                to black, so the overlay stays light over the camera, dark
+                under the header (white logo on a light soffit) and dark from
+                the badge down. */}
+            <div
+              className="absolute inset-0 md:hidden"
+              style={{
+                background:
+                  "linear-gradient(to bottom, rgba(14,16,19,0.6) 0%, rgba(14,16,19,0.15) 11%, rgba(14,16,19,0.1) 20%, rgba(14,16,19,0.2) 28%, rgba(14,16,19,0.7) 38%, rgba(14,16,19,0.85) 100%)",
+              }}
+            />
             {/* From md up the overlay thins over the camera, so the logo
                 reads; the text never reaches that side. */}
             <div
@@ -80,7 +90,7 @@ export function HikvisionHeroSection({
         )}
       </div>
 
-      <div className="relative z-20 flex flex-1 justify-center pt-28 pb-16 md:pt-36">
+      <div className="relative z-20 flex flex-1 justify-center pt-44 pb-16 md:pt-36">
         <div className="container relative mx-auto my-auto text-center text-white">
           <div className="animate-slide-up mb-4 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 py-1.5 md:mb-8">
             <span className="text-body-sm font-medium tracking-wide text-white/95">
