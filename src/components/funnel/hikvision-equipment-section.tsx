@@ -53,7 +53,7 @@ const ITEMS: Item[] = [
   {
     visual: <Photo name="recorder" alt="A black Hikvision network video recorder." contain />,
     title: "The recorder",
-    detail: "A Hikvision NVR. It sits by your router, in a cupboard or the loft, and records every camera to a hard drive.",
+    detail: "A Hikvision NVR, by your router or in the loft. It records every camera to a hard drive.",
   },
   {
     visual: <Cable aria-hidden="true" className="h-12 w-12 text-brand-icon" strokeWidth={1.25} />,

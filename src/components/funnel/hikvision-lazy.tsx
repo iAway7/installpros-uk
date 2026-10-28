@@ -18,3 +18,6 @@ export const LazyCameraPlanner = dynamic(() => import("./hikvision-camera-planne
 // Its step-by-step copy below it (Gus, 28 October), worked on while the
 // original stays.
 export const LazyCoveragePlanner = dynamic(() => import("./hikvision-coverage-planner").then((m) => m.HikvisionCoveragePlanner));
+
+// The third planner, photo tiles (28 October), below the other two.
+export const LazyTilesPlanner = dynamic(() => import("./hikvision-tiles-planner").then((m) => m.HikvisionTilesPlanner));

@@ -191,9 +191,12 @@ export function HikvisionQuoteForm({
   }, [step]);
 
   // Straight to the postcode once they have picked, so the keyboard is up.
+  // Inside a planner (presetIntent) without scrolling: the planner brings its
+  // own heading into view, and a focus scroll cut that short and left the
+  // question above the screen.
   useEffect(() => {
-    if (started && step === 0) postcodeRef.current?.focus();
-  }, [started, step]);
+    if (started && step === 0) postcodeRef.current?.focus(presetIntent ? { preventScroll: true } : undefined);
+  }, [started, step, presetIntent]);
   const phoneRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
 

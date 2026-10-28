@@ -6,7 +6,7 @@ import { HikvisionHeroSection } from "@/components/funnel/hikvision-hero-section
 import { HikvisionNightSection } from "@/components/funnel/hikvision-night-section";
 import { HikvisionAppSection } from "@/components/funnel/hikvision-app-section";
 import { HikvisionPlacesSection } from "@/components/funnel/hikvision-places-section";
-import { LazyCameraPlanner, LazyCoveragePlanner } from "@/components/funnel/hikvision-lazy";
+import { LazyCameraPlanner, LazyCoveragePlanner, LazyTilesPlanner } from "@/components/funnel/hikvision-lazy";
 import { HikvisionEquipmentSection } from "@/components/funnel/hikvision-equipment-section";
 import { HikvisionExistingSection } from "@/components/funnel/hikvision-existing-section";
 import { HikvisionWiredSection } from "@/components/funnel/hikvision-wired-section";
@@ -146,6 +146,9 @@ export default function HikvisionCctvInstallationPage() {
           {/* Its step-by-step copy, light, worked on while the original
               stays (28 October). One of the two goes before launch. */}
           <LazyCoveragePlanner />
+          {/* The third, photo tiles (28 October). Three to choose from;
+              two go before launch. */}
+          <LazyTilesPlanner />
           <HikvisionEquipmentSection />
           {/* Before the price section: the first tap already split owners
               from buyers, and an owner who sees nothing for them below the
