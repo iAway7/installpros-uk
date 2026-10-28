@@ -3,8 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { track, EVENTS } from "@/lib/analytics";
-import { HIKVISION_INTENT_EVENT, type HikvisionIntent } from "./hikvision-need-step";
 import { savePlan, type HikvisionPlan } from "@/lib/funnel/hikvision-plan";
+import { HikvisionQuoteForm } from "./hikvision-quote-form";
 
 /**
  * The camera planner, a full-width dark band of its own after "Where cameras
@@ -31,6 +31,11 @@ import { savePlan, type HikvisionPlan } from "@/lib/funnel/hikvision-plan";
  *     band is complete before anyone taps.
  *   - Inside or not was a question staff asked; it adds one camera.
  *   - No price: how many, never how much.
+ *
+ * The button opens the closing form's steps in the panel itself (postcode,
+ * name, phone, email; Gus, 28 October), dark, as a new system, with
+ * form_name hikvision_planner; Back returns to the plan. It used to send
+ * people down to the closing form.
  *
  * The plan travels in sessionStorage (lib/funnel/hikvision-plan.ts) once
  * someone has touched it, and the thank-you page puts it in the WhatsApp
@@ -70,12 +75,16 @@ const DEFAULT: SpotId[] = ["front", "drive", "back"];
 
 /** Inside works like outside: one camera per room (Gus, 27 October: "inside"
  *  should not be a single camera). The hall opens ticked. */
-type RoomId = "hall" | "living" | "kitchen" | "garage";
-const ROOMS: { id: RoomId; label: string }[] = [
+type RoomId = "hall" | "living" | "kitchen" | "garage" | "stairs";
+/** `chip` is the shorter name on the button, where it differs. Stairs was
+ *  added on 28 October (Gus): the landing and upstairs came up in the chats,
+ *  and it covers the way to the bedrooms without looking into them. */
+const ROOMS: { id: RoomId; label: string; chip?: string }[] = [
   { id: "hall", label: "Hall" },
   { id: "living", label: "Living room" },
   { id: "kitchen", label: "Kitchen" },
   { id: "garage", label: "Garage" },
+  { id: "stairs", label: "Stairs and landing", chip: "Stairs" },
 ];
 
 const W = 1264;
@@ -163,6 +172,22 @@ export function HikvisionCameraPlanner() {
   // Only a plan someone has touched is passed on: the default three are the
   // page's suggestion, not theirs.
   const touched = useRef(false);
+  const [showForm, setShowForm] = useState(false);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const firstToggle = useRef(true);
+
+  // The panel changes height when the form opens or closes; keep its top in
+  // view so the next question is not off screen.
+  useEffect(() => {
+    if (firstToggle.current) {
+      firstToggle.current = false;
+      return;
+    }
+    const el = panelRef.current;
+    if (!el || el.getBoundingClientRect().top >= 0) return;
+    const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    el.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+  }, [showForm]);
 
   const chosen = SPOTS.filter((s) => on.has(s.id));
   const indoors = inside ? ROOMS.filter((r) => rooms.has(r.id)) : [];
@@ -211,10 +236,12 @@ export function HikvisionCameraPlanner() {
     touched.current = true;
     savePlan(plan());
     track(EVENTS.CTA_CLICKED, { cta_id: "planner_quote", cta_label: `${count}_cameras_${indoors.length}_inside`, cta_location: "planner" });
-    window.dispatchEvent(new CustomEvent<HikvisionIntent>(HIKVISION_INTENT_EVENT, { detail: "new" }));
+    setShowForm(true);
   }
 
-  const places = [...chosen.map((s) => s.label), ...indoors.map((r) => r.label)];
+  // On screen the rooms use their chip name ("hall and stairs", not "hall
+  // and stairs and landing"); the plan keeps the full label for WhatsApp.
+  const places = [...chosen.map((s) => s.label), ...indoors.map((r) => r.chip ?? r.label)];
   const summary = places.length > 0 ? `${sentence(places)}.` : "Tap a place on the plan to start.";
 
   return (
@@ -258,71 +285,96 @@ export function HikvisionCameraPlanner() {
           </div>
 
           {/* The result */}
-          <div className="flex flex-col justify-center gap-5 rounded-3xl bg-white/[0.04] p-6 ring-1 ring-white/10 md:p-8 lg:rounded-l-none">
-            <div aria-live="polite">
-              <p className="text-label font-semibold uppercase tracking-[0.14em] text-white/60">Your plan</p>
-              <p className="mt-2 flex items-baseline gap-2">
-                <span className="text-6xl font-bold leading-none tabular-nums text-white">{count}</span>
-                <span className="text-xl font-semibold text-white">camera{count === 1 ? "" : "s"}</span>
-              </p>
-              <p className="mt-3 text-pretty text-body-sm text-white/70" style={{ lineHeight: "1.55" }}>
-                {summary}
-              </p>
-            </div>
-
-            <div role="radiogroup" aria-label="Inside too?" className="grid grid-cols-2 rounded-full bg-white/[0.08] p-1">
-              {[
-                { value: false, label: "Outside only" },
-                { value: true, label: "Inside too" },
-              ].map((o) => (
-                <button
-                  key={o.label}
-                  type="button"
-                  role="radio"
-                  aria-checked={inside === o.value}
-                  onClick={() => chooseInside(o.value)}
-                  className={`focus-ring-solid min-h-[40px] rounded-full text-body-sm font-semibold transition-colors duration-quick ease-ds ${
-                    inside === o.value ? "bg-white text-[#0e1013]" : "text-white/70 hover:text-white"
-                  }`}
-                >
-                  {o.label}
-                </button>
-              ))}
-            </div>
-
-            {inside && (
-              <div role="group" aria-label="Rooms inside" className="-mt-2 flex flex-wrap gap-2">
-                {ROOMS.map((r) => {
-                  const active = rooms.has(r.id);
-                  return (
-                    <button
-                      key={r.id}
-                      type="button"
-                      aria-pressed={active}
-                      onClick={() => toggleRoom(r.id)}
-                      className={`focus-ring-solid inline-flex min-h-[36px] items-center gap-1 rounded-full border px-3 text-body-sm font-semibold transition-colors duration-quick ease-ds ${
-                        active ? "border-transparent bg-[#c70505] text-white" : "border-white/25 text-white/80 hover:border-white/60 hover:text-white"
-                      }`}
-                    >
-                      <span aria-hidden="true">{active ? "✓" : "+"}</span>
-                      {r.label}
-                    </button>
-                  );
-                })}
+          <div ref={panelRef} className="flex scroll-mt-28 flex-col justify-center gap-5 rounded-3xl bg-white/[0.04] p-6 ring-1 ring-white/10 md:p-8 lg:rounded-l-none">
+            {showForm ? (
+              <>
+                <div>
+                  <p className="text-label font-semibold uppercase tracking-[0.14em] text-white/60">Your plan</p>
+                  <p className="mt-2 text-pretty text-body-sm text-white/70" style={{ lineHeight: "1.55" }}>
+                    <span className="font-semibold text-white">
+                      {count} camera{count === 1 ? "" : "s"}
+                    </span>
+                    {places.length > 0 ? `: ${sentence(places).toLowerCase()}.` : "."}
+                  </p>
+                </div>
+                <HikvisionQuoteForm
+                  tone="dark"
+                  presetIntent="new"
+                  onBack={() => setShowForm(false)}
+                  showStepLabels={false}
+                  defaultService="security"
+                  skipServiceStep
+                  formName="hikvision_planner"
+                />
+              </>
+            ) : (
+              <>
+              <div aria-live="polite">
+                <p className="text-label font-semibold uppercase tracking-[0.14em] text-white/60">Your plan</p>
+                <p className="mt-2 flex items-baseline gap-2">
+                  <span className="text-6xl font-bold leading-none tabular-nums text-white">{count}</span>
+                  <span className="text-xl font-semibold text-white">camera{count === 1 ? "" : "s"}</span>
+                </p>
+                <p className="mt-3 text-pretty text-body-sm text-white/70" style={{ lineHeight: "1.55" }}>
+                  {summary}
+                </p>
               </div>
-            )}
 
-            <div>
-              <a
-                href="#quote"
-                onClick={getPrice}
-                className="focus-ring-solid flex h-control-lg w-full items-center justify-center gap-2 rounded-lg bg-primary px-6 text-button font-[var(--button-weight)] uppercase tracking-[var(--button-tracking)] text-primary-foreground transition-colors duration-quick ease-ds hover:bg-brand-hover"
-              >
-                {count > 0 ? "Get the price for this plan" : "Get my free quote"}
-                <ArrowRight aria-hidden="true" className="h-4 w-4" />
-              </a>
-              <p className="mt-2.5 text-center text-body-sm text-white/55">Your price the same day. Nothing to pay monthly.</p>
-            </div>
+              <div role="radiogroup" aria-label="Inside too?" className="grid grid-cols-2 rounded-full bg-white/[0.08] p-1">
+                {[
+                  { value: false, label: "Outside only" },
+                  { value: true, label: "Inside too" },
+                ].map((o) => (
+                  <button
+                    key={o.label}
+                    type="button"
+                    role="radio"
+                    aria-checked={inside === o.value}
+                    onClick={() => chooseInside(o.value)}
+                    className={`focus-ring-solid min-h-[40px] rounded-full text-body-sm font-semibold transition-colors duration-quick ease-ds ${
+                      inside === o.value ? "bg-white text-[#0e1013]" : "text-white/70 hover:text-white"
+                    }`}
+                  >
+                    {o.label}
+                  </button>
+                ))}
+              </div>
+
+              {inside && (
+                <div role="group" aria-label="Rooms inside" className="-mt-2 flex flex-wrap gap-2">
+                  {ROOMS.map((r) => {
+                    const active = rooms.has(r.id);
+                    return (
+                      <button
+                        key={r.id}
+                        type="button"
+                        aria-pressed={active}
+                        onClick={() => toggleRoom(r.id)}
+                        className={`focus-ring-solid inline-flex min-h-[36px] items-center gap-1 rounded-full border px-3 text-body-sm font-semibold transition-colors duration-quick ease-ds ${
+                          active ? "border-transparent bg-[#c70505] text-white" : "border-white/25 text-white/80 hover:border-white/60 hover:text-white"
+                        }`}
+                      >
+                        <span aria-hidden="true">{active ? "✓" : "+"}</span>
+                        {r.chip ?? r.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+
+              <div>
+                <button
+                  type="button"
+                  onClick={getPrice}
+                  className="focus-ring-solid flex h-control-lg w-full items-center justify-center gap-2 rounded-lg bg-primary px-6 text-button font-[var(--button-weight)] uppercase tracking-[var(--button-tracking)] text-primary-foreground transition-colors duration-quick ease-ds hover:bg-brand-hover"
+                >
+                  {count > 0 ? "Get the price for this plan" : "Get my free quote"}
+                  <ArrowRight aria-hidden="true" className="h-4 w-4" />
+                </button>
+                <p className="mt-2.5 text-center text-body-sm text-white/55">Your price the same day. Nothing to pay monthly.</p>
+              </div>
+              </>
+            )}
           </div>
         </div>
       </div>

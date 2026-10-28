@@ -91,6 +91,10 @@ export function HikvisionQuoteForm({
   addressMode = false,
   skipServiceStep = false,
   formName = "cta_form",
+  tone = "dark",
+  presetIntent,
+  onBack,
+  showStepLabels = true,
 }: {
   defaultService?: string;
   serviceMode?: "starlink" | "any";
@@ -100,6 +104,16 @@ export function HikvisionQuoteForm({
   /** Names this form in analytics and on the lead, e.g. "starlink_commercial",
    *  so a lead is traceable to the landing page that produced it. */
   formName?: string;
+  /** "dark" on the closing band, "light" inside the coverage planner. */
+  tone?: "dark" | "light";
+  /** The coverage planner asks the intent itself and embeds this form after
+   *  it: start at the postcode with that intent, and ignore the page's
+   *  HIKVISION_INTENT_EVENT, which is meant for the closing form. */
+  presetIntent?: HikvisionIntent;
+  /** Back from the postcode, when the step before it is not this form's. */
+  onBack?: () => void;
+  /** The planner shows no "Step N of M" (Gus, 28 October). */
+  showStepLabels?: boolean;
 }) {
   const router = useRouter();
   // A landing that already knows what it is selling can drop the service step.
@@ -142,7 +156,7 @@ export function HikvisionQuoteForm({
   // The one-tap first step (hikvision-need-step.tsx), null until chosen.
   // Sent as leads.intent with no need (migration 0022 allows new, add and
   // repair); see that file for what this asks of Will's Zap.
-  const [intent, setIntent] = useState<HikvisionIntent | null>(null);
+  const [intent, setIntent] = useState<HikvisionIntent | null>(presetIntent ?? null);
   const postcodeRef = useRef<HTMLInputElement>(null);
 
   function chooseIntent(value: HikvisionIntent) {
@@ -155,8 +169,13 @@ export function HikvisionQuoteForm({
 
   // Back from the postcode undoes either.
   function backToStart() {
-    setIntent(null);
+    if (onBack) onBack();
+    else setIntent(null);
   }
+
+  const dark = tone === "dark";
+  const labelClass = `text-body font-semibold ${dark ? "text-white/80" : "text-primary"}`;
+  const titleClass = `h2-form ${dark ? "text-white" : "text-foreground"}`;
 
   // The "Already have cameras?" section's buttons (HIKVISION_INTENT_EVENT,
   // the intent in `detail`). Only from the first step, so it never undoes an
@@ -164,7 +183,7 @@ export function HikvisionQuoteForm({
   useEffect(() => {
     const onIntent = (e: Event) => {
       const value = (e as CustomEvent<HikvisionIntent>).detail;
-      if (step === 0 && value) chooseIntent(value);
+      if (step === 0 && value && !presetIntent) chooseIntent(value);
     };
     window.addEventListener(HIKVISION_INTENT_EVENT, onIntent);
     return () => window.removeEventListener(HIKVISION_INTENT_EVENT, onIntent);
@@ -377,13 +396,13 @@ export function HikvisionQuoteForm({
       <div className="space-y-6">
         <div>
           {step === 0 && !started && (
-            <HikvisionNeedStep tone="dark" name="final-intent" onChoose={chooseIntent} className={anim} />
+            <HikvisionNeedStep tone={tone} name={`${formName}-intent`} onChoose={chooseIntent} className={anim} />
           )}
           {step === 0 && started && (
             <div className={`space-y-4 ${anim}`}>
               <div className="space-y-2 text-center">
-                <p className="text-body font-semibold text-white/80">Step 1 of {totalSteps}</p>
-                <h2 className="h2-form text-white">Where&apos;s the property?</h2>
+                {showStepLabels && <p className={labelClass}>Step 1 of {totalSteps}</p>}
+                <h2 className={titleClass}>Where&apos;s the property?</h2>
               </div>
               <div className="relative">
                 {addressMode ? (
@@ -414,12 +433,12 @@ export function HikvisionQuoteForm({
           )}
 
           {step === 1 && (
-            <StepField anim={anim} label={`Step 2 of ${totalSteps}`} title="What's your name?" error={errors.fullName} errorId="cta-err-name">
+            <StepField anim={anim} labelClass={labelClass} titleClass={titleClass} showLabel={showStepLabels} label={`Step 2 of ${totalSteps}`} title="What's your name?" error={errors.fullName} errorId="cta-err-name">
               <Input ref={nameRef} type="text" value={formData.fullName} onChange={(e) => setFormData((d) => ({ ...d, fullName: e.target.value }))} placeholder="Full Name" inputSize="lg" aria-label="Full name" state={errors.fullName ? "error" : "default"} aria-describedby={errors.fullName ? "cta-err-name" : undefined} className="text-center text-body md:text-[22px]" />
             </StepField>
           )}
           {step === 2 && (
-            <StepField anim={anim} label={`Step 3 of ${totalSteps}`} title="What's your phone number?" error={errors.phone} errorId="cta-err-phone">
+            <StepField anim={anim} labelClass={labelClass} titleClass={titleClass} showLabel={showStepLabels} label={`Step 3 of ${totalSteps}`} title="What's your phone number?" error={errors.phone} errorId="cta-err-phone">
               <div className="relative">
                 <Input ref={phoneRef} type="tel" value={formData.phone} onChange={onPhoneChange}
                   /* Ver zip-availability-checker: el error solo se veia al pulsar. */
@@ -430,7 +449,7 @@ export function HikvisionQuoteForm({
             </StepField>
           )}
           {step === 3 && (
-            <StepField anim={anim} label={`Step 4 of ${totalSteps}`} title="What's your email?" error={errors.email} errorId="cta-err-email">
+            <StepField anim={anim} labelClass={labelClass} titleClass={titleClass} showLabel={showStepLabels} label={`Step 4 of ${totalSteps}`} title="What's your email?" error={errors.email} errorId="cta-err-email">
               <div className="relative">
                 <Input ref={emailRef} type="email" value={formData.email} onChange={onEmailChange} placeholder="you@example.com" inputSize="lg" aria-label="Email" state={errors.email ? "error" : "default"} aria-describedby={errors.email ? "cta-err-email" : undefined} className="text-center text-body md:text-[22px]" />
                 {showEmailCheck && <Check className="absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-success" />}
@@ -445,9 +464,9 @@ export function HikvisionQuoteForm({
               <ConsentCheckbox
                 checked={consent}
                 onChange={setConsent}
-                tone="dark"
+                tone={tone}
                 id="cta-marketing"
-                label={<MarketingConsentLabel tone="dark" />}
+                label={<MarketingConsentLabel tone={tone} />}
               />
             </div>
           )}
@@ -455,12 +474,12 @@ export function HikvisionQuoteForm({
           {step === 4 && (
             <div className={`space-y-4 ${anim}`}>
               <div className="space-y-2 text-center">
-                <p className="text-body font-semibold text-white/80">Step 5 of {totalSteps}</p>
-                <h2 className="h2-form text-white">
+                {showStepLabels && <p className={labelClass}>Step 5 of {totalSteps}</p>}
+                <h2 className={titleClass}>
                   {serviceMode === "starlink" ? "What are we installing?" : "Which service are you looking for?"}
                 </h2>
                 {serviceMode === "any" && (
-                  <p className="text-body text-white/70">Select the service you want a quote for.</p>
+                  <p className={`text-body ${dark ? "text-white/70" : "text-muted-foreground"}`}>Select the service you want a quote for.</p>
                 )}
               </div>
               {serviceMode === "starlink" ? (
@@ -497,9 +516,9 @@ export function HikvisionQuoteForm({
               <ConsentCheckbox
                 checked={consent}
                 onChange={setConsent}
-                tone="dark"
+                tone={tone}
                 id="cta-marketing"
-                label={<MarketingConsentLabel tone="dark" />}
+                label={<MarketingConsentLabel tone={tone} />}
               />
             </div>
           )}
@@ -529,18 +548,18 @@ export function HikvisionQuoteForm({
           </div>
         )}
 
-        {step === lastStep && <FormLegalNotice tone="dark" />}
+        {step === lastStep && <FormLegalNotice tone={tone} />}
       </div>
     </div>
   );
 }
 
-function StepField({ anim, label, title, error, errorId, children }: { anim: string; label: string; title: string; error?: string; errorId?: string; children: React.ReactNode }) {
+function StepField({ anim, label, title, error, errorId, children, labelClass, titleClass, showLabel }: { anim: string; label: string; title: string; error?: string; errorId?: string; children: React.ReactNode; labelClass: string; titleClass: string; showLabel: boolean }) {
   return (
     <div className={`space-y-4 ${anim}`}>
       <div className="space-y-2 text-center">
-        <p className="text-body font-semibold text-white/80">{label}</p>
-        <h2 className="h2-form text-white">{title}</h2>
+        {showLabel && <p className={labelClass}>{label}</p>}
+        <h2 className={titleClass}>{title}</h2>
       </div>
       {children}
       {error && (

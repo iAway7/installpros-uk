@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ArrowLeft, ArrowRight, Cctv, House, Plus, Sofa, Trees, Wrench } from "lucide-react";
+import { ArrowLeft, ArrowRight, Cctv, Plus, Wrench } from "lucide-react";
 import { track, EVENTS } from "@/lib/analytics";
 import { HIKVISION_INTENT_EVENT, HIKVISION_INTENT_LABEL, type HikvisionIntent } from "./hikvision-need-step";
 import { savePlan, type HikvisionPlan } from "@/lib/funnel/hikvision-plan";
+import { HikvisionQuoteForm } from "./hikvision-quote-form";
 
 /**
  * A step-by-step version of the camera planner (hikvision-camera-planner.tsx),
@@ -12,13 +13,20 @@ import { savePlan, type HikvisionPlan } from "@/lib/funnel/hikvision-plan";
  * on (Gus, 28 October). Light, everything centred, and each question is
  * the section's heading: no card behind the options, no "Step 1 of 3".
  *
- *   1. What do you need? The hero's three answers. "Fix my system" skips the
- *      plan: there is nothing to cover, only a system to look at.
- *   2. Outside, inside or both.
- *   3. Tap what you want covered. Outside shows the aerial photo; inside and
- *      both show the same house with the roof off, so the rooms can be
- *      tapped. The difference between them: inside offers only the rooms,
- *      both offers the rooms and the outside areas.
+ * The order (Gus, 28 October), map first because every funnel loses
+ * 76 to 89% of its leavers on the first question, so the first one has to
+ * be the most inviting; a plan someone has built makes the postcode feel
+ * like the way to its price rather than a gate:
+ *   1. Tap what you want covered, with Outside / Inside / Both as tabs over
+ *      the photo (outside first: inside came up 5 times among homes).
+ *      Outside shows the aerial photo; inside and both show the same house
+ *      with the roof off. Inside offers only the rooms, both offers the rooms
+ *      and the outside areas. "Fix my system" is a link under the map to the
+ *      closing form: there is nothing to plan.
+ *   2. New cameras or add to mine, one tap, for the lead's intent.
+ *   3. The closing form's own steps, embedded light from the postcode on
+ *      (hikvision-quote-form.tsx), with form_name hikvision_planner_steps so
+ *      its leads can be told from the original planner's (hikvision_planner).
  *
  * The change from the original: no camera dots and no cones. A cone says
  * where a camera goes and which way it points, and a guess at that from a
@@ -30,7 +38,7 @@ import { savePlan, type HikvisionPlan } from "@/lib/funnel/hikvision-plan";
  * in the original: one camera per area, no price.
  */
 
-type Step = "need" | "where" | "areas" | "fix";
+type Step = "areas" | "type" | "details";
 type Where = "outside" | "inside" | "both";
 
 type Area = {
@@ -47,21 +55,28 @@ type Area = {
 // Pixels on the aerial photo (prompt 10 in hikvision-research/
 // prompts-imagenes.md). Centred on what is covered, not on a camera.
 const OUTSIDE: Area[] = [
-  { id: "front", short: "Front door", label: "Front door", at: [480, 565], r: 75 },
-  { id: "drive", short: "Drive", label: "Drive and car", at: [330, 540], r: 105 },
+  { id: "front", short: "Front door", label: "Front door", at: [492, 572], r: 75 },
+  { id: "drive", short: "Drive", label: "Drive and car", at: [305, 530], r: 105 },
   { id: "street", short: "Street", label: "Car on the street", at: [765, 772], r: 95 },
   { id: "side", short: "Side gate", label: "Side and gate", at: [912, 560], r: 70 },
   { id: "back", short: "Back door", label: "Back door", at: [490, 150], r: 90 },
   { id: "garden", short: "Garden", label: "Garden and shed", at: [835, 140], r: 95 },
 ];
 
+// The rooms people asked to cover inside (hikvision-research/coded): the
+// living room ("to check on the dog"), the landing and upstairs, the hall,
+// the kitchen. No bedroom: nobody asked for one inside, and it is the room
+// where people most expect privacy; the landing covers the way to the
+// bedrooms without looking into them. No garage either: it was asked for
+// as an outside camera over the door, and the photo has none (Gus, 28
+// October).
 // Provisional: placed over the house until the roofless photo exists (same
 // framing, roof off), then moved onto the rooms it shows.
 const ROOMS: Area[] = [
   { id: "hall", short: "Hall", label: "Hall", at: [470, 455], r: 55 },
   { id: "living", short: "Living room", label: "Living room", at: [575, 400], r: 65 },
-  { id: "kitchen", short: "Kitchen", label: "Kitchen", at: [520, 285], r: 65 },
-  { id: "garage", short: "Garage", label: "Garage", at: [730, 330], r: 65 },
+  { id: "kitchen", short: "Kitchen", label: "Kitchen", at: [470, 270], r: 65 },
+  { id: "stairs", short: "Stairs", label: "Stairs and landing", at: [650, 305], r: 55 },
 ];
 
 const AERIAL = {
@@ -86,24 +101,25 @@ function sentence(items: string[]): string {
 const OPTION =
   "focus-ring-solid flex h-[76px] flex-col items-center justify-center gap-1.5 rounded-lg border-[length:var(--border-control)] border-field bg-background px-1 text-center text-body-sm font-semibold min-[350px]:text-body leading-tight text-foreground transition-all duration-quick ease-ds hover:border-selection-border hover:bg-card sm:h-20";
 
-const NEED: { value: HikvisionIntent; icon: React.ReactNode }[] = [
+const TYPE: { value: HikvisionIntent; icon: React.ReactNode }[] = [
   { value: "new", icon: <Cctv className="h-5 w-5" /> },
   { value: "add", icon: <Plus className="h-5 w-5" /> },
-  { value: "repair", icon: <Wrench className="h-5 w-5" /> },
 ];
 
-const WHERE: { value: Where; label: string; icon: React.ReactNode }[] = [
-  { value: "outside", label: "Outside", icon: <Trees className="h-5 w-5" /> },
-  { value: "inside", label: "Inside", icon: <Sofa className="h-5 w-5" /> },
-  { value: "both", label: "Both", icon: <House className="h-5 w-5" /> },
+const WHERE: { value: Where; label: string }[] = [
+  { value: "outside", label: "Outside" },
+  { value: "inside", label: "Inside" },
+  { value: "both", label: "Both" },
 ];
 
 const QUESTION: Record<Step, string> = {
-  need: "What do you need?",
-  where: "Where do you want cameras?",
   areas: "Tap what you want covered.",
-  fix: "Let's get it working.",
+  type: "New cameras, or adding to yours?",
+  details: "Get the price for your plan.",
 };
+
+const CTA =
+  "focus-ring-solid flex h-control-lg w-full items-center justify-center gap-2 rounded-lg bg-primary px-6 text-button font-[var(--button-weight)] uppercase tracking-[var(--button-tracking)] text-primary-foreground transition-colors duration-quick ease-ds hover:bg-brand-hover disabled:pointer-events-none disabled:opacity-50";
 
 function BackButton({ onClick }: { onClick: () => void }) {
   return (
@@ -127,11 +143,15 @@ function CoverageMap({
   on,
   onToggle,
   roofOff,
+  count,
 }: {
   areas: Area[];
   on: Set<string>;
   onToggle: (id: string) => void;
   roofOff: boolean;
+  /** Shown in the photo's top-left corner, white on a dark gradient (Gus,
+   *  28 October), so the count sits on the plan it counts. */
+  count: number;
 }) {
   const photo = roofOff && ROOFLESS ? ROOFLESS : AERIAL;
   return (
@@ -146,6 +166,15 @@ function CoverageMap({
         decoding="async"
         className="absolute inset-0 h-full w-full object-cover"
       />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0"
+        style={{ background: "radial-gradient(70% 60% at 0% 0%, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.38) 45%, transparent 75%)" }}
+      />
+      <p aria-live="polite" className="pointer-events-none absolute left-4 top-3 z-10 flex items-baseline gap-1.5 text-white sm:left-6 sm:top-5">
+        <span className="text-3xl font-bold leading-none tabular-nums sm:text-5xl">{count}</span>
+        <span className="text-body font-semibold sm:text-lg">camera{count === 1 ? "" : "s"}</span>
+      </p>
       <svg viewBox={`0 0 ${W} ${H}`} className="absolute inset-0 h-full w-full" aria-hidden="true">
         <defs>
           <radialGradient id="coverage-fill">
@@ -221,11 +250,28 @@ function AreaChips({ areas, on, onToggle }: { areas: Area[]; on: Set<string>; on
 }
 
 export function HikvisionCoveragePlanner() {
-  const [step, setStep] = useState<Step>("need");
+  const [step, setStep] = useState<Step>("areas");
   const [intent, setIntent] = useState<HikvisionIntent>("new");
   const [where, setWhere] = useState<Where>("outside");
   const [on, setOn] = useState<Set<string>>(() => new Set());
   const touched = useRef(false);
+  const sectionRef = useRef<HTMLElement>(null);
+  const firstStep = useRef(true);
+
+  // Each step is a different height (the map goes, the form comes), and the
+  // page used to stay put, so the next question opened off screen with the
+  // next section in view (Gus, 28 October). Back to the top of the section
+  // on every change, unless it is already in view.
+  useEffect(() => {
+    if (firstStep.current) {
+      firstStep.current = false;
+      return;
+    }
+    const el = sectionRef.current;
+    if (!el || el.getBoundingClientRect().top >= 0) return;
+    const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    el.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+  }, [step]);
 
   const areas = where === "outside" ? OUTSIDE : where === "inside" ? ROOMS : [...OUTSIDE, ...ROOMS];
   const chosen = areas.filter((a) => on.has(a.id));
@@ -233,16 +279,9 @@ export function HikvisionCoveragePlanner() {
   const rooms = chosen.filter((a) => ROOMS.includes(a));
   const count = chosen.length;
 
-  function chooseIntent(value: HikvisionIntent) {
-    setIntent(value);
-    track(EVENTS.CTA_CLICKED, { cta_id: `coverage_intent_${value}`, cta_label: value, cta_location: "coverage" });
-    setStep(value === "repair" ? "fix" : "where");
-  }
-
   function chooseWhere(value: Where) {
     setWhere(value);
     track(EVENTS.CTA_CLICKED, { cta_id: `coverage_where_${value}`, cta_label: value, cta_location: "coverage" });
-    setStep("areas");
   }
 
   function toggle(id: string) {
@@ -269,20 +308,34 @@ export function HikvisionCoveragePlanner() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [on, where]);
 
-  function getPrice() {
-    if (step === "areas") {
-      touched.current = true;
-      savePlan(plan());
-    }
-    track(EVENTS.CTA_CLICKED, { cta_id: "coverage_quote", cta_label: `${intent}_${where}_${count}`, cta_location: "coverage" });
-    window.dispatchEvent(new CustomEvent<HikvisionIntent>(HIKVISION_INTENT_EVENT, { detail: intent }));
+  function toType() {
+    touched.current = true;
+    savePlan(plan());
+    track(EVENTS.CTA_CLICKED, { cta_id: "coverage_plan", cta_label: `${where}_${count}`, cta_location: "coverage" });
+    setStep("type");
   }
 
-  const summary = chosen.length > 0 ? `${sentence(chosen.map((a) => a.label))}.` : "Tap an area on the photo.";
+  function chooseType(value: HikvisionIntent) {
+    setIntent(value);
+    track(EVENTS.CTA_CLICKED, { cta_id: `coverage_intent_${value}`, cta_label: value, cta_location: "coverage" });
+    setStep("details");
+  }
+
+  function fixMySystem() {
+    track(EVENTS.CTA_CLICKED, { cta_id: "coverage_fix", cta_label: "repair", cta_location: "coverage" });
+    window.dispatchEvent(new CustomEvent<HikvisionIntent>(HIKVISION_INTENT_EVENT, { detail: "repair" }));
+  }
+
+  // Nothing until something is chosen: "Tap an area on the photo" was wrong
+  // on phones, where the chips under the photo are what gets tapped.
+  // In the chips' words: the long labels ("Drive and car", "Stairs and
+  // landing") ran into each other here ("drive and car and car on the
+  // street"). The long ones still go in the plan for the WhatsApp message.
+  const summary = chosen.length > 0 ? `${sentence(chosen.map((a) => a.short))}.` : "";
   const anim = "animate-[slideInRight_0.3s_ease-out] motion-reduce:animate-none";
 
   return (
-    <section id="coverage" className="w-full scroll-mt-28 bg-background py-16 md:py-24">
+    <section ref={sectionRef} id="coverage" className="w-full scroll-mt-28 bg-background py-16 md:pb-24 md:pt-16">
       <div className="container mx-auto text-center">
         <p className="eyebrow">Plan your cameras</p>
         <div key={step} className={anim}>
@@ -290,83 +343,92 @@ export function HikvisionCoveragePlanner() {
             {QUESTION[step]}
           </h2>
 
-          {step === "need" && (
-            <div role="group" aria-labelledby="coverage-question" className="mx-auto mt-10 grid max-w-2xl grid-cols-3 gap-2 sm:gap-3 md:mt-12">
-              {NEED.map((o) => (
-                <button key={o.value} type="button" onClick={() => chooseIntent(o.value)} className={OPTION}>
-                  <span aria-hidden="true" className="text-brand-icon">{o.icon}</span>
-                  {HIKVISION_INTENT_LABEL[o.value]}
-                </button>
-              ))}
-            </div>
-          )}
-
-          {step === "where" && (
+          {step === "areas" && (
             <>
-              <div role="group" aria-labelledby="coverage-question" className="mx-auto mt-10 grid max-w-2xl grid-cols-3 gap-2 sm:gap-3 md:mt-12">
+              <div role="radiogroup" aria-label="Where" className="mx-auto mt-6 inline-grid grid-cols-3 rounded-full bg-secondary p-1">
                 {WHERE.map((o) => (
-                  <button key={o.value} type="button" onClick={() => chooseWhere(o.value)} className={OPTION}>
-                    <span aria-hidden="true" className="text-brand-icon">{o.icon}</span>
+                  <button
+                    key={o.value}
+                    type="button"
+                    role="radio"
+                    aria-checked={where === o.value}
+                    onClick={() => chooseWhere(o.value)}
+                    className={`focus-ring-solid min-h-[40px] min-w-[92px] rounded-full px-4 text-body-sm font-semibold transition-colors duration-quick ease-ds sm:min-w-[110px] ${
+                      where === o.value ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
                     {o.label}
                   </button>
                 ))}
               </div>
-              <div className="mt-5">
-                <BackButton onClick={() => setStep("need")} />
-              </div>
-            </>
-          )}
 
-          {step === "areas" && (
-            <>
-              <div className="mx-auto mt-10 max-w-5xl md:mt-12">
-                <CoverageMap areas={areas} on={on} onToggle={toggle} roofOff={where !== "outside"} />
+              {/* The photo at 680px, so the photo, the count and the button
+                  fit a 1440x900 screen together, centred and stacked: under
+                  a 1024px photo the button fell off the screen, and Gus
+                  turned down both the button beside the photo and a bar
+                  fixed to the bottom of the screen (28 October). */}
+              <div className="mx-auto mt-5 max-w-[680px]">
+                <CoverageMap areas={areas} on={on} onToggle={toggle} roofOff={where !== "outside"} count={count} />
                 <AreaChips areas={areas} on={on} onToggle={toggle} />
               </div>
 
-              <div className="mx-auto mt-8 flex max-w-md flex-col items-center gap-5">
-                <div aria-live="polite">
-                  <p className="flex items-baseline justify-center gap-2">
-                    <span className="text-6xl font-bold leading-none tabular-nums text-foreground">{count}</span>
-                    <span className="text-xl font-semibold text-foreground">camera{count === 1 ? "" : "s"}</span>
-                  </p>
-                  <p className="mt-3 text-pretty text-body-sm text-muted-foreground" style={{ lineHeight: "1.55" }}>
-                    {summary}
-                  </p>
-                </div>
-                <div className="w-full">
-                  <a
-                    href="#quote"
-                    onClick={getPrice}
-                    className="focus-ring-solid flex h-control-lg w-full items-center justify-center gap-2 rounded-lg bg-primary px-6 text-button font-[var(--button-weight)] uppercase tracking-[var(--button-tracking)] text-primary-foreground transition-colors duration-quick ease-ds hover:bg-brand-hover"
-                  >
-                    {count > 0 ? "Get the price for this plan" : "Get my free quote"}
-                    <ArrowRight aria-hidden="true" className="h-4 w-4" />
-                  </a>
-                  <p className="mt-2.5 text-body-sm text-muted-foreground">Your price the same day. Nothing to pay monthly.</p>
-                </div>
-                <BackButton onClick={() => setStep("where")} />
+              {summary && (
+                <p className="mx-auto mt-4 max-w-md text-pretty text-body-sm text-muted-foreground" style={{ lineHeight: "1.55" }}>
+                  {summary}
+                </p>
+              )}
+
+              <div className="mx-auto mt-4 max-w-md">
+                <button type="button" onClick={toType} disabled={count === 0} className={CTA}>
+                  Get the price for this plan
+                  <ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" />
+                </button>
+              </div>
+
+              <a
+                href="#quote"
+                onClick={fixMySystem}
+                className="focus-ring mt-4 inline-flex min-h-[44px] items-center gap-1.5 rounded-md px-2 text-body-sm font-medium text-muted-foreground underline-offset-4 transition-colors duration-quick ease-ds hover:text-foreground hover:underline"
+              >
+                <Wrench aria-hidden="true" className="h-4 w-4" />
+                Something not working? Fix my system
+              </a>
+            </>
+          )}
+
+          {step === "type" && (
+            <>
+              <div role="group" aria-labelledby="coverage-question" className="mx-auto mt-10 grid max-w-md grid-cols-2 gap-2 sm:gap-3 md:mt-12">
+                {TYPE.map((o) => (
+                  <button key={o.value} type="button" onClick={() => chooseType(o.value)} className={OPTION}>
+                    <span aria-hidden="true" className="text-brand-icon">{o.icon}</span>
+                    {HIKVISION_INTENT_LABEL[o.value]}
+                  </button>
+                ))}
+              </div>
+              <div className="mt-5">
+                <BackButton onClick={() => setStep("areas")} />
               </div>
             </>
           )}
 
-          {step === "fix" && (
-            <div className="mx-auto max-w-md">
-              <p className="mt-5 text-pretty text-body text-muted-foreground md:text-lg" style={{ lineHeight: "1.6" }}>
-                Start with a photo of the label on your recorder. We tell you what it needs before anyone comes out.
+          {step === "details" && (
+            <>
+              <p className="mx-auto mt-4 max-w-md text-pretty text-body text-muted-foreground md:text-lg">
+                {count} camera{count === 1 ? "" : "s"}: {summary.charAt(0).toLowerCase() + summary.slice(1)}
               </p>
-              <a
-                href="#quote"
-                onClick={getPrice}
-                className="focus-ring-solid mt-8 flex h-control-lg w-full items-center justify-center gap-2 rounded-lg bg-primary px-6 text-button font-[var(--button-weight)] uppercase tracking-[var(--button-tracking)] text-primary-foreground transition-colors duration-quick ease-ds hover:bg-brand-hover"
-              >
-                Get my free quote
-                <ArrowRight aria-hidden="true" className="h-4 w-4" />
-              </a>
-              <div className="mt-5">
-                <BackButton onClick={() => setStep("need")} />
+              <div className="mx-auto mt-8 max-w-md text-left md:mt-10">
+                <HikvisionQuoteForm
+                  tone="light"
+                  presetIntent={intent}
+                  onBack={() => setStep("type")}
+                  showStepLabels={false}
+                  defaultService="security"
+                  skipServiceStep
+                  formName="hikvision_planner_steps"
+                />
               </div>
-            </div>
+            </>
           )}
         </div>
       </div>
