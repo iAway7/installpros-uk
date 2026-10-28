@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 import { Bell, Clock, Lightbulb, Moon } from "lucide-react";
-import { Gap } from "./hikvision-gap";
 
 /**
  * Colour at night, first under the hero. Takes the place of the Ajax page's
@@ -16,11 +15,10 @@ import { Gap } from "./hikvision-gap";
  * InstallPros job, day and night, near and far, beat the render when Jordan
  * has them (question 8).
  *
- * DRAFT, 27 October 2026. The picture is a placeholder: a generated night
- * scene of the front of a house, in colour, with a car on the drive and
- * someone at the gate (prompt in hikvision-research/prompts-imagenes.md).
- * When it exists, the cards can light up in turn the way the Ajax scene
- * does; until then they are static.
+ * The picture is a Gemini render (28 October): the camera's view of a front
+ * drive at night, in colour, someone in a red coat at the gate. Behind the
+ * heading from md up, with the dark street on the left under the text; on
+ * phones it sits below the text. Real stills replace it if Jordan has them.
  *
  * Every card waits on Jordan's question 2: whether ColorVu and AcuSense are
  * standard, which models carry a light and a siren, how many days are kept.
@@ -57,15 +55,8 @@ const BAND = "#070b10";
 export function HikvisionNightSection() {
   return (
     <section id="night" className="w-full scroll-mt-28 text-white" style={{ backgroundColor: BAND }}>
-      <div className="relative overflow-hidden">
-        {/* Placeholder for the night scene: the band's own colour, lit where
-            the front door would be. */}
-        <div
-          aria-hidden="true"
-          className="absolute inset-0"
-          style={{ background: "radial-gradient(60% 70% at 72% 55%, rgba(255,190,120,0.16) 0%, rgba(13,27,42,0.6) 45%, #070b10 100%)" }}
-        />
-        <div className="container relative mx-auto py-20 md:py-28">
+      <div className="relative overflow-hidden md:min-h-[600px] lg:min-h-[680px]">
+        <div className="container relative z-10 mx-auto pt-20 pb-8 md:py-28">
           <p className="eyebrow !text-[#ff6a5f]">
             Hikvision ColorVu
           </p>
@@ -74,9 +65,25 @@ export function HikvisionNightSection() {
             Most cameras turn black and white after dark. ColorVu keeps the colour of the car, the coat and the face at the
             door, with a large lens and a soft warm light.
           </p>
-          <p className="mt-6 text-body-sm text-white/60">
-            <Gap q="Image" tone="dark">Real stills from a job, by day and at night, near and far. Otherwise the night render.</Gap>
-          </p>
+        </div>
+        <div className="relative aspect-[16/9] md:absolute md:inset-0 md:aspect-auto">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/funnel/hikvision-night-1920.webp"
+            srcSet="/funnel/hikvision-night-960.webp 960w, /funnel/hikvision-night-1920.webp 1920w"
+            sizes="100vw"
+            alt="A camera's view at night, in colour: a person in a red coat walks through the gate onto a drive with a blue car parked by a lit front door."
+            loading="lazy"
+            decoding="async"
+            className="absolute inset-0 h-full w-full object-cover"
+            style={{ objectPosition: "60% 50%" }}
+          />
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 hidden md:block"
+            style={{ background: `linear-gradient(90deg, ${BAND} 0%, rgba(7,11,16,0.85) 30%, rgba(7,11,16,0.2) 62%, transparent 80%)` }}
+          />
+          <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-1/4" style={{ background: `linear-gradient(to top, ${BAND}, transparent)` }} />
         </div>
       </div>
 

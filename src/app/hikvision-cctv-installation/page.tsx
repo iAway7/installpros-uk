@@ -105,6 +105,13 @@ export default function HikvisionCctvInstallationPage() {
       <ExperimentProvider>
         <main id="main" tabIndex={-1} className="flex flex-col outline-none">
           <HikvisionHeroSection
+            // Gemini render, 28 October: a Hikvision dome under the soffit at
+            // dusk, logo visible. Desktop is cropped at the right so the dome
+            // sits clear of the headline (about 84% across from 1280 up);
+            // phones get a 3:4 crop centred on the camera.
+            image="/funnel/hikvision-hero-1620.webp"
+            imageSrcSet="/funnel/hikvision-hero-1280.webp 1280w, /funnel/hikvision-hero-1620.webp 1620w"
+            imageMobile="/funnel/hikvision-hero-phone-640.webp 640w, /funnel/hikvision-hero-phone-828.webp 828w"
             // "Nothing to pay monthly": 12 camera chats asked about monthly costs.
             // Holds while nothing is sold on a cloud plan (question 2).
             badge="Same-day quote, nothing to pay monthly"

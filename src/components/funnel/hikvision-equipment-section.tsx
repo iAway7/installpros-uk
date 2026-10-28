@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
-import { Cable, Cctv, HardDrive, Smartphone } from "lucide-react";
-import { Gap } from "./hikvision-gap";
+import { Cable, Smartphone } from "lucide-react";
 
 /**
  * The exact camera and the box it records to. Started as a copy of the Ajax
@@ -17,37 +16,50 @@ import { Gap } from "./hikvision-gap";
  *     goes, and no screen needed.
  *   - The Wi-Fi line that sat under the cards moved to the wired card.
  *
- * PHOTOS: Hikvision product shots only if InstallPros is an authorised
- * partner (question 12), unaltered from Hikvision's portal; otherwise a
- * render with no logo, or InstallPros's own photo of the camera it fits.
- * "The make and model are on your quote" holds only once the quote template
+ * PHOTOS: Hikvision's own product shots of the camera (white and black) and
+ * the recorder, chosen by Gus on 28 October, both cut out; they need
+ * authorised status before the page goes live (question 12). "No screen
+ * needed" is an icon until there is a photo (the small phone mock was
+ * rejected, 28 October). "The make and model are on your quote" holds only once the quote template
  * names them (24 of 63 camera quotes never say Hikvision): a team change.
  */
 
-type Item = { icon: ReactNode; title: string; detail: ReactNode; photo?: string };
+type Item = { visual: ReactNode; title: string; detail: ReactNode };
 
-const ICON = "h-12 w-12";
+/** `contain` for a cut-out on a transparent background, like the Ajax cards. */
+function Photo({ name, alt, contain }: { name: string; alt: string; contain?: boolean }) {
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={`/funnel/hikvision-kit-${name}-480.webp`}
+      srcSet={`/funnel/hikvision-kit-${name}-480.webp 480w, /funnel/hikvision-kit-${name}-800.webp 800w`}
+      sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+      alt={alt}
+      loading="lazy"
+      decoding="async"
+      className={`absolute inset-0 h-full w-full ${contain ? "object-contain p-[8%]" : "object-cover"}`}
+    />
+  );
+}
 
 const ITEMS: Item[] = [
   {
-    icon: <Cctv className={ICON} strokeWidth={1.25} />,
+    visual: <Photo name="camera" alt="Hikvision ColorVu turret cameras in white and in black." contain />,
     title: "The camera",
     detail: "Hikvision ColorVu 4MP, in white or black, for outside and in. 8MP on request.",
-    photo: "Product photo of the standard camera (Q12)",
   },
   {
-    icon: <HardDrive className={ICON} strokeWidth={1.25} />,
+    visual: <Photo name="recorder" alt="A black Hikvision network video recorder." contain />,
     title: "The box",
     detail: "The recorder. It sits by your router, in a cupboard or the loft, and records every camera to a hard drive.",
-    photo: "Photo of the recorder",
   },
   {
-    icon: <Cable className={ICON} strokeWidth={1.25} />,
+    visual: <Cable aria-hidden="true" className="h-12 w-12 text-brand-icon" strokeWidth={1.25} />,
     title: "One cable per camera",
     detail: "Power and picture down the same cable, from the box to each camera.",
   },
   {
-    icon: <Smartphone className={ICON} strokeWidth={1.25} />,
+    visual: <Smartphone aria-hidden="true" className="h-12 w-12 text-brand-icon" strokeWidth={1.25} />,
     title: "No screen needed",
     detail: "The Hik-Connect app on your phone is the screen. A monitor is optional.",
   },
@@ -69,15 +81,10 @@ export function HikvisionEquipmentSection() {
           {ITEMS.map((e) => (
             <div key={e.title} className="rounded-xl border border-border bg-background p-6">
               <div
-                className="relative flex aspect-[4/3] items-center justify-center rounded-lg border border-border text-brand-icon"
+                className="relative flex aspect-square items-center justify-center overflow-hidden rounded-lg border border-border"
                 style={{ background: "var(--eq-img-grad)" }}
               >
-                <span aria-hidden="true">{e.icon}</span>
-                {e.photo && (
-                  <span className="absolute inset-x-2 bottom-2 text-center text-[11px] leading-tight text-foreground/70">
-                    <Gap q="Image">{e.photo}</Gap>
-                  </span>
-                )}
+                {e.visual}
               </div>
               <h3 className="mt-5 text-lg font-bold leading-tight text-foreground">{e.title}</h3>
               <p className="mt-2.5 text-body-sm text-muted-foreground" style={{ lineHeight: "1.55" }}>

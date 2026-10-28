@@ -1,7 +1,6 @@
 import { HeroHeadline } from "./hero-headline";
 import { SecurityHeroTrustBar } from "./security-hero-trust-bar";
 import { HikvisionHeroFunnel } from "./hikvision-hero-funnel";
-import { Gap } from "./hikvision-gap";
 
 /**
  * Hero for the Hikvision CCTV landing. A cut-down copy of
@@ -15,14 +14,15 @@ import { Gap } from "./hikvision-gap";
  * "UK-wide installs" stays (Gus, 27 October), although two camera owners in
  * the chats were lost for want of an engineer near them.
  *
- * PHOTOGRAPH: Jordan's question 8 (a real install), otherwise a generated
- * render with no Hikvision logo (hikvision-research/estructura-y-borrador.md,
- * Imágenes). Pass `image` and the photograph and overlay come back as on the
- * Ajax page.
+ * PHOTOGRAPH: a Gemini render of a Hikvision dome under a soffit at dusk,
+ * logo visible (Gus, 28 October). A real install from Jordan (question 8)
+ * replaces it. Without `image` the hero falls back to the navy surface.
  */
 export function HikvisionHeroSection({
   image,
+  imageSrcSet,
   imageMobile,
+  imagePosition,
   headline,
   subheadline,
   subheadlineNarrow,
@@ -34,8 +34,12 @@ export function HikvisionHeroSection({
 }: {
   /** A REAL photograph of a Hikvision install, or the agreed render. */
   image?: string;
+  /** Widths of `image`, for desktop. */
+  imageSrcSet?: string;
   /** Phone crop of the same photograph (a srcset string is fine). */
   imageMobile?: string;
+  /** object-position from md up, to move the camera clear of the text. */
+  imagePosition?: string;
   headline: string;
   subheadline: string;
   subheadlineNarrow?: string;
@@ -53,9 +57,18 @@ export function HikvisionHeroSection({
             <picture>
               {imageMobile && <source media="(max-width: 767px)" srcSet={imageMobile} />}
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={image} alt="" aria-hidden="true" loading="eager" decoding="sync" fetchPriority="high" className="absolute inset-0 h-full w-full object-cover object-top" />
+              <img src={image} srcSet={imageSrcSet} sizes={imageSrcSet ? "100vw" : undefined} alt="" aria-hidden="true" loading="eager" decoding="sync" fetchPriority="high" className="absolute inset-0 h-full w-full object-cover object-top md:[object-position:var(--hero-pos,50%_0%)]" style={imagePosition ? ({ "--hero-pos": imagePosition } as React.CSSProperties) : undefined} />
             </picture>
-            <div className="hero-overlay absolute inset-0" />
+            <div className="hero-overlay absolute inset-0 md:hidden" />
+            {/* From md up the overlay thins over the camera, so the logo
+                reads; the text never reaches that side. */}
+            <div
+              className="absolute inset-0 hidden md:block"
+              style={{
+                background:
+                  "linear-gradient(to bottom, transparent 55%, rgba(0,0,0,0.6)), radial-gradient(26% 42% at 84% 44%, rgba(10,25,41,0.12) 0%, rgba(10,25,41,0.62) 100%)",
+              }}
+            />
           </>
         ) : (
           <div
@@ -97,11 +110,6 @@ export function HikvisionHeroSection({
             <HikvisionHeroFunnel defaultInstallType={defaultInstallType} skipServiceStep formName={formName} />
           </div>
 
-          {!image && (
-            <p className="mx-auto mt-8 max-w-md text-body-sm text-white/70">
-              <Gap q="Image" tone="dark">Hero photo: a real install, or a render with no logo.</Gap>
-            </p>
-          )}
         </div>
       </div>
 
