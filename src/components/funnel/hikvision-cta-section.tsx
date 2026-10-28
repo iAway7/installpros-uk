@@ -13,27 +13,33 @@ import { LazyHikvisionQuoteForm } from "./hikvision-lazy";
 export function HikvisionCtaSection({ defaultService, formName }: { defaultService: string; formName: string }) {
   return (
     <section id="quote" className="scroll-mt-24 bg-background">
-      {/* Full width and dark, with the hero's photo behind it (Gus, 28
-          October: the plain dark band looked bare). The same files as the
-          hero, so already cached, under the hero's overlay; the drive render
-          was tried and read busier behind the heading. */}
+      {/* Full width and almost black, with a photo of its own (Gus, 28
+          October): a Gemini night render, a ColorVu under the soffit on the
+          left with its warm light on and the rest near #0e1013, so the
+          heading and form sit on black and need no overlay from md up. On
+          phones a 3:4 crop from the left edge, darkened at the top where the
+          heading lands on the brick. Was the hero's dusk photo, too light. */}
       <div className="relative w-full overflow-hidden bg-[#0e1013] py-20 text-center text-white md:py-28">
         <picture>
-          <source media="(max-width: 767px)" srcSet="/funnel/hikvision-hero-phone-640.webp 640w, /funnel/hikvision-hero-phone-828.webp 828w" />
+          <source media="(max-width: 767px)" srcSet="/funnel/hikvision-cta-phone-640.webp 640w, /funnel/hikvision-cta-phone-828.webp 828w" />
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/funnel/hikvision-hero-1620.webp"
-            srcSet="/funnel/hikvision-hero-1280.webp 1280w, /funnel/hikvision-hero-1620.webp 1620w"
+            src="/funnel/hikvision-cta-1920.webp"
+            srcSet="/funnel/hikvision-cta-1280.webp 1280w, /funnel/hikvision-cta-1920.webp 1920w"
             sizes="100vw"
             alt=""
             aria-hidden="true"
             loading="lazy"
             decoding="async"
             className="absolute inset-0 h-full w-full object-cover"
-            style={{ objectPosition: "50% 40%" }}
+            style={{ objectPosition: "0% 0%" }}
           />
         </picture>
-        <div aria-hidden="true" className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(14,16,19,0.6), rgba(14,16,19,0.7), rgba(0,0,0,0.85))" }} />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 md:hidden"
+          style={{ background: "linear-gradient(to bottom, rgba(14,16,19,0.55), rgba(14,16,19,0.75) 45%, rgba(14,16,19,0.9))" }}
+        />
         <div className="container relative mx-auto">
           <h2 className="mb-4 h2-section text-white">Hikvision cameras, priced the same day.</h2>
           <p className="mx-auto mb-8 max-w-2xl text-body text-white/80 md:mb-10 md:text-lg">

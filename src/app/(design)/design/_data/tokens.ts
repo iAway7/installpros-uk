@@ -1098,8 +1098,8 @@ export const SCALES: Scale[] = [
       },
       {
         "name": "--border-control",
-        "editorial": "2px",
-        "product": "2px",
+        "editorial": "1px",
+        "product": "1px",
         "differs": false
       }
     ]

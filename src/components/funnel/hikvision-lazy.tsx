@@ -14,3 +14,7 @@ export const LazyHikvisionQuoteForm = dynamic(() => import("./hikvision-quote-fo
 // The camera planner, below the first screen: its own chunk, server-rendered
 // as usual so the plan is on the page before any script runs.
 export const LazyCameraPlanner = dynamic(() => import("./hikvision-camera-planner").then((m) => m.HikvisionCameraPlanner));
+
+// Its step-by-step copy below it (Gus, 28 October), worked on while the
+// original stays.
+export const LazyCoveragePlanner = dynamic(() => import("./hikvision-coverage-planner").then((m) => m.HikvisionCoveragePlanner));

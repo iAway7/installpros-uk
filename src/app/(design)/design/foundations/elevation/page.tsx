@@ -80,7 +80,7 @@ export default function ElevationPage() {
               Text field · 1.5px
             </div>
             <div className="rounded-lg border-[length:var(--border-control)] border-border bg-white px-5 py-3 text-body text-foreground">
-              Selectable · 2px
+              Selectable · 1px
             </div>
             <div className="rounded-lg border border-border bg-white px-5 py-3 text-body text-foreground">
               Card · 1px
