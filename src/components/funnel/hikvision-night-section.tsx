@@ -31,22 +31,24 @@ const CARDS: Card[] = [
   {
     icon: <Moon className="h-5 w-5" />,
     title: "Colour after dark",
-    detail: "See the car, the coat and the face, not a grey shape.",
+    detail: "The car, the coat and the face, not a grey shape.",
   },
   {
     icon: <Bell className="h-5 w-5" />,
-    title: "People and cars, not cats",
-    detail: "Alerts for a person or a vehicle, not every bird and fox.",
+    title: "People, not cats",
+    detail: "Alerts for a person or a car, not every bird and fox.",
   },
   {
     icon: <Lightbulb className="h-5 w-5" />,
     title: "A light and a warning",
-    detail: "The camera can light up and sound a warning when someone steps onto the drive.",
+    detail: "It lights up and warns off anyone stepping onto the drive.",
   },
   {
     icon: <Clock className="h-5 w-5" />,
-    title: "Recorded around the clock",
-    detail: "Every camera, kept for about 30 days on the recorder in your home.",
+    // The days in the title: how long footage is kept came up in 16 camera
+    // chats (Gus, 28 October). "About" while Jordan has not confirmed it.
+    title: "About 30 days recorded",
+    detail: "Every camera, around the clock, on the recorder at home.",
   },
 ];
 

@@ -132,6 +132,13 @@ export default function HikvisionCctvInstallationPage() {
           <WhatsAppFab />
           <HikvisionNightSection />
           <HikvisionAppSection />
+          {/* The company's reviews, about its engineers and service. Same
+              rule as the Ajax page: no copy presenting them as camera
+              reviews. After the colour hook and the app (Gus, 28 October:
+              they sat eleventh); install-quote, the page that converts
+              best, shows them fourth. */}
+          <TrustpilotSection />
+          <CustomerStoriesSection />
           <HikvisionPlacesSection />
           {/* The camera planner, a dark full-width band of its own (27
               October): tap places on the plan, get a count, no price. */}
@@ -151,11 +158,6 @@ export default function HikvisionCctvInstallationPage() {
               (Gus, 27 October: did not like it). Price and DIY cameras are
               what lost quotes; this is what the fitting buys. */}
           <HikvisionWiredSection />
-          {/* The company's reviews, about its engineers and service. Same
-              rule as the Ajax page: no copy presenting them as camera
-              reviews. */}
-          <TrustpilotSection />
-          <CustomerStoriesSection />
           <HikvisionHowItWorksSection />
           <FaqSectionAlt faqs={HIKVISION_FAQS} />
           <HikvisionCtaSection defaultService="security" formName="hikvision_cctv" />
