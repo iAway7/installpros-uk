@@ -14,10 +14,10 @@ import { Cctv, Plus, Wrench } from "lucide-react";
  * them Hikvision, and 12 of the 41 never got a reply.
  *
  * The answer is stored as leads.intent (migration 0022 already allows new,
- * add and repair) with no need. PENDING WILL: his Zap writes need and intent
- * into the Superchat list field "Security request", which has no "New system"
- * or "Add to what I have" option yet. Option A (this) asks him to add the
- * two; option B sends need "cameras" for the first two chips instead.
+ * add and repair) with no need. Will's Zap writes need and intent into the
+ * Superchat list field "Security request"; Gus is adding its "New system"
+ * and "Add to what I have" options himself (option A, 28 October). The
+ * labels must match INTENT_LABEL in lib/webhooks/formats/zapier.ts.
  */
 export type HikvisionIntent = "new" | "add" | "repair";
 
@@ -64,7 +64,7 @@ export function HikvisionNeedStep({
             key={o.value}
             type="button"
             onClick={() => onChoose(o.value)}
-            className={`focus-ring-solid flex h-[76px] flex-col items-center justify-center gap-1.5 rounded-lg border-[length:var(--border-control)] px-1 text-center text-body-sm font-semibold leading-tight min-[350px]:text-body transition-all duration-quick ease-ds sm:h-20 ${
+            className={`focus-ring-solid flex h-[76px] flex-col items-center justify-center gap-1.5 rounded-lg border-[length:var(--border-control)] px-1 text-center text-body-sm font-semibold min-[350px]:text-body leading-tight transition-all duration-quick ease-ds sm:h-20 ${
               tone === "dark"
                 ? "border-white/80 bg-white text-foreground hover:border-white hover:bg-secondary"
                 : "border-field bg-background text-foreground hover:border-selection-border hover:bg-card"
