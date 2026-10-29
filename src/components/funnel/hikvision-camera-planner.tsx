@@ -259,7 +259,7 @@ export function HikvisionCameraPlanner() {
           {/* The plan, with its labels as real buttons laid over it */}
           <div className="relative w-full overflow-hidden rounded-3xl bg-[#0b1520] ring-1 ring-white/10 lg:rounded-r-none" style={{ aspectRatio: `${W} / ${H}` }}>
             <Plan on={on} onToggle={toggle} />
-            <div role="group" aria-label="Places to cover" className="absolute inset-0">
+            <div role="group" aria-label="Places to cover" className="absolute inset-0 hidden sm:block">
               {SPOTS.map((s) => {
                 const active = on.has(s.id);
                 return (
@@ -282,6 +282,28 @@ export function HikvisionCameraPlanner() {
                 );
               })}
             </div>
+          </div>
+
+          {/* On phones the labels overlap on the photo, so they sit under it */}
+          <div role="group" aria-label="Places to cover" className="-mt-2 flex flex-wrap justify-center gap-2 sm:hidden">
+            {SPOTS.map((s) => {
+              const active = on.has(s.id);
+              return (
+                <button
+                  key={s.id}
+                  type="button"
+                  aria-pressed={active}
+                  aria-label={s.label}
+                  onClick={() => toggle(s.id)}
+                  className={`focus-ring-solid inline-flex min-h-[40px] items-center gap-1 rounded-full border px-3.5 text-body-sm font-semibold transition-colors duration-quick ease-ds ${
+                    active ? "border-transparent bg-[#c70505] text-white" : "border-white/25 bg-white/[0.04] text-white/90 hover:border-white/60 hover:text-white"
+                  }`}
+                >
+                  <span aria-hidden="true">{active ? "✓" : "+"}</span>
+                  {s.short}
+                </button>
+              );
+            })}
           </div>
 
           {/* The result */}

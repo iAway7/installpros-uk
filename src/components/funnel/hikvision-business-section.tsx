@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { Building2, FileText, LayoutGrid, Receipt } from "lucide-react";
+import { Building2, FileText, LayoutGrid, ReceiptPoundSterling } from "lucide-react";
 
 /**
  * For businesses. New, from the chats: 24 camera threads were businesses (16
@@ -37,7 +37,7 @@ const ITEMS: Item[] = [
     detail: "So whoever signs it off knows exactly what they are paying for.",
   },
   {
-    icon: <Receipt className={ICON} />,
+    icon: <ReceiptPoundSterling className={ICON} />,
     title: "Invoiced to the company",
     detail: "One quote per site if you need it, and the invoice in the business's name.",
   },
