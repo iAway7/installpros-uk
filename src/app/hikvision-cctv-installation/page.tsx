@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
 import { MainHeader } from "@/components/funnel/main-header";
 import { WhatsAppFab } from "@/components/funnel/whatsapp-fab";
 import { HikvisionHeroSection } from "@/components/funnel/hikvision-hero-section";
@@ -21,7 +20,8 @@ import { FunnelFooter } from "@/components/funnel/funnel-footer";
 import { ExperimentProvider } from "@/components/experiments/experiment-provider";
 
 /**
- * Hikvision CCTV, supplied and fitted. DRAFT, 27 October 2026.
+ * Hikvision CCTV, supplied and fitted. Built 27 October 2026, live 29
+ * October (Gus: "publicala"; the production 404 guard is gone).
  *
  * Built on the Ajax page (/ajax-security-installation) without touching it:
  * that page is live in Google Ads, so every section that changes is a copy
@@ -29,13 +29,8 @@ import { ExperimentProvider } from "@/components/experiments/experiment-provider
  * are imported as they are (header, trust bar, reviews, FAQ accordion,
  * footer).
  *
- * ── DRAFT GUARD ─────────────────────────────────────────────────────────────
- * The page 404s on the production deployment until it launches. Since 27
- * October the copy assumes Jordan's answers (Gus: assume, Jordan corrects;
- * the list is hikvision-research/supuestos-para-jordan.md), so the amber
- * marks left are the missing images. A push of main for any other change
- * must not put those in front of a visitor. Local dev and preview
- * deployments render it. Remove the guard with the last Gap.
+ * The copy assumes Jordan's answers (Gus: assume, Jordan corrects; the list
+ * is hikvision-research/supuestos-para-jordan.md).
  *
  * ── WHAT THE RESEARCH SAID, 27 OCTOBER 2026 ─────────────────────────────────
  * hikvision-research/ (outside the repo) holds it: 261 Superchat threads
@@ -97,8 +92,6 @@ export const metadata: Metadata = {
 };
 
 export default function HikvisionCctvInstallationPage() {
-  if (process.env.VERCEL_ENV === "production") notFound();
-
   return (
     <div className="theme-editorial min-h-screen bg-background text-foreground">
       <MainHeader />
