@@ -181,8 +181,35 @@ export function HikvisionQuoteForm({
   // Inside a planner (presetIntent) without scrolling: the planner brings its
   // own heading into view, and a focus scroll cut that short and left the
   // question above the screen.
+  //
+  // On a phone that left the field behind the keyboard and the AutoFill bar
+  // some browsers float above it (Gus, 30 October, iPhone). So once the
+  // keyboard has opened (the visual viewport shrinks), the page moves up just
+  // enough to show the field above it. No keyboard, no resize, no change.
   useEffect(() => {
-    if (started && step === 0) postcodeRef.current?.focus(presetIntent ? { preventScroll: true } : undefined);
+    const input = postcodeRef.current;
+    if (!started || step !== 0 || !input) return;
+    input.focus(presetIntent ? { preventScroll: true } : undefined);
+    const vv = window.visualViewport;
+    if (!presetIntent || !vv) return;
+    let settle: ReturnType<typeof setTimeout> | undefined;
+    const lift = () => {
+      clearTimeout(settle);
+      settle = setTimeout(() => {
+        if (document.activeElement !== input) return;
+        // Room for the AutoFill bar, which the viewport does not count.
+        const visibleBottom = vv.offsetTop + vv.height - 72;
+        const overlap = input.getBoundingClientRect().bottom - visibleBottom;
+        if (overlap > 0) window.scrollBy({ top: overlap, behavior: "smooth" });
+      }, 120);
+    };
+    vv.addEventListener("resize", lift);
+    const stop = setTimeout(() => vv.removeEventListener("resize", lift), 2000);
+    return () => {
+      clearTimeout(settle);
+      clearTimeout(stop);
+      vv.removeEventListener("resize", lift);
+    };
   }, [started, step, presetIntent]);
   const phoneRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
