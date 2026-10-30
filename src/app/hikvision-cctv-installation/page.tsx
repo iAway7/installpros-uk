@@ -118,7 +118,9 @@ export default function HikvisionCctvInstallationPage() {
             // within 7 days": it held in 1 of 6 paid camera jobs, and a buyer
             // chose InstallPros for it. Back only with Jordan's figure (Q11).
             subheadline="Wired cameras that record around the clock, with the drive, the door and the car on the street on your phone."
-            subheadlineNarrow="Wired cameras, recording 24/7, live on your phone."
+            // Phones show the short badge, so "no monthly" goes here instead:
+            // 8 buyer chats asked (Gus, 30 October: the most asked go first).
+            subheadlineNarrow="Wired cameras, recording 24/7, live on your phone. No monthly fees."
             defaultInstallType="security"
             formName="hikvision_cctv"
           />
@@ -132,6 +134,12 @@ export default function HikvisionCctvInstallationPage() {
               best, shows them fourth. */}
           <TrustpilotSection />
           <CustomerStoriesSection />
+          {/* "Why not Wi-Fi cameras?" where "What the fitting includes" was
+              (Gus, 27 October: did not like it). Price and DIY cameras are
+              what lost quotes; this is what the fitting buys. Wired or Wi-Fi
+              came up in 16 buyer chats, as often as recording, so it moved
+              up from ninth to straight after the reviews (Gus, 30 October). */}
+          <HikvisionWiredSection />
           <HikvisionPlacesSection />
           {/* Two camera planners, one after the other, until Will and Jordan
               pick one (Gus, 30 October; the dark map planner was removed):
@@ -143,10 +151,6 @@ export default function HikvisionCctvInstallationPage() {
               from buyers, and an owner who sees nothing for them below the
               hero leaves. */}
           <HikvisionExistingSection />
-          {/* "Why not Wi-Fi cameras?" where "What the fitting includes" was
-              (Gus, 27 October: did not like it). Price and DIY cameras are
-              what lost quotes; this is what the fitting buys. */}
-          <HikvisionWiredSection />
           <HikvisionHowItWorksSection />
           <FaqSectionAlt faqs={HIKVISION_FAQS} />
           <HikvisionCtaSection defaultService="security" formName="hikvision_cctv" />
