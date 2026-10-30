@@ -62,7 +62,7 @@ const QUESTION: Record<Step, string> = {
 };
 
 const OPTION =
-  "focus-ring-solid flex h-[76px] flex-col items-center justify-center gap-1.5 rounded-lg border-[length:var(--border-control)] border-field bg-background px-1 text-center text-body-sm font-semibold min-[350px]:text-body leading-tight text-foreground transition-all duration-quick ease-ds hover:border-selection-border hover:bg-card sm:h-20";
+  "focus-ring-solid flex min-h-[76px] flex-col items-center justify-center gap-1.5 rounded-lg border-[length:var(--border-control)] border-field bg-background px-2 py-3 text-center text-body-sm font-semibold min-[350px]:text-body leading-tight text-foreground transition-all duration-quick ease-ds hover:border-selection-border hover:bg-card sm:min-h-20";
 
 const CTA =
   "focus-ring-solid flex h-control-lg w-full items-center justify-center gap-2 rounded-lg bg-primary px-6 text-button font-[var(--button-weight)] uppercase tracking-[var(--button-tracking)] text-primary-foreground transition-colors duration-quick ease-ds hover:bg-brand-hover disabled:pointer-events-none disabled:opacity-50";

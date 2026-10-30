@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import { Smartphone } from "lucide-react";
 
 /**
  * The exact camera and the recorder. Started as a copy of the Ajax
@@ -14,18 +13,20 @@ import { Smartphone } from "lucide-react";
  *   - The recorder puzzled people ("What is nvr", "So does it come with a
  *     recording box??", "Do I need a monitor?"), so it is "the recorder",
  *     named as a Hikvision NVR the way the camera card names ColorVu (Gus,
- *     28 October; it was "the box" before), where it
- *     goes, and no screen needed.
+ *     28 October; it was "the box" before), and where it goes.
+ *   - "Do I need a monitor?" came up often, so it keeps a card of its own,
+ *     "No monitor needed" (Gus, 30 October; it was "No screen needed").
+ *   - "One cable per camera" went (Gus, 30 October: it read as filler; the
+ *     wired section already says one cable carries power and picture).
  *   - The Wi-Fi line that sat under the cards moved to the wired card.
  *
  * PHOTOS: Hikvision's own product shots of the camera (white and black) and
  * the recorder, chosen by Gus on 28 October, both cut out; they need
- * authorised status before the page goes live (question 12). The cable is
- * Gus's Gemini render (30 October) on white, blended with multiply so the
- * white takes the card's grey (a white cable does not cut out cleanly).
- * "No screen needed" is an icon until there is a photo (the small phone mock
- * was rejected, 28 October). "The make and model are on your quote" holds only once the quote template
- * names them (24 of 63 camera quotes never say Hikvision): a team change.
+ * authorised status (question 12). The phone is Gus's Gemini render with a
+ * green screen, which now shows three of the page's feeds (door, drive,
+ * garden), blended with multiply so its white takes the card's grey. "The make and model are on your quote"
+ * holds only once the quote template names them (24 of 63 camera quotes
+ * never say Hikvision): a team change.
  */
 
 type Item = { visual: ReactNode; title: string; detail: ReactNode };
@@ -38,7 +39,7 @@ function Photo({ name, alt, contain, multiply }: { name: string; alt: string; co
     <img
       src={`/funnel/hikvision-kit-${name}-480.webp`}
       srcSet={`/funnel/hikvision-kit-${name}-480.webp 480w, /funnel/hikvision-kit-${name}-800.webp 800w`}
-      sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+      sizes="(min-width: 768px) 320px, 100vw"
       alt={alt}
       loading="lazy"
       decoding="async"
@@ -59,14 +60,9 @@ const ITEMS: Item[] = [
     detail: "A Hikvision NVR, by your router or in the loft. It records every camera to a hard drive.",
   },
   {
-    visual: <Photo name="cable" alt="A coil of white network cable with its plug." contain multiply />,
-    title: "One cable per camera",
-    detail: "Power and picture down the same cable, from the recorder to each camera.",
-  },
-  {
-    visual: <Smartphone aria-hidden="true" className="h-12 w-12 text-brand-icon" strokeWidth={1.25} />,
-    title: "No screen needed",
-    detail: "The Hik-Connect app on your phone is the screen. A monitor is optional.",
+    visual: <Photo name="phone" alt="A phone showing three camera feeds: the front door, the drive and the garden." contain multiply />,
+    title: "No monitor needed",
+    detail: "Every camera on your phone, live and recorded, in the Hik-Connect app.",
   },
 ];
 
@@ -82,17 +78,17 @@ export function HikvisionEquipmentSection() {
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mx-auto grid max-w-5xl grid-cols-1 gap-5 md:grid-cols-3 md:gap-6">
           {ITEMS.map((e) => (
             <div key={e.title} className="rounded-xl border border-border bg-background p-6">
               <div
-                className="relative flex aspect-square items-center justify-center overflow-hidden rounded-lg border border-border"
+                className="relative flex aspect-[4/3] items-center justify-center overflow-hidden rounded-lg border border-border md:aspect-square"
                 style={{ background: "var(--eq-img-grad)" }}
               >
                 {e.visual}
               </div>
               <h3 className="mt-5 text-lg font-bold leading-tight text-foreground">{e.title}</h3>
-              <p className="mt-2.5 text-body-sm text-muted-foreground" style={{ lineHeight: "1.55" }}>
+              <p className="mt-2.5 text-body text-muted-foreground" style={{ lineHeight: "1.55" }}>
                 {e.detail}
               </p>
             </div>

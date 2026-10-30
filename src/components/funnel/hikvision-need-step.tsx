@@ -59,7 +59,7 @@ export function HikvisionNeedStep({
             key={o.value}
             type="button"
             onClick={() => onChoose(o.value)}
-            className={`focus-ring-solid flex h-[76px] flex-col items-center justify-center gap-1.5 rounded-lg border-[length:var(--border-control)] px-1 text-center text-body-sm font-semibold min-[350px]:text-body leading-tight transition-all duration-quick ease-ds sm:h-20 ${
+            className={`focus-ring-solid flex min-h-[76px] flex-col items-center justify-center gap-1.5 rounded-lg border-[length:var(--border-control)] px-2 py-3 text-center text-body-sm font-semibold min-[350px]:text-body leading-tight transition-all duration-quick ease-ds sm:min-h-20 ${
               tone === "dark"
                 ? "border-white/80 bg-white text-foreground hover:border-white hover:bg-secondary"
                 : "border-field bg-background text-foreground hover:border-selection-border hover:bg-card"
