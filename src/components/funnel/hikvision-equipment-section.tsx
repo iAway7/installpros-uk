@@ -52,7 +52,7 @@ const ITEMS: Item[] = [
   {
     visual: <Photo name="camera" alt="Hikvision ColorVu turret cameras in white and in black." contain />,
     title: "The camera",
-    detail: "Hikvision ColorVu 4MP, in white or black, for outside and in. 8MP on request.",
+    detail: "Hikvision ColorVu 4MP, in white or black, for outside and in. 8MP (4K) on request.",
   },
   {
     visual: <Photo name="recorder" alt="A black Hikvision network video recorder." contain />,
