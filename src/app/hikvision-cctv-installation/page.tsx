@@ -9,7 +9,6 @@ import { LazyCoveragePlanner, LazyTilesPlanner } from "@/components/funnel/hikvi
 import { HikvisionEquipmentSection } from "@/components/funnel/hikvision-equipment-section";
 import { HikvisionExistingSection } from "@/components/funnel/hikvision-existing-section";
 import { HikvisionWiredSection } from "@/components/funnel/hikvision-wired-section";
-import { HikvisionBusinessSection } from "@/components/funnel/hikvision-business-section";
 import { TrustpilotSection } from "@/components/funnel/trustpilot-section";
 import { CustomerStoriesSection } from "@/components/funnel/customer-stories-section";
 import { HikvisionHowItWorksSection } from "@/components/funnel/hikvision-how-it-works-section";
@@ -51,7 +50,8 @@ import { ExperimentProvider } from "@/components/experiments/experiment-provider
  * hikvision-research/analisis-secciones.md: all 138 camera chats read in
  * full, 11 Hikvision installer pages and 10 general CCTV pages audited. Gus
  * kept everything from the hero to "Already have cameras?" as built. Below
- * it: the fitting cards became the wired card, a businesses block came in,
+ * it: the fitting cards became the wired card, a businesses block came in
+ * (removed 30 October, Gus),
  * How it works became quote, booking and the day (no "7 days": it held in 1
  * of 6 paid camera jobs), and the FAQ gained the questions the chats asked
  * and the page did not answer. Proposed for the top half, not applied: see
@@ -143,9 +143,6 @@ export default function HikvisionCctvInstallationPage() {
               from buyers, and an owner who sees nothing for them below the
               hero leaves. */}
           <HikvisionExistingSection />
-          {/* Only if Jordan's question 1 keeps businesses in. Between the
-              two dark bands, so they never run together (27 October). */}
-          <HikvisionBusinessSection />
           {/* "Why not Wi-Fi cameras?" where "What the fitting includes" was
               (Gus, 27 October: did not like it). Price and DIY cameras are
               what lost quotes; this is what the fitting buys. */}
