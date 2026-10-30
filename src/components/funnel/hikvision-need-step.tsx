@@ -33,11 +33,6 @@ const OPTIONS: { value: HikvisionIntent; icon: React.ReactNode }[] = [
   { value: "repair", icon: <Wrench className="h-5 w-5" /> },
 ];
 
-/** Fired by the "Already have cameras?" section to open the closing form on
- *  the chip it names. Here rather than in hikvision-quote-form.tsx so the
- *  section does not pull the whole form into the page chunk. */
-export const HIKVISION_INTENT_EVENT = "hikvision:intent";
-
 export function HikvisionNeedStep({
   tone,
   name,

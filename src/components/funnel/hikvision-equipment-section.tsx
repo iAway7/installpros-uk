@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { Cable, Smartphone } from "lucide-react";
+import { Smartphone } from "lucide-react";
 
 /**
  * The exact camera and the recorder. Started as a copy of the Ajax
@@ -20,16 +20,19 @@ import { Cable, Smartphone } from "lucide-react";
  *
  * PHOTOS: Hikvision's own product shots of the camera (white and black) and
  * the recorder, chosen by Gus on 28 October, both cut out; they need
- * authorised status before the page goes live (question 12). "No screen
- * needed" is an icon until there is a photo (the small phone mock was
- * rejected, 28 October). "The make and model are on your quote" holds only once the quote template
+ * authorised status before the page goes live (question 12). The cable is
+ * Gus's Gemini render (30 October) on white, blended with multiply so the
+ * white takes the card's grey (a white cable does not cut out cleanly).
+ * "No screen needed" is an icon until there is a photo (the small phone mock
+ * was rejected, 28 October). "The make and model are on your quote" holds only once the quote template
  * names them (24 of 63 camera quotes never say Hikvision): a team change.
  */
 
 type Item = { visual: ReactNode; title: string; detail: ReactNode };
 
-/** `contain` for a cut-out on a transparent background, like the Ajax cards. */
-function Photo({ name, alt, contain }: { name: string; alt: string; contain?: boolean }) {
+/** `contain` for a cut-out on a transparent background, like the Ajax cards;
+ *  `multiply` for a photo on pure white, whose white then takes the card's grey. */
+function Photo({ name, alt, contain, multiply }: { name: string; alt: string; contain?: boolean; multiply?: boolean }) {
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
@@ -39,7 +42,7 @@ function Photo({ name, alt, contain }: { name: string; alt: string; contain?: bo
       alt={alt}
       loading="lazy"
       decoding="async"
-      className={`absolute inset-0 h-full w-full ${contain ? "object-contain p-[8%]" : "object-cover"}`}
+      className={`absolute inset-0 h-full w-full ${contain ? "object-contain p-[8%]" : "object-cover"} ${multiply ? "mix-blend-multiply" : ""}`}
     />
   );
 }
@@ -56,7 +59,7 @@ const ITEMS: Item[] = [
     detail: "A Hikvision NVR, by your router or in the loft. It records every camera to a hard drive.",
   },
   {
-    visual: <Cable aria-hidden="true" className="h-12 w-12 text-brand-icon" strokeWidth={1.25} />,
+    visual: <Photo name="cable" alt="A coil of white network cable with its plug." contain multiply />,
     title: "One cable per camera",
     detail: "Power and picture down the same cable, from the recorder to each camera.",
   },

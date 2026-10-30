@@ -17,7 +17,7 @@ import { checkUkPostcode } from "@/lib/funnel/check-postcode";
 import { validateName, validatePhone, validateEmail, formatPhone, isValidUkPhone } from "@/lib/funnel/validation";
 import { submitLead } from "@/lib/funnel/submit-lead";
 import { track, EVENTS } from "@/lib/analytics";
-import { HikvisionNeedStep, HIKVISION_INTENT_EVENT, type HikvisionIntent } from "./hikvision-need-step";
+import { HikvisionNeedStep, type HikvisionIntent } from "./hikvision-need-step";
 
 // Never on screen on the Ajax page (no address mode, no service dropdown), so
 // their code loads only if a form ever renders them instead of on every visit
@@ -73,8 +73,7 @@ const INSTALL_OPTIONS = [
  * HIKVISION COPY, 27 October 2026, of security-quote-form.tsx, which the live
  * Ajax page renders. Changed: the first step asks New cameras / Add to mine /
  * Fix my system (hikvision-need-step.tsx) and sends it as the intent with no
- * need; the "Already have cameras?" section opens it on a chip through
- * HIKVISION_INTENT_EVENT; and the lead goes to /thank-you-hikvision.
+ * need; and the lead goes to /thank-you-hikvision.
  */
 
 /**
@@ -106,9 +105,9 @@ export function HikvisionQuoteForm({
   formName?: string;
   /** "dark" on the closing band, "light" inside the coverage planner. */
   tone?: "dark" | "light";
-  /** The coverage planner asks the intent itself and embeds this form after
-   *  it: start at the postcode with that intent, and ignore the page's
-   *  HIKVISION_INTENT_EVENT, which is meant for the closing form. */
+  /** The planners and the "Already have cameras?" section ask the intent
+   *  themselves and embed this form after it: start at the postcode with
+   *  that intent. */
   presetIntent?: HikvisionIntent;
   /** Back from the postcode, when the step before it is not this form's. */
   onBack?: () => void;
@@ -176,19 +175,6 @@ export function HikvisionQuoteForm({
   const dark = tone === "dark";
   const labelClass = `text-body font-semibold ${dark ? "text-white/80" : "text-primary"}`;
   const titleClass = `h2-form ${dark ? "text-white" : "text-foreground"}`;
-
-  // The "Already have cameras?" section's buttons (HIKVISION_INTENT_EVENT,
-  // the intent in `detail`). Only from the first step, so it never undoes an
-  // enquiry already under way.
-  useEffect(() => {
-    const onIntent = (e: Event) => {
-      const value = (e as CustomEvent<HikvisionIntent>).detail;
-      if (step === 0 && value && !presetIntent) chooseIntent(value);
-    };
-    window.addEventListener(HIKVISION_INTENT_EVENT, onIntent);
-    return () => window.removeEventListener(HIKVISION_INTENT_EVENT, onIntent);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [step]);
 
   // Straight to the postcode once they have picked, so the keyboard is up.
   // Inside a planner (presetIntent) without scrolling: the planner brings its
