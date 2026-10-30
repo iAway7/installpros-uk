@@ -1,5 +1,6 @@
 /**
- * The camera plan from the Hikvision planner (hikvision-camera-planner.tsx),
+ * The camera plan from the Hikvision planners (hikvision-coverage-planner.tsx
+ * and hikvision-tiles-planner.tsx),
  * kept in sessionStorage so the thank-you page can put it in the WhatsApp
  * message. Its own file so the thank-you page doesn't load the planner.
  */

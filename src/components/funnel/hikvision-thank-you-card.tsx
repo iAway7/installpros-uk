@@ -48,7 +48,7 @@ export function HikvisionThankYouCard() {
       const fromUrl = params.get("leadId");
       if (fromUrl) next.leadId = fromUrl;
       next.intent = params.get("intent") ?? undefined;
-      // The camera planner's plan, if they made one (hikvision-camera-planner.tsx).
+      // The plan from a camera planner, if they made one (lib/funnel/hikvision-plan.ts).
       next.plan = readPlan() ?? undefined;
     } catch {
       /* noop */

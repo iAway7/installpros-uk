@@ -8,10 +8,11 @@ import { savePlan, type HikvisionPlan } from "@/lib/funnel/hikvision-plan";
 import { HikvisionQuoteForm } from "./hikvision-quote-form";
 
 /**
- * A step-by-step version of the camera planner (hikvision-camera-planner.tsx),
- * built as a copy below it so the original is kept while this one is worked
- * on (Gus, 28 October). Light, everything centred, and each question is
- * the section's heading: no card behind the options, no "Step 1 of 3".
+ * A step-by-step camera planner, first built as a copy of the dark map
+ * planner (hikvision-camera-planner.tsx, removed 30 October; see git) so
+ * the original was kept while this one was worked on (Gus, 28 October).
+ * Light, everything centred, and each question is the section's heading:
+ * no card behind the options, no "Step 1 of 3".
  *
  * The order (Gus, 28 October), map first because every funnel loses
  * 76 to 89% of its leavers on the first question, so the first one has to

@@ -10,13 +10,10 @@ import dynamic from "next/dynamic";
  */
 export const LazyHikvisionQuoteForm = dynamic(() => import("./hikvision-quote-form").then((m) => m.HikvisionQuoteForm));
 
-// The camera planner, below the first screen: its own chunk, server-rendered
-// as usual so the plan is on the page before any script runs.
-export const LazyCameraPlanner = dynamic(() => import("./hikvision-camera-planner").then((m) => m.HikvisionCameraPlanner));
-
-// Its step-by-step copy below it (Gus, 28 October), worked on while the
-// original stays.
+// The camera planners, below the first screen: each in its own chunk,
+// server-rendered as usual so the plan is on the page before any script runs.
+// Step by step on the aerial photo (28 October).
 export const LazyCoveragePlanner = dynamic(() => import("./hikvision-coverage-planner").then((m) => m.HikvisionCoveragePlanner));
 
-// The third planner, photo tiles (28 October), below the other two.
+// Photo tiles (28 October), below it.
 export const LazyTilesPlanner = dynamic(() => import("./hikvision-tiles-planner").then((m) => m.HikvisionTilesPlanner));
