@@ -45,12 +45,22 @@ export const SUPERCHAT_INSTALL_TYPE: Record<string, string> = {
 const SUPERCHAT_INSTALL_TYPE_FALLBACK = "Starlink Installation";
 
 /**
+ * The Hikvision CCTV page shares install type security with Ajax, so it still
+ * reaches the security endpoint and Zap, but its leads are told apart by
+ * form_name (hikvision_cctv, hikvision_planner...). Gus, 30 October 2026: label
+ * them as Hikvision, or Will's team pitches an Ajax alarm to a camera buyer.
+ */
+const HIKVISION_INSTALL_TYPE = "Hikvision CCTV";
+
+/**
  * The customer facing label for a service value. Shared with the zapier format
  * so both send Will's team the same wording for the same lead, rather than two
  * spellings of "Starlink Marine" that then have to be reconciled downstream.
  */
-export function installTypeLabel(service: string | null | undefined): string {
-  return SUPERCHAT_INSTALL_TYPE[(service ?? "").toLowerCase()] ?? SUPERCHAT_INSTALL_TYPE_FALLBACK;
+export function installTypeLabel(service: string | null | undefined, formName?: string | null): string {
+  const key = (service ?? "").toLowerCase();
+  if (key === "security" && formName?.startsWith("hikvision")) return HIKVISION_INSTALL_TYPE;
+  return SUPERCHAT_INSTALL_TYPE[key] ?? SUPERCHAT_INSTALL_TYPE_FALLBACK;
 }
 
 /** "John Smith" -> ["John", "Smith"]; "Cher" -> ["Cher", ""]; "Mary Ann Lee" -> ["Mary", "Ann Lee"]. */
@@ -90,7 +100,7 @@ export function toSuperchat(payload: WebhookPayload): SuperchatLeadPayload {
     phone: ukPhone(payload.lead.phone),
     email: payload.lead.email,
     postcode: payload.lead.postcode,
-    install_type: installTypeLabel(payload.lead.service),
+    install_type: installTypeLabel(payload.lead.service, payload.lead.form_name),
     trigger_timestamp: new Date(payload.lead.created_at).toISOString(),
   };
 }

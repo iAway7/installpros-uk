@@ -43,8 +43,8 @@ export interface ZapierLeadPayload {
   /** Ajax leads only, so absent on every other lead and the Starlink payload
    *  is byte for byte what it was: "Alarm", "Cameras" or "Alarm and cameras". */
   need?: string;
-  /** Ajax leads, and only when answered: "New system", "Add to what I have"
-   *  or "Something stopped working". */
+  /** Ajax and Hikvision leads, and only when answered: "New system", "Add to
+   *  what I have" or "Something stopped working". */
   intent?: string;
   install_type: string;
   marketing_consent: boolean;
@@ -78,7 +78,7 @@ export function toZapier(payload: WebhookPayload): ZapierLeadPayload {
     phone: ukPhone(payload.lead.phone),
     email: payload.lead.email,
     postcode: payload.lead.postcode,
-    install_type: installTypeLabel(payload.lead.service),
+    install_type: installTypeLabel(payload.lead.service, payload.lead.form_name),
     // Flattened to a boolean because Zapier filters on true/false, not on a
     // third state. Null means nobody was asked, and that is sent as false:
     // absence of a tick is not permission. The distinction is kept intact on
