@@ -16,6 +16,7 @@ import { isValidUkPostcode, normalisePostcode } from "@/lib/utils";
 import { checkUkPostcode } from "@/lib/funnel/check-postcode";
 import { validateName, validatePhone, validateEmail, formatPhone, isValidUkPhone } from "@/lib/funnel/validation";
 import { submitLead } from "@/lib/funnel/submit-lead";
+import { storedPlanForLead } from "@/lib/funnel/hikvision-plan";
 import { track, EVENTS } from "@/lib/analytics";
 import { HikvisionNeedStep, type HikvisionIntent } from "./hikvision-need-step";
 
@@ -358,6 +359,9 @@ export function HikvisionQuoteForm({
         installationType: formData.installationType, source: "cta_section",
         marketingConsent: consent, formName, postcodePrecision: formData.postcodePrecision,
         intent: intent ?? undefined,
+        // The plan from a planner, if they made one (migration 0024); not for
+        // a repair, where the places do not matter.
+        cameraPlan: intent === "repair" ? undefined : storedPlanForLead(),
       });
       toast.success("Quote request submitted!");
       // Its own thank-you page: thankYouPath() maps install_type security to

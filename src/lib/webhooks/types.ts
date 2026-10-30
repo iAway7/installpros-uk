@@ -100,6 +100,9 @@ export interface WebhookPayload {
     need: string | null;
     /** Ajax forms only, optional: new | add | repair. Null elsewhere. */
     intent: string | null;
+    /** Hikvision forms only, when a planner was used: "3 cameras. Outside:
+     *  front door, drive and car, back door." Null elsewhere. */
+    camera_plan: string | null;
     status: string | null;
     /** 1-10. Null on lead.created — enrichment hasn't run yet. */
     score: number | null;

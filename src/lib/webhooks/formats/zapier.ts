@@ -46,6 +46,9 @@ export interface ZapierLeadPayload {
   /** Ajax and Hikvision leads, and only when answered: "New system", "Add to
    *  what I have" or "Something stopped working". */
   intent?: string;
+  /** Hikvision leads that used a planner, not repairs: "3 cameras. Outside:
+   *  front door, drive and car, back door." */
+  cameras?: string;
   install_type: string;
   marketing_consent: boolean;
   landing_page: string | null;
@@ -97,5 +100,6 @@ export function toZapier(payload: WebhookPayload): ZapierLeadPayload {
   if (payload.lead.address) out.address = payload.lead.address;
   if (payload.lead.need && NEED_LABEL[payload.lead.need]) out.need = NEED_LABEL[payload.lead.need];
   if (payload.lead.intent && INTENT_LABEL[payload.lead.intent]) out.intent = INTENT_LABEL[payload.lead.intent];
+  if (payload.lead.camera_plan) out.cameras = payload.lead.camera_plan;
   return out;
 }

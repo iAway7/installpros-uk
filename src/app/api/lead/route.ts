@@ -25,6 +25,8 @@ interface LeadBody {
   need?: string;
   /** Ajax forms only, optional (migration 0022): new | add | repair. */
   intent?: string;
+  /** Hikvision forms only (migration 0024): the planner's plan, one line. */
+  camera_plan?: string;
   meta?: {
     traffic_source?: string | null;
     campaign?: string | null;
@@ -88,7 +90,7 @@ function clean(v: unknown): string | null {
  */
 const CAPS = {
   name: 120, email: 254, phone: 32, postcode: 12, notes: 2000,
-  address: 300, town: 100, sector: 80, form_name: 80,
+  address: 300, town: 100, sector: 80, form_name: 80, camera_plan: 300,
 } as const;
 
 /**
@@ -200,16 +202,18 @@ export async function POST(req: Request) {
       experiment_id: clean(body.meta?.experiment_id),
       status: "new",
     };
-    // The two Ajax answers (migration 0022), added only when they hold an
-    // allowed value, so every other lead inserts exactly as before.
-    const extra: { need?: string; intent?: string } = {};
+    // The two Ajax answers (migration 0022) and the Hikvision camera plan
+    // (0024), added only when they hold a value, so every other lead inserts
+    // exactly as before.
+    const extra: { need?: string; intent?: string; camera_plan?: string } = {};
     if (body.need && NEEDS.has(body.need)) extra.need = body.need;
     if (body.intent && INTENTS.has(body.intent)) extra.intent = body.intent;
+    if (body.camera_plan) extra.camera_plan = cap(body.camera_plan, CAPS.camera_plan);
 
     let { data, error } = await supabase.from("leads").insert({ ...row, ...extra }).select("id").single();
-    // If 0022 has not been applied the columns do not exist yet. Losing the
-    // lead over two optional answers would be the wrong trade, so it is saved
-    // without them.
+    // If 0022 or 0024 has not been applied the columns do not exist yet.
+    // Losing the lead over optional answers would be the wrong trade, so it
+    // is saved without them.
     if (error && Object.keys(extra).length > 0 && isMissingColumn(error)) {
       ({ data, error } = await supabase.from("leads").insert(row).select("id").single());
     }

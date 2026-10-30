@@ -29,6 +29,8 @@ export interface LeadInput {
   need?: string;
   /** Ajax forms only, optional: new, add or repair. */
   intent?: string;
+  /** Hikvision forms only: the planner's plan as one line (migration 0024). */
+  cameraPlan?: string;
 }
 
 declare global {
@@ -85,6 +87,7 @@ export async function submitLead(input: LeadInput): Promise<string> {
       // Only when set, so no other form's request changes shape (0022).
       ...(input.need ? { need: input.need } : {}),
       ...(input.intent ? { intent: input.intent } : {}),
+      ...(input.cameraPlan ? { camera_plan: input.cameraPlan } : {}),
       // Nothing synthetic goes in here any more. Every value this string used
       // to carry has its own column as of 0019, so `notes` is free for actual
       // notes rather than a pipe-delimited record nothing could read back.

@@ -95,6 +95,10 @@ export async function buildPayload(event: WebhookEvent, leadId: string): Promise
   // do not exist yet this one fails alone, and the lead still goes out.
   const { data: answers } = await supabase.from("leads").select("need, intent").eq("id", leadId).maybeSingle();
   const extra = (answers as { need?: string | null; intent?: string | null } | null) ?? null;
+  // The Hikvision camera plan (migration 0024), alone for the same reason,
+  // so it cannot take the Ajax answers down with it.
+  const { data: planRow } = await supabase.from("leads").select("camera_plan").eq("id", leadId).maybeSingle();
+  const cameraPlan = (planRow as { camera_plan?: string | null } | null)?.camera_plan ?? null;
 
   // Only fetch intel for the enriched event — on lead.created it can't exist yet.
   let intel: Record<string, unknown> | null = null;
@@ -130,6 +134,7 @@ export async function buildPayload(event: WebhookEvent, leadId: string): Promise
       notes: lead.notes ?? null,
       need: extra?.need ?? null,
       intent: extra?.intent ?? null,
+      camera_plan: cameraPlan,
       status: lead.status ?? null,
       score: (lead.lead_score as number | null) ?? null,
     },
@@ -180,6 +185,7 @@ export function testPayload(): WebhookPayload {
       notes: "This is a test delivery from the InstallPros dashboard.",
       need: null,
       intent: null,
+      camera_plan: null,
       status: "new",
       score: 9,
     },

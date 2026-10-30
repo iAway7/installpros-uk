@@ -31,6 +31,21 @@ function sentenceList(items: string[]): string {
   return `${items.slice(0, -1).join(", ")} and ${items[items.length - 1]}`;
 }
 
+/** The plan for the lead and Will's Zap (migration 0024), count first:
+ *  "4 cameras. Outside: front door, drive and car, back door. Inside: hall." */
+export function planForLead(plan: HikvisionPlan): string {
+  const parts = [`${plan.count} camera${plan.count === 1 ? "" : "s"}.`];
+  if (plan.spots.length) parts.push(`Outside: ${plan.spots.map((s) => s.toLowerCase()).join(", ")}.`);
+  if (plan.rooms?.length) parts.push(`Inside: ${plan.rooms.map((r) => r.toLowerCase()).join(", ")}.`);
+  return parts.join(" ");
+}
+
+/** The plan this visitor made on a planner, if any, ready for the lead. */
+export function storedPlanForLead(): string | undefined {
+  const plan = readPlan();
+  return plan ? planForLead(plan) : undefined;
+}
+
 /** The plan as one line: "front door, drive and car and back door: 3 cameras". */
 export function describePlan(plan: HikvisionPlan): string {
   const where = sentenceList(plan.spots.map((s) => s.toLowerCase()));
