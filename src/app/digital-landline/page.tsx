@@ -7,7 +7,6 @@ import { VoipNumberSection } from "@/components/funnel/voip-number-section";
 import { VoipPhoneSection } from "@/components/funnel/voip-phone-section";
 import { VoipPowerSection } from "@/components/funnel/voip-power-section";
 import { VoipParentSection } from "@/components/funnel/voip-parent-section";
-import { VoipReviewSection } from "@/components/funnel/voip-review-section";
 import { TrustpilotSection } from "@/components/funnel/trustpilot-section";
 import { VoipSwitchoffSection } from "@/components/funnel/voip-switchoff-section";
 import { VoipBusinessSection } from "@/components/funnel/voip-business-section";
@@ -107,10 +106,10 @@ export default function DigitalLandlinePage() {
           <VoipPhoneSection />
           <VoipPowerSection />
           <VoipParentSection />
-          <VoipReviewSection />
           {/* The company's reviews, about its engineers and service. Same
               rule as the other pages: no copy presenting them as phone
-              reviews. */}
+              reviews. Diana Rosser's landline review sat above them until
+              Gus removed it, 3 November. */}
           <TrustpilotSection />
           <VoipSwitchoffSection />
           <VoipBusinessSection />
