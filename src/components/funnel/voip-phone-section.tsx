@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { Cable, Grid3x3, Phone, Smartphone } from "lucide-react";
+import { Cable, Smartphone } from "lucide-react";
 
 /**
  * "The phone": what it looks like and the two questions buyers asked before
@@ -8,21 +8,40 @@ import { Cable, Grid3x3, Phone, Smartphone } from "lucide-react";
  * People asked to see the handset, and one asked for large keys; no
  * competitor shows a large-key phone.
  *
- * Assumptions until Will answers (voip-research/supuestos-para-will.md):
- * a Yealink DECT cordless set (question 7), a large-key option (7), extra
- * handsets worded to be true either way (4), old phones with an adapter and a
- * free check, as his WordPress page says (3), UK calls included (9).
+ * So the two handsets get a photo each (Gus's Gemini renders, 3 November,
+ * generic until Will names the model), and the two questions sit under them
+ * as text cards.
  *
- * PHOTOGRAPH: the real handset and base, once Will names the model.
+ * Assumptions until Will answers (voip-research/supuestos-para-will.md):
+ * a cordless DECT set (question 7), a large-key option (7), extra handsets
+ * worded to be true either way (4), old phones with an adapter and a free
+ * check, as his WordPress page says (3), UK calls included (9).
  */
+
+type Photo = { src: string; srcSet: string; alt: string; title: string; detail: string };
+
+const PHOTOS: Photo[] = [
+  {
+    src: "/funnel/voip-handset-1000.webp",
+    srcSet: "/funnel/voip-handset-640.webp 640w, /funnel/voip-handset-1000.webp 1000w",
+    alt: "A black cordless phone in its charging cradle, with its base and a UK plug",
+    title: "The handset",
+    detail: "A cordless phone and base, set up before it reaches you.",
+  },
+  {
+    src: "/funnel/voip-bigkeys-1000.webp",
+    srcSet: "/funnel/voip-bigkeys-640.webp 640w, /funnel/voip-bigkeys-1000.webp 1000w",
+    alt: "A white cordless phone with big black number keys, in its charging cradle",
+    title: "Big buttons if you need them",
+    detail: "A large-key handset for anyone with poor eyesight.",
+  },
+];
 
 type Card = { icon: ReactNode; title: string; detail: string };
 
 const ICON = "h-5 w-5";
 
 const CARDS: Card[] = [
-  { icon: <Phone className={ICON} />, title: "The handset", detail: "A cordless phone and base, set up before it reaches you." },
-  { icon: <Grid3x3 className={ICON} />, title: "Big buttons if you need them", detail: "A large-key handset for anyone with poor eyesight." },
   {
     icon: <Smartphone className={ICON} />,
     title: "More handsets round the house",
@@ -40,16 +59,38 @@ export function VoipPhoneSection() {
           <h2 className="mt-4 text-balance h2-section text-foreground">A proper phone, not an app.</h2>
         </div>
 
-        <ul className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 md:mt-12 lg:grid-cols-4">
+        <ul className="mx-auto mt-10 grid max-w-5xl grid-cols-1 gap-4 sm:grid-cols-2 md:mt-12">
+          {PHOTOS.map((p) => (
+            <li key={p.title} className="flex flex-col overflow-hidden rounded-2xl bg-background">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={p.src}
+                srcSet={p.srcSet}
+                sizes="(min-width: 640px) 50vw, 100vw"
+                alt={p.alt}
+                loading="lazy"
+                decoding="async"
+                className="aspect-[4/3] w-full object-cover"
+              />
+              <div className="p-6">
+                <h3 className="text-lg font-bold leading-tight text-foreground">{p.title}</h3>
+                <p className="mt-2 text-pretty text-body-sm text-muted-foreground" style={{ lineHeight: "1.55" }}>
+                  {p.detail}
+                </p>
+              </div>
+            </li>
+          ))}
           {CARDS.map((c) => (
-            <li key={c.title} className="flex flex-col rounded-2xl bg-background p-6">
-              <span aria-hidden="true" className="flex h-10 w-10 items-center justify-center rounded-xl border border-border text-brand-icon">
+            <li key={c.title} className="flex gap-4 rounded-2xl bg-background p-6">
+              <span aria-hidden="true" className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-border text-brand-icon">
                 {c.icon}
               </span>
-              <h3 className="mt-4 text-lg font-bold leading-tight text-foreground">{c.title}</h3>
-              <p className="mt-2 text-pretty text-body-sm text-muted-foreground" style={{ lineHeight: "1.55" }}>
-                {c.detail}
-              </p>
+              <div>
+                <h3 className="text-lg font-bold leading-tight text-foreground">{c.title}</h3>
+                <p className="mt-2 text-pretty text-body-sm text-muted-foreground" style={{ lineHeight: "1.55" }}>
+                  {c.detail}
+                </p>
+              </div>
             </li>
           ))}
         </ul>

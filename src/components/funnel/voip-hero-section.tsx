@@ -8,10 +8,12 @@ import { VoipLeadForm } from "./voip-lead-form";
  * The trust bar is the Ajax one, imported as it is: Google, Trustpilot,
  * UK-wide, DBS checked, none of it about the product.
  *
- * PHOTOGRAPH: none yet. The plan (voip-research/estructura-y-borrador.md) is
- * the real handset on a farmhouse hall table with the Starlink router in
- * view: nobody shows a phone next to Starlink. Until it exists the hero is
- * the dark surface the Hikvision page started from.
+ * PHOTOGRAPH: Gus's Gemini render, 3 November (voip-research/
+ * prompts-imagenes.md, prompt 1): the phone on a farmhouse hall table next to
+ * the router, an older hand lifting it, UK sockets: nobody shows a phone next
+ * to Starlink. A second render had a made-up Starlink logo on the router, so
+ * this one, with none. Without `image` the hero falls back to the dark
+ * surface.
  */
 export function VoipHeroSection({
   image,
@@ -42,10 +44,30 @@ export function VoipHeroSection({
           <>
             <picture>
               {imageMobile && <source media="(max-width: 767px)" srcSet={imageMobile} />}
+              {/* From md up anchored right, so the table, the phone and the
+                  hand sit at the edge and the headline runs over the hall. */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={image} srcSet={imageSrcSet} sizes={imageSrcSet ? "100vw" : undefined} alt="" aria-hidden="true" loading="eager" decoding="sync" fetchPriority="high" className="absolute inset-0 h-full w-full object-cover object-top" />
+              <img src={image} srcSet={imageSrcSet} sizes={imageSrcSet ? "100vw" : undefined} alt="" aria-hidden="true" loading="eager" decoding="sync" fetchPriority="high" className="absolute inset-0 h-full w-full object-cover object-top md:object-right" />
             </picture>
-            <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(14,16,19,0.55), rgba(14,16,19,0.8))" }} />
+            {/* On phones the crop has the lamp, the phone and the hand at the
+                top: light there, dark under the header and from the
+                subheadline down, where the form sits. */}
+            <div
+              className="absolute inset-0 md:hidden"
+              style={{
+                background:
+                  "linear-gradient(to bottom, rgba(14,16,19,0.65) 0%, rgba(14,16,19,0.35) 12%, rgba(14,16,19,0.3) 26%, rgba(14,16,19,0.75) 40%, rgba(14,16,19,0.9) 100%)",
+              }}
+            />
+            {/* From md up dark over the hall, where the text sits, and
+                thinner over the table at the right. */}
+            <div
+              className="absolute inset-0 hidden md:block"
+              style={{
+                background:
+                  "linear-gradient(to bottom, transparent 55%, rgba(0,0,0,0.55)), radial-gradient(24% 46% at 86% 40%, rgba(14,16,19,0.15) 0%, rgba(14,16,19,0.72) 100%)",
+              }}
+            />
           </>
         ) : (
           <div

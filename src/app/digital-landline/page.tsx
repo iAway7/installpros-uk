@@ -48,8 +48,10 @@ import { ExperimentProvider } from "@/components/experiments/experiment-provider
  *   - Migration 0025 (install_type voip, the new needs, the Starlink
  *     endpoint). Until it runs, the form's insert fails.
  *   - A Path for "VoIP" in Will's Starlink Zap.
- *   - Photographs: the handset by a Starlink router (hero), the handset and
- *     base (the phone section).
+ *   - Real photographs. The hero, the two handsets, the parents and the
+ *     closing band are Gus's Gemini renders of 3 November
+ *     (voip-research/prompts-imagenes.md); the handsets are generic until
+ *     Will names the model (question 7).
  *
  * ── THE LEAD ────────────────────────────────────────────────────────────────
  * install_type `voip`, labelled "VoIP"; need self, relative, business or
@@ -84,6 +86,11 @@ export default function DigitalLandlinePage() {
       <ExperimentProvider>
         <main id="main" tabIndex={-1} className="flex flex-col outline-none">
           <VoipHeroSection
+            // Gemini render, 3 November: the phone by the router on a
+            // farmhouse hall table. Phones get a 3:4 crop of the right edge.
+            image="/funnel/voip-hero-2000.webp"
+            imageSrcSet="/funnel/voip-hero-1280.webp 1280w, /funnel/voip-hero-2000.webp 2000w"
+            imageMobile="/funnel/voip-hero-phone-640.webp 640w, /funnel/voip-hero-phone-828.webp 828w"
             badge="Same-day quote"
             // Gus's pick, 2 November. If Will says the page is for anyone
             // losing a copper line, not only Starlink (question 1): "Keep your
