@@ -40,8 +40,10 @@ export interface ZapierLeadPayload {
   postcode: string;
   /** Only present when the visitor picked one, so the key can be absent. */
   address?: string;
-  /** Ajax leads only, so absent on every other lead and the Starlink payload
-   *  is byte for byte what it was: "Alarm", "Cameras" or "Alarm and cameras". */
+  /** Ajax and digital landline leads only, so absent on every other lead and
+   *  the Starlink payload is byte for byte what it was: "Alarm", "Cameras" or
+   *  "Alarm and cameras"; "Phone for me", "Phone for a parent or relative",
+   *  "Phone for my business" or "Managed service". */
   need?: string;
   /** Ajax and Hikvision leads, and only when answered: "New system", "Add to
    *  what I have" or "Something stopped working". */
@@ -61,8 +63,17 @@ export interface ZapierLeadPayload {
   device_type: string | null;
 }
 
-/** The Ajax answers in the words the form shows (migration 0022). */
-const NEED_LABEL: Record<string, string> = { alarm: "Alarm", cameras: "Cameras", both: "Alarm and cameras" };
+/** The Ajax answers in the words the form shows (migration 0022), and the
+ *  digital landline page's "Who's the phone for?" (0025). */
+const NEED_LABEL: Record<string, string> = {
+  alarm: "Alarm",
+  cameras: "Cameras",
+  both: "Alarm and cameras",
+  self: "Phone for me",
+  relative: "Phone for a parent or relative",
+  business: "Phone for my business",
+  managed: "Managed service",
+};
 const INTENT_LABEL: Record<string, string> = {
   new: "New system",
   add: "Add to what I have",

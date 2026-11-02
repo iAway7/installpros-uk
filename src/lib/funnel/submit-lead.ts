@@ -25,7 +25,8 @@ export interface LeadInput {
    *  page. Both are needed: the hero form on the commercial landing and the
    *  hero form on the residential one are the same component. */
   formName?: string;
-  /** Ajax forms only: "What do you need?" (alarm, cameras, both). */
+  /** Ajax forms: "What do you need?" (alarm, cameras, both). Digital landline
+   *  forms: "Who's the phone for?" (self, relative, business, managed). */
   need?: string;
   /** Ajax forms only, optional: new, add or repair. */
   intent?: string;

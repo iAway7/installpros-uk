@@ -41,6 +41,10 @@ export const SUPERCHAT_INSTALL_TYPE: Record<string, string> = {
   // for the Ajax alarm and CCTV page; until his Zapier has that branch these
   // leads arrive untagged in Superchat.
   security: "Ajax Security",
+  // The digital landline page (/digital-landline). Every VoIP buyer in the
+  // chats was a Starlink customer, so it rides the Starlink Zap (0025) until
+  // Will says otherwise; this is the value a Path there would match.
+  voip: "VoIP",
 };
 const SUPERCHAT_INSTALL_TYPE_FALLBACK = "Starlink Installation";
 

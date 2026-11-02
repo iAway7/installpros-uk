@@ -28,6 +28,8 @@ const BY_INSTALL_TYPE: Record<string, string> = {
   // The Ajax page. The generic /thank-you asks for roof photos, which is a
   // Starlink question.
   security: "/thank-you-security",
+  // The digital landline page, which asks for a photo of the phone bill.
+  voip: "/thank-you-voip",
 };
 
 export function thankYouPath(installType: string | undefined, leadId: string): string {
