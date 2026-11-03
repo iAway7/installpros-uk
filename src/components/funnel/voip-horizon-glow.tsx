@@ -20,8 +20,9 @@
  *     the top.
  */
 
-/** The brand red of the dark bands' eyebrows. Change here for another tint. */
-const GLOW = "255, 106, 95";
+/** Violet, as in the Horizon Bloom example Gus sent. The brand red was his
+ *  first look and he found it horrible (3 November). */
+const GLOW = "168, 85, 247";
 
 /** Room above the horizon for the bloom, in px. */
 const SKY = 420;
@@ -40,7 +41,7 @@ export function VoipHorizonGlow({ gap = 28 }: { gap?: number }) {
         style={{
           top: 0,
           height: SKY,
-          background: `radial-gradient(45% 100% at 50% 100%, rgba(${GLOW}, 0.32) 0%, rgba(${GLOW}, 0.1) 40%, transparent 80%)`,
+          background: `radial-gradient(45% 100% at 50% 100%, rgba(${GLOW}, 0.22) 0%, rgba(${GLOW}, 0.07) 40%, transparent 80%)`,
         }}
       />
       {/* The planet, with the bright rim on its top edge. */}
@@ -49,7 +50,7 @@ export function VoipHorizonGlow({ gap = 28 }: { gap?: number }) {
         style={{
           top: SKY,
           background: "#08090b",
-          boxShadow: `0 -1px 0 0 rgba(${GLOW}, 0.95), 0 -2px 6px 0 rgba(${GLOW}, 0.8), 0 -10px 40px 0 rgba(${GLOW}, 0.45), 0 -40px 140px 0 rgba(${GLOW}, 0.25)`,
+          boxShadow: `0 -1px 0 0 rgba(${GLOW}, 0.95), 0 -2px 6px 0 rgba(${GLOW}, 0.7), 0 -10px 40px 0 rgba(${GLOW}, 0.3), 0 -40px 140px 0 rgba(${GLOW}, 0.15)`,
         }}
       />
     </div>
