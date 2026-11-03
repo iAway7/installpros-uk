@@ -51,24 +51,25 @@ export function VoipManagedSection() {
               </p>
             </li>
           ))}
+          {/* The sixth slot of the grid, so the button sits with the cards
+              instead of floating at the right edge under them (Gus, 3
+              November). Many camera apps work without a fixed IP (cloud
+              relay, outbound VPNs), so the page offers to check instead of
+              selling one to everyone. */}
+          <li className="flex flex-col rounded-2xl border border-primary/40 bg-primary/10 p-5 sm:p-6">
+            <h3 className="text-lg font-bold leading-tight text-white">Not sure you need a fixed IP?</h3>
+            <p className="mt-1.5 flex-1 text-pretty text-body-sm text-white/70" style={{ lineHeight: "1.55" }}>
+              Many camera apps work without one. Tell us what you&apos;re connecting and we&apos;ll check.
+            </p>
+            <a
+              href="#quote"
+              className="focus-ring-solid mt-5 flex h-control-lg w-full items-center justify-center gap-2 rounded-lg bg-primary px-6 text-button font-[var(--button-weight)] uppercase tracking-[var(--button-tracking)] text-primary-foreground transition-colors duration-quick ease-ds hover:bg-brand-hover"
+            >
+              Talk to us
+              <ArrowRight aria-hidden="true" className="h-4 w-4" />
+            </a>
+          </li>
         </ul>
-
-        {/* Many camera apps work without a fixed IP (cloud relay, outbound
-            VPNs), so the page offers to check instead of selling one to
-            everyone. */}
-        <div className="mt-10 flex flex-col gap-5 md:mt-12 md:flex-row md:items-center md:justify-between">
-          <p className="max-w-xl text-pretty text-body text-white/70">
-            Not sure you need a fixed IP? Many camera apps work without one. Tell us what you&apos;re connecting and
-            we&apos;ll check.
-          </p>
-          <a
-            href="#quote"
-            className="focus-ring-solid flex h-control-lg w-full shrink-0 items-center justify-center gap-2 rounded-lg bg-primary px-6 text-button font-[var(--button-weight)] uppercase tracking-[var(--button-tracking)] text-primary-foreground transition-colors duration-quick ease-ds hover:bg-brand-hover sm:inline-flex sm:w-auto"
-          >
-            Talk to us
-            <ArrowRight aria-hidden="true" className="h-4 w-4" />
-          </a>
-        </div>
       </div>
     </section>
   );
