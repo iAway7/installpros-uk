@@ -1,4 +1,3 @@
-import { TriangleAlert } from "lucide-react";
 import { whatsappUrl } from "@/lib/funnel/contact";
 import { WhatsAppIcon } from "./ui/whatsapp-icon";
 
@@ -31,14 +30,6 @@ export function VoipNumberSection() {
           <h2 className="mt-4 text-balance h2-section text-foreground">Keep the number everyone knows.</h2>
         </div>
 
-        {/* The one instruction that saves the number, before the steps. */}
-        <div className="mx-auto mt-8 flex max-w-2xl items-start gap-3 rounded-2xl border border-primary/25 bg-primary/[0.06] p-5 text-left md:mt-10 md:p-6">
-          <TriangleAlert aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
-          <p className="text-pretty text-body text-foreground" style={{ lineHeight: "1.55" }}>
-            <strong>Don&apos;t cancel your old line yet.</strong> If it&apos;s cancelled first, the number can be lost.
-          </p>
-        </div>
-
         <ol className="mt-10 grid grid-cols-1 gap-4 md:mt-12 md:grid-cols-2 lg:grid-cols-4">
           {STEPS.map((s, i) => (
             <li key={s.title} className="flex flex-col rounded-2xl bg-secondary p-6">
@@ -57,8 +48,12 @@ export function VoipNumberSection() {
         </ol>
 
         <div className="mx-auto mt-10 flex max-w-xl flex-col items-center gap-5 text-center md:mt-12">
+          {/* The one instruction that saves the number (2 buyers lost theirs
+              by cancelling first). It was a warning box above the steps;
+              Gus did not like it there, 3 November. */}
           <p className="text-balance text-body text-muted-foreground">
-            In most cases you keep your number. If it can&apos;t be moved, we&apos;ll give you a new local one.
+            <strong className="text-foreground">Don&apos;t cancel your old line yet.</strong> In most cases you keep your
+            number. If it can&apos;t be moved, we&apos;ll give you a new local one.
           </p>
           <a
             href={whatsappUrl("Hi, I'd like to keep my landline number on a new phone. Here is a photo of my latest phone bill.")}
