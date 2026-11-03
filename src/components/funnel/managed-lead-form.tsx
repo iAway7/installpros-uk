@@ -24,7 +24,7 @@ const cleanPostcode = (v: string) => v.toUpperCase().replace(/[^A-Z0-9 ]/g, "").
  * band. A copy of voip-lead-form.tsx (itself cut down from the Hikvision
  * hero funnel), with the first tap swapped for managed-need-step.tsx.
  *
- * Steps: "What does your connection need to run?" (unnumbered), postcode,
+ * Steps: "What do you need?" (unnumbered), postcode,
  * name, phone, email. Validation and tracking as on the VoIP copy, so the
  * funnel numbers stay comparable.
  *

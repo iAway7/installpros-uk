@@ -97,7 +97,7 @@ export function ManagedHeroSection({
 
           {/* Many who ask for a fixed IP don't need one (managed-research,
               section 1), so the hero promises the check, not the IP. */}
-          <p className="mt-6 text-body-sm text-white/70">Not sure you need a fixed IP? We check first.</p>
+          <p className="mt-6 text-body-sm text-white/70">Not sure? We check first.</p>
         </div>
       </div>
 

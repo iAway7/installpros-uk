@@ -20,16 +20,16 @@ import { mailtoUrl, whatsappUrl, SUPPORT_PHONE_HREF } from "@/lib/funnel/contact
  */
 const ASK: Record<string, { line: string; message: string }> = {
   cctv: {
-    line: "Send us the make of your camera recorder or alarm, and the name of your monitoring company. We'll tell you if you need a fixed IP.",
+    line: "Send us your recorder's make and who monitors it. We'll check if you need a fixed IP.",
     message: " My cameras or alarm are monitored. The recorder is a: ",
   },
   vpn: {
-    line: "Tell us what you connect to: the office VPN, a server, or a system that needs your IP. We'll tell you if you need a fixed IP.",
+    line: "Tell us what the VPN connects to. We'll check if you need a fixed IP.",
     message: " I need remote access or a VPN for: ",
   },
 };
 const ASK_DEFAULT = {
-  line: "Tell us what you run on the connection, and what's gone wrong before. We'll set it up around that.",
+  line: "Tell us what's gone wrong before. We'll set it up around that.",
   message: " What I run on the connection: ",
 };
 
@@ -83,7 +83,7 @@ export function ManagedThankYouCard() {
         We&apos;ll call you within 2 hours
       </h1>
       <p className="mt-3.5 text-body md:text-lead leading-[1.55] md:leading-[1.6] text-muted-foreground [text-wrap:pretty]">
-        From 020 3397 7003, to go through what your connection needs to run.
+        From 020 3397 7003.
       </p>
 
       <p className="mt-4 rounded-xl border border-primary/25 bg-primary/[0.06] px-4 py-3 text-body-sm text-foreground">
