@@ -9,17 +9,17 @@ import { Building2, HeartHandshake, User } from "lucide-react";
  * Why "Who's the phone for?" (voip-research, 2 November 2026): the buyer is
  * often not the user. Sons and daughters buy for parents aged 76 to 90, and
  * 10 of the 28 VoIP buyers were businesses, who ask about transfers and
- * several lines instead. No competitor page asks it. The link under the
- * buttons is for the smaller managed service audience (a fixed IP, a team to
- * call), the way "Existing system not working?" works on the Ajax page.
+ * several lines instead. No competitor page asks it. A link under the
+ * buttons for managed service went on 3 November: Will wants managed service
+ * on a page of its own.
  *
- * Stored as leads.need (migration 0025 allows self, relative, business and
- * managed). The words Will's Zap gets are NEED_LABEL in
+ * Stored as leads.need (migration 0025 allows self, relative and business,
+ * and managed for that future page). The words Will's Zap gets are NEED_LABEL in
  * lib/webhooks/formats/zapier.ts.
  */
-export type VoipNeed = "self" | "relative" | "business" | "managed";
+export type VoipNeed = "self" | "relative" | "business";
 
-const OPTIONS: { value: Exclude<VoipNeed, "managed">; label: string; icon: React.ReactNode }[] = [
+const OPTIONS: { value: VoipNeed; label: string; icon: React.ReactNode }[] = [
   { value: "self", label: "Me", icon: <User className="h-5 w-5" /> },
   { value: "relative", label: "A parent or relative", icon: <HeartHandshake className="h-5 w-5" /> },
   { value: "business", label: "My business", icon: <Building2 className="h-5 w-5" /> },
@@ -54,15 +54,6 @@ export function VoipNeedStep({
             {o.label}
           </button>
         ))}
-      </div>
-      <div className="text-center">
-        <button
-          type="button"
-          onClick={() => onChoose("managed")}
-          className="focus-ring inline-flex min-h-[44px] items-center rounded-md px-2 text-body-sm font-medium text-white/80 underline underline-offset-4 transition-colors duration-quick hover:text-white"
-        >
-          Need a fixed IP or managed support for a business?
-        </button>
       </div>
     </div>
   );

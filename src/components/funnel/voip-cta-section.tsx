@@ -34,8 +34,8 @@ export function VoipCtaSection({ formName }: { formName: string }) {
           className="absolute inset-0 hidden md:block"
           style={{ background: "linear-gradient(to bottom, rgba(14,16,19,0.55), rgba(14,16,19,0.7) 50%, rgba(14,16,19,0.82))" }}
         />
-        {/* Phones: darker, because the lit window lands behind the managed
-            link under the form. */}
+        {/* Phones: darker, because the lit window lands behind the bottom
+            of the form. */}
         <div
           aria-hidden="true"
           className="absolute inset-0 md:hidden"

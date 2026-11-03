@@ -11,7 +11,6 @@ import { TrustpilotSection } from "@/components/funnel/trustpilot-section";
 import { CustomerStoriesSection } from "@/components/funnel/customer-stories-section";
 import { VoipSwitchoffSection } from "@/components/funnel/voip-switchoff-section";
 import { VoipBusinessSection } from "@/components/funnel/voip-business-section";
-import { VoipManagedSection } from "@/components/funnel/voip-managed-section";
 import { VoipHowItWorksSection } from "@/components/funnel/voip-how-it-works-section";
 import { FaqSectionAlt } from "@/components/funnel/faq-section-alt";
 import { VOIP_FAQS } from "@/lib/funnel/voip-faqs";
@@ -20,7 +19,9 @@ import { FunnelFooter } from "@/components/funnel/funnel-footer";
 import { ExperimentProvider } from "@/components/experiments/experiment-provider";
 
 /**
- * Digital landline (Managed services & VoIP). Built 3 November 2026.
+ * Digital landline (VoIP). Built 3 November 2026 as "Managed services &
+ * VoIP"; Will asked the same day for two separate pages, so managed service
+ * (fixed IP, 4G/5G backup, one team to call) left this one and gets its own.
  *
  * Built on the Hikvision page without touching it: every section that
  * changes is a voip-* copy, and only the header, trust bar, reviews, FAQ
@@ -54,8 +55,8 @@ import { ExperimentProvider } from "@/components/experiments/experiment-provider
  *     Will names the model (question 7).
  *
  * ── THE LEAD ────────────────────────────────────────────────────────────────
- * install_type `voip`, labelled "VoIP"; need self, relative, business or
- * managed from the first tap; form_name voip_landline. After the form,
+ * install_type `voip`, labelled "VoIP"; need self, relative or business
+ * from the first tap; form_name voip_landline. After the form,
  * /thank-you-voip.
  *
  * noindex like every segment landing, not in sitemap.ts.
@@ -116,7 +117,6 @@ export default function DigitalLandlinePage() {
           <CustomerStoriesSection />
           <VoipSwitchoffSection />
           <VoipBusinessSection />
-          <VoipManagedSection />
           <VoipHowItWorksSection />
           <FaqSectionAlt faqs={VOIP_FAQS} />
           <VoipCtaSection formName="voip_landline" />

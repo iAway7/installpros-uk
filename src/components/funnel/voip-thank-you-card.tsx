@@ -16,8 +16,7 @@ import { mailtoUrl, whatsappUrl, SUPPORT_PHONE_HREF } from "@/lib/funnel/contact
  * Changed: it asks for a photo of the latest phone bill, the first thing a
  * number transfer needs (name, address and number on it), and repeats the
  * one instruction that saves the number: don't cancel the old line yet.
- * A managed service enquiry is asked what it needs to connect instead. The
- * need comes in the query string from the form.
+ * The need comes in the query string from the form, for analytics.
  */
 export function VoipThankYouCard() {
   const [lead, setLead] = useState<{ leadId?: string; name?: string; postcode?: string; need?: string }>({});
@@ -50,9 +49,8 @@ export function VoipThankYouCard() {
   const details = [lead.postcode ? `postcode ${lead.postcode}` : null, lead.name ? `name ${lead.name}` : null]
     .filter(Boolean)
     .join(", ");
-  const managed = lead.need === "managed";
-  const subject = managed ? "managed service for my business" : "a new phone that keeps my landline number";
-  const ask = managed ? " Here is what I need to connect." : " Here is a photo of my latest phone bill.";
+  const subject = "a new phone that keeps my landline number";
+  const ask = " Here is a photo of my latest phone bill.";
   const message = details
     ? `Hi InstallPros, I have just asked about ${subject} (${details}).${ask}`
     : `Hi InstallPros, I have just asked about ${subject}.${ask}`;
@@ -70,15 +68,13 @@ export function VoipThankYouCard() {
         We&apos;ll call you within 2 hours
       </h1>
       <p className="mt-3.5 text-body md:text-lead leading-[1.55] md:leading-[1.6] text-muted-foreground [text-wrap:pretty]">
-        From 020 3397 7003, {managed ? "to go over what you need to connect" : "to set up your phone and your number"}. You&apos;ll
+        From 020 3397 7003, to set up your phone and your number. You&apos;ll
         get your price the same day.
       </p>
 
-      {!managed && (
-        <p className="mt-4 rounded-xl border border-primary/25 bg-primary/[0.06] px-4 py-3 text-body-sm text-foreground">
-          <strong>Don&apos;t cancel your old line yet.</strong> We move the number first.
-        </p>
-      )}
+      <p className="mt-4 rounded-xl border border-primary/25 bg-primary/[0.06] px-4 py-3 text-body-sm text-foreground">
+        <strong>Don&apos;t cancel your old line yet.</strong> We move the number first.
+      </p>
 
       <a
         href={waHref}
@@ -94,7 +90,7 @@ export function VoipThankYouCard() {
         className="focus-ring-solid mt-6 md:mt-7 flex h-control-lg items-center justify-center gap-2.5 rounded-lg bg-primary text-button font-[var(--button-weight)] uppercase tracking-[var(--button-tracking)] text-primary-foreground transition-colors duration-quick ease-ds hover:bg-brand-hover"
       >
         <WhatsAppIcon className="h-[19px] w-[19px]" />
-        {managed ? "Message us on WhatsApp" : "Send your phone bill"}
+        Send your phone bill
       </a>
 
       <a
