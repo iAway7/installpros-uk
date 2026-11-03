@@ -30,6 +30,8 @@ const BY_INSTALL_TYPE: Record<string, string> = {
   security: "/thank-you-security",
   // The digital landline page, which asks for a photo of the phone bill.
   voip: "/thank-you-voip",
+  // The managed service page, which asks what the cameras or VPN are.
+  managed: "/thank-you-managed",
 };
 
 export function thankYouPath(installType: string | undefined, leadId: string): string {

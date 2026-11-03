@@ -73,6 +73,9 @@ const NEED_LABEL: Record<string, string> = {
   relative: "Phone for a parent or relative",
   business: "Phone for my business",
   managed: "Managed service",
+  cctv: "CCTV or alarm monitoring",
+  vpn: "Office VPN or remote access",
+  support: "Reliable internet and support",
 };
 const INTENT_LABEL: Record<string, string> = {
   new: "New system",

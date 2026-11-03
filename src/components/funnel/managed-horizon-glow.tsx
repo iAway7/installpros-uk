@@ -26,7 +26,7 @@ const GLOW = "168, 85, 247";
 /** Room above the horizon for the bloom, in px. */
 const SKY = 420;
 
-export function VoipHorizonGlow({ y = "-28px" }: { y?: string }) {
+export function ManagedHorizonGlow({ y = "-28px" }: { y?: string }) {
   const mask = `radial-gradient(60vw 700px at 50% ${SKY}px, #000 30%, transparent 90%)`;
   return (
     <div

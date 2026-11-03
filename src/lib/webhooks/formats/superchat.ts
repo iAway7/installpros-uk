@@ -45,6 +45,9 @@ export const SUPERCHAT_INSTALL_TYPE: Record<string, string> = {
   // chats was a Starlink customer, so it rides the Starlink Zap (0025) until
   // Will says otherwise; this is the value a Path there would match.
   voip: "VoIP",
+  // The managed service page (/starlink-business), on the same Starlink Zap
+  // (0026).
+  managed: "Managed service",
 };
 const SUPERCHAT_INSTALL_TYPE_FALLBACK = "Starlink Installation";
 
