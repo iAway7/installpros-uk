@@ -18,6 +18,15 @@ import { mailtoUrl, whatsappUrl, SUPPORT_PHONE_HREF } from "@/lib/funnel/contact
  * one instruction that saves the number: don't cancel the old line yet.
  * The need comes in the query string from the form, for analytics.
  */
+/**
+ * Entrance: each block fades up in turn, 70ms apart, so the eye lands on the
+ * badge, then the promise, then the button (Gus, 4 November: the page had no
+ * motion at all). motion-safe only: with reduced motion everything is simply
+ * there, with no delay before it shows.
+ */
+const ENTER = "motion-safe:animate-fade-up";
+const delay = (i: number) => ({ animationDelay: `${i * 70}ms` });
+
 export function VoipThankYouCard() {
   const [lead, setLead] = useState<{ leadId?: string; name?: string; postcode?: string; need?: string }>({});
 
@@ -59,20 +68,20 @@ export function VoipThankYouCard() {
 
   return (
     <div className="w-full max-w-[420px] md:max-w-[560px] md:rounded-2xl md:border md:border-border md:bg-card md:px-12 md:py-11 md:shadow-raised">
-      <p className="inline-flex items-center gap-2 rounded-full border border-success/20 bg-success/10 py-1.5 pl-2.5 pr-3.5">
+      <p className={`inline-flex items-center gap-2 rounded-full border border-success/20 bg-success/10 py-1.5 pl-2.5 pr-3.5 ${ENTER}`} style={delay(0)}>
         <CheckCircle2 className="h-[15px] w-[15px] text-success" aria-hidden="true" />
         <span className="text-caption font-semibold text-success md:text-body-sm">Request received</span>
       </p>
 
-      <h1 className="mt-4 md:mt-5 text-[29px] md:text-[36px] font-bold leading-[1.15] md:leading-[1.12] tracking-[-0.02em] md:tracking-[-0.025em] text-foreground [text-wrap:pretty]">
+      <h1 className={`mt-4 md:mt-5 text-[29px] md:text-[36px] font-bold leading-[1.15] md:leading-[1.12] tracking-[-0.02em] md:tracking-[-0.025em] text-foreground [text-wrap:pretty] ${ENTER}`} style={delay(1)}>
         We&apos;ll call you within 2 hours
       </h1>
-      <p className="mt-3.5 text-body md:text-lead leading-[1.55] md:leading-[1.6] text-muted-foreground [text-wrap:pretty]">
+      <p className={`mt-3.5 text-body md:text-lead leading-[1.55] md:leading-[1.6] text-muted-foreground [text-wrap:pretty] ${ENTER}`} style={delay(2)}>
         From 020 3397 7003, to set up your phone and your number. You&apos;ll
         get your price the same day.
       </p>
 
-      <p className="mt-4 rounded-xl border border-primary/25 bg-primary/[0.06] px-4 py-3 text-body-sm text-foreground">
+      <p className={`mt-4 rounded-xl border border-primary/25 bg-primary/[0.06] px-4 py-3 text-body-sm text-foreground ${ENTER}`} style={delay(3)}>
         <strong>Don&apos;t cancel your old line yet.</strong> We move the number first.
       </p>
 
@@ -87,7 +96,8 @@ export function VoipThankYouCard() {
             lead_id: lead.leadId,
           })
         }
-        className="focus-ring-solid mt-6 md:mt-7 flex h-control-lg items-center justify-center gap-2.5 rounded-lg bg-primary text-button font-[var(--button-weight)] uppercase tracking-[var(--button-tracking)] text-primary-foreground transition-colors duration-quick ease-ds hover:bg-brand-hover"
+        className={`focus-ring-solid mt-6 md:mt-7 flex h-control-lg items-center justify-center gap-2.5 rounded-lg bg-primary text-button font-[var(--button-weight)] uppercase tracking-[var(--button-tracking)] text-primary-foreground transition-colors duration-quick ease-ds hover:bg-brand-hover ${ENTER}`}
+        style={delay(4)}
       >
         <WhatsAppIcon className="h-[19px] w-[19px]" />
         Send your phone bill
@@ -102,13 +112,14 @@ export function VoipThankYouCard() {
             lead_id: lead.leadId,
           })
         }
-        className="focus-ring-solid mt-3 flex h-control-lg items-center justify-center gap-2.5 rounded-lg border border-border bg-background text-button font-[var(--button-weight)] uppercase tracking-[var(--button-tracking)] text-foreground transition-colors duration-quick ease-ds hover:bg-secondary"
+        className={`focus-ring-solid mt-3 flex h-control-lg items-center justify-center gap-2.5 rounded-lg border border-border bg-background text-button font-[var(--button-weight)] uppercase tracking-[var(--button-tracking)] text-foreground transition-colors duration-quick ease-ds hover:bg-secondary ${ENTER}`}
+        style={delay(5)}
       >
         <Phone className="h-[18px] w-[18px]" aria-hidden="true" />
         Call now
       </a>
 
-      <div className="mt-4 flex justify-center">
+      <div className={`mt-4 flex justify-center ${ENTER}`} style={delay(6)}>
         <a
           href={emailHref}
           onClick={() =>
@@ -125,7 +136,7 @@ export function VoipThankYouCard() {
         </a>
       </div>
 
-      <div className="mt-5 flex justify-center">
+      <div className={`mt-5 flex justify-center ${ENTER}`} style={delay(7)}>
         <GoogleRatingBadge tone="light" />
       </div>
     </div>
