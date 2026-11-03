@@ -4,12 +4,11 @@
  * "Horizon Bloom" (paid) for the managed service section; this is our own
  * take on the idea in plain CSS, no canvas, no script, nothing to hydrate.
  *
- * Place it first inside a `relative` wrapper: the horizon's highest point
- * sits `gap` px above that wrapper's top, so whatever follows (the cards)
- * rests on the planet and the light rises behind whatever came before (the
- * heading). Anchoring to the content rather than to a share of the band
- * keeps the line off the cards at every width; the band itself needs
- * `overflow-hidden`.
+ * Place it first inside a `relative` wrapper (the cards' grid). `y` is where
+ * the horizon's highest point sits, measured from that wrapper's top: a
+ * length such as "-28px" (just above it) or "50%" (its middle). The band
+ * itself needs `overflow-hidden`, and the cards need an opaque background
+ * to sit in front of the light rather than let it through.
  *
  * Three layers, all ignored by pointers and screen readers:
  *   - the bloom, a soft ellipse of light rising from the top of the rim;
@@ -27,13 +26,13 @@ const GLOW = "168, 85, 247";
 /** Room above the horizon for the bloom, in px. */
 const SKY = 420;
 
-export function VoipHorizonGlow({ gap = 28 }: { gap?: number }) {
+export function VoipHorizonGlow({ y = "-28px" }: { y?: string }) {
   const mask = `radial-gradient(60vw 700px at 50% ${SKY}px, #000 30%, transparent 90%)`;
   return (
     <div
       aria-hidden="true"
       className="pointer-events-none absolute left-1/2 w-screen -translate-x-1/2"
-      style={{ top: -(SKY + gap), height: SKY + 1400, maskImage: mask, WebkitMaskImage: mask }}
+      style={{ top: `calc(${y} - ${SKY}px)`, height: SKY + 1400, maskImage: mask, WebkitMaskImage: mask }}
     >
       {/* The bloom: light rising over the horizon, strongest at its top. */}
       <div

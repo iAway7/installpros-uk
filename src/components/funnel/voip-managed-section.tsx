@@ -41,13 +41,16 @@ export function VoipManagedSection() {
           </p>
         </div>
 
-        {/* A glowing horizon just above the cards (Gus, 3 November): the
-            light rises behind the heading, the cards rest on the planet. */}
-        <div className="relative mt-14 md:mt-16">
-          <VoipHorizonGlow />
+        {/* A glowing horizon behind the cards (Gus, 3 November), at the
+            middle of the grid: between the two rows on desktop, so the line
+            runs at the height of "No call-out fees", and just above that
+            card on phones, where it is the fourth of six. The cards are
+            opaque and sit in front of it; the light shows in the gaps. */}
+        <div className="relative mt-10 md:mt-12">
+          <VoipHorizonGlow y="50%" />
           <ul className="relative grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
             {ITEMS.map((i) => (
-              <li key={i.title} className="flex flex-col rounded-2xl border border-white/10 bg-white/[0.04] p-5 sm:p-6">
+              <li key={i.title} className="flex flex-col rounded-2xl border border-white/10 bg-[#16181b] p-5 sm:p-6">
                 <span aria-hidden="true" className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/10 text-white">
                   {i.icon}
                 </span>
@@ -62,7 +65,7 @@ export function VoipManagedSection() {
                 November). Many camera apps work without a fixed IP (cloud
                 relay, outbound VPNs), so the page offers to check instead of
                 selling one to everyone. */}
-            <li className="flex flex-col rounded-2xl border border-primary/40 bg-primary/10 p-5 sm:p-6">
+            <li className="flex flex-col rounded-2xl border border-primary/40 bg-[#0e1013] bg-gradient-to-b from-primary/10 to-primary/10 p-5 sm:p-6">
               <h3 className="text-lg font-bold leading-tight text-white">Not sure you need a fixed IP?</h3>
               <p className="mt-1.5 flex-1 text-pretty text-body-sm text-white/70" style={{ lineHeight: "1.55" }}>
                 Many camera apps work without one. Tell us what you&apos;re connecting and we&apos;ll check.
