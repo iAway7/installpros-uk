@@ -7,11 +7,12 @@ import { VoipCountdown } from "./voip-countdown";
  * going (BT cut it, or they are leaving BT for Starlink), so the number comes
  * first. What happens on the day is what no competitor explains (0 of 12).
  *
- * Gus, 3 November: the heading centred like "The phone", then a big count of
- * the days left and a button to the form. The count is the date said as a
- * number, not scare copy: no "act now", nothing that mimics a provider
- * letter. If the date moves, SWITCH_OFF in voip-countdown.tsx and the two
- * lines that name it change.
+ * Gus, 3 November: the heading centred like "The phone", then a countdown
+ * in the style of React Bits' Counter demo (days, hours, minutes, seconds)
+ * and a button to the form. The date itself moved into the line under it.
+ * The count is the date said as numbers, not scare copy: no "act now",
+ * nothing that mimics a provider letter. If the date moves, SWITCH_OFF in
+ * voip-countdown.tsx and the lines that name it change.
  */
 export function VoipSwitchoffSection() {
   return (
@@ -22,11 +23,11 @@ export function VoipSwitchoffSection() {
           <h2 className="mt-4 text-balance h2-section text-foreground">Your landline is moving to the internet.</h2>
         </div>
 
-        <div className="mx-auto mt-10 max-w-2xl text-center md:mt-14">
+        <div className="mx-auto mt-10 max-w-3xl text-center md:mt-14">
           <VoipCountdown />
 
           <p className="mx-auto mt-8 max-w-xl text-pretty text-body text-muted-foreground md:mt-10 md:text-lg" style={{ lineHeight: "1.6" }}>
-            <strong className="text-foreground">On the day,</strong> a line that hasn&apos;t moved stops working
+            <strong className="text-foreground">On 31 January 2027,</strong> a line that hasn&apos;t moved stops working
             normally, and its number can be lost. Moving it now keeps your number safe.
           </p>
 
