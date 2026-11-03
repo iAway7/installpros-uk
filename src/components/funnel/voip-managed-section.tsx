@@ -8,11 +8,13 @@ import { VoipHorizonGlow } from "./voip-horizon-glow";
  * or port forwarding (8 chats), and someone to call when it breaks. What
  * they complained about: "It's just a chat line".
  *
- * The fixed IP is honest about how it works (our router, not Starlink: its
- * "truly static IPs are not available"). Kept off until Will answers:
- * "Starlink subscription included" (question 15, Starlink's bundling
- * clause), any uptime figure, "24/7" (Starlink already offers it), real
- * support hours (12). The extras assume question 11.
+ * No fixed IP promised yet: Starlink says "truly static IPs are not
+ * available", and whether InstallPros' static IP is its own tunnel (stays
+ * put) or Starlink's Priority public IP (can change) waits on question 16,
+ * so the first card promises what works either way. Also kept off until
+ * Will answers: "Starlink subscription included" (question 15, Starlink's
+ * bundling clause), any uptime figure, "24/7" (Starlink already offers it),
+ * real support hours (12). The extras assume question 11.
  */
 
 type Item = { icon: ReactNode; title: string; detail: string };
@@ -20,7 +22,15 @@ type Item = { icon: ReactNode; title: string; detail: string };
 const ICON = "h-5 w-5";
 
 const ITEMS: Item[] = [
-  { icon: <Globe className={ICON} />, title: "A fixed IP that stays put", detail: "Through our router, so it doesn't change if you move." },
+  // Was "A fixed IP that stays put. Through our router, so it doesn't change
+  // if you move." True only if InstallPros runs its own tunnel; if it is
+  // Starlink's Priority public IP, that address can change. Back once Will
+  // answers question 16 (Gus, 3 November).
+  {
+    icon: <Globe className={ICON} />,
+    title: "Remote access that works",
+    detail: "CCTV monitoring, office VPN and port forwarding, set up on Starlink.",
+  },
   { icon: <RadioTower className={ICON} />, title: "Backup when the dish drops", detail: "Switches to 4G/5G automatically." },
   { icon: <Headset className={ICON} />, title: "One team to call", detail: "A UK number with real people on the end." },
   { icon: <Truck className={ICON} />, title: "No call-out fees", detail: "If something needs looking at, we come out." },
