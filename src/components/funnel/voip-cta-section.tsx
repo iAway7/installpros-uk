@@ -31,8 +31,15 @@ export function VoipCtaSection({ formName }: { formName: string }) {
             the form; the lit window still shows through at the right. */}
         <div
           aria-hidden="true"
-          className="absolute inset-0"
+          className="absolute inset-0 hidden md:block"
           style={{ background: "linear-gradient(to bottom, rgba(14,16,19,0.55), rgba(14,16,19,0.7) 50%, rgba(14,16,19,0.82))" }}
+        />
+        {/* Phones: darker, because the lit window lands behind the managed
+            link under the form. */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 md:hidden"
+          style={{ background: "linear-gradient(to bottom, rgba(14,16,19,0.6), rgba(14,16,19,0.8) 45%, rgba(14,16,19,0.9))" }}
         />
         <div className="container relative mx-auto">
           <h2 className="mb-4 h2-section text-white">Keep your number. Get your price today.</h2>

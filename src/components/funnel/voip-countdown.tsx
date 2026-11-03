@@ -48,6 +48,11 @@ const TILE: CSSProperties = {
  * Counters (src/components/Counter.tsx, React Bits, free) with Gus's
  * settings; each digit rolls with a little motion blur as it changes.
  *
+ * The card clips its overflow: each Counter keeps an invisible row of all
+ * ten digits for measuring, which otherwise stuck out past the right edge
+ * and let a 320px phone scroll sideways. Below 350px the digits shrink a
+ * little so the four pairs fit.
+ *
  * Counted in the browser, once a second: the page is static, so a value
  * rendered at build time would be stale. Until the first tick the tiles hold
  * their space empty, so nothing jumps. Once the date has passed the card
@@ -72,14 +77,14 @@ export function VoipCountdown() {
     <div
       role="timer"
       aria-label="Time left until copper landlines close on 31 January 2027"
-      className="mx-auto w-full max-w-3xl rounded-3xl border border-[#e8e9ed] bg-gradient-to-b from-white to-[#f7f7f9] px-4 pb-6 pt-6 text-foreground shadow-[0_24px_60px_-20px_rgba(15,17,21,0.22)] sm:px-8 sm:pb-8 sm:pt-7"
+      className="mx-auto w-full max-w-3xl overflow-hidden rounded-3xl border border-[#e8e9ed] bg-gradient-to-b from-white to-[#f7f7f9] px-4 pb-6 pt-6 text-foreground shadow-[0_24px_60px_-20px_rgba(15,17,21,0.22)] sm:px-8 sm:pb-8 sm:pt-7"
     >
       <p className="text-body-sm text-muted-foreground md:text-body">Copper landlines close in</p>
 
       {passed ? (
         <p className="mt-4 text-[32px] font-semibold leading-tight md:text-[48px]">31 January 2027</p>
       ) : (
-        <div className="mt-4 flex items-start justify-center gap-1.5 text-[30px] font-semibold leading-none min-[400px]:text-[36px] sm:gap-3 sm:text-[52px] md:text-[64px]">
+        <div className="mt-4 flex items-start justify-center gap-1 text-[26px] font-semibold leading-none min-[350px]:gap-1.5 min-[350px]:text-[30px] min-[400px]:text-[36px] sm:gap-3 sm:text-[52px] md:text-[64px]">
           {UNITS.map((u, i) => (
             <Fragment key={u.key}>
               {i > 0 && (
