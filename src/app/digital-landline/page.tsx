@@ -5,6 +5,7 @@ import { WhatsAppFab } from "@/components/funnel/whatsapp-fab";
 import { VoipHeroSection } from "@/components/funnel/voip-hero-section";
 import { VoipNumberSection } from "@/components/funnel/voip-number-section";
 import { VoipPhoneSection } from "@/components/funnel/voip-phone-section";
+import { VoipTermsSection } from "@/components/funnel/voip-terms-section";
 import { VoipPowerSection } from "@/components/funnel/voip-power-section";
 import { VoipParentSection } from "@/components/funnel/voip-parent-section";
 import { TrustpilotSection } from "@/components/funnel/trustpilot-section";
@@ -110,6 +111,7 @@ export default function DigitalLandlinePage() {
           <ScrollReveal />
           <VoipNumberSection />
           <VoipPhoneSection />
+          <VoipTermsSection />
           <VoipPowerSection />
           <VoipParentSection />
           {/* The company's reviews, Trustpilot then Google, as on the

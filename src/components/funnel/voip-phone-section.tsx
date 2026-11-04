@@ -15,7 +15,8 @@ import { Cable, Smartphone } from "lucide-react";
  * Assumptions until Will answers (voip-research/supuestos-para-will.md):
  * a cordless DECT set (question 7), a large-key option (7), extra handsets
  * worded to be true either way (4), old phones with an adapter and a free
- * check, as his WordPress page says (3), UK calls included (9).
+ * check, as his WordPress page says (3). The calls line moved to the terms
+ * section below, 4 November.
  */
 
 type Photo = { src: string; srcSet: string; alt: string; title: string; detail: string };
@@ -95,7 +96,6 @@ export function VoipPhoneSection() {
           ))}
         </ul>
 
-        <p className="mt-8 text-center text-body text-muted-foreground md:mt-10">Calls to UK landlines and mobiles are included.</p>
       </div>
     </section>
   );
