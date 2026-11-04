@@ -4,8 +4,7 @@ import { HeroSection } from "@/components/funnel/hero-section";
 import { WhatsAppFab } from "@/components/funnel/whatsapp-fab";
 import { SectorsSection } from "@/components/funnel/sectors-section";
 import { WhatItRunsSection } from "@/components/funnel/what-it-runs-section";
-import { CustomerStoriesSection } from "@/components/funnel/customer-stories-section";
-import { TrustpilotSection } from "@/components/funnel/trustpilot-section";
+import { ReviewsPairedSection } from "@/components/funnel/reviews-paired-section";
 import { WhyInstallProsSection, COMMERCIAL_FEATURES } from "@/components/funnel/why-installpros-section";
 import { ClientLogosSection } from "@/components/funnel/client-logos-section";
 import { CoverageMapSection } from "@/components/funnel/coverage-map-section";
@@ -237,8 +236,7 @@ export default function CommercialStarlinkInstallationPage() {
 
               Backgrounds still alternate without it: WhatItRuns is
               bg-secondary and Trustpilot is bg-background. */}
-          <TrustpilotSection />
-          <CustomerStoriesSection />
+          <ReviewsPairedSection />
           <EquipmentSection equipment={COMMERCIAL_EQUIPMENT} />
           {/* Straight after the equipment card on purpose: the reader has just
               seen what goes on the roof, and the next thought for anyone in a

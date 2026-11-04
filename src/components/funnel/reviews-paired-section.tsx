@@ -1,4 +1,4 @@
-import { getVoipReviews, GOOGLE_URL, TRUSTPILOT_URL } from "@/lib/reviews/voip-reviews";
+import { getPairedReviews, GOOGLE_URL, TRUSTPILOT_URL } from "@/lib/reviews/paired-reviews";
 import { ReviewsCarousel } from "./reviews-carousel";
 import { TrustpilotStarMark } from "./trustpilot-marks";
 
@@ -15,15 +15,16 @@ export function GoogleG({ size = 22 }: { size?: number }) {
 }
 
 /**
- * The reviews on the digital landline page (Gus, 4 November, picked over a
- * mixed grid): the Trustpilot and Google ratings side by side under the
- * heading, Google first, then the two sliders one straight after the other.
- * Replaces the pair
- * TrustpilotSection + CustomerStoriesSection on this page only, where the
- * Google rating sat alone between the sliders and pushed them apart.
+ * The review block on the landings (Gus, 4 November: tried on the digital
+ * landline page, picked over a mixed grid, then applied to every landing):
+ * the Google and Trustpilot ratings side by side under the heading, then the
+ * two sliders one straight after the other. Replaces the pair
+ * TrustpilotSection + CustomerStoriesSection, where the Google rating sat
+ * alone between the sliders and pushed them apart. /install-quote keeps the
+ * old pair: it is live in Ads and measured as it is.
  */
-export async function VoipReviewsPaired() {
-  const { trustpilot, google } = await getVoipReviews();
+export async function ReviewsPairedSection() {
+  const { trustpilot, google } = await getPairedReviews();
 
   return (
     <section id="trustpilot" className="w-full scroll-mt-28 bg-background py-16 md:py-24">
@@ -69,10 +70,10 @@ export async function VoipReviewsPaired() {
           </div>
         </div>
 
-        {/* Cards without their shadow on this page (Gus, 4 November). Done
-            from here so the shared ReviewCard keeps it everywhere else. Both
-            sliders use the "1 / n" counter on phones, so Google's five
-            reviews navigate like Trustpilot's fifteen. */}
+        {/* Cards without their shadow (Gus, 4 November). Done from here so
+            the shared ReviewCard keeps it on /install-quote. Both sliders use
+            the "1 / n" counter on phones, so Google's five reviews navigate
+            like Trustpilot's fifteen. */}
         <div className="[&_[data-card]>div]:shadow-none">
           <div className="mt-12 md:mt-16">
             <ReviewsCarousel reviews={trustpilot.reviews} source="trustpilot" counter />

@@ -3,8 +3,7 @@ import { MainHeader } from "@/components/funnel/main-header";
 import { WeatherHero } from "@/components/funnel/weather-hero";
 import { HeroTrustBar } from "@/components/funnel/hero-trust-bar";
 import { WhatsAppFab } from "@/components/funnel/whatsapp-fab";
-import { CustomerStoriesSection } from "@/components/funnel/customer-stories-section";
-import { TrustpilotSection } from "@/components/funnel/trustpilot-section";
+import { ReviewsPairedSection } from "@/components/funnel/reviews-paired-section";
 import { WhyInstallProsSection, VEHICLE_FEATURES } from "@/components/funnel/why-installpros-section";
 import { VehicleFitSection } from "@/components/funnel/vehicle-fit-section";
 import { HowItWorksSection } from "@/components/funnel/how-it-works-section";
@@ -85,8 +84,7 @@ export default function StarlinkInstallationForCars2Page() {
           <VehicleFitSection />
           <HowItWorksSection />
           <RoadPlansSection />
-          <TrustpilotSection />
-          <CustomerStoriesSection />
+          <ReviewsPairedSection />
           <VehicleCoverageMapSection leadTime="7 days" />
           <TrackRecordSection />
           <FaqSectionAlt faqs={VEHICLE_FAQS} />

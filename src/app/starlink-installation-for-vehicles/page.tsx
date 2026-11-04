@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import { MainHeader } from "@/components/funnel/main-header";
 import { HeroSection } from "@/components/funnel/hero-section";
 import { WhatsAppFab } from "@/components/funnel/whatsapp-fab";
-import { CustomerStoriesSection } from "@/components/funnel/customer-stories-section";
-import { TrustpilotSection } from "@/components/funnel/trustpilot-section";
+import { ReviewsPairedSection } from "@/components/funnel/reviews-paired-section";
 import { WhyInstallProsSection, VEHICLE_FEATURES } from "@/components/funnel/why-installpros-section";
 import { FinishedInstallSection } from "@/components/funnel/finished-install-section";
 import { InstallVideoSection } from "@/components/funnel/install-video-section";
@@ -250,8 +249,7 @@ export default function StarlinkInstallationForCarsPage() {
               They sit after PermanentOrRemovable rather than before it because
               that block closes the fit question, and a review rail reads as a
               change of subject. */}
-          <TrustpilotSection />
-          <CustomerStoriesSection />
+          <ReviewsPairedSection />
           {/* The process, in four numbered steps, ending on the one action this
               segment converts on: sending a photo. Where the job happens is
               step three. This is where the open vehicle conversations in the

@@ -7,8 +7,7 @@ import { ManagedBreaksSection } from "@/components/funnel/managed-breaks-section
 import { ManagedFixedIpSection } from "@/components/funnel/managed-fixed-ip-section";
 import { ManagedPersonSection } from "@/components/funnel/managed-person-section";
 import { ManagedIncludedSection } from "@/components/funnel/managed-included-section";
-import { TrustpilotSection } from "@/components/funnel/trustpilot-section";
-import { CustomerStoriesSection } from "@/components/funnel/customer-stories-section";
+import { ReviewsPairedSection } from "@/components/funnel/reviews-paired-section";
 import { ClientLogosSection } from "@/components/funnel/client-logos-section";
 import { TrackRecordSection } from "@/components/funnel/track-record-section";
 import { ManagedPartnersSection } from "@/components/funnel/managed-partners-section";
@@ -111,8 +110,7 @@ export default function ManagedStarlinkPage() {
           <ManagedIncludedSection />
           {/* The company's reviews, Trustpilot then Google, as on the other
               pages. About its engineers and service, not managed service. */}
-          <TrustpilotSection />
-          <CustomerStoriesSection />
+          <ReviewsPairedSection />
           <TrackRecordSection />
           <ManagedRuralSection />
           <ManagedHowItWorksSection />

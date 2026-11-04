@@ -8,7 +8,7 @@ import { VoipPhoneSection } from "@/components/funnel/voip-phone-section";
 import { VoipTermsSection } from "@/components/funnel/voip-terms-section";
 import { VoipPowerSection } from "@/components/funnel/voip-power-section";
 import { VoipParentSection } from "@/components/funnel/voip-parent-section";
-import { VoipReviewsPaired } from "@/components/funnel/voip-reviews-paired";
+import { ReviewsPairedSection } from "@/components/funnel/reviews-paired-section";
 import { VoipSwitchoffSection } from "@/components/funnel/voip-switchoff-section";
 import { VoipBusinessSection } from "@/components/funnel/voip-business-section";
 import { VoipHowItWorksSection } from "@/components/funnel/voip-how-it-works-section";
@@ -119,7 +119,7 @@ export default function DigitalLandlinePage() {
               November. Both ratings sit together under the heading and the two
               sliders follow each other (Gus's pick of two trials, 4 November;
               the other, a mixed grid, was dropped). */}
-          <VoipReviewsPaired />
+          <ReviewsPairedSection />
           <VoipSwitchoffSection />
           <VoipBusinessSection />
           <VoipHowItWorksSection />

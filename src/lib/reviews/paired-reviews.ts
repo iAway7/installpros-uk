@@ -3,12 +3,12 @@ import { getGoogleReviews, type Review } from "./google-reviews";
 import seed from "@/data/trustpilot-seed.json";
 
 /**
- * Both platforms' reviews and totals in one call, for the digital landline
- * page's reviews (voip-reviews-paired.tsx, Gus, 4 November).
+ * Both platforms' reviews and totals in one call, for the review block on
+ * the landings (reviews-paired-section.tsx, Gus, 4 November).
  *
  * The fallbacks are copies of the ones in trustpilot-section.tsx and
- * customer-stories-section.tsx, on purpose: those sections serve every other
- * page and stay as they are.
+ * customer-stories-section.tsx, which still serve /install-quote (live in
+ * Ads, not touched) and the Hikvision page until it moves over.
  */
 
 interface SeedEntry {
@@ -55,7 +55,7 @@ export interface PlatformReviews {
   reviews: Review[];
 }
 
-export async function getVoipReviews(): Promise<{ trustpilot: PlatformReviews; google: PlatformReviews }> {
+export async function getPairedReviews(): Promise<{ trustpilot: PlatformReviews; google: PlatformReviews }> {
   const [tp, g] = await Promise.all([getTrustpilotReviews(), getGoogleReviews()]);
 
   const tpReviews: Review[] = tp.reviews.length

@@ -3,8 +3,7 @@ import { MainHeader } from "@/components/funnel/main-header";
 import { HeroSection } from "@/components/funnel/hero-section";
 import { WhatsAppFab } from "@/components/funnel/whatsapp-fab";
 import { CoverageSection } from "@/components/funnel/coverage-section";
-import { CustomerStoriesSection } from "@/components/funnel/customer-stories-section";
-import { TrustpilotSection } from "@/components/funnel/trustpilot-section";
+import { ReviewsPairedSection } from "@/components/funnel/reviews-paired-section";
 import { WhyInstallProsSection } from "@/components/funnel/why-installpros-section";
 import { CoverageMapSection } from "@/components/funnel/coverage-map-section";
 import { EquipmentSection } from "@/components/funnel/equipment-section";
@@ -72,8 +71,7 @@ export default function StarlinkInstallationPage() {
           <WhatsAppFab />
           <WhyInstallProsSection />
           <CoverageSection />
-          <TrustpilotSection />
-          <CustomerStoriesSection />
+          <ReviewsPairedSection />
           <EquipmentSection />
           <InstallVideoSection />
           <BeforeAfterSection />

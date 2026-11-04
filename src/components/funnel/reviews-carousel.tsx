@@ -21,7 +21,7 @@ export function ReviewsCarousel({
   reviews: Review[];
   source?: "google" | "trustpilot";
   /** Mobile: always the "1 / 6" counter, never dots, so two sliders on one
-   *  page navigate alike (the digital landline page). Default: dots up to
+   *  page navigate alike (reviews-paired-section.tsx). Default: dots up to
    *  DOTS_MAX, as before. */
   counter?: boolean;
 }) {

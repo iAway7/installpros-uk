@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import { MainHeader } from "@/components/funnel/main-header";
 import { HeroSection } from "@/components/funnel/hero-section";
 import { WhatsAppFab } from "@/components/funnel/whatsapp-fab";
-import { CustomerStoriesSection } from "@/components/funnel/customer-stories-section";
-import { TrustpilotSection } from "@/components/funnel/trustpilot-section";
+import { ReviewsPairedSection } from "@/components/funnel/reviews-paired-section";
 import { WhyInstallProsSection, STATIC_FEATURES } from "@/components/funnel/why-installpros-section";
 import { StaticFitSection } from "@/components/funnel/static-fit-section";
 import { StaticCostSection } from "@/components/funnel/static-cost-section";
@@ -162,8 +161,7 @@ export default function StarlinkInstallationForStaticsPage() {
               drilling. */}
           <StaticFitSection />
           {/* Proof before process, same order the cars page settled on. */}
-          <TrustpilotSection />
-          <CustomerStoriesSection />
+          <ReviewsPairedSection />
           {/* Reversed against the vehicle page: the price comes before the
               photograph, because roughly 50 of the 175 threads end on a park
               name or a photo request with no price ever arriving, and the

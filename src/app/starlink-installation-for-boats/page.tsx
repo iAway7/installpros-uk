@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import { MainHeader } from "@/components/funnel/main-header";
 import { HeroSection } from "@/components/funnel/hero-section";
 import { WhatsAppFab } from "@/components/funnel/whatsapp-fab";
-import { CustomerStoriesSection } from "@/components/funnel/customer-stories-section";
-import { TrustpilotSection } from "@/components/funnel/trustpilot-section";
+import { ReviewsPairedSection } from "@/components/funnel/reviews-paired-section";
 import { WhyInstallProsSection, MARINE_FEATURES } from "@/components/funnel/why-installpros-section";
 import { MarineMooringSection } from "@/components/funnel/marine-mooring-section";
 import { MarineCostSection } from "@/components/funnel/marine-cost-section";
@@ -65,7 +64,7 @@ import { ExperimentProvider } from "@/components/experiments/experiment-provider
  *    first card.
  * 3. REVIEWS ARE NOT FILTERED. Migration 0012 tags Trustpilot reviews by
  *    segment so this page could show marine ones (the Cuxton houseboat left
- *    one naming the engineer). TrustpilotSection does not take a tag yet, so
+ *    one naming the engineer). The review block does not take a tag yet, so
  *    it shows the company-wide rail.
  * 4. NOT IN THE FUNNEL YET. No link points here and no route in sitemap.ts,
  *    deliberately: see the noindex note below.
@@ -179,8 +178,7 @@ export default function StarlinkInstallationForBoatsPage() {
               card confirms the solution the customer usually arrives with. */}
           <MarineFitSection />
           {/* Proof before process, same order as cars and statics. */}
-          <TrustpilotSection />
-          <CustomerStoriesSection />
+          <ReviewsPairedSection />
           {/* Photo first, unlike statics, because for a coastal cruiser the
               photograph replaces a two-and-a-half-hour drive to the boat. */}
           <MarineHowItWorksSection />

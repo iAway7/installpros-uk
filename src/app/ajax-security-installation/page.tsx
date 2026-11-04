@@ -8,8 +8,7 @@ import { SecurityHomeSection } from "@/components/funnel/security-home-section";
 import { SecurityAppSection } from "@/components/funnel/security-app-section";
 import { SecurityEquipmentSection } from "@/components/funnel/security-equipment-section";
 import { SecurityCompareSection } from "@/components/funnel/security-compare-section";
-import { TrustpilotSection } from "@/components/funnel/trustpilot-section";
-import { CustomerStoriesSection } from "@/components/funnel/customer-stories-section";
+import { ReviewsPairedSection } from "@/components/funnel/reviews-paired-section";
 import { SecurityHowItWorksSection } from "@/components/funnel/security-how-it-works-section";
 import { FaqSectionAlt } from "@/components/funnel/faq-section-alt";
 import { SECURITY_FAQS } from "@/lib/funnel/security-faqs";
@@ -203,8 +202,7 @@ export default function AjaxSecurityInstallationPage() {
               ("Five stars, everywhere we go") makes no alarm claim, so the
               page stays honest without it. What must not be added: any copy
               presenting these as alarm or "homes we have protected" reviews. */}
-          <TrustpilotSection />
-          <CustomerStoriesSection />
+          <ReviewsPairedSection />
           <SecurityHowItWorksSection />
           <FaqSectionAlt faqs={SECURITY_FAQS} />
           <SecurityCtaSection defaultService="security" formName="ajax_security" />
