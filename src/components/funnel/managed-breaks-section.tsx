@@ -19,26 +19,10 @@ import { WhatsAppIcon } from "./ui/whatsapp-icon";
 const ICON = "h-5 w-5";
 
 const ITEMS = [
-  {
-    icon: <Cctv className={ICON} />,
-    title: "Monitored CCTV and alarms",
-    detail: "The monitoring company can't reach your recorder.",
-  },
-  {
-    icon: <Network className={ICON} />,
-    title: "Office VPN",
-    detail: "Nobody can connect in to the office from outside.",
-  },
-  {
-    icon: <Router className={ICON} />,
-    title: "Port forwarding",
-    detail: "Remote desktop, servers, anything you open a port for.",
-  },
-  {
-    icon: <Store className={ICON} />,
-    title: "Shop and business systems",
-    detail: "Tills, printers and suppliers that expect a fixed address.",
-  },
+  { icon: <Cctv className={ICON} />, title: "Monitored CCTV and alarms", detail: "The monitoring company can't reach your recorder." },
+  { icon: <Network className={ICON} />, title: "Office VPN", detail: "Nobody can connect in to the office from outside." },
+  { icon: <Router className={ICON} />, title: "Port forwarding", detail: "Remote desktop, servers, anything you open a port for." },
+  { icon: <Store className={ICON} />, title: "Shop and business systems", detail: "Tills, printers and suppliers that expect a fixed address." },
 ];
 
 export function ManagedBreaksSection() {
@@ -48,26 +32,15 @@ export function ManagedBreaksSection() {
         <div data-reveal className="mx-auto max-w-2xl text-center">
           <p className="eyebrow">Why it stops working</p>
           <h2 className="mt-4 text-balance h2-section text-foreground">Starlink blocks incoming connections.</h2>
-          <p
-            className="mt-4 text-pretty text-body text-muted-foreground md:mt-5 md:text-lg"
-            style={{ lineHeight: "1.6" }}
-          >
+          <p className="mt-4 text-pretty text-body text-muted-foreground md:mt-5 md:text-lg" style={{ lineHeight: "1.6" }}>
             It shares one address between many customers, so nothing outside can connect in. That breaks:
           </p>
         </div>
 
         <ul className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 md:mt-12 lg:grid-cols-4">
           {ITEMS.map((i, n) => (
-            <li
-              key={i.title}
-              data-reveal
-              style={{ transitionDelay: `${n * 80}ms` }}
-              className="flex flex-col rounded-2xl bg-secondary p-6"
-            >
-              <span
-                aria-hidden="true"
-                className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary"
-              >
+            <li key={i.title} data-reveal style={{ transitionDelay: `${n * 80}ms` }} className="flex flex-col rounded-2xl bg-secondary p-6">
+              <span aria-hidden="true" className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
                 {i.icon}
               </span>
               <h3 className="mt-4 text-lg font-bold leading-tight text-foreground">{i.title}</h3>
@@ -78,39 +51,20 @@ export function ManagedBreaksSection() {
           ))}
         </ul>
 
-        <div className="mx-auto mt-10 grid max-w-5xl gap-8 md:mt-14 md:grid-cols-2 md:items-center md:gap-14">
-          {/* Gus's render, 4 November (prompt 3, second round): the recorder,
-              the routers and too many cables on a farm office shelf. */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            data-reveal
-            src="/funnel/managed-shelf-1000.webp"
-            srcSet="/funnel/managed-shelf-640.webp 640w, /funnel/managed-shelf-1000.webp 1000w"
-            sizes="(min-width: 768px) 50vw, 100vw"
-            alt="A CCTV recorder and two routers tangled in cables on a farm office shelf"
-            loading="lazy"
-            decoding="async"
-            className="aspect-[4/3] w-full rounded-2xl object-cover"
-          />
-          <div
-            data-reveal
-            style={{ transitionDelay: "120ms" }}
-            className="flex flex-col items-center gap-5 text-center md:items-start md:text-left"
+        <div data-reveal className="mx-auto mt-10 flex max-w-xl flex-col items-center gap-5 text-center md:mt-12">
+          <p className="text-balance text-body text-muted-foreground">
+            <strong className="text-foreground">Not sure you need a fixed IP?</strong> Many systems work without one.
+            Tell us what you run and we&apos;ll check first.
+          </p>
+          <a
+            href={whatsappUrl("Hi, can you check if I need a fixed IP on Starlink? What I run: ")}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="focus-ring-solid flex h-control-lg w-full items-center justify-center gap-2 rounded-lg border border-foreground/20 bg-transparent px-6 text-button font-[var(--button-weight)] uppercase tracking-[var(--button-tracking)] text-foreground transition-colors duration-quick ease-ds hover:bg-secondary sm:w-auto"
           >
-            <p className="text-balance text-body text-muted-foreground md:text-lg">
-              <strong className="text-foreground">Not sure you need a fixed IP?</strong> Many systems work without one.
-              Tell us what you run and we&apos;ll check first.
-            </p>
-            <a
-              href={whatsappUrl("Hi, can you check if I need a fixed IP on Starlink? What I run: ")}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="focus-ring-solid flex h-control-lg w-full items-center justify-center gap-2 rounded-lg border border-foreground/20 bg-transparent px-6 text-button font-[var(--button-weight)] uppercase tracking-[var(--button-tracking)] text-foreground transition-colors duration-quick ease-ds hover:bg-secondary sm:w-auto"
-            >
-              <WhatsAppIcon className="h-[19px] w-[19px]" />
-              Ask us to check
-            </a>
-          </div>
+            <WhatsAppIcon className="h-[19px] w-[19px]" />
+            Ask us to check
+          </a>
         </div>
       </div>
     </section>
