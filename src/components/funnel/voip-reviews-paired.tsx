@@ -69,11 +69,15 @@ export async function VoipReviewsPaired() {
           </div>
         </div>
 
-        <div className="mt-12 md:mt-16">
-          <ReviewsCarousel reviews={trustpilot.reviews} source="trustpilot" />
-        </div>
-        <div className="mt-6 md:mt-8">
-          <ReviewsCarousel reviews={google.reviews} />
+        {/* Cards without their shadow on this page (Gus, 4 November). Done
+            from here so the shared ReviewCard keeps it everywhere else. */}
+        <div className="[&_[data-card]>div]:shadow-none">
+          <div className="mt-12 md:mt-16">
+            <ReviewsCarousel reviews={trustpilot.reviews} source="trustpilot" />
+          </div>
+          <div className="mt-6 md:mt-8">
+            <ReviewsCarousel reviews={google.reviews} />
+          </div>
         </div>
       </div>
     </section>
