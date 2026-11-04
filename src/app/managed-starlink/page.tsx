@@ -9,6 +9,8 @@ import { ManagedPersonSection } from "@/components/funnel/managed-person-section
 import { ManagedIncludedSection } from "@/components/funnel/managed-included-section";
 import { TrustpilotSection } from "@/components/funnel/trustpilot-section";
 import { CustomerStoriesSection } from "@/components/funnel/customer-stories-section";
+import { ClientLogosSection } from "@/components/funnel/client-logos-section";
+import { TrackRecordSection } from "@/components/funnel/track-record-section";
 import { ManagedPartnersSection } from "@/components/funnel/managed-partners-section";
 import { ManagedRuralSection } from "@/components/funnel/managed-rural-section";
 import { ManagedHowItWorksSection } from "@/components/funnel/managed-how-it-works-section";
@@ -64,15 +66,15 @@ export const metadata: Metadata = {
   description:
     "Starlink for business, looked after. Monitored CCTV, office VPN and port forwarding set up on Starlink, a 4G/5G backup, and one number to call when it drops.",
   robots: { index: false, follow: false },
-  alternates: { canonical: "/starlink-business" },
+  alternates: { canonical: "/managed-starlink" },
   openGraph: {
     title: "Managed Starlink for Business | Fixed IP, Backup and Support",
     description: "Monitored CCTV, office VPN and a person to call when it drops.",
-    url: "/starlink-business",
+    url: "/managed-starlink",
   },
 };
 
-export default function StarlinkBusinessPage() {
+export default function ManagedStarlinkPage() {
   if (process.env.VERCEL_ENV === "production") notFound();
   return (
     <div className="theme-editorial min-h-screen bg-background text-foreground">
@@ -97,6 +99,11 @@ export default function StarlinkBusinessPage() {
           {/* Fades in the blocks marked data-reveal as they scroll into
               view (Gus, 4 November). */}
           <ScrollReveal />
+          {/* The commercial page's logos and numbers, already approved there
+              (4 November): proof for a business buyer, right under the hero.
+              "Trusted to install for", so it claims installs, not managed
+              service. */}
+          <ClientLogosSection />
           <ManagedBreaksSection />
           <ManagedFixedIpSection />
           <ManagedPersonSection />
@@ -106,6 +113,7 @@ export default function StarlinkBusinessPage() {
               pages. About its engineers and service, not managed service. */}
           <TrustpilotSection />
           <CustomerStoriesSection />
+          <TrackRecordSection />
           <ManagedRuralSection />
           <ManagedHowItWorksSection />
           <FaqSectionAlt faqs={MANAGED_FAQS} />

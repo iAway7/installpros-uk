@@ -46,6 +46,14 @@ export function ManagedCtaSection({ formName }: { formName: string }) {
           <div className="mx-auto w-full md:max-w-2xl">
             <ManagedLeadForm formName={formName} position="final_cta" />
           </div>
+          {/* The other half of the split with the commercial page (Gus, 4
+              November): that one sells the install, this one what comes after. */}
+          <p className="mt-6 text-body-sm text-white/60">
+            No Starlink yet?{" "}
+            <a href="/commercial-starlink-installation" className="focus-ring rounded-sm font-semibold text-white underline underline-offset-4">
+              We install it too
+            </a>
+          </p>
         </div>
       </div>
 
