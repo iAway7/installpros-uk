@@ -16,9 +16,14 @@ const DOTS_MAX = 7;
 export function ReviewsCarousel({
   reviews,
   source = "google",
+  counter = false,
 }: {
   reviews: Review[];
   source?: "google" | "trustpilot";
+  /** Mobile: always the "1 / 6" counter, never dots, so two sliders on one
+   *  page navigate alike (the digital landline page). Default: dots up to
+   *  DOTS_MAX, as before. */
+  counter?: boolean;
 }) {
   const track = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
@@ -105,7 +110,7 @@ export function ReviewsCarousel({
               is what it was doing across the whole site. Past DOTS_MAX a
               counter says the same thing in 40px and scales to any number;
               nobody aims for dot eleven anyway. */}
-          {reviews.length <= DOTS_MAX ? (
+          {!counter && reviews.length <= DOTS_MAX ? (
             <div className="flex items-center">
               {reviews.map((_, i) => (
                 <button

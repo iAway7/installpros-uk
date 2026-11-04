@@ -70,13 +70,15 @@ export async function VoipReviewsPaired() {
         </div>
 
         {/* Cards without their shadow on this page (Gus, 4 November). Done
-            from here so the shared ReviewCard keeps it everywhere else. */}
+            from here so the shared ReviewCard keeps it everywhere else. Both
+            sliders use the "1 / n" counter on phones, so Google's five
+            reviews navigate like Trustpilot's fifteen. */}
         <div className="[&_[data-card]>div]:shadow-none">
           <div className="mt-12 md:mt-16">
-            <ReviewsCarousel reviews={trustpilot.reviews} source="trustpilot" />
+            <ReviewsCarousel reviews={trustpilot.reviews} source="trustpilot" counter />
           </div>
           <div className="mt-6 md:mt-8">
-            <ReviewsCarousel reviews={google.reviews} />
+            <ReviewsCarousel reviews={google.reviews} counter />
           </div>
         </div>
       </div>
