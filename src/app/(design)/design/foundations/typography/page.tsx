@@ -1,5 +1,6 @@
 import { PageHeader, Section, Mono, Rule } from "../../_components/docs";
 import { TypeScale } from "./type-scale";
+import { DensityOnly } from "../../_components/density";
 
 export const metadata = { title: "Typography" };
 
@@ -65,6 +66,7 @@ export default function TypographyPage() {
         </Rule>
       </Section>
 
+      <DensityOnly density="editorial">
       <Section
         title="Marketing display sizes"
         note="Editorial only. The large headlines on the landing pages are set one by one, not from the scale: a 64px headline is a decision for one element, not a size anyone else should reach for."
@@ -102,6 +104,17 @@ export default function TypographyPage() {
           <li><Mono>200 ExtraLight</Mono>: Display-XL only. Big numbers need the thin stroke to stop looking like a shout.</li>
         </ul>
       </Section>
+      </DensityOnly>
+
+      <DensityOnly density="product">
+        <Section title="Weights" note="Three weights. The dashboard never shouts: no uppercase buttons, no thin display numbers.">
+          <ul className="space-y-2 text-[15px] leading-[1.7] text-neutral-600">
+            <li><Mono>400 Regular</Mono>: everything you read, table cells included.</li>
+            <li><Mono>500 Medium</Mono>: form labels, menu items, the word in a status pill.</li>
+            <li><Mono>600 SemiBold</Mono>: page titles, card titles, the number on a Stat, and button labels.</li>
+          </ul>
+        </Section>
+      </DensityOnly>
     </>
   );
 }

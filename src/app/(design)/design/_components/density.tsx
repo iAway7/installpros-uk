@@ -87,3 +87,13 @@ export function DensityToggle({ className = "" }: { className?: string }) {
     </div>
   );
 }
+
+/**
+ * Shows its children only in one density. For sections that do not exist in
+ * the other half of the product, like the website's display headlines, so the
+ * switch changes what the page is about, not just the numbers on it.
+ */
+export function DensityOnly({ density: only, children }: { density: Density; children: ReactNode }) {
+  const { density } = useDensity();
+  return density === only ? <>{children}</> : null;
+}
