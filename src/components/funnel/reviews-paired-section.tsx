@@ -20,8 +20,8 @@ export function GoogleG({ size = 22 }: { size?: number }) {
  * the Google and Trustpilot ratings side by side under the heading, then the
  * two sliders one straight after the other. Replaces the pair
  * TrustpilotSection + CustomerStoriesSection, where the Google rating sat
- * alone between the sliders and pushed them apart. /install-quote keeps the
- * old pair: it is live in Ads and measured as it is.
+ * alone between the sliders and pushed them apart. On every landing,
+ * /install-quote included, since 4 November.
  */
 export async function ReviewsPairedSection() {
   const { trustpilot, google } = await getPairedReviews();
@@ -71,7 +71,7 @@ export async function ReviewsPairedSection() {
         </div>
 
         {/* Cards without their shadow (Gus, 4 November). Done from here so
-            the shared ReviewCard keeps it on /install-quote. Both sliders use
+            the shared ReviewCard keeps it elsewhere. Both sliders use
             the "1 / n" counter on phones, so Google's five reviews navigate
             like Trustpilot's fifteen. */}
         <div className="[&_[data-card]>div]:shadow-none">

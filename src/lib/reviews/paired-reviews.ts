@@ -7,8 +7,7 @@ import seed from "@/data/trustpilot-seed.json";
  * the landings (reviews-paired-section.tsx, Gus, 4 November).
  *
  * The fallbacks are copies of the ones in trustpilot-section.tsx and
- * customer-stories-section.tsx, which still serve /install-quote (live in
- * Ads, not touched) and the Hikvision page until it moves over.
+ * customer-stories-section.tsx, which no landing renders any more.
  */
 
 interface SeedEntry {

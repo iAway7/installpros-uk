@@ -4,8 +4,7 @@ import { HeroSection } from "@/components/funnel/hero-section";
 import { WhatsAppFab } from "@/components/funnel/whatsapp-fab";
 import { WhyInstallProsSection } from "@/components/funnel/why-installpros-section";
 import { CoverageSection } from "@/components/funnel/coverage-section";
-import { CustomerStoriesSection } from "@/components/funnel/customer-stories-section";
-import { TrustpilotSection } from "@/components/funnel/trustpilot-section";
+import { ReviewsPairedSection } from "@/components/funnel/reviews-paired-section";
 import { EquipmentSection } from "@/components/funnel/equipment-section";
 import { InstallVideoSection } from "@/components/funnel/install-video-section";
 import { BeforeAfterSection } from "@/components/funnel/before-after-section";
@@ -65,8 +64,7 @@ export default function InstallQuotePage() {
           <WhatsAppFab />
           <WhyInstallProsSection />
           <CoverageSection />
-          <TrustpilotSection />
-          <CustomerStoriesSection />
+          <ReviewsPairedSection />
           <EquipmentSection />
           <InstallVideoSection />
           <BeforeAfterSection />

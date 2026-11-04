@@ -9,8 +9,7 @@ import { LazyCoveragePlanner, LazyTilesPlanner } from "@/components/funnel/hikvi
 import { HikvisionEquipmentSection } from "@/components/funnel/hikvision-equipment-section";
 import { HikvisionExistingSection } from "@/components/funnel/hikvision-existing-section";
 import { HikvisionWiredSection } from "@/components/funnel/hikvision-wired-section";
-import { TrustpilotSection } from "@/components/funnel/trustpilot-section";
-import { CustomerStoriesSection } from "@/components/funnel/customer-stories-section";
+import { ReviewsPairedSection } from "@/components/funnel/reviews-paired-section";
 import { HikvisionHowItWorksSection } from "@/components/funnel/hikvision-how-it-works-section";
 import { FaqSectionAlt } from "@/components/funnel/faq-section-alt";
 import { HIKVISION_FAQS } from "@/lib/funnel/hikvision-faqs";
@@ -132,8 +131,7 @@ export default function HikvisionCctvInstallationPage() {
               reviews. After the colour hook and the app (Gus, 28 October:
               they sat eleventh); install-quote, the page that converts
               best, shows them fourth. */}
-          <TrustpilotSection />
-          <CustomerStoriesSection />
+          <ReviewsPairedSection />
           {/* "Why not Wi-Fi cameras?" where "What the fitting includes" was
               (Gus, 27 October: did not like it). Price and DIY cameras are
               what lost quotes; this is what the fitting buys. Wired or Wi-Fi
