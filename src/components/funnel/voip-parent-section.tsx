@@ -59,7 +59,7 @@ export function VoipParentSection() {
       />
 
       <div className="container relative mx-auto pb-16 pt-[86vw] md:flex md:min-h-[640px] md:items-center md:py-24">
-        <div className="max-w-xl">
+        <div data-reveal className="max-w-xl">
           <p className="eyebrow !text-[#ff6a5f]">Buying for a parent</p>
           <h2 className="mt-4 text-balance h2-section text-white">Setting this up for mum or dad?</h2>
           <p className="mt-4 text-pretty text-body text-white/75 md:mt-5 md:text-lg" style={{ lineHeight: "1.6" }}>

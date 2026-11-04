@@ -25,14 +25,14 @@ export function VoipNumberSection() {
   return (
     <section id="number" className="w-full scroll-mt-28 bg-background py-16 md:py-24">
       <div className="container mx-auto">
-        <div className="mx-auto max-w-2xl text-center">
+        <div data-reveal className="mx-auto max-w-2xl text-center">
           <p className="eyebrow">Keep your number</p>
           <h2 className="mt-4 text-balance h2-section text-foreground">Keep the number everyone knows.</h2>
         </div>
 
         <ol className="mt-10 grid grid-cols-1 gap-4 md:mt-12 md:grid-cols-2 lg:grid-cols-4">
           {STEPS.map((s, i) => (
-            <li key={s.title} className="flex flex-col rounded-2xl bg-secondary p-6">
+            <li key={s.title} data-reveal style={{ transitionDelay: `${i * 80}ms` }} className="flex flex-col rounded-2xl bg-secondary p-6">
               <span
                 aria-hidden="true"
                 className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-body font-semibold tabular-nums text-primary-foreground"
@@ -47,7 +47,7 @@ export function VoipNumberSection() {
           ))}
         </ol>
 
-        <div className="mx-auto mt-10 flex max-w-xl flex-col items-center gap-5 text-center md:mt-12">
+        <div data-reveal className="mx-auto mt-10 flex max-w-xl flex-col items-center gap-5 text-center md:mt-12">
           {/* The one instruction that saves the number (2 buyers lost theirs
               by cancelling first). It was a warning box above the steps;
               Gus did not like it there, 3 November. */}

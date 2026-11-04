@@ -43,7 +43,7 @@ export function VoipPowerSection() {
   return (
     <section id="power" className="w-full scroll-mt-28 bg-[#0e1013] py-16 text-white md:py-24">
       <div className="container mx-auto">
-        <div className="max-w-2xl">
+        <div data-reveal className="max-w-2xl">
           <p className="eyebrow !text-[#ff6a5f]">Power cuts and 999</p>
           <h2 className="mt-4 h2-section text-white">What if the power goes off?</h2>
           <p className="mt-4 text-pretty text-body text-white/70 md:mt-5 md:text-lg" style={{ lineHeight: "1.6" }}>
@@ -52,8 +52,8 @@ export function VoipPowerSection() {
         </div>
 
         <ul className="mt-10 grid grid-cols-1 gap-3 sm:gap-4 md:mt-12 lg:grid-cols-3">
-          {ITEMS.map((i) => (
-            <li key={i.title} className="flex flex-col rounded-2xl border border-white/10 bg-white/[0.04] p-5 sm:p-6">
+          {ITEMS.map((i, n) => (
+            <li key={i.title} data-reveal style={{ transitionDelay: `${n * 80}ms` }} className="flex flex-col rounded-2xl border border-white/10 bg-white/[0.04] p-5 sm:p-6">
               <span aria-hidden="true" className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/10 text-white">
                 {i.icon}
               </span>

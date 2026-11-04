@@ -18,12 +18,12 @@ export function VoipSwitchoffSection() {
   return (
     <section id="switch-off" className="w-full scroll-mt-28 bg-secondary py-16 md:py-24">
       <div className="container mx-auto">
-        <div className="mx-auto max-w-2xl text-center">
+        <div data-reveal className="mx-auto max-w-2xl text-center">
           <p className="eyebrow">The switch-off</p>
           <h2 className="mt-4 text-balance h2-section text-foreground">Your landline is moving to the internet.</h2>
         </div>
 
-        <div className="mx-auto mt-10 max-w-3xl text-center md:mt-14">
+        <div data-reveal className="mx-auto mt-10 max-w-3xl text-center md:mt-14">
           <VoipCountdown />
 
           <p className="mx-auto mt-8 max-w-xl text-pretty text-body text-muted-foreground md:mt-10 md:text-lg" style={{ lineHeight: "1.6" }}>

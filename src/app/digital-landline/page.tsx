@@ -17,6 +17,7 @@ import { VOIP_FAQS } from "@/lib/funnel/voip-faqs";
 import { VoipCtaSection } from "@/components/funnel/voip-cta-section";
 import { FunnelFooter } from "@/components/funnel/funnel-footer";
 import { ExperimentProvider } from "@/components/experiments/experiment-provider";
+import { ScrollReveal } from "@/components/funnel/scroll-reveal";
 
 /**
  * Digital landline (VoIP). Built 3 November 2026 as "Managed services &
@@ -104,6 +105,9 @@ export default function DigitalLandlinePage() {
             formName="voip_landline"
           />
           <WhatsAppFab />
+          {/* Fades in the blocks marked data-reveal as they scroll into
+              view (Gus, 4 November). */}
+          <ScrollReveal />
           <VoipNumberSection />
           <VoipPhoneSection />
           <VoipPowerSection />

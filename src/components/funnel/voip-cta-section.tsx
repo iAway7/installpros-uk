@@ -42,8 +42,8 @@ export function VoipCtaSection({ formName }: { formName: string }) {
           style={{ background: "linear-gradient(to bottom, rgba(14,16,19,0.6), rgba(14,16,19,0.8) 45%, rgba(14,16,19,0.9))" }}
         />
         <div className="container relative mx-auto">
-          <h2 className="mb-4 h2-section text-white">Keep your number. Get your price today.</h2>
-          <p className="mx-auto mb-8 max-w-2xl text-body text-white/80 md:mb-10 md:text-lg">
+          <h2 data-reveal className="mb-4 h2-section text-white">Keep your number. Get your price today.</h2>
+          <p data-reveal style={{ transitionDelay: "80ms" }} className="mx-auto mb-8 max-w-2xl text-body text-white/80 md:mb-10 md:text-lg">
             The phone set up for you, and your number moved. No need to cancel anything yet.
           </p>
           <div className="mx-auto w-full md:max-w-2xl">

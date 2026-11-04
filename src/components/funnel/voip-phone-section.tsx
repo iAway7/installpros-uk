@@ -54,14 +54,14 @@ export function VoipPhoneSection() {
   return (
     <section id="phone" className="w-full scroll-mt-28 bg-secondary py-16 md:py-24">
       <div className="container mx-auto">
-        <div className="mx-auto max-w-2xl text-center">
+        <div data-reveal className="mx-auto max-w-2xl text-center">
           <p className="eyebrow">The phone</p>
           <h2 className="mt-4 text-balance h2-section text-foreground">A proper phone, not an app.</h2>
         </div>
 
         <ul className="mx-auto mt-10 grid max-w-5xl grid-cols-1 gap-4 sm:grid-cols-2 md:mt-12">
-          {PHOTOS.map((p) => (
-            <li key={p.title} className="flex flex-col overflow-hidden rounded-2xl bg-background">
+          {PHOTOS.map((p, i) => (
+            <li key={p.title} data-reveal style={{ transitionDelay: `${i * 80}ms` }} className="flex flex-col overflow-hidden rounded-2xl bg-background">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={p.src}
@@ -80,8 +80,8 @@ export function VoipPhoneSection() {
               </div>
             </li>
           ))}
-          {CARDS.map((c) => (
-            <li key={c.title} className="flex gap-4 rounded-2xl bg-background p-6">
+          {CARDS.map((c, i) => (
+            <li key={c.title} data-reveal style={{ transitionDelay: `${i * 80}ms` }} className="flex gap-4 rounded-2xl bg-background p-6">
               <span aria-hidden="true" className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-border text-brand-icon">
                 {c.icon}
               </span>
