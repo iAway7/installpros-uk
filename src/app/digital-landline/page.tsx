@@ -8,10 +8,7 @@ import { VoipPhoneSection } from "@/components/funnel/voip-phone-section";
 import { VoipTermsSection } from "@/components/funnel/voip-terms-section";
 import { VoipPowerSection } from "@/components/funnel/voip-power-section";
 import { VoipParentSection } from "@/components/funnel/voip-parent-section";
-import { TrustpilotSection } from "@/components/funnel/trustpilot-section";
-import { CustomerStoriesSection } from "@/components/funnel/customer-stories-section";
 import { VoipReviewsPaired } from "@/components/funnel/voip-reviews-paired";
-import { VoipReviewsWall } from "@/components/funnel/voip-reviews-wall";
 import { VoipSwitchoffSection } from "@/components/funnel/voip-switchoff-section";
 import { VoipBusinessSection } from "@/components/funnel/voip-business-section";
 import { VoipHowItWorksSection } from "@/components/funnel/voip-how-it-works-section";
@@ -83,7 +80,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function DigitalLandlinePage({ searchParams }: { searchParams: { reviews?: string } }) {
+export default function DigitalLandlinePage() {
   if (process.env.VERCEL_ENV === "production") notFound();
   return (
     <div className="theme-editorial min-h-screen bg-background text-foreground">
@@ -116,25 +113,13 @@ export default function DigitalLandlinePage({ searchParams }: { searchParams: { 
           <VoipTermsSection />
           <VoipPowerSection />
           <VoipParentSection />
-          {/* The company's reviews, Trustpilot then Google, as on the Hikvision
-              page. About its engineers and service; no copy presenting them as
-              phone reviews. Diana Rosser's landline review sat above them until
-              Gus removed it, 3 November.
-
-              Two other layouts are on trial here only (Gus, 4 November), picked
-              with ?reviews= in the URL: "paired" puts both ratings together and
-              the two sliders one after the other; "wall" mixes both platforms in
-              one grid under the summed review count. No parameter: as before. */}
-          {searchParams.reviews === "paired" ? (
-            <VoipReviewsPaired />
-          ) : searchParams.reviews === "wall" ? (
-            <VoipReviewsWall />
-          ) : (
-            <>
-              <TrustpilotSection />
-              <CustomerStoriesSection />
-            </>
-          )}
+          {/* The company's reviews, Trustpilot and Google. About its engineers
+              and service; no copy presenting them as phone reviews. Diana
+              Rosser's landline review sat above them until Gus removed it, 3
+              November. Both ratings sit together under the heading and the two
+              sliders follow each other (Gus's pick of two trials, 4 November;
+              the other, a mixed grid, was dropped). */}
+          <VoipReviewsPaired />
           <VoipSwitchoffSection />
           <VoipBusinessSection />
           <VoipHowItWorksSection />

@@ -3,14 +3,12 @@ import { getGoogleReviews, type Review } from "./google-reviews";
 import seed from "@/data/trustpilot-seed.json";
 
 /**
- * Both platforms' reviews and totals in one call, for the two review layouts
- * being tried on the digital landline page (voip-reviews-paired.tsx and
- * voip-reviews-wall.tsx, Gus, 4 November).
+ * Both platforms' reviews and totals in one call, for the digital landline
+ * page's reviews (voip-reviews-paired.tsx, Gus, 4 November).
  *
  * The fallbacks are copies of the ones in trustpilot-section.tsx and
  * customer-stories-section.tsx, on purpose: those sections serve every other
- * page and stay untouched while this is tried. Whichever layout wins, the
- * duplicate goes.
+ * page and stay as they are.
  */
 
 interface SeedEntry {

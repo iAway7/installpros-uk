@@ -15,9 +15,10 @@ export function GoogleG({ size = 22 }: { size?: number }) {
 }
 
 /**
- * Review layout A for the digital landline page (Gus, 4 November): the
- * Trustpilot and Google ratings side by side under the heading, Google first,
- * then the two sliders one straight after the other. Replaces the pair
+ * The reviews on the digital landline page (Gus, 4 November, picked over a
+ * mixed grid): the Trustpilot and Google ratings side by side under the
+ * heading, Google first, then the two sliders one straight after the other.
+ * Replaces the pair
  * TrustpilotSection + CustomerStoriesSection on this page only, where the
  * Google rating sat alone between the sliders and pushed them apart.
  */
