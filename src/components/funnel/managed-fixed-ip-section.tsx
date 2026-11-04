@@ -1,4 +1,6 @@
-import { ArrowDown, ArrowRight, Globe, Router, Satellite } from "lucide-react";
+import { ArrowDown, ArrowRight, Check, X } from "lucide-react";
+import DecryptedText from "@/components/DecryptedText";
+import SpotlightCard from "@/components/SpotlightCard";
 
 /**
  * The fixed IP, explained in one picture (managed-research, section 3).
@@ -9,71 +11,109 @@ import { ArrowDown, ArrowRight, Globe, Router, Satellite } from "lucide-react";
  * InstallPros fits such a router (a MikroTik or EdgeRouter "first device in
  * line from the Starlink"). Only one competitor of 15 explains this.
  *
+ * Before and after, on React Bits' SpotlightCard, with the addresses decoding
+ * through React Bits' DecryptedText (Gus picked it from three versions, 4
+ * November 2026): the one Starlink gives keeps changing, the fixed one
+ * settles. Both are examples: 100.64.x.x is Starlink's shared range (CGNAT),
+ * 203.0.113.x the range set aside for documentation.
+ *
  * Kept prudent until Will answers question 16 (whose address it is): no
- * "stays the same if you move", no "survives the switch to 4G/5G". Gus
- * doubted the fixed IP promise on 3 November; it goes in once Will confirms.
+ * "stays the same if you move", no "survives the switch to 4G/5G".
  */
 
-const STEPS = [
-  { icon: <Satellite className="h-6 w-6" />, title: "Your Starlink", detail: "Its own address can change." },
-  { icon: <Router className="h-6 w-6" />, title: "Our router", detail: "Fitted next to it, set up by us." },
-  {
-    icon: <Globe className="h-6 w-6" />,
-    title: "Your fixed IP",
-    detail: "One address your cameras or VPN can be reached on.",
-  },
-];
+/** An address whose numbers decode while the dots stay put. `changing` keeps it scrambling. */
+function Ip({ value, changing }: { value: string; changing?: boolean }) {
+  return (
+    <span aria-label={value} className="whitespace-nowrap">
+      {value.split(".").map((part, i) => (
+        <span key={i} aria-hidden="true">
+          {i > 0 && "."}
+          <DecryptedText
+            text={part}
+            animateOn="view"
+            loop={changing}
+            loopDelay={1500 + i * 120}
+            sequential={!changing}
+            speed={changing ? 60 : 80}
+            characters="0123456789"
+          />
+        </span>
+      ))}
+    </span>
+  );
+}
+
+const WITHOUT = ["The monitoring company can't connect", "The office VPN can't reach in", "No ports to open"];
+const WITH = ["Cameras reachable by your monitoring company", "Your VPN connects in", "The ports you need, open"];
 
 export function ManagedFixedIpSection() {
   return (
-    <section id="fixed-ip" className="w-full scroll-mt-28 bg-secondary py-16 md:py-24">
-      <div className="container mx-auto">
+    <section id="fixed-ip" className="relative w-full scroll-mt-28 overflow-hidden bg-[#0e1013] py-16 text-white md:py-24">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0"
+        style={{ background: "radial-gradient(50% 60% at 75% 100%, rgba(124,92,255,0.2), transparent 70%)" }}
+      />
+      <div className="container relative mx-auto">
         <div data-reveal className="mx-auto max-w-2xl text-center">
-          <p className="eyebrow">Fixed IP</p>
-          <h2 className="mt-4 text-balance h2-section text-foreground">A fixed IP, when you need one.</h2>
-          <p
-            className="mt-4 text-pretty text-body text-muted-foreground md:mt-5 md:text-lg"
-            style={{ lineHeight: "1.6" }}
-          >
+          <p className="eyebrow !text-[#ff6a5f]">Fixed IP</p>
+          <h2 className="mt-4 text-balance h2-section text-white">A fixed IP, when you need one.</h2>
+          <p className="mt-4 text-pretty text-body text-white/70 md:mt-5 md:text-lg" style={{ lineHeight: "1.6" }}>
             Starlink doesn&apos;t give fixed addresses. We fit our own router, which gives your systems one.
           </p>
         </div>
 
-        <ol className="mx-auto mt-10 flex max-w-4xl flex-col items-stretch gap-3 md:mt-12 md:flex-row md:items-center md:gap-4">
-          {STEPS.map((s, i) => (
-            <li key={s.title} className="contents">
-              {/* Phones: a row each, icon at the left, so the three fit in one
-                  screen. md up: three columns, centred. */}
-              <div
-                data-reveal
-                style={{ transitionDelay: `${i * 120}ms` }}
-                className="flex flex-1 items-center gap-4 rounded-2xl bg-background p-5 text-left shadow-raised md:flex-col md:gap-0 md:p-6 md:text-center"
-              >
-                <span
-                  aria-hidden="true"
-                  className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary"
-                >
-                  {s.icon}
-                </span>
-                <div>
-                  <h3 className="text-lg font-bold leading-tight text-foreground md:mt-4">{s.title}</h3>
-                  <p
-                    className="mt-1 text-pretty text-body-sm text-muted-foreground md:mt-1.5"
-                    style={{ lineHeight: "1.55" }}
-                  >
-                    {s.detail}
-                  </p>
-                </div>
-              </div>
-              {i < STEPS.length - 1 && (
-                <span aria-hidden="true" className="flex shrink-0 items-center justify-center text-muted-foreground">
-                  <ArrowDown className="h-5 w-5 md:hidden" />
-                  <ArrowRight className="hidden h-5 w-5 md:block" />
-                </span>
-              )}
-            </li>
-          ))}
-        </ol>
+        <div className="mx-auto mt-12 grid max-w-5xl gap-4 md:mt-14 md:grid-cols-[1fr_auto_1fr] md:items-center md:gap-5">
+          <div data-reveal>
+            <SpotlightCard theme="dark" spotlightColor="rgba(255,106,95,0.22)" className="border border-white/10 !p-6 md:!p-8">
+              <p className="text-body-sm font-medium text-white/50">Starlink on its own</p>
+              <p className="mt-3 font-mono text-[28px] tabular-nums tracking-tight text-white/80 md:text-[34px]">
+                <Ip value="100.64.37.112" changing />
+              </p>
+              <p className="mt-1 inline-flex items-center gap-1.5 text-body-sm text-[#ff6a5f]">
+                <span className="h-1.5 w-1.5 rounded-full bg-current" /> Shared, and it changes
+              </p>
+              <ul className="mt-6 space-y-2.5">
+                {WITHOUT.map((t) => (
+                  <li key={t} className="flex items-start gap-2.5 text-body text-white/70">
+                    <X aria-hidden="true" className="mt-1 h-4 w-4 shrink-0 text-[#ff6a5f]" />
+                    {t}
+                  </li>
+                ))}
+              </ul>
+            </SpotlightCard>
+          </div>
+
+          <span aria-hidden="true" className="flex justify-center text-white/40">
+            <ArrowDown className="h-6 w-6 md:hidden" />
+            <ArrowRight className="hidden h-6 w-6 md:block" />
+          </span>
+
+          <div data-reveal style={{ transitionDelay: "120ms" }}>
+            <SpotlightCard
+              theme="dark"
+              spotlightColor="rgba(111,207,151,0.22)"
+              className="border border-success-bright/30 !p-6 md:!p-8"
+            >
+              <p className="text-body-sm font-medium text-white/50">With our router</p>
+              <p className="mt-3 font-mono text-[28px] tabular-nums tracking-tight text-white md:text-[34px]">
+                <Ip value="203.0.113.24" />
+              </p>
+              <p className="mt-1 inline-flex items-center gap-1.5 text-body-sm text-success-bright">
+                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-current" /> One fixed address
+              </p>
+              <ul className="mt-6 space-y-2.5">
+                {WITH.map((t) => (
+                  <li key={t} className="flex items-start gap-2.5 text-body text-white/85">
+                    <Check aria-hidden="true" className="mt-1 h-4 w-4 shrink-0 text-success-bright" />
+                    {t}
+                  </li>
+                ))}
+              </ul>
+            </SpotlightCard>
+          </div>
+        </div>
+        <p className="mt-6 text-center font-mono text-caption text-white/40">Example addresses</p>
       </div>
     </section>
   );
