@@ -17,17 +17,24 @@ import { ArrowDown, ArrowRight, Globe, Router, Satellite } from "lucide-react";
 const STEPS = [
   { icon: <Satellite className="h-6 w-6" />, title: "Your Starlink", detail: "Its own address can change." },
   { icon: <Router className="h-6 w-6" />, title: "Our router", detail: "Fitted next to it, set up by us." },
-  { icon: <Globe className="h-6 w-6" />, title: "Your fixed IP", detail: "One address your cameras or VPN can be reached on." },
+  {
+    icon: <Globe className="h-6 w-6" />,
+    title: "Your fixed IP",
+    detail: "One address your cameras or VPN can be reached on.",
+  },
 ];
 
 export function ManagedFixedIpSection() {
   return (
     <section id="fixed-ip" className="w-full scroll-mt-28 bg-secondary py-16 md:py-24">
       <div className="container mx-auto">
-        <div className="mx-auto max-w-2xl text-center">
+        <div data-reveal className="mx-auto max-w-2xl text-center">
           <p className="eyebrow">Fixed IP</p>
           <h2 className="mt-4 text-balance h2-section text-foreground">A fixed IP, when you need one.</h2>
-          <p className="mt-4 text-pretty text-body text-muted-foreground md:mt-5 md:text-lg" style={{ lineHeight: "1.6" }}>
+          <p
+            className="mt-4 text-pretty text-body text-muted-foreground md:mt-5 md:text-lg"
+            style={{ lineHeight: "1.6" }}
+          >
             Starlink doesn&apos;t give fixed addresses. We fit our own router, which gives your systems one.
           </p>
         </div>
@@ -37,13 +44,23 @@ export function ManagedFixedIpSection() {
             <li key={s.title} className="contents">
               {/* Phones: a row each, icon at the left, so the three fit in one
                   screen. md up: three columns, centred. */}
-              <div className="flex flex-1 items-center gap-4 rounded-2xl bg-background p-5 text-left shadow-raised md:flex-col md:gap-0 md:p-6 md:text-center">
-                <span aria-hidden="true" className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+              <div
+                data-reveal
+                style={{ transitionDelay: `${i * 120}ms` }}
+                className="flex flex-1 items-center gap-4 rounded-2xl bg-background p-5 text-left shadow-raised md:flex-col md:gap-0 md:p-6 md:text-center"
+              >
+                <span
+                  aria-hidden="true"
+                  className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary"
+                >
                   {s.icon}
                 </span>
                 <div>
                   <h3 className="text-lg font-bold leading-tight text-foreground md:mt-4">{s.title}</h3>
-                  <p className="mt-1 text-pretty text-body-sm text-muted-foreground md:mt-1.5" style={{ lineHeight: "1.55" }}>
+                  <p
+                    className="mt-1 text-pretty text-body-sm text-muted-foreground md:mt-1.5"
+                    style={{ lineHeight: "1.55" }}
+                  >
                     {s.detail}
                   </p>
                 </div>

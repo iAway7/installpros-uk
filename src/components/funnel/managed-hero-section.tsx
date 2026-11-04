@@ -7,11 +7,9 @@ import { ManagedLeadForm } from "./managed-lead-form";
  * its form swapped for managed-lead-form.tsx; the trust bar is the Ajax one,
  * as there.
  *
- * PHOTOGRAPH: none yet. Gus is generating them from managed-research/
- * prompts-imagenes.md (prompt 1: a converted stone barn at dusk with the dish
- * and a camera on the wall). Until then `image` is left out and the hero
- * falls back to the dark surface. The overlays below are the VoIP ones and
- * get tuned to the photo when it arrives.
+ * PHOTOGRAPH: Gus's render from the first round of managed-research/
+ * prompts-imagenes.md (prompt 1), passed in by the page. Without `image` the
+ * hero falls back to the dark surface.
  */
 export function ManagedHeroSection({
   image,
@@ -44,7 +42,17 @@ export function ManagedHeroSection({
               {imageMobile && <source media="(max-width: 767px)" srcSet={imageMobile} />}
               {/* From md up anchored right, where the building sits. */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={image} srcSet={imageSrcSet} sizes={imageSrcSet ? "100vw" : undefined} alt="" aria-hidden="true" loading="eager" decoding="sync" fetchPriority="high" className="absolute inset-0 h-full w-full object-cover object-top md:object-right" />
+              <img
+                src={image}
+                srcSet={imageSrcSet}
+                sizes={imageSrcSet ? "100vw" : undefined}
+                alt=""
+                aria-hidden="true"
+                loading="eager"
+                decoding="sync"
+                fetchPriority="high"
+                className="absolute inset-0 h-full w-full object-cover object-top md:object-right"
+              />
             </picture>
             {/* Phones: dark under the header and from the subheadline down,
                 where the form sits. */}

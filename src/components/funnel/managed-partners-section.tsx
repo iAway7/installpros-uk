@@ -18,16 +18,24 @@ export function ManagedPartnersSection() {
     <section id="partners" className="w-full scroll-mt-28 bg-background pb-16 md:pb-24">
       <div className="container mx-auto">
         <div className="mx-auto grid max-w-5xl gap-10 md:grid-cols-2 md:items-center md:gap-14">
-          <div>
+          <div data-reveal>
             <p className="eyebrow">Your other suppliers</p>
             <h2 className="mt-4 text-balance h2-section text-foreground">We work with your IT and alarm companies.</h2>
-            <p className="mt-4 text-pretty text-body text-muted-foreground md:mt-5 md:text-lg" style={{ lineHeight: "1.6" }}>
+            <p
+              className="mt-4 text-pretty text-body text-muted-foreground md:mt-5 md:text-lg"
+              style={{ lineHeight: "1.6" }}
+            >
               You don&apos;t have to pass messages between us.
             </p>
           </div>
           <ul className="space-y-3">
-            {POINTS.map((p) => (
-              <li key={p} className="flex items-start gap-3 rounded-2xl bg-secondary p-5">
+            {POINTS.map((p, n) => (
+              <li
+                key={p}
+                data-reveal
+                style={{ transitionDelay: `${n * 80}ms` }}
+                className="flex items-start gap-3 rounded-2xl bg-secondary p-5"
+              >
                 <Check aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-success" />
                 <span className="text-pretty text-body text-foreground" style={{ lineHeight: "1.5" }}>
                   {p}

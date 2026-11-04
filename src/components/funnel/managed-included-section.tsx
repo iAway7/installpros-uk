@@ -23,11 +23,27 @@ type Item = { icon: ReactNode; title: string; detail: string };
 const ICON = "h-5 w-5";
 
 const ITEMS: Item[] = [
-  { icon: <RadioTower className={ICON} />, title: "Backup when the dish drops", detail: "Switches to 4G/5G automatically, if your site needs it." },
-  { icon: <Truck className={ICON} />, title: "No call-out fees", detail: "If something needs looking at, we come out." },
+  {
+    icon: <RadioTower className={ICON} />,
+    title: "Backup when the dish drops",
+    detail: "Switches to 4G/5G automatically, if your site needs it.",
+  },
+  {
+    icon: <Truck className={ICON} />,
+    title: "No call-out fees",
+    detail: "If something needs looking at, we come out.",
+  },
   { icon: <PackageCheck className={ICON} />, title: "Kit replaced if it fails", detail: "We handle the swap." },
-  { icon: <House className={ICON} />, title: "One move in the UK", detail: "Moving site? We move the dish and set it up again." },
-  { icon: <UserRound className={ICON} />, title: "Your account, in your name", detail: "You stay the Starlink customer. We look after the rest." },
+  {
+    icon: <House className={ICON} />,
+    title: "One move in the UK",
+    detail: "Moving site? We move the dish and set it up again.",
+  },
+  {
+    icon: <UserRound className={ICON} />,
+    title: "Your account, in your name",
+    detail: "You stay the Starlink customer. We look after the rest.",
+  },
 ];
 
 export function ManagedIncludedSection() {
@@ -35,7 +51,7 @@ export function ManagedIncludedSection() {
     <section id="included" className="w-full scroll-mt-28 overflow-hidden bg-[#0e1013] py-16 text-white md:py-24">
       <div className="container mx-auto">
         {/* Above the glow, which is positioned and comes later. */}
-        <div className="relative z-10 max-w-2xl">
+        <div data-reveal className="relative z-10 max-w-2xl">
           <p className="eyebrow !text-[#ff6a5f]">Managed service</p>
           <h2 className="mt-4 h2-section text-white">What&apos;s included.</h2>
           <p className="mt-4 text-pretty text-body text-white/70 md:mt-5 md:text-lg" style={{ lineHeight: "1.6" }}>
@@ -50,9 +66,17 @@ export function ManagedIncludedSection() {
         <div className="relative mt-10 md:mt-12">
           <ManagedHorizonGlow y="50%" />
           <ul className="relative grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
-            {ITEMS.map((i) => (
-              <li key={i.title} className="flex flex-col rounded-2xl border border-white/10 bg-[#16181b] p-5 sm:p-6">
-                <span aria-hidden="true" className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/10 text-white">
+            {ITEMS.map((i, n) => (
+              <li
+                key={i.title}
+                data-reveal
+                style={{ transitionDelay: `${n * 80}ms` }}
+                className="flex flex-col rounded-2xl border border-white/10 bg-[#16181b] p-5 sm:p-6"
+              >
+                <span
+                  aria-hidden="true"
+                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/10 text-white"
+                >
                   {i.icon}
                 </span>
                 <h3 className="mt-4 text-lg font-bold leading-tight text-white">{i.title}</h3>
@@ -63,7 +87,11 @@ export function ManagedIncludedSection() {
             ))}
             {/* The sixth slot of the grid, so the button sits with the cards
                 (Gus, 3 November). */}
-            <li className="flex flex-col rounded-2xl border border-primary/40 bg-[#0e1013] bg-gradient-to-b from-primary/10 to-primary/10 p-5 sm:p-6">
+            <li
+              data-reveal
+              style={{ transitionDelay: `${ITEMS.length * 80}ms` }}
+              className="flex flex-col rounded-2xl border border-primary/40 bg-[#0e1013] bg-gradient-to-b from-primary/10 to-primary/10 p-5 sm:p-6"
+            >
               <h3 className="text-lg font-bold leading-tight text-white">Tell us what you run</h3>
               <p className="mt-1.5 flex-1 text-pretty text-body-sm text-white/70" style={{ lineHeight: "1.55" }}>
                 We&apos;ll say what you need, and what you don&apos;t.
