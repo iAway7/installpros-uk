@@ -7,7 +7,7 @@ import { ManagedLeadForm } from "./managed-lead-form";
  * its form swapped for managed-lead-form.tsx; the trust bar is the Ajax one,
  * as there.
  *
- * PHOTOGRAPH: Gus's render from the first round of managed-research/
+ * PHOTOGRAPH: Gus's render from the third round of managed-research/
  * prompts-imagenes.md (prompt 1), passed in by the page. Without `image` the
  * hero falls back to the dark surface.
  */
@@ -68,7 +68,7 @@ export function ManagedHeroSection({
               className="absolute inset-0 hidden md:block"
               style={{
                 background:
-                  "linear-gradient(to bottom, transparent 55%, rgba(0,0,0,0.55)), radial-gradient(24% 46% at 86% 40%, rgba(14,16,19,0.15) 0%, rgba(14,16,19,0.72) 100%)",
+                  "linear-gradient(to bottom, transparent 55%, rgba(0,0,0,0.55)), radial-gradient(30% 50% at 72% 50%, rgba(14,16,19,0.1) 0%, rgba(14,16,19,0.7) 100%)",
               }}
             />
           </>

@@ -80,8 +80,9 @@ export default function StarlinkBusinessPage() {
       <ExperimentProvider>
         <main id="main" tabIndex={-1} className="flex flex-col outline-none">
           <ManagedHeroSection
-            // Gus's render, 4 November: a stone barn at dusk with the dish and a
-            // camera. Phones get a 3:4 crop of the right edge, where it stands.
+            // Gus's render, 4 November (prompt 1, third round): a business's comms
+            // rack at night with the Starlink router beside it. Phones get a 3:4
+            // crop around the router and the rack.
             image="/funnel/managed-hero-2000.webp"
             imageSrcSet="/funnel/managed-hero-1280.webp 1280w, /funnel/managed-hero-2000.webp 2000w"
             imageMobile="/funnel/managed-hero-phone-640.webp 640w, /funnel/managed-hero-phone-828.webp 828w"
