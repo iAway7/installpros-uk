@@ -30,19 +30,23 @@ export function VoipNumberSection() {
           <h2 className="mt-4 text-balance h2-section text-foreground">Keep the number everyone knows.</h2>
         </div>
 
-        <ol className="mt-10 grid grid-cols-1 gap-4 md:mt-12 md:grid-cols-2 lg:grid-cols-4">
+        {/* Phones: one row per step, the number at the left, so the four
+            fit in about a screen. md up: cards with the number on top. */}
+        <ol className="mt-10 grid grid-cols-1 gap-3 md:mt-12 md:grid-cols-2 md:gap-4 lg:grid-cols-4">
           {STEPS.map((s, i) => (
-            <li key={s.title} data-reveal style={{ transitionDelay: `${i * 80}ms` }} className="flex flex-col rounded-2xl bg-secondary p-6">
+            <li key={s.title} data-reveal style={{ transitionDelay: `${i * 80}ms` }} className="flex gap-4 rounded-2xl bg-secondary p-5 md:flex-col md:gap-0 md:p-6">
               <span
                 aria-hidden="true"
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-body font-semibold tabular-nums text-primary-foreground"
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-body font-semibold tabular-nums text-primary-foreground"
               >
                 {i + 1}
               </span>
-              <h3 className="mt-4 text-lg font-bold leading-tight text-foreground">{s.title}</h3>
-              <p className="mt-2 text-pretty text-body-sm text-muted-foreground" style={{ lineHeight: "1.55" }}>
-                {s.detail}
-              </p>
+              <div>
+                <h3 className="text-lg font-bold leading-tight text-foreground md:mt-4">{s.title}</h3>
+                <p className="mt-1.5 text-pretty text-body-sm text-muted-foreground md:mt-2" style={{ lineHeight: "1.55" }}>
+                  {s.detail}
+                </p>
+              </div>
             </li>
           ))}
         </ol>
