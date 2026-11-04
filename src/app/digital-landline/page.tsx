@@ -99,9 +99,9 @@ export default function DigitalLandlinePage() {
             // landline number when the copper line goes".
             headline="Keep your landline number on Starlink"
             headlineConfigKey="headlineVoip"
-            // "Fit it on your Starlink day" waits on question 6.
-            subheadline="Copper landlines close by 31 January 2027. We move your number to an internet phone line, set up the phone before it arrives, and can fit it on your Starlink day."
-            subheadlineNarrow="We move your number to an internet phone line and set up the phone before it arrives."
+            // Cut to one short line, Gus, 4 November ("too long"). The date
+            // and the Starlink-day fitting are in the sections below.
+            subheadline="We move your number and set up your new phone."
             formName="voip_landline"
           />
           <WhatsAppFab />
