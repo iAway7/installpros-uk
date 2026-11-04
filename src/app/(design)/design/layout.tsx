@@ -3,11 +3,13 @@ import Link from "next/link";
 import { NAV } from "./_components/nav";
 import { DocsFooter } from "./_components/docs-footer";
 import { GeistSans } from "geist/font/sans";
+import { DensityProvider, DensityToggle } from "./_components/density";
+import { MobileNav } from "./_components/mobile-nav";
 
 export const metadata: Metadata = {
   title: { default: "InstallPros Design System", template: "%s | InstallPros Design" },
   description:
-    "The design system behind installpros.co.uk, tokens, typography and components, rendered from the same code that ships.",
+    "The design system behind the InstallPros dashboard and website: one component library in two densities, Product for the dashboard and Editorial for the marketing pages, rendered from the code that ships.",
   robots: { index: false, follow: false },
 };
 
@@ -15,6 +17,7 @@ export default function DesignLayout({ children }: { children: React.ReactNode }
   return (
     // Geist's variable on the docs root so every .theme-product preview renders in
     // Product's face, as it does on /dashboard.
+    <DensityProvider>
     <div className={`${GeistSans.variable} min-h-dvh overflow-x-clip bg-white text-neutral-900 antialiased`}>
       <div className="mx-auto flex max-w-[1240px] gap-12 px-6 lg:px-10">
         <aside className="sticky top-0 hidden h-dvh w-56 shrink-0 overflow-y-auto py-10 lg:block">
@@ -22,6 +25,7 @@ export default function DesignLayout({ children }: { children: React.ReactNode }
             <div className="text-[15px] font-semibold tracking-[-0.01em]">InstallPros</div>
             <div className="text-[13px] text-neutral-500">Design System</div>
           </Link>
+          <DensityToggle className="mt-6" />
           <nav className="mt-10 space-y-8">
             {NAV.map((g) => (
               <div key={g.group}>
@@ -45,11 +49,13 @@ export default function DesignLayout({ children }: { children: React.ReactNode }
           </nav>
         </aside>
 
-        <main className="min-w-0 max-w-full flex-1 py-10 lg:py-16">
-          {children}
+        <main className="min-w-0 max-w-full flex-1 pb-10 lg:py-16">
+          <MobileNav />
+          <div className="pt-8 lg:pt-0">{children}</div>
           <DocsFooter />
         </main>
       </div>
     </div>
+    </DensityProvider>
   );
 }

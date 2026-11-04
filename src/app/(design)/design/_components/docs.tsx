@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { DensityScope } from "./density";
 
 /** Page title + standfirst. Every docs page opens with one. */
 export function PageHeader({ title, lead }: { title: string; lead: string }) {
@@ -29,8 +30,10 @@ export function Section({ title, note, children }: { title: string; note?: strin
 }
 
 /**
- * Live component preview. Children render inside `.theme-editorial`, so what you
- * see is the production component with the production tokens, not a copy.
+ * Live component preview: the production component with the production
+ * tokens, not a copy. It renders in the density picked in the docs header
+ * (Product by default). The dark variant is the funnel's hero, which only
+ * exists in Editorial, so it stays Editorial whatever the switch says.
  */
 export function Preview({
   children,
@@ -42,15 +45,11 @@ export function Preview({
   dark?: boolean;
   className?: string;
 }) {
-  return (
-    <div
-      className={`theme-editorial flex min-w-0 max-w-full flex-wrap items-center gap-4 rounded-xl border p-8 ${
-        dark ? "border-neutral-800 bg-[#0B1220]" : "border-neutral-200 bg-white"
-      } ${className}`}
-    >
-      {children}
-    </div>
-  );
+  const box = `flex min-w-0 max-w-full flex-wrap items-center gap-4 rounded-xl border p-8 ${
+    dark ? "border-neutral-800 bg-[#0B1220]" : "border-neutral-200 bg-white"
+  } ${className}`;
+  if (dark) return <div className={`theme-editorial ${box}`}>{children}</div>;
+  return <DensityScope className={box}>{children}</DensityScope>;
 }
 
 export function Code({ children, open = false }: { children: string; open?: boolean }) {

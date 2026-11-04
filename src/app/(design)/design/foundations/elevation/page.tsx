@@ -75,7 +75,7 @@ export default function ElevationPage() {
 
       <Section title="Border widths" note="Two, and the width carries meaning.">
         <Preview>
-          <div className="theme-editorial flex flex-wrap items-center gap-6">
+          <div className="flex flex-wrap items-center gap-6">
             <div className="rounded-lg border-[length:var(--border-field)] border-field bg-white px-5 py-3 text-body text-foreground">
               Text field · 1.5px
             </div>

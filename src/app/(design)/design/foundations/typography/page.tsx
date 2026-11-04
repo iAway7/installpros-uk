@@ -1,4 +1,5 @@
 import { PageHeader, Section, Mono, Rule } from "../../_components/docs";
+import { TypeScale } from "./type-scale";
 
 export const metadata = { title: "Typography" };
 
@@ -49,28 +50,29 @@ export default function TypographyPage() {
     <>
       <PageHeader
         title="Typography"
-        lead="Be Vietnam Pro, weights 200–700. These are the sizes the funnel actually renders, the scale documents the site, not an idealised ramp. Where two numbers are shown the first is mobile and the second is what it becomes at 768px."
+        lead="Two typefaces, one scale. Product (the dashboard) is set in Geist, Editorial (the marketing pages) in Be Vietnam Pro. Every size below comes from a token, so the switch at the top of the page changes both the face and the numbers."
       />
 
-      <Section title="This page is Editorial only">
+      <Section
+        title="Type scale"
+        note="Ten sizes, named by job rather than by number. Product runs each one a step smaller than Editorial, except the size inside form fields."
+      >
+        <TypeScale />
         <Rule>
-          Every number below is the funnel. The dashboard runs the same components a rung tighter,
-          and the Button row in particular is 13px at weight 600 with no uppercase there rather than
-          12px Bold. The two columns live on <a className="underline" href="/design/foundations/density">Density</a>,
-          generated from the theme so they cannot drift.
-        </Rule>
-        <Rule>
-          These are also display sizes, written as arbitrary values rather than tokens. The token
-          scale stops at 20px because it covers reading text; a 64px hero headline is a layout
-          decision for one element, not a rung anyone else should reach for.
+          Text inside a form field stays at 16px on touch screens in both densities. Below 16px, iPhones
+          zoom the page when the field is tapped. With a mouse, Product fields drop to 14px like the rest
+          of the dashboard.
         </Rule>
       </Section>
 
-      <Section title="Why there is only one H2">
+      <Section
+        title="Marketing display sizes"
+        note="Editorial only. The large headlines on the landing pages are set one by one, not from the scale: a 64px headline is a decision for one element, not a size anyone else should reach for."
+      >
         <Rule>
-          The site used to carry three different heading styles that all called themselves a section heading, plus two
-          more for form steps. They differed by half a pixel and a weight. One heading per level, four levels, if a
-          design needs a fifth, the answer is usually a different component, not a new style.
+          There is one heading per level, four levels. The site used to have three different section
+          headings that differed by half a pixel. If a design needs a fifth, the answer is usually a
+          different component, not a new style.
         </Rule>
       </Section>
 
