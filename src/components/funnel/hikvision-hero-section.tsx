@@ -16,10 +16,11 @@ import { HikvisionHeroFunnel } from "./hikvision-hero-funnel";
  *  stuck on. If a tier is confirmed, the official badge from the
  *  portal replaces it. */
 const PARTNER_BADGE = (
-  <div key="hikvision-partner" className="flex items-center gap-2">
+  <div key="hikvision-partner" className="flex items-center gap-2.5">
     {/* eslint-disable-next-line @next/next/no-img-element */}
-    <img src="/funnel/hikvision-logo-white.svg" alt="Hikvision" width={90} height={15} className="h-[15px] w-auto" />
-    <span className="whitespace-nowrap text-body text-white/70">partner</span>
+    <img src="/funnel/hikvision-logo-white.svg" alt="Hikvision" width={84} height={14} className="h-3.5 w-auto" />
+    <span aria-hidden="true" className="h-3.5 w-px bg-primary" />
+    <span className="whitespace-nowrap text-[11px] font-semibold uppercase leading-none tracking-[0.18em] text-white/85">Partner</span>
   </div>
 );
 
@@ -146,7 +147,7 @@ export function HikvisionHeroSection({
         </div>
       </div>
 
-      <SecurityHeroTrustBar extra={PARTNER_BADGE} />
+      <SecurityHeroTrustBar extra={PARTNER_BADGE} roomy />
     </section>
   );
 }
