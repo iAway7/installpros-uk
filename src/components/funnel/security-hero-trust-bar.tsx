@@ -87,12 +87,16 @@ const BADGES: ReactNode[] = [
   </div>,
 ];
 
-/** Same two layouts as the original: one row from sm, a marquee below it. */
-export function SecurityHeroTrustBar() {
+/** Same two layouts as the original: one row from sm, a marquee below it.
+ *  `extra` adds one badge at the end for a single page (the Hikvision
+ *  partner badge); without it the bar is exactly what Ajax, VoIP and
+ *  managed render. */
+export function SecurityHeroTrustBar({ extra }: { extra?: ReactNode } = {}) {
+  const badges = extra ? [...BADGES, extra] : BADGES;
   return (
     <div className="relative z-10 w-full border-t border-white/10 bg-black/85 text-white backdrop-blur">
       <div className="hidden w-full flex-wrap items-center justify-center gap-y-3 px-5 py-4 sm:flex">
-        {BADGES.map((badge, i) => (
+        {badges.map((badge, i) => (
           <div key={i} className={`flex items-center px-4 lg:px-6 ${i > 0 ? "border-l border-white/15" : ""}`}>
             {badge}
           </div>
@@ -101,8 +105,8 @@ export function SecurityHeroTrustBar() {
 
       <div className="overflow-hidden py-4 sm:hidden">
         <div className="hero-marquee flex w-max items-center">
-          {[...BADGES, ...BADGES].map((badge, i) => (
-            <div key={i} className="flex shrink-0 items-center justify-center px-8" aria-hidden={i >= BADGES.length}>
+          {[...badges, ...badges].map((badge, i) => (
+            <div key={i} className="flex shrink-0 items-center justify-center px-8" aria-hidden={i >= badges.length}>
               {badge}
             </div>
           ))}

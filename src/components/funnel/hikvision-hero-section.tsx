@@ -2,6 +2,27 @@ import { HeroHeadline } from "./hero-headline";
 import { SecurityHeroTrustBar } from "./security-hero-trust-bar";
 import { HikvisionHeroFunnel } from "./hikvision-hero-funnel";
 
+/** Last in the trust bar, where the Starlink pages carry "Authorised Starlink
+ *  Installer". Jordan, 5 November: "we are already Hikvision partners"; the
+ *  company is authenticated on Hik-Partner Pro (Partner No. HIK10840194333),
+ *  which Hikvision's own docs call an authenticated channel partner.
+ *
+ *  The plain Hikvision wordmark (Gus's file, 5 November) and our own word
+ *  "partner". Not the "CERTIFIED PARTNER" lockup he also found, and not a
+ *  VASP badge: no certificate or VASP tier (Authorised, Silver, Gold,
+ *  Platinum) is confirmed. The logo sits on a white chip because its grey
+ *  VISION is dim on the dark bar and Hikvision's rules bar recolouring it.
+ *  If a tier is confirmed, the official badge from the portal replaces it. */
+const PARTNER_BADGE = (
+  <div key="hikvision-partner" className="flex items-center gap-2">
+    <span className="flex items-center rounded-[4px] bg-white px-2 py-[5px]">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/funnel/hikvision-logo.svg" alt="Hikvision" width={78} height={13} className="h-[13px] w-auto" />
+    </span>
+    <span className="whitespace-nowrap text-body text-white/70">partner</span>
+  </div>
+);
+
 /**
  * Hero for the Hikvision CCTV landing. A cut-down copy of
  * security-hero-section.tsx, which renders the live Ajax page.
@@ -125,7 +146,7 @@ export function HikvisionHeroSection({
         </div>
       </div>
 
-      <SecurityHeroTrustBar />
+      <SecurityHeroTrustBar extra={PARTNER_BADGE} />
     </section>
   );
 }
