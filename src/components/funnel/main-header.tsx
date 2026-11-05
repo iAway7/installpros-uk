@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { Phone } from "lucide-react";
 import { WhatsAppIcon } from "./ui/whatsapp-icon";
 import { InstallProsLogo } from "./ui/installpros-logo";
@@ -15,6 +16,12 @@ const WHATSAPP_URL = "https://wa.me/447446112343";
  */
 export function MainHeader() {
   const [scrolled, setScrolled] = useState(false);
+  // The logo goes to the landing it sits on. It always went to /install-quote,
+  // so on the commercial page (and every other segment page) it sent people
+  // to residential Starlink (Will, 5 November). On /install-quote nothing
+  // changes. Only landings render this header; the FAQ and thank-you pages
+  // use FunnelHeaderLight.
+  const home = usePathname() || "/install-quote";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -34,7 +41,7 @@ export function MainHeader() {
       }`}
     >
       <div className="container mx-auto flex items-center justify-between py-4">
-        <a href="/install-quote" className="flex min-h-[48px] min-w-0 shrink items-center" aria-label="Install Pros">
+        <a href={home} className="flex min-h-[48px] min-w-0 shrink items-center" aria-label="Install Pros">
           {/* Inline SVG, not <img src>: this is the LCP element and as a file it
               put a network round trip on the critical path. Swapping colour with
               a text-* class also removes the second download that used to happen
