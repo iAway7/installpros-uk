@@ -148,9 +148,10 @@ export default function HikvisionCctvInstallationPage() {
           <LazyTilesPlanner />
           <HikvisionEquipmentSection />
           {/* For businesses, where "Already have cameras?" was (Gus, 5
-              November): Jordan fits homes and businesses, 16 of 81 camera
-              buyers in the chats were businesses, and owners keep "Add to
-              mine" in the form's first step. */}
+              November), dark with a pub's site plan: Jordan fits homes and
+              businesses, 16 of 81 camera buyers in the chats were
+              businesses (57 homes), and owners keep "Add to mine" in the
+              form's first step. */}
           <HikvisionBusinessSection />
           <HikvisionHowItWorksSection />
           <FaqSectionAlt faqs={HIKVISION_FAQS} />
