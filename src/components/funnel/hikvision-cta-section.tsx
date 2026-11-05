@@ -58,8 +58,10 @@ export function HikvisionCtaSection({ defaultService, formName }: { defaultServi
           GL50 1QB Tel: 020 3397 7003 | Email: admin@installpros.co.uk | All rights reserved
         </p>
         <p className="mx-auto mt-3 max-w-4xl text-center text-body-sm leading-relaxed text-muted-foreground">
+          {/* "an independent installer" until 5 November; the hero now says
+              Hikvision partner (Jordan), so the two had to agree. */}
           Hikvision is a trade mark of Hangzhou Hikvision Digital Technology Co., Ltd. Install Pros is an independent
-          installer.
+          Hikvision partner.
         </p>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/funnel/payment-methods.svg" alt="Accepted payment methods" className="mx-auto mt-6 h-5" />

@@ -340,7 +340,7 @@ export function ServiceQuoteForm({
 
           {step === 1 && (
             <StepField anim={anim} label={`Step 1 of ${lastStep}`} title="What's your name?" error={errors.fullName} errorId="cta-err-name">
-              <Input ref={nameRef} type="text" value={formData.fullName} onChange={(e) => setFormData((d) => ({ ...d, fullName: e.target.value }))} placeholder="Full Name" inputSize="lg" aria-label="Full name" state={errors.fullName ? "error" : "default"} aria-describedby={errors.fullName ? "cta-err-name" : undefined} className="text-center text-body md:text-[22px]" />
+              <Input ref={nameRef} type="text" value={formData.fullName} onChange={(e) => setFormData((d) => ({ ...d, fullName: e.target.value }))} placeholder="Full Name" inputSize="lg" aria-label="Full name" autoComplete="name" state={errors.fullName ? "error" : "default"} aria-describedby={errors.fullName ? "cta-err-name" : undefined} className="text-center text-body md:text-[22px]" />
             </StepField>
           )}
           {step === 2 && (
@@ -349,7 +349,7 @@ export function ServiceQuoteForm({
                 <Input ref={phoneRef} type="tel" value={formData.phone} onChange={onPhoneChange}
                   /* Ver zip-availability-checker: el error solo se veia al pulsar. */
                   onBlur={() => { if (formData.phone.trim()) checkPhone(); }}
-                  placeholder="Enter phone number" inputSize="lg" aria-label="Phone number" state={errors.phone ? "error" : "default"} aria-describedby={errors.phone ? "cta-err-phone" : undefined} className="text-center text-body md:text-[22px]" />
+                  placeholder="Enter phone number" inputSize="lg" aria-label="Phone number" autoComplete="tel" state={errors.phone ? "error" : "default"} aria-describedby={errors.phone ? "cta-err-phone" : undefined} className="text-center text-body md:text-[22px]" />
                 {showPhoneCheck && <Check className="absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-success" />}
               </div>
             </StepField>
@@ -357,7 +357,7 @@ export function ServiceQuoteForm({
           {step === 3 && (
             <StepField anim={anim} label={`Step 3 of ${lastStep}`} title="What's your email?" error={errors.email} errorId="cta-err-email">
               <div className="relative">
-                <Input ref={emailRef} type="email" value={formData.email} onChange={onEmailChange} placeholder="you@example.com" inputSize="lg" aria-label="Email" state={errors.email ? "error" : "default"} aria-describedby={errors.email ? "cta-err-email" : undefined} className="text-center text-body md:text-[22px]" />
+                <Input ref={emailRef} type="email" value={formData.email} onChange={onEmailChange} placeholder="you@example.com" inputSize="lg" aria-label="Email" autoComplete="email" state={errors.email ? "error" : "default"} aria-describedby={errors.email ? "cta-err-email" : undefined} className="text-center text-body md:text-[22px]" />
                 {showEmailCheck && <Check className="absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-success" />}
               </div>
             </StepField>

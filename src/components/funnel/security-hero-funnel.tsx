@@ -469,7 +469,7 @@ export function SecurityHeroFunnel(
               <Input
                 ref={nameRef} type="text" value={formData.fullName}
                 onChange={(e) => setFormData((d) => ({ ...d, fullName: e.target.value }))}
-                placeholder="Full Name" inputSize="lg" aria-label="Full name"
+                placeholder="Full Name" inputSize="lg" aria-label="Full name" autoComplete="name"
                 state={errors.fullName ? "error" : "default"}
                 aria-describedby={errors.fullName ? "err-name" : undefined}
                 className="text-center text-body md:text-[22px]"
@@ -485,7 +485,7 @@ export function SecurityHeroFunnel(
                   // Surfaces the error as soon as they leave the field, instead of
                   // making them press a button to find out what is wrong.
                   onBlur={() => { if (formData.phone.trim()) checkPhone(); }}
-                  placeholder="Enter phone number" inputSize="lg" aria-label="Phone number"
+                  placeholder="Enter phone number" inputSize="lg" aria-label="Phone number" autoComplete="tel"
                   state={errors.phone ? "error" : "default"}
                   aria-describedby={errors.phone ? "err-phone" : undefined}
                   className="text-center text-body md:text-[22px]"
@@ -500,7 +500,7 @@ export function SecurityHeroFunnel(
               <div className="relative">
                 <Input
                   ref={emailRef} type="email" value={formData.email} onChange={onEmailChange}
-                  placeholder="you@example.com" inputSize="lg" aria-label="Email"
+                  placeholder="you@example.com" inputSize="lg" aria-label="Email" autoComplete="email"
                   state={errors.email ? "error" : "default"}
                   aria-describedby={errors.email ? "err-email" : undefined}
                   className="text-center text-body md:text-[22px]"
