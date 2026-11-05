@@ -6,7 +6,7 @@ import { HikvisionNightSection } from "@/components/funnel/hikvision-night-secti
 import { HikvisionAppSection } from "@/components/funnel/hikvision-app-section";
 import { LazyCoveragePlanner, LazyTilesPlanner } from "@/components/funnel/hikvision-lazy";
 import { HikvisionEquipmentSection } from "@/components/funnel/hikvision-equipment-section";
-import { HikvisionExistingSection } from "@/components/funnel/hikvision-existing-section";
+import { HikvisionBusinessSection } from "@/components/funnel/hikvision-business-section";
 import { HikvisionWiredSection } from "@/components/funnel/hikvision-wired-section";
 import { ReviewsPairedSection } from "@/components/funnel/reviews-paired-section";
 import { HikvisionHowItWorksSection } from "@/components/funnel/hikvision-how-it-works-section";
@@ -37,9 +37,9 @@ import { ExperimentProvider } from "@/components/experiments/experiment-provider
  *     front, drive, back, and the car on the street), 57 already own a
  *     system, 39 of them Hikvision or HiLook, and 12 of the 41 asking for
  *     help never got a reply. So the form's first tap is New cameras / Add
- *     to mine, and "Already have cameras?" is a section. "Fix my system"
- *     and takeovers went on 5 November: Jordan said those call-outs price
- *     them out.
+ *     to mine. "Fix my system" and takeovers went on 5 November (Jordan:
+ *     those call-outs price them out), and the "Already have cameras?"
+ *     section with them, its slot taken by "For businesses" (Gus).
  *   - Phone viewing (23), recording (16) and colour at night (13) are what
  *     buyers ask for, so the night section and the app come first.
  *   - Paid surveys lost leads; quotes from photos worked. No competitor
@@ -147,10 +147,11 @@ export default function HikvisionCctvInstallationPage() {
           <LazyCoveragePlanner />
           <LazyTilesPlanner />
           <HikvisionEquipmentSection />
-          {/* Before the price section: the first tap already split owners
-              from buyers, and an owner who sees nothing for them below the
-              hero leaves. */}
-          <HikvisionExistingSection />
+          {/* For businesses, where "Already have cameras?" was (Gus, 5
+              November): Jordan fits homes and businesses, 16 of 81 camera
+              buyers in the chats were businesses, and owners keep "Add to
+              mine" in the form's first step. */}
+          <HikvisionBusinessSection />
           <HikvisionHowItWorksSection />
           <FaqSectionAlt faqs={HIKVISION_FAQS} />
           <HikvisionCtaSection defaultService="security" formName="hikvision_cctv" />
