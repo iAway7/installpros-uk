@@ -317,7 +317,10 @@ export function HikvisionBusinessSection() {
             <DarkRow kinds={KINDS_2} dir="right" />
           </div>
 
-          <div className="container mx-auto mt-12 grid items-center gap-8 md:mt-16 lg:grid-cols-[1.75fr_1fr] lg:gap-12">
+          {/* The plan and its list from md up. On phones the photo is too
+              small to read the cameras on (Gus, 5 November), so the section
+              goes from the rows straight to the four points and the button. */}
+          <div className="container mx-auto mt-16 hidden items-center gap-8 md:grid lg:grid-cols-[1.75fr_1fr] lg:gap-12">
             <SitePlan active={active} held={held !== null} onPick={setHeld} />
 
             <div>
@@ -353,7 +356,7 @@ export function HikvisionBusinessSection() {
             </div>
           </div>
 
-          <div className="container mx-auto mt-14 md:mt-20">
+          <div className="container mx-auto mt-10 md:mt-20">
             <ul className="grid grid-cols-2 gap-2 sm:gap-4 lg:grid-cols-4">
               {POINTS.map((p) => (
                 <li key={p.title} className="p-3 text-left sm:p-4">
@@ -370,6 +373,12 @@ export function HikvisionBusinessSection() {
                 </li>
               ))}
             </ul>
+            <div className="mt-8 md:hidden">
+              <button type="button" onClick={start} className={CTA}>
+                Get a business quote
+                <ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" />
+              </button>
+            </div>
           </div>
         </>
       )}
