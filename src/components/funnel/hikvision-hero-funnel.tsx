@@ -377,9 +377,8 @@ export function HikvisionHeroFunnel(
         installationType: formData.installationType, source: "hero_funnel",
         marketingConsent: consent, formName, postcodePrecision: formData.postcodePrecision,
         intent: intent ?? undefined,
-        // The plan from a planner, if they made one (migration 0024); not for
-        // a repair, where the places do not matter.
-        cameraPlan: intent === "repair" ? undefined : storedPlanForLead(),
+        // The plan from a planner, if they made one (migration 0024).
+        cameraPlan: storedPlanForLead(),
       });
       toast.success("Quote request submitted!");
       // Its own thank-you page: thankYouPath() maps install_type security to

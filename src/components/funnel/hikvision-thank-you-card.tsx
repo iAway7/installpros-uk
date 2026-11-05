@@ -16,9 +16,9 @@ import { mailtoUrl, whatsappUrl, SUPPORT_PHONE_HREF } from "@/lib/funnel/contact
  *
  * Changed: the WhatsApp message and button ask for photos, because a camera
  * quote is made from them (most homes in the chats were quoted from photos).
- * Someone who picked "Fix my system" or "Add to mine" is asked for the
- * recorder's label instead, which tells the team the model and how many
- * channels are free. The intent comes in the query string from the form;
+ * Someone who picked "Add to mine" is asked for the recorder's label
+ * instead, which tells the team the model and how many channels are free
+ * ("Fix my system" went on 5 November). The intent comes in the query string from the form;
  * the camera plan, if they made one, from sessionStorage.
  */
 export function HikvisionThankYouCard() {
@@ -63,10 +63,10 @@ export function HikvisionThankYouCard() {
   const details = [lead.postcode ? `postcode ${lead.postcode}` : null, lead.name ? `name ${lead.name}` : null]
     .filter(Boolean)
     .join(", ");
-  const owner = lead.intent === "repair" || lead.intent === "add";
-  const subject = owner ? "help with my Hikvision cameras" : "a Hikvision CCTV quote";
-  const plan = !owner && lead.plan ? ` My plan: ${describePlan(lead.plan)}.` : "";
-  const ask = owner ? " Here is a photo of my recorder's label." : `${plan} Here are photos of where I'd like cameras.`;
+  const owner = lead.intent === "add";
+  const subject = owner ? "a quote to add cameras to my Hikvision system" : "a Hikvision CCTV quote";
+  const plan = lead.plan ? ` My plan: ${describePlan(lead.plan)}.` : "";
+  const ask = owner ? `${plan} Here is a photo of my recorder's label.` : `${plan} Here are photos of where I'd like cameras.`;
   const message = details
     ? `Hi InstallPros, I have just asked for ${subject} (${details}).${ask}`
     : `Hi InstallPros, I have just asked for ${subject}.${ask}`;

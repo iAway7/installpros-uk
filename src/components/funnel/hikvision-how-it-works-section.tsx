@@ -18,8 +18,10 @@ import { ProcessStepsSection, type ProcessStep } from "./process-steps-section";
  *   - Step 4 carries what the old "What the fitting includes" cards said:
  *     aimed with you, tested, the app on your phones.
  *
- * Steps 3 and 4 and the subline assume answers Jordan has not given yet
- * (hikvision-research/supuestos-para-jordan.md).
+ * Jordan, 5 November: photos work for most homes, but bigger or commercial
+ * properties and anything past 4 to 6 cameras need a survey, so the subline
+ * lost "No visit"; past 5 or 6 cameras is a two day job, so step 4 says one
+ * day for most homes (it said "A few hours"). 7 days is an aim, not a promise.
  */
 
 const STEPS: ProcessStep[] = [
@@ -37,7 +39,7 @@ const STEPS: ProcessStep[] = [
   },
   {
     title: "The day itself",
-    detail: "A few hours. The app on your phone before we leave.",
+    detail: "One day for most homes. The app on your phone before we leave.",
   },
 ];
 
@@ -51,7 +53,7 @@ export function HikvisionHowItWorksSection() {
           <br className="hidden md:block" /> to cameras on your phone.
         </>
       }
-      subline="Most homes quoted from photos. No visit."
+      subline="Most homes quoted from photos."
       steps={STEPS}
       cta={{
         label: "Send photos on WhatsApp",

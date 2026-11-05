@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ArrowLeft, ArrowRight, Cctv, Plus, Wrench } from "lucide-react";
+import { ArrowLeft, ArrowRight, Cctv, Plus } from "lucide-react";
 import { track, EVENTS } from "@/lib/analytics";
 import { HIKVISION_INTENT_LABEL, type HikvisionIntent } from "./hikvision-need-step";
 import { savePlan, type HikvisionPlan } from "@/lib/funnel/hikvision-plan";
@@ -22,8 +22,8 @@ import { HikvisionQuoteForm } from "./hikvision-quote-form";
  *      the photo (outside first: inside came up 5 times among homes).
  *      Outside shows the aerial photo; inside and both show the same house
  *      with the roof off. Inside offers only the rooms, both offers the rooms
- *      and the outside areas. "Fix my system" is a link under the map that
- *      opens the form right here as a repair: there is nothing to plan.
+ *      and the outside areas. A "Fix my system" link under the map went on
+ *      5 November: Jordan said repair call-outs don't pay.
  *   2. New cameras or add to mine, one tap, for the lead's intent.
  *   3. The closing form's own steps, embedded light from the postcode on
  *      (hikvision-quote-form.tsx), with form_name hikvision_planner_steps so
@@ -39,7 +39,7 @@ import { HikvisionQuoteForm } from "./hikvision-quote-form";
  * in the original: one camera per area, no price.
  */
 
-type Step = "areas" | "type" | "details" | "fix";
+type Step = "areas" | "type" | "details";
 type Where = "outside" | "inside" | "both";
 
 type Area = {
@@ -117,7 +117,6 @@ const QUESTION: Record<Step, string> = {
   areas: "Tap what you want covered.",
   type: "New cameras, or adding to yours?",
   details: "Get the price for your plan.",
-  fix: "Let's get it working.",
 };
 
 const CTA =
@@ -323,13 +322,6 @@ export function HikvisionCoveragePlanner() {
     setStep("details");
   }
 
-  // Opens the form right here as a repair, from the postcode (Gus, 28
-  // October), rather than sending people down to the closing form.
-  function fixMySystem() {
-    setIntent("repair");
-    track(EVENTS.CTA_CLICKED, { cta_id: "coverage_fix", cta_label: "repair", cta_location: "coverage" });
-    setStep("fix");
-  }
 
   // Nothing until something is chosen: "Tap an area on the photo" was wrong
   // on phones, where the chips under the photo are what gets tapped.
@@ -389,15 +381,6 @@ export function HikvisionCoveragePlanner() {
                   <ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" />
                 </button>
               </div>
-
-              <button
-                type="button"
-                onClick={fixMySystem}
-                className="focus-ring mt-4 inline-flex min-h-[44px] items-center gap-1.5 rounded-md px-2 text-body-sm font-medium text-muted-foreground underline-offset-4 transition-colors duration-quick ease-ds hover:text-foreground hover:underline"
-              >
-                <Wrench aria-hidden="true" className="h-4 w-4" />
-                Something not working? Fix my system
-              </button>
             </>
           )}
 
@@ -413,25 +396,6 @@ export function HikvisionCoveragePlanner() {
               </div>
               <div className="mt-5">
                 <BackButton onClick={() => setStep("areas")} />
-              </div>
-            </>
-          )}
-
-          {step === "fix" && (
-            <>
-              <p className="mx-auto mt-4 max-w-md text-pretty text-body text-muted-foreground md:text-lg">
-                We tell you what it needs before anyone comes out.
-              </p>
-              <div className="mx-auto mt-8 max-w-md text-left md:mt-10">
-                <HikvisionQuoteForm
-                  tone="light"
-                  presetIntent="repair"
-                  onBack={() => setStep("areas")}
-                  showStepLabels={false}
-                  defaultService="security"
-                  skipServiceStep
-                  formName="hikvision_planner_steps"
-                />
               </div>
             </>
           )}

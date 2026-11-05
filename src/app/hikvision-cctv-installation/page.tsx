@@ -4,7 +4,6 @@ import { WhatsAppFab } from "@/components/funnel/whatsapp-fab";
 import { HikvisionHeroSection } from "@/components/funnel/hikvision-hero-section";
 import { HikvisionNightSection } from "@/components/funnel/hikvision-night-section";
 import { HikvisionAppSection } from "@/components/funnel/hikvision-app-section";
-import { HikvisionPlacesSection } from "@/components/funnel/hikvision-places-section";
 import { LazyCoveragePlanner, LazyTilesPlanner } from "@/components/funnel/hikvision-lazy";
 import { HikvisionEquipmentSection } from "@/components/funnel/hikvision-equipment-section";
 import { HikvisionExistingSection } from "@/components/funnel/hikvision-existing-section";
@@ -38,7 +37,9 @@ import { ExperimentProvider } from "@/components/experiments/experiment-provider
  *     front, drive, back, and the car on the street), 57 already own a
  *     system, 39 of them Hikvision or HiLook, and 12 of the 41 asking for
  *     help never got a reply. So the form's first tap is New cameras / Add
- *     to mine / Fix my system, and "Already have cameras?" is a section.
+ *     to mine, and "Already have cameras?" is a section. "Fix my system"
+ *     and takeovers went on 5 November: Jordan said those call-outs price
+ *     them out.
  *   - Phone viewing (23), recording (16) and colour at night (13) are what
  *     buyers ask for, so the night section and the app come first.
  *   - Paid surveys lost leads; quotes from photos worked. No competitor
@@ -138,10 +139,11 @@ export default function HikvisionCctvInstallationPage() {
               came up in 16 buyer chats, as often as recording, so it moved
               up from ninth to straight after the reviews (Gus, 30 October). */}
           <HikvisionWiredSection />
-          <HikvisionPlacesSection />
           {/* Two camera planners, one after the other, until Will and Jordan
               pick one (Gus, 30 October; the dark map planner was removed):
-              step by step on the aerial photo, then photo tiles. */}
+              step by step on the aerial photo, then photo tiles. "Placed
+              where it matters" sat before them with the same places and
+              photos; removed 30 October after Will called its photos "rubbish". */}
           <LazyCoveragePlanner />
           <LazyTilesPlanner />
           <HikvisionEquipmentSection />

@@ -1,12 +1,12 @@
 "use client";
 
-import { Cctv, Plus, Wrench } from "lucide-react";
+import { Cctv, Plus } from "lucide-react";
 
 /**
  * First step of the Hikvision funnels: one tap, before the postcode. A copy of
  * security-need-step.tsx, which the live Ajax page renders.
  *
- * Why three intents instead of Ajax's alarm / cameras / both
+ * Why intents instead of Ajax's alarm / cameras / both
  * (hikvision-research/, 27 October 2026): everyone on this page wants
  * cameras, so that question answers itself. What splits them is whether they
  * already own a system. 81 chats wanted to buy cameras and 57 already had a
@@ -18,19 +18,20 @@ import { Cctv, Plus, Wrench } from "lucide-react";
  * Superchat list field "Security request"; Gus is adding its "New system"
  * and "Add to what I have" options himself (option A, 28 October). The
  * labels must match INTENT_LABEL in lib/webhooks/formats/zapier.ts.
+ *
+ * "Fix my system" (intent repair) went on 5 November: Jordan said repair and
+ * takeover call-outs price them out, so only new systems and additions.
  */
-export type HikvisionIntent = "new" | "add" | "repair";
+export type HikvisionIntent = "new" | "add";
 
 export const HIKVISION_INTENT_LABEL: Record<HikvisionIntent, string> = {
   new: "New cameras",
   add: "Add to mine",
-  repair: "Fix my system",
 };
 
 const OPTIONS: { value: HikvisionIntent; icon: React.ReactNode }[] = [
   { value: "new", icon: <Cctv className="h-5 w-5" /> },
   { value: "add", icon: <Plus className="h-5 w-5" /> },
-  { value: "repair", icon: <Wrench className="h-5 w-5" /> },
 ];
 
 export function HikvisionNeedStep({
@@ -53,7 +54,7 @@ export function HikvisionNeedStep({
           What do you need?
         </h2>
       </div>
-      <div role="group" aria-labelledby={`${name}-label`} className="grid grid-cols-3 gap-2 sm:gap-3">
+      <div role="group" aria-labelledby={`${name}-label`} className="grid grid-cols-2 gap-2 sm:gap-3">
         {OPTIONS.map((o) => (
           <button
             key={o.value}

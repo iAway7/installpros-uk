@@ -58,7 +58,9 @@ const ITEMS: Item[] = [
   {
     icon: <ShieldCheck className={ICON} />,
     title: "Warranty on the fitting too",
-    detail: "The maker's warranty on the kit, plus up to 5 years on our work.",
+    // Jordan, 5 November: 1 year on the kit and the fitting, and anything
+    // faulty within 30 days replaced (it said up to 5 years, as on Ajax).
+    detail: "A year on the kit and on our work. Faulty in the first 30 days? We replace it.",
   },
 ];
 

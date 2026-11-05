@@ -29,6 +29,11 @@
  * hikvision-research/supuestos-para-jordan.md, against the questions in
  * hikvision-research/preguntas-jordan-will.md.
  *
+ * Jordan answered 5 November: warranty is 1 year on kit and fitting (it said
+ * up to 5 years), visits for bigger sites and past 4 to 6 cameras, and his
+ * safety answer did not confirm passwords, firmware and ports on every job,
+ * so the safety answer no longer claims them.
+ *
  * Kept off on purpose: prices, accreditation, "approved/certified installer",
  * monitoring, finance, face or number plate recognition, and any claim that
  * the UK government approved Hikvision or that it "can't see your footage".
@@ -54,7 +59,7 @@ export const HIKVISION_FAQS: { q: string; a: string }[] = [
   },
   {
     q: "Do you need to visit first?",
-    a: "Most homes we quote from photos. Some need a visit, and we will tell you when we call.",
+    a: "Most homes we quote from photos. A larger property, a business or more than five or six cameras usually needs a visit first, and we will tell you when we call.",
   },
   {
     q: "Can you fit cameras I have already bought?",
@@ -74,10 +79,10 @@ export const HIKVISION_FAQS: { q: string; a: string }[] = [
   },
   {
     q: "What warranty do I get?",
-    a: "Every camera and recorder carries the manufacturer's warranty, and our workmanship warranty covers the fitting for up to 5 years. If something stops working later, message us on WhatsApp: a new router, a new phone or an app that logs you out can usually be sorted remotely.",
+    a: "One year on the cameras, the recorder and the fitting, and anything faulty in the first 30 days is replaced with a new or equivalent one. If something stops working later, message us on WhatsApp: a new router, a new phone or an app that logs you out can usually be sorted remotely.",
   },
   {
     q: "Is Hikvision safe to use?",
-    a: "Yes, you can have Hikvision at home. In 2022 the UK government told its own departments to stop putting cameras from Chinese manufacturers on sensitive government sites, and it has said that does not apply to private individuals or businesses. There is no UK ban on using Hikvision at home. Whatever the brand, the real risks are weak passwords, old firmware and cameras left open to the internet, so we set every system up with its own strong passwords and current firmware, with no open ports on your router, and your recordings stay on the recorder in your home.",
+    a: "Yes, you can have Hikvision at home. In 2022 the UK government told its own departments to stop putting cameras from Chinese manufacturers on sensitive government sites, and it has said that does not apply to private individuals or businesses. There is no UK ban on using Hikvision at home, and your recordings stay on the recorder in your house.",
   },
 ];

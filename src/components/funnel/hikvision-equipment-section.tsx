@@ -19,12 +19,17 @@ import type { ReactNode } from "react";
  *   - "One cable per camera" went (Gus, 30 October: it read as filler; the
  *     wired section already says one cable carries power and picture).
  *   - The Wi-Fi line that sat under the cards moved to the wired card.
+ *   - A video doorbell, fourth (Gus, 5 November, once Jordan confirmed they
+ *     supply them; 9 buyer chats asked for a doorbell or intercom). No brand
+ *     named: Jordan did not say which doorbell they fit.
  *
  * PHOTOS: Hikvision's own product shots of the camera (white and black) and
  * the recorder, chosen by Gus on 28 October, both cut out; they need
  * authorised status (question 12). The phone is Gus's Gemini render with a
  * green screen, which now shows three of the page's feeds (door, drive,
- * garden), blended with multiply so its white takes the card's grey. "The make and model are on your quote"
+ * garden), blended with multiply so its white takes the card's grey. The
+ * doorbell is a generated render on white (Figma, gemini-3.1-flash-image, 5
+ * November), no logo, blended the same way. "The make and model are on your quote"
  * holds only once the quote template names them (24 of 63 camera quotes
  * never say Hikvision): a team change.
  */
@@ -39,7 +44,7 @@ function Photo({ name, alt, contain, multiply }: { name: string; alt: string; co
     <img
       src={`/funnel/hikvision-kit-${name}-480.webp`}
       srcSet={`/funnel/hikvision-kit-${name}-480.webp 480w, /funnel/hikvision-kit-${name}-800.webp 800w`}
-      sizes="(min-width: 768px) 320px, 100vw"
+      sizes="(min-width: 1280px) 280px, (min-width: 768px) 440px, 100vw"
       alt={alt}
       loading="lazy"
       decoding="async"
@@ -64,6 +69,11 @@ const ITEMS: Item[] = [
     title: "No monitor needed",
     detail: "Every camera on your phone, live and recorded, in the Hik-Connect app.",
   },
+  {
+    visual: <Photo name="doorbell" alt="A black video doorbell with a camera at the top and a lit call button." contain multiply />,
+    title: "A video doorbell",
+    detail: "See and talk to whoever is at the door, from your phone. On request.",
+  },
 ];
 
 export function HikvisionEquipmentSection() {
@@ -78,11 +88,11 @@ export function HikvisionEquipmentSection() {
           </h2>
         </div>
 
-        <div className="mx-auto grid max-w-5xl grid-cols-1 gap-5 md:grid-cols-3 md:gap-6">
+        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-5 md:grid-cols-2 md:gap-6 xl:grid-cols-4">
           {ITEMS.map((e) => (
             <div key={e.title} className="rounded-xl border border-border bg-background p-6">
               <div
-                className="relative flex aspect-[4/3] items-center justify-center overflow-hidden rounded-lg border border-border md:aspect-square"
+                className="relative flex aspect-[4/3] items-center justify-center overflow-hidden rounded-lg border border-border xl:aspect-square"
                 style={{ background: "var(--eq-img-grad)" }}
               >
                 {e.visual}

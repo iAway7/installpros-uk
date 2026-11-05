@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ArrowLeft, ArrowRight, Cctv, CookingPot, DoorOpen, Footprints, Plus, Sofa, Wrench } from "lucide-react";
+import { ArrowLeft, ArrowRight, Cctv, CookingPot, DoorOpen, Footprints, Plus, Sofa } from "lucide-react";
 import { track, EVENTS } from "@/lib/analytics";
 import { HIKVISION_INTENT_LABEL, type HikvisionIntent } from "./hikvision-need-step";
 import { savePlan, type HikvisionPlan } from "@/lib/funnel/hikvision-plan";
@@ -28,7 +28,7 @@ import { HikvisionQuoteForm } from "./hikvision-quote-form";
  * puts it in the WhatsApp message.
  */
 
-type Step = "areas" | "type" | "details" | "fix";
+type Step = "areas" | "type" | "details";
 
 type Tile = { id: string; short: string; label: string; img?: string; icon?: React.ReactNode };
 
@@ -58,7 +58,6 @@ const QUESTION: Record<Step, string> = {
   areas: "What do you want covered?",
   type: "New cameras, or adding to yours?",
   details: "Get the price for your plan.",
-  fix: "Let's get it working.",
 };
 
 const OPTION =
@@ -194,13 +193,6 @@ export function HikvisionTilesPlanner() {
     setStep("details");
   }
 
-  // Opens the form right here as a repair, from the postcode (Gus, 28
-  // October), rather than sending people down to the closing form.
-  function fixMySystem() {
-    setIntent("repair");
-    track(EVENTS.CTA_CLICKED, { cta_id: "tiles_fix", cta_label: "repair", cta_location: "tiles" });
-    setStep("fix");
-  }
 
   const summary = count > 0 ? `${sentence(chosen.map((t) => t.short))}.` : "";
   const anim = "animate-[slideInRight_0.3s_ease-out] motion-reduce:animate-none";
@@ -253,15 +245,6 @@ export function HikvisionTilesPlanner() {
                   {count > 0 && <ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" />}
                 </button>
               </div>
-
-              <button
-                type="button"
-                onClick={fixMySystem}
-                className="focus-ring mt-4 inline-flex min-h-[44px] items-center gap-1.5 rounded-md px-2 text-body-sm font-medium text-muted-foreground underline-offset-4 transition-colors duration-quick ease-ds hover:text-foreground hover:underline"
-              >
-                <Wrench aria-hidden="true" className="h-4 w-4" />
-                Something not working? Fix my system
-              </button>
             </>
           )}
 
@@ -277,25 +260,6 @@ export function HikvisionTilesPlanner() {
               </div>
               <div className="mt-5">
                 <BackButton onClick={() => setStep("areas")} />
-              </div>
-            </>
-          )}
-
-          {step === "fix" && (
-            <>
-              <p className="mx-auto mt-4 max-w-md text-pretty text-body text-muted-foreground md:text-lg">
-                We tell you what it needs before anyone comes out.
-              </p>
-              <div className="mx-auto mt-8 max-w-md text-left md:mt-10">
-                <HikvisionQuoteForm
-                  tone="light"
-                  presetIntent="repair"
-                  onBack={() => setStep("areas")}
-                  showStepLabels={false}
-                  defaultService="security"
-                  skipServiceStep
-                  formName="hikvision_planner_tiles"
-                />
               </div>
             </>
           )}
