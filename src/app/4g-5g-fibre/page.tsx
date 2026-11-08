@@ -49,7 +49,9 @@ import { ScrollReveal } from "@/components/funnel/scroll-reveal";
  *   - Migration 0027 (install_type connectivity, the new needs, the Starlink
  *     endpoint). Until it runs, the form's insert fails.
  *   - A Path for "4G/5G and fibre" in Will's Starlink Zap (question 11).
- *   - Photographs (prompts-imagenes.md). Hero and closing band are dark.
+ *   - Real photographs. The hero, antenna, router shelf, lane and closing
+ *     band are Gus's Gemini renders of 9 November (prompts-imagenes.md).
+ *     On desktop the hero's antenna pole sits behind the centred headline.
  *   - Ofcom's annual report (due about 19 November 2026): re-check the
  *     figures in connectivity-fibre-section.tsx before launch.
  *
@@ -86,6 +88,12 @@ export default function ConnectivityPage() {
       <ExperimentProvider>
         <main id="main" tabIndex={-1} className="flex flex-col outline-none">
           <ConnectivityHeroSection
+            // Gus's Gemini render, 9 November (prompt 1): a stone farmhouse
+            // at dusk, an antenna on a pole facing a mast on the hill, a dish
+            // on the roof. Phones get a 3:4 crop of the right edge.
+            image="/funnel/connectivity-hero-2000.webp"
+            imageSrcSet="/funnel/connectivity-hero-1280.webp 1280w, /funnel/connectivity-hero-2000.webp 2000w"
+            imageMobile="/funnel/connectivity-hero-phone-640.webp 640w, /funnel/connectivity-hero-phone-828.webp 828w"
             badge="Same-day quote"
             // Option A of three in estructura-y-borrador.md. B: "Internet that
             // works where fibre doesn't reach". C: "4G that drops. Fibre that

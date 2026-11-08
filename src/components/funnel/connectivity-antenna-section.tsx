@@ -16,6 +16,9 @@ import { Check } from "lucide-react";
  * "no planning permission needed" either: the rules depend on size and place
  * and may not strictly cover a 4G/5G antenna. Waits on Will's questions 1, 2,
  * 3, 8 and 9.
+ *
+ * Photo: Gus's Gemini render, 9 November (prompts-imagenes.md, prompt 2),
+ * under the text on every width.
  */
 
 const POINTS = [
@@ -37,6 +40,17 @@ export function ConnectivityAntennaSection() {
               Walls and windows weaken mobile signal. An antenna on the wall or a pole, facing the mast, avoids them. The
               router sits beside it, so no signal is lost in a long cable.
             </p>
+            {/* Gus's Gemini render, 9 November (prompt 2). */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/funnel/connectivity-antenna-1440.webp"
+              srcSet="/funnel/connectivity-antenna-960.webp 960w, /funnel/connectivity-antenna-1440.webp 1440w"
+              sizes="(min-width: 768px) 480px, 100vw"
+              alt="An outdoor 4G/5G antenna on a brick wall, facing a mobile mast across the fields"
+              loading="lazy"
+              decoding="async"
+              className="mt-8 aspect-[16/9] w-full rounded-2xl object-cover"
+            />
           </div>
           <ul className="space-y-3">
             {POINTS.map((p, i) => (

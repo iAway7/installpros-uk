@@ -7,11 +7,11 @@ import { ConnectivityLeadForm } from "./connectivity-lead-form";
  * its form swapped for connectivity-lead-form.tsx. The trust bar is the Ajax
  * one, imported as it is: Google, Trustpilot, UK-wide, DBS checked.
  *
- * PHOTOGRAPH: none yet. Prompt 1 in 4g-5g-fibre-research/prompts-imagenes.md
- * (a stone farmhouse with an antenna on a pole facing the hills and a dish on
- * the roof). Without `image` the hero falls back to the dark surface; the
- * overlays below were written for the VoIP photo and need a look when the
- * render arrives.
+ * PHOTOGRAPH: Gus's Gemini render, 9 November (4g-5g-fibre-research/
+ * prompts-imagenes.md, prompt 1): a stone farmhouse at dusk, an antenna on a
+ * pole facing a mast on the far hill, a dish on the roof, one window lit. The
+ * house sits at the right edge, so the VoIP overlays fit it as they are.
+ * Without `image` the hero falls back to the dark surface.
  */
 export function ConnectivityHeroSection({
   image,

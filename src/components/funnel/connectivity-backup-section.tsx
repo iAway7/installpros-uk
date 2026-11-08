@@ -48,13 +48,28 @@ export function ConnectivityBackupSection() {
   return (
     <section id="backup" className="w-full scroll-mt-28 bg-[#0e1013] py-16 text-white md:py-24">
       <div className="container mx-auto">
-        <div data-reveal className="max-w-2xl">
-          <p className="eyebrow !text-[#ff6a5f]">Backup</p>
-          <h2 className="mt-4 h2-section text-white">If one line drops, the other takes over.</h2>
-          <p className="mt-4 text-pretty text-body text-white/70 md:mt-5 md:text-lg" style={{ lineHeight: "1.6" }}>
-            Starlink, fibre and 4G/5G can share one router. When the main line drops, it moves to the backup on its own,
-            within seconds.
-          </p>
+        <div className="grid gap-8 lg:grid-cols-2 lg:items-center lg:gap-14">
+          <div data-reveal className="max-w-2xl">
+            <p className="eyebrow !text-[#ff6a5f]">Backup</p>
+            <h2 className="mt-4 h2-section text-white">If one line drops, the other takes over.</h2>
+            <p className="mt-4 text-pretty text-body text-white/70 md:mt-5 md:text-lg" style={{ lineHeight: "1.6" }}>
+              Starlink, fibre and 4G/5G can share one router. When the main line drops, it moves to the backup on its own,
+              within seconds.
+            </p>
+          </div>
+          {/* Gus's Gemini render, 9 November (prompt 3): the home router, the
+              4G/5G router and a battery backup on a shelf. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            data-reveal
+            src="/funnel/connectivity-router-1440.webp"
+            srcSet="/funnel/connectivity-router-960.webp 960w, /funnel/connectivity-router-1440.webp 1440w"
+            sizes="(min-width: 1024px) 560px, 100vw"
+            alt="A home router and a 4G/5G router side by side on a shelf, with a battery backup below"
+            loading="lazy"
+            decoding="async"
+            className="aspect-[16/9] w-full rounded-2xl object-cover"
+          />
         </div>
 
         <ul className="mt-10 grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 md:mt-12 lg:grid-cols-4">

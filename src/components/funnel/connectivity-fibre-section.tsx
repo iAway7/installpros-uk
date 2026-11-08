@@ -64,25 +64,40 @@ export function ConnectivityFibreSection() {
           Source: Ofcom, January 2026 data; gov.uk.
         </p>
 
-        <div className="mx-auto mt-10 max-w-2xl md:mt-12">
-          <p data-reveal className="text-pretty text-center text-body text-muted-foreground md:text-lg" style={{ lineHeight: "1.6" }}>
-            Fibre plans slip, and a house at the end of a lane often needs a neighbour&apos;s permission for the cable.
-          </p>
-          <ul className="mt-6 space-y-3">
-            {POINTS.map((p, i) => (
-              <li
-                key={p}
-                data-reveal
-                style={{ transitionDelay: `${i * 80}ms` }}
-                className="flex items-start gap-3 rounded-2xl bg-background p-5"
-              >
-                <Check aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-success" />
-                <span className="text-pretty text-body text-foreground" style={{ lineHeight: "1.5" }}>
-                  {p}
-                </span>
-              </li>
-            ))}
-          </ul>
+        <div className="mx-auto mt-10 grid max-w-5xl gap-8 md:mt-12 md:grid-cols-2 md:items-center md:gap-12">
+          {/* Gus's Gemini render, 9 November (prompt 4): a lane, a pole, a
+              cottage at the near end. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            data-reveal
+            src="/funnel/connectivity-lane-1440.webp"
+            srcSet="/funnel/connectivity-lane-960.webp 960w, /funnel/connectivity-lane-1440.webp 1440w"
+            sizes="(min-width: 768px) 480px, 100vw"
+            alt="A country lane with a telegraph pole and a stone cottage at the end"
+            loading="lazy"
+            decoding="async"
+            className="aspect-[16/9] w-full rounded-2xl object-cover"
+          />
+          <div>
+            <p data-reveal className="text-pretty text-body text-muted-foreground md:text-lg" style={{ lineHeight: "1.6" }}>
+              Fibre plans slip, and a house at the end of a lane often needs a neighbour&apos;s permission for the cable.
+            </p>
+            <ul className="mt-6 space-y-3">
+              {POINTS.map((p, i) => (
+                <li
+                  key={p}
+                  data-reveal
+                  style={{ transitionDelay: `${i * 80}ms` }}
+                  className="flex items-start gap-3 rounded-2xl bg-background p-5"
+                >
+                  <Check aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-success" />
+                  <span className="text-pretty text-body text-foreground" style={{ lineHeight: "1.5" }}>
+                    {p}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     </section>
