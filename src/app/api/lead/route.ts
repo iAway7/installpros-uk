@@ -96,11 +96,12 @@ const CAPS = {
 /**
  * Mirrors the install_type check in 0019, widened by 0021 for `security`
  * (the Ajax landing), by 0025 for `voip` (the digital landline page) and by
- * 0026 for `managed` (the managed service page). The first five are what the landings actually submit;
+ * 0026 for `managed` (the managed service page) and by 0027 for
+ * `connectivity` (the 4G/5G and fibre page). The first five are what the landings actually submit;
  * the rest are the old enum's vocabulary, kept accepted so nothing that
  * predates the change is refused.
  */
-const INSTALL_TYPES = ["residential", "commercial", "mobile_rv", "marine", "security", "business", "rural", "events", "voip", "managed"];
+const INSTALL_TYPES = ["residential", "commercial", "mobile_rv", "marine", "security", "business", "rural", "events", "voip", "managed", "connectivity"];
 
 const PRECISIONS = ["exact", "approximate", "none"];
 
@@ -139,8 +140,12 @@ function valid(b: Partial<LeadBody>): b is LeadBody {
  */
 // alarm, cameras and both from the Ajax forms (0022); self, relative,
 // business and managed from the digital landline forms (0025); cctv, vpn
-// and support from the managed service forms (0026).
-const NEEDS = new Set(["alarm", "cameras", "both", "self", "relative", "business", "managed", "cctv", "vpn", "support"]);
+// and support from the managed service forms (0026); slow_line, mobile,
+// no_line and fibre_drops from the 4G/5G and fibre forms (0027).
+const NEEDS = new Set([
+  "alarm", "cameras", "both", "self", "relative", "business", "managed", "cctv", "vpn", "support",
+  "slow_line", "mobile", "no_line", "fibre_drops",
+]);
 const INTENTS = new Set(["new", "add", "repair"]);
 
 /** Postgres "undefined column", or PostgREST not finding it in its cache. */

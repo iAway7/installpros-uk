@@ -48,6 +48,10 @@ export const SUPERCHAT_INSTALL_TYPE: Record<string, string> = {
   // The managed service page (/managed-starlink), on the same Starlink Zap
   // (0026).
   managed: "Managed service",
+  // The 4G/5G and fibre page (/4g-5g-fibre), on the same Starlink Zap
+  // (0027): most of its visitors end up with Starlink, alone or with a 4G/5G
+  // backup. Will needs a Path for this value (preguntas-will.md, 11).
+  connectivity: "4G/5G and fibre",
 };
 const SUPERCHAT_INSTALL_TYPE_FALLBACK = "Starlink Installation";
 

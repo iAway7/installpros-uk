@@ -76,6 +76,11 @@ const NEED_LABEL: Record<string, string> = {
   cctv: "CCTV or alarm monitoring",
   vpn: "Office VPN or remote access",
   support: "Reliable internet and support",
+  // The 4G/5G and fibre page's "What's your internet now?" (0027).
+  slow_line: "Slow broadband",
+  mobile: "On 4G or 5G",
+  no_line: "No connection yet",
+  fibre_drops: "Fibre that drops",
 };
 const INTENT_LABEL: Record<string, string> = {
   new: "New system",

@@ -26,7 +26,9 @@ export interface LeadInput {
    *  hero form on the residential one are the same component. */
   formName?: string;
   /** Ajax forms: "What do you need?" (alarm, cameras, both). Digital landline
-   *  forms: "Who's the phone for?" (self, relative, business, managed). */
+   *  forms: "Who's the phone for?" (self, relative, business, managed).
+   *  4G/5G and fibre forms: "What's your internet now?" (slow_line, mobile,
+   *  no_line, fibre_drops). */
   need?: string;
   /** Ajax forms only, optional: new, add or repair. */
   intent?: string;

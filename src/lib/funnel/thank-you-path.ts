@@ -32,6 +32,8 @@ const BY_INSTALL_TYPE: Record<string, string> = {
   voip: "/thank-you-voip",
   // The managed service page, which asks what the cameras or VPN are.
   managed: "/thank-you-managed",
+  // The 4G/5G and fibre page, which asks for photos of the house.
+  connectivity: "/thank-you-connectivity",
 };
 
 export function thankYouPath(installType: string | undefined, leadId: string): string {
