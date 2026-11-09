@@ -55,7 +55,7 @@ export function ConnectivityFibreSection() {
               <span className="whitespace-nowrap text-[22px] font-bold leading-none tracking-[-0.02em] text-foreground tabular-nums sm:text-[34px] md:text-[40px]">
                 {f.value}
               </span>
-              <span className="mt-2 text-balance text-caption leading-snug text-muted-foreground sm:text-body-sm">{f.label}</span>
+              <span className="mt-2 text-balance text-caption text-muted-foreground sm:text-body-sm leading-snug">{f.label}</span>
             </li>
           ))}
         </ul>
