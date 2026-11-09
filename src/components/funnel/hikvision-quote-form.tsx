@@ -321,7 +321,24 @@ export function HikvisionQuoteForm({
     }
   }
 
-  const onPostcodeChange = (e: React.ChangeEvent<HTMLInputElement>) => setPostcode(cleanPostcode(e.target.value));
+  /*
+   * quote_started, on the first keystroke in the first field, once per mount,
+   * the same rule as the hero form. This form never sent it until 9 November
+   * 2026, so every lead from here counted as a lead with no form start: the
+   * dashboard read completion too high and the form-start rate low.
+   * form_position tells the two forms apart.
+   */
+  const startedFired = useRef(false);
+  function markStarted(firstField: "postcode" | "address") {
+    if (startedFired.current) return;
+    startedFired.current = true;
+    track(EVENTS.QUOTE_STARTED, { first_field: firstField, form_name: formName, form_position: "footer" });
+  }
+
+  const onPostcodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    markStarted("postcode");
+    setPostcode(cleanPostcode(e.target.value));
+  };
 
   function next() {
     setIsTransitioning(true); setDirection("forward");
@@ -427,7 +444,7 @@ export function HikvisionQuoteForm({
                 {addressMode ? (
                   <AddressAutocomplete
                     value={address}
-                    onChange={(v) => { setAddress(v); setError(""); if (status !== "idle") setStatus("idle"); }}
+                    onChange={(v) => { markStarted("address"); setAddress(v); setError(""); if (status !== "idle") setStatus("idle"); }}
                     onSelect={onAddressSelect}
                     placeholder="Start typing your address…"
                     className="text-body md:text-lg"
