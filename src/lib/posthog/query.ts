@@ -327,35 +327,63 @@ export interface TargetCounts {
   /** Unique people who tapped WhatsApp on the thank-you page, i.e. after
    *  submitting. Reported beside the funnel, never added to it. */
   whatsappAfterLead: number;
+  /** Every lead_id PostHog recorded a lead_created for in the date range, on
+   *  any page and from any source. The targets page keeps the database leads
+   *  whose id is in here, so all three counts come from the same people. */
+  seenLeadIds: string[];
 }
 
 /** Visitors and form starts over a date range, for one landing and one
- *  traffic source, split by device. One HogQL round-trip. `until` is
+ *  traffic source, split by device, plus the lead ids PostHog saw. `until` is
  *  inclusive and optional: without it the range runs to now. The page filter
  *  applies to the landing events; the thank-you WhatsApp click happens on a
  *  different path, so it is tied back to the landing through the lead_id it
  *  carries, matched against lead_created events under the same filters. The
- *  source filter applies to everything. */
+ *  source filter applies to everything except the lead ids, which the page
+ *  matches against leads it has already filtered by landing and source.
+ *
+ *  People are counted by person_id, not distinct_id. Submitting the form
+ *  identifies the visitor, which gives them a new distinct_id, so anyone who
+ *  went back to the landing from the thank-you page was two visitors. The
+ *  person_id joins the two.
+ *
+ *  A form start is quote_started or coverage_checked. quote_started is the
+ *  first keystroke in a form, but the bottom forms on the Ajax and Hikvision
+ *  pages only sent it from 9 November 2026, and the Starlink bottom form and
+ *  the weather hero never have. A postcode check means the visitor typed in
+ *  the first field, so it counts as a start where the keystroke went
+ *  unreported. Someone who typed half a postcode in one of those forms and
+ *  left is still missed, so the count is a floor. */
 export async function fetchTargetCounts(f: { since: string; until?: string; page?: string; source?: string }): Promise<TargetCounts> {
   const since = f.since.replace(/[^0-9-]/g, "");
   const until = (f.until ?? "").replace(/[^0-9-]/g, "");
   const onPage = f.page ? ` AND ${pageWhere(f.page)}` : "";
-  const where = [`toDate(timestamp) >= '${since}'`];
-  if (until) where.push(`toDate(timestamp) <= '${until}'`);
+  const dates = [`toDate(timestamp) >= '${since}'`];
+  if (until) dates.push(`toDate(timestamp) <= '${until}'`);
+  const where = [...dates];
   if (f.source) where.push(sourceCondition(f.source));
-  const r = await hogql(
-    `SELECT properties.device_type AS device,
-            count(DISTINCT if(event = 'page_view'${onPage}, distinct_id, NULL)) AS visitors,
-            count(DISTINCT if(event = 'quote_started'${onPage}, distinct_id, NULL)) AS starts,
-            count(DISTINCT if(event = 'whatsapp_clicked' AND startsWith(properties.page_path, '/thank-you')
-                 AND toString(properties.lead_id) IN (
-                   SELECT toString(properties.lead_id) FROM events
-                   WHERE event = 'lead_created' AND ${where.join(" AND ")}${onPage}
-                 ), distinct_id, NULL)) AS wa
-     FROM events WHERE ${where.join(" AND ")}
-     GROUP BY device`,
-  );
-  if (!r.ok) return { ok: false, configured: r.configured, error: r.error, byDevice: [], whatsappAfterLead: 0 };
+  const [r, seen] = await Promise.all([
+    hogql(
+      `SELECT properties.device_type AS device,
+              count(DISTINCT if(event = 'page_view'${onPage}, person_id, NULL)) AS visitors,
+              count(DISTINCT if(event IN ('quote_started', 'coverage_checked')${onPage}, person_id, NULL)) AS starts,
+              count(DISTINCT if(event = 'whatsapp_clicked' AND startsWith(properties.page_path, '/thank-you')
+                   AND toString(properties.lead_id) IN (
+                     SELECT toString(properties.lead_id) FROM events
+                     WHERE event = 'lead_created' AND ${where.join(" AND ")}${onPage}
+                   ), person_id, NULL)) AS wa
+       FROM events WHERE ${where.join(" AND ")}
+       GROUP BY device`,
+    ),
+    // HogQL returns 100 rows unless told otherwise.
+    hogql(
+      `SELECT DISTINCT toString(properties.lead_id) FROM events
+       WHERE event = 'lead_created' AND ${dates.join(" AND ")}
+       LIMIT 50000`,
+    ),
+  ]);
+  const failed = !r.ok ? r : !seen.ok ? seen : null;
+  if (failed) return { ok: false, configured: failed.configured, error: failed.error, byDevice: [], whatsappAfterLead: 0, seenLeadIds: [] };
   const rows = r.results as [string | null, number, number, number][];
   return {
     ok: true,
@@ -364,5 +392,6 @@ export async function fetchTargetCounts(f: { since: string; until?: string; page
       .filter(([d]) => d)
       .map(([device, visitors, starts]) => ({ device: String(device), visitors: Number(visitors) || 0, starts: Number(starts) || 0 })),
     whatsappAfterLead: rows.reduce((n, [, , , wa]) => n + (Number(wa) || 0), 0),
+    seenLeadIds: (seen.results as [string | null][]).map(([id]) => id).filter((id): id is string => Boolean(id)),
   };
 }

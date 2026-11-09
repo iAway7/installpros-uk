@@ -273,7 +273,9 @@ function status(actual: number | null, target: number, sample: number): TargetSt
 
 /** Pure maths, so it can be checked without PostHog or Supabase. `leads`
  *  must already be filtered to the same landing, source and dates as
- *  `counts`, and have test submissions removed. */
+ *  `counts`, have test submissions removed, and be only the leads PostHog
+ *  saw (counts.seenLeadIds): visitors and starts can only be people PostHog
+ *  saw, so a lead it never saw has no visitor or start to divide by. */
 export function buildTargetsReport(
   counts: Pick<TargetCounts, "byDevice" | "whatsappAfterLead">,
   leads: LeadForTargets[],

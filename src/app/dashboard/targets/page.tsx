@@ -112,9 +112,15 @@ export default async function TargetsPage({ searchParams }: { searchParams: Sear
     );
   }
 
-  // Visitors and form starts come from PostHog; leads come from Supabase on
-  // purpose. PostHog loses roughly a tenth of people to blockers, the DB
-  // has every submission.
+  // Visitors and form starts come from PostHog; leads come from Supabase and
+  // are then cut to the ones PostHog also saw. This used to divide every
+  // database lead by PostHog's visitors, on the idea that PostHog loses about
+  // a tenth of people to blockers. It loses far more: it only loads once a
+  // visitor accepts analytics cookies, and on 9 November 2026 7 of the Ajax
+  // page's 16 Google Ads leads had never reached it. Those people are in the
+  // leads but cannot be in the visitors or starts, which is how Ajax read
+  // 128.6% form completion. Rates now use one set of people, the way the
+  // WordPress baselines used one tool; the database total is shown beside them.
   const supabase = createClient();
   const leadsQuery = () => {
     let q = supabase
@@ -156,9 +162,11 @@ export default async function TargetsPage({ searchParams }: { searchParams: Sear
   const leads = realLeads(leadsResult.data ?? []).filter(
     (l) => stripSlash(l.landing_page) === stripSlash(page) && matchesSource(l, source),
   );
+  const seen = new Set(counts.seenLeadIds);
+  const seenLeads = leads.filter((l) => seen.has(l.id));
   // The page decides which baseline it is judged against: commercial has its
   // own, measured on the WordPress page it replaces. See targets.ts.
-  const report = buildTargetsReport(counts, leads, page);
+  const report = buildTargetsReport(counts, seenLeads, page);
 
   return (
     <Shell filters={filters} sources={options}>
@@ -166,8 +174,11 @@ export default async function TargetsPage({ searchParams }: { searchParams: Sear
         <span className="font-semibold text-foreground tabular-nums">{report.visitors.toLocaleString("en-GB")}</span> visitors ·{" "}
         <span className="font-semibold text-foreground tabular-nums">{report.starts.toLocaleString("en-GB")}</span> form starts ·{" "}
         <span className="font-semibold text-foreground tabular-nums">{report.leads.toLocaleString("en-GB")}</span>{" "}
-        leads {until ? `from ${since} to ${until}` : `since ${since}`}.
-        Visitors and form starts are unique people in PostHog on {page} from {sourceLabel(source)}; leads are real submissions in the database for the same landing and source.
+        leads {until ? `from ${since} to ${until}` : `since ${since}`}, on {page} from {sourceLabel(source)}.
+        All three are the same people: those PostHog can see, which means visitors who accepted analytics cookies.
+        The database has <span className="font-semibold text-foreground tabular-nums">{leads.length.toLocaleString("en-GB")}</span> leads
+        for the same landing and source; the other {(leads.length - report.leads).toLocaleString("en-GB")} came from people who declined
+        cookies or block tracking, so they are counted as leads but left out of the rates.
       </p>
 
       <TargetsTable report={report} />
