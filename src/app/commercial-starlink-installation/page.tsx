@@ -230,9 +230,9 @@ export default function CommercialStarlinkInstallationPage() {
 
               The component stays as it is: /starlink-installation, /install-
               quote and the vehicles landing all render it, and there the list
-              of install types is accurate. The "certified engineers" line is
-              not, on any of them, but that is those pages' problem to fix and
-              /install-quote is live.
+              of install types is accurate. Its "certified" claims came out
+              everywhere on 17 November 2026, when Google's misleading
+              representation review took the ads down.
 
               Backgrounds still alternate without it: WhatItRuns is
               bg-secondary and Trustpilot is bg-background. */}

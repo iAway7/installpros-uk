@@ -19,7 +19,7 @@ import { ExperimentProvider } from "@/components/experiments/experiment-provider
 export const metadata: Metadata = {
   title: "Professional Starlink Installation | Fast & Safe Setup",
   description:
-    "Professional Starlink installation across the UK. Get connected fast with our accredited installers. Call 020 3397 7003 for a free quote.",
+    "Professional Starlink installation across the UK. Call 020 3397 7003 for a free quote.",
   robots: { index: false, follow: false },
   alternates: { canonical: "/install-quote" },
   openGraph: {

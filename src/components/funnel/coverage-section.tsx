@@ -9,7 +9,7 @@ const FEATURES = [
     icon: MapPin,
     title: "Nationwide Coverage",
     description:
-      "Certified engineers right across the UK: mainland, islands and the rural sites others won't reach.",
+      "Engineers right across the UK: mainland, islands and the rural sites others won't reach.",
   },
   {
     icon: CalendarCheck,
@@ -37,7 +37,7 @@ export function CoverageSection() {
             Any property, anywhere. Connected this week.
           </h2>
           <p className="mx-auto mt-5 max-w-2xl text-body text-muted-foreground md:text-lg" style={{ lineHeight: "1.6" }}>
-            One certified team for residential, commercial, marine and{" "}
+            One team for residential, commercial, marine and{" "}
             {/* Forced break only from md up: on mobile the line wraps naturally
                 and a hard break would leave a stranded second line. */}
             <br className="hidden md:block" />

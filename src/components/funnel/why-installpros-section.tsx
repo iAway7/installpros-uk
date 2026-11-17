@@ -28,7 +28,7 @@ const IconHeadset = (
 const FEATURES: Feature[] = [
   {
     t: "Professional Installation",
-    d: "Certified, insured engineers who scan for obstructions and mount where the signal is strongest.",
+    d: "Insured engineers who scan for obstructions and mount where the signal is strongest.",
     i: IconWrench,
   },
   {
@@ -294,7 +294,7 @@ export function WhyInstallProsSection(
             </h2>
           </div>
           <p className="max-w-[420px] text-body text-muted-foreground md:text-lg" style={{ lineHeight: "1.6" }}>
-            {intro ?? "One certified team handles everything, from the first signal scan to the final speed test."}
+            {intro ?? "One team handles everything, from the first signal scan to the final speed test."}
           </p>
         </div>
 
