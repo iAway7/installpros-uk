@@ -19,7 +19,7 @@
  *    vehicle page asks for an address, not a postcode.
  *  - The kit's strip under the hero is gone. The page passes the site's
  *    HeroTrustBar through `bar` instead (Google, Trustpilot, installs, The
- *    Times, Authorised Installer), pinned inside the hero like HeroSection.
+ *    Times), pinned inside the hero like HeroSection.
  *  - The plates are the kit's graded finals, three widths each (960, 1280,
  *    1600) served through srcset. Only the first scene is in the critical
  *    path; see the img block at the foot of the file.

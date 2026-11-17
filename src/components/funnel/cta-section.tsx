@@ -32,6 +32,9 @@ export function CtaSection({ addressMode = false, defaultService = "", skipServi
         </p>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/funnel/payment-methods.svg" alt="Accepted payment methods" className="mx-auto mt-6 h-5" />
+        {/* The square "Authorised Starlink Installer" badge sat next to this one
+            until 17 November 2026, when Google took the ads down over it (see
+            hero-trust-bar.tsx). Google said this generic badge can stay. */}
         <div className="mt-7 flex flex-wrap items-center justify-center gap-x-8 gap-y-5">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
@@ -41,15 +44,6 @@ export function CtaSection({ addressMode = false, defaultService = "", skipServi
             width={1562}
             height={745}
             className="h-14 w-auto"
-          />
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/funnel/authorised-starlink-installer.webp"
-            alt="Authorised Starlink Installer"
-            loading="lazy"
-            width={144}
-            height={144}
-            className="h-14 w-auto rounded-lg"
           />
         </div>
       </div>

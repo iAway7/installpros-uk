@@ -21,7 +21,7 @@ export interface InstallsStat {
 
 const DEFAULT_INSTALLS: InstallsStat = { count: "3,500+", label: "UK installations" };
 
-/** The five trust badges (inner content only). Reused by the desktop row and
+/** The four trust badges (inner content only). Reused by the desktop row and
  *  the mobile marquee. Built per render so a segment landing can swap the
  *  installs figure for one that counts its own work. */
 function buildBadges(installs: InstallsStat): ReactNode[] {
@@ -63,23 +63,15 @@ function buildBadges(installs: InstallsStat): ReactNode[] {
       THE TIMES
     </span>
   </div>,
-  <div key="authorized" className="flex items-center gap-2.5">
-    {/* eslint-disable-next-line @next/next/no-img-element */}
-    <img
-      src="/funnel/Authorised-Starlink-Installer-Getmedigital.png"
-      alt="Authorised Starlink Installer"
-      className="block h-[72px] w-[72px] rounded-lg"
-    />
-    <div className="flex flex-col leading-tight">
-      <span className="text-body text-white/70">Authorised</span>
-      <span className="text-body font-semibold text-white">Starlink Installer</span>
-    </div>
-  </div>,
+  // No "Authorised Starlink Installer" badge. Google's policy team took the
+  // ads down on 17 November 2026 (Misleading Representation): a GetMeDigital
+  // membership is not authorisation from Starlink or SpaceX, and the footer
+  // says we are independent. Do not bring it back in any wording.
   ];
 }
 
 /**
- * Hero trust bar. Desktop: all five badges in one row with dividers. Mobile: a
+ * Hero trust bar. Desktop: all four badges in one row with dividers. Mobile: a
  * continuous right-to-left marquee. Both are pure CSS / server-rendered (no
  * client state), so the height is identical on the server and after hydration —
  * which is what keeps the my-auto-centred hero from shifting (CLS).
