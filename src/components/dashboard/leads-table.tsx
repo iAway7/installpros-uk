@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { Search, Phone, Mail, MapPin, Loader2, Inbox, Download, Camera } from "lucide-react";
 import { toast } from "sonner";
 import { Input } from "@/components/system/input";
@@ -79,6 +80,23 @@ export function LeadsTable({
   const [dateRange, setDateRange] = useState<DateRange>("all");
   const [customFrom, setCustomFrom] = useState("");
   const [customTo, setCustomTo] = useState("");
+
+  // The dashboard search links to /dashboard/leads?lead=<id>. The panel opens
+  // from any lead in the list, whatever the filters and the page show.
+  const leadParam = useSearchParams().get("lead");
+  useEffect(() => {
+    if (!leadParam) return;
+    if (leads.some((l) => l.id === leadParam)) setOpenId(leadParam);
+    else toast.error("That lead is not in the list.");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [leadParam]);
+
+  function closeLead() {
+    setOpenId(null);
+    // Take the id out of the address without asking the server for the page
+    // again, so a reload does not reopen the panel.
+    if (leadParam) window.history.replaceState(null, "", window.location.pathname);
+  }
 
   const cityOf = (l: Lead) => locations[l.postcode.trim().toUpperCase()]?.city;
 
@@ -391,7 +409,7 @@ export function LeadsTable({
         <LeadDetailPanel
           lead={openLead}
           location={locations[openLead.postcode.trim().toUpperCase()]}
-          onClose={() => setOpenId(null)}
+          onClose={closeLead}
           onSaveValue={(v) => updateValue(openLead.id, v)}
           onToggleTest={(v) => updateTest(openLead.id, v)}
           intel={intel[openLead.id]}

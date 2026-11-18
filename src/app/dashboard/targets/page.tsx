@@ -11,10 +11,13 @@ import { buildTargetsReport, pct, LAUNCH_DATE, COMMERCIAL_PAGE, SECURITY_PAGE, V
 import { EmptyState } from "@/components/system/empty-state";
 import { PageHeader } from "@/components/system/page-header";
 import { Pill, type PillVariant } from "@/components/system/badge";
+import { TARGETS_DEFAULT_PAGE } from "@/lib/dashboard/sticky-filters";
 
 export const dynamic = "force-dynamic";
 
-const DEFAULT_PAGE = "/install-quote";
+// Shared with the nav, which carries the landing between Targets and Funnel
+// and has to know what Targets shows when the URL names none.
+const DEFAULT_PAGE = TARGETS_DEFAULT_PAGE;
 
 /** Each landing is measured against a different page, over a different window,
  *  so the line under the title has to say which. See targets.ts for how each

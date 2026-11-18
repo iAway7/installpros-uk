@@ -129,6 +129,9 @@ const INSTALL_TYPE_LABEL: Record<string, string> = {
   business: "Business",
   rural: "Rural",
   events: "Events",
+  voip: "VoIP",
+  managed: "Managed service",
+  connectivity: "4G/5G and fibre",
 };
 
 export function installTypeLabel(slug: string | null | undefined): string {
