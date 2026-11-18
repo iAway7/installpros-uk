@@ -23,7 +23,7 @@ export default async function LandingsPage({
   const query = () => {
     const q = supabase
       .from("leads")
-      .select("landing_page, lead_score, gclid, traffic_source, device_type, status, created_at")
+      .select("landing_page, lead_score, gclid, traffic_source, device_type, created_at")
       .eq("is_test", false)
       .order("created_at", { ascending: false });
     return since ? q.gte("created_at", since) : q;
@@ -58,11 +58,10 @@ export default async function LandingsPage({
         }
       />
 
-      <div className="grid gap-3 sm:grid-cols-4">
+      <div className="grid gap-3 sm:grid-cols-3">
         <Stat label="Leads" value={sum.leads} />
         <Stat label="From Google Ads" value={sum.paidLeads} hint="carries a gclid" />
         <Stat label="Qualified (8+)" value={sum.qualified} />
-        <Stat label="Booked / installed" value={sum.won} />
       </div>
 
       {stats.length === 0 ? (
@@ -79,7 +78,6 @@ export default async function LandingsPage({
                   <TableHeaderCell numeric>Qualified 8+</TableHeaderCell>
                   <TableHeaderCell numeric>Avg score</TableHeaderCell>
                   <TableHeaderCell numeric>Mobile</TableHeaderCell>
-                  <TableHeaderCell numeric>Won</TableHeaderCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -96,7 +94,6 @@ export default async function LandingsPage({
                     </TableCell>
                     <TableCell numeric>{s.avgScore ?? "—"}</TableCell>
                     <TableCell numeric>{s.mobileShare != null ? `${s.mobileShare}%` : "—"}</TableCell>
-                    <TableCell numeric>{s.won}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -116,8 +113,8 @@ export default async function LandingsPage({
           </p>
           <p>
             These are lead <em>counts</em>, not conversion rates: we don&apos;t count visitors server-side, so a
-            rate needs the clicks figure from Google. Statistical significance lives on the Experiments page,
-            which has both halves.
+            rate needs the clicks figure from Google. The visitor to lead rate for each landing is on the
+            Targets page.
           </p>
         </CardContent>
       </Card>

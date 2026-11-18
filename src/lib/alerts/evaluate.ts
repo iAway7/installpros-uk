@@ -1,7 +1,6 @@
 import { createServiceClient } from "@/lib/supabase/server";
 import { fetchAll } from "@/lib/supabase/fetch-all";
 import { posthogConfigured, hogql } from "@/lib/posthog/query";
-import type { LeadStatus } from "@/lib/dashboard/leads";
 
 /**
  * Alert rule engine. Runs opportunistically when the dashboard loads,
@@ -13,6 +12,10 @@ import type { LeadStatus } from "@/lib/dashboard/leads";
 
 const THROTTLE_MINUTES = 15;
 const DAY = 864e5;
+
+/** Alert types no rule writes any more. Their rows stay in the table, so the
+ *  places that read alerts leave them out. */
+export const HIDDEN_ALERT_TYPES = ["uncontacted"] as const;
 
 interface NewAlert {
   type: string;
@@ -39,12 +42,12 @@ export async function evaluateAlerts(): Promise<void> {
     const { data } = await fetchAll(() =>
       supabase
         .from("leads")
-        .select("id, name, postcode, status, created_at")
+        .select("id, postcode, created_at")
         .eq("is_test", false)
         .gte("created_at", since14d)
         .order("created_at", { ascending: false }),
     );
-    const leads = (data as { id: string; name: string; postcode: string; status: LeadStatus; created_at: string }[] | null) ?? [];
+    const leads = (data as { id: string; postcode: string; created_at: string }[] | null) ?? [];
 
     const alerts: NewAlert[] = [];
     const now = Date.now();
@@ -66,21 +69,13 @@ export async function evaluateAlerts(): Promise<void> {
       });
     }
 
-    // ── 2. Uncontacted leads older than 24h ──
-    for (const l of leads) {
-      if (l.status === "new" && now - +new Date(l.created_at) > DAY) {
-        alerts.push({
-          type: "uncontacted",
-          severity: "warning",
-          title: `${l.name} hasn't been contacted in 24h+`,
-          body: `Lead from ${l.postcode.toUpperCase()} is still marked New. Nudge the team.`,
-          lead_id: l.id,
-          dedupe_key: `uncontacted:${l.id}`,
-        });
-      }
-    }
+    // There used to be a rule here for leads still marked New after 24 hours.
+    // Nobody updates lead statuses (0 of 2,137 leads had moved by 17 November
+    // 2026), so it fired for every lead and buried the other alerts: 2,130 of
+    // the 2,201 rows in the table were this one. Its old rows are left in the
+    // table and filtered out where alerts are read (HIDDEN_ALERT_TYPES).
 
-    // ── 3. Postcode cluster: 3+ leads from one outcode in 7 days ──
+    // ── 2. Postcode cluster: 3+ leads from one outcode in 7 days ──
     const week = leads.filter((l) => now - +new Date(l.created_at) < 7 * DAY);
     const byOutcode = new Map<string, number>();
     for (const l of week) {
@@ -100,7 +95,7 @@ export async function evaluateAlerts(): Promise<void> {
       }
     });
 
-    // ── 4. Form submission rate drop (only when PostHog queries configured) ──
+    // ── 3. Form submission rate drop (only when PostHog queries configured) ──
     if (posthogConfigured()) {
       const r = await hogql(
         `SELECT

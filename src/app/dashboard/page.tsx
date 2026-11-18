@@ -1,4 +1,4 @@
-import { Users, Sparkles, CalendarClock, CalendarDays, TrendingUp } from "lucide-react";
+import { Users, CalendarClock, CalendarDays, TrendingUp } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { fetchAll } from "@/lib/supabase/fetch-all";
 import { TrendChart } from "@/components/system/chart";
@@ -12,7 +12,7 @@ import { PageHeader } from "@/components/system/page-header";
 
 export const dynamic = "force-dynamic";
 
-type Row = Pick<Lead, "id" | "created_at" | "status" | "traffic_source" | "service" | "notes" | "is_test">;
+type Row = Pick<Lead, "id" | "created_at" | "traffic_source" | "service" | "notes" | "is_test">;
 
 const DAY = 864e5;
 
@@ -21,7 +21,7 @@ export default async function OverviewPage() {
   const { data, error } = await fetchAll<Row>(() =>
     supabase
       .from("leads")
-      .select("id, created_at, status, traffic_source, service, notes, is_test")
+      .select("id, created_at, traffic_source, service, notes, is_test")
       .order("created_at", { ascending: false }),
   );
 
@@ -50,8 +50,6 @@ export default async function OverviewPage() {
   const prev7 = leads.filter((l) => ts(l) >= fourteenDaysAgo && ts(l) < sevenDaysAgo).length;
   const last30 = leads.filter((l) => ts(l) >= thirtyDaysAgo).length;
   const weekDelta = prev7 ? Math.round(((last7 - prev7) / prev7) * 100) : null;
-
-  const newCount = leads.filter((l) => l.status === "new").length;
 
   // Daily counts, last 14 UK days (oldest → newest) for the trend chart.
   const daily = Array.from({ length: 14 }, (_, i) => {
@@ -120,10 +118,9 @@ export default async function OverviewPage() {
             </CardContent>
           </Card>
 
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-4 sm:grid-cols-3">
             <Stat icon={<CalendarClock />} label="Today" value={today} hint="Since midnight, UK time" />
             <Stat icon={<CalendarDays />} label="Last 30 days" value={last30} />
-            <Stat icon={<Sparkles />} label="New / unworked" value={newCount} attention />
             <Stat
               icon={<TrendingUp />}
               label={`Visitor → lead rate (${conv.windowDays}d)`}

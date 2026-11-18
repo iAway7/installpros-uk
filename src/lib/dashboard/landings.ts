@@ -11,7 +11,6 @@ export interface LandingLeadRow {
   gclid: string | null;
   traffic_source: string | null;
   device_type: string | null;
-  status: string | null;
   created_at: string;
 }
 
@@ -26,11 +25,7 @@ export interface LandingStats {
   /** Mean score across leads that have been scored. */
   avgScore: number | null;
   mobileShare: number | null;
-  /** Booked or installed. */
-  won: number;
 }
-
-const WON = new Set(["booked", "installed"]);
 
 /**
  * One page, one row.
@@ -84,7 +79,6 @@ export function aggregateLandings(rows: LandingLeadRow[]): LandingStats[] {
       mobileShare: withDevice.length
         ? Math.round((withDevice.filter((r) => r.device_type === "mobile").length / withDevice.length) * 100)
         : null,
-      won: list.filter((r) => WON.has(r.status ?? "")).length,
     });
   }
 
@@ -96,6 +90,9 @@ export function aggregateLandings(rows: LandingLeadRow[]): LandingStats[] {
  * has no denominator of its own (we don't count visitors server-side), so a
  * bare lead count can only be read next to the impressions/clicks Google
  * reports. Significance lives in the Experiments page, which does have both.
+ *
+ * There is no "won" count either. It read the lead status, and nobody moves
+ * leads past New, so it was zero on every row.
  */
 export function totals(stats: LandingStats[]) {
   return stats.reduce(
@@ -103,9 +100,8 @@ export function totals(stats: LandingStats[]) {
       leads: acc.leads + s.leads,
       paidLeads: acc.paidLeads + s.paidLeads,
       qualified: acc.qualified + s.qualified,
-      won: acc.won + s.won,
     }),
-    { leads: 0, paidLeads: 0, qualified: 0, won: 0 },
+    { leads: 0, paidLeads: 0, qualified: 0 },
   );
 }
 
