@@ -10,6 +10,7 @@ import { Label } from "@/components/system/label";
 import { Table, TableHead, TableBody, TableRow, TableHeaderCell, TableCell } from "@/components/system/table";
 import { MiddleTruncate } from "@/components/system/middle-truncate";
 import { Switch } from "@/components/system/switch";
+import { installTypeLabel } from "@/lib/dashboard/leads";
 import {
   WEBHOOK_EVENTS,
   EVENT_LABEL,
@@ -118,7 +119,8 @@ export function WebhooksView() {
     <div className="space-y-6">
       <div className="flex items-start justify-between gap-6">
         <p className="max-w-2xl text-body-sm text-muted-foreground">
-          Every lead is POSTed as JSON to each active endpoint. Paste a Zapier or Make catch-hook URL
+          Each lead is POSTed as JSON to every active endpoint that takes its lead type (shown under each
+          endpoint; set in the database, not here). Paste a Zapier or Make catch-hook URL
           and leads reach your CRM, WhatsApp or a spreadsheet without anyone opening this dashboard.
           Delivery never blocks the form: a failing endpoint is retried and logged, never surfaced to the visitor.
         </p>
@@ -311,6 +313,12 @@ function EndpointRow({
               <span key={e} className="whitespace-nowrap rounded bg-secondary px-2 py-0.5 font-mono text-label">{e}</span>
             ))}
           </div>
+          {/* Which leads this endpoint gets (migration 0023). Read only: it is
+              what sends each kind of lead to its own Zap, and it is changed by
+              migration, so the form does not offer it. */}
+          <p className="mt-1.5 text-label text-muted-foreground">
+            {ep.install_types?.length ? `Only: ${ep.install_types.map(installTypeLabel).join(", ")}` : "All lead types"}
+          </p>
         </TableCell>
         <TableCell className="align-middle">
           <ActiveSwitch name={ep.name} on={ep.active} disabled={busy} onChange={onSetActive} />

@@ -53,14 +53,34 @@ export async function hogql(query: string): Promise<HogQLResult> {
 
 // ── Funnel definitions ────────────────────────────────────────────────────
 
-/** Ordered funnel steps: event + optional property filter + label. */
-export const FUNNEL_STEPS: Array<{ label: string; event: string; where?: string }> = [
-  { label: "Visited site", event: "page_view" },
-  { label: "Checked coverage", event: "coverage_checked" },
-  { label: "Started form", event: "quote_started" },
-  { label: "Submitted form", event: "quote_submitted" },
-  { label: "Lead created", event: "lead_created" },
-  { label: "WhatsApp clicked", event: "whatsapp_clicked" },
+/** Paths that are not "the landing page": the internal dashboard, auth, and
+ *  the pages a visitor only reaches after submitting. Counting those would
+ *  inflate the denominator with our own team and with already-converted leads. */
+const NON_LANDING_PREFIXES = ["/dashboard", "/auth", "/thank-you", "/upload-property-images"] as const;
+
+function landingWhere(): string {
+  const excl = NON_LANDING_PREFIXES.map((p) => `NOT startsWith(properties.page_path, '${p}')`).join(" AND ");
+  return `event = 'page_view' AND ${excl}`;
+}
+
+/** A form start, the same for the Funnel and Targets. quote_started is the
+ *  first keystroke; some forms never send it (see fetchTargetCounts), and a
+ *  postcode check means the visitor typed in the first field. */
+const FORM_START = `event IN ('quote_started', 'coverage_checked')`;
+
+/** Ordered funnel steps: a HogQL condition + label.
+ *
+ *  Until 18 November 2026 "Checked coverage" sat before "Started form" (the
+ *  start fires first, on the first keystroke, so "% of prev" read over 100%),
+ *  "Started form" counted quote_started alone (so the Starlink footer form,
+ *  which never sends it, was missing and the page disagreed with Targets), and
+ *  a last step counted WhatsApp clicks from anywhere, before any lead.
+ *  Targets reports the WhatsApp clicks after a lead. */
+export const FUNNEL_STEPS: Array<{ label: string; where: string }> = [
+  { label: "Visited a landing", where: landingWhere() },
+  { label: "Started form", where: FORM_START },
+  { label: "Submitted form", where: `event = 'quote_submitted'` },
+  { label: "Lead created", where: `event = 'lead_created'` },
 ];
 
 export interface FunnelStepResult {
@@ -94,6 +114,7 @@ export const FUNNEL_PAGES = [
   "/starlink-installation-for-static-caravans",
   "/starlink-installation-for-boats",
   "/ajax-security-installation",
+  "/hikvision-cctv-installation",
 ] as const;
 
 /** A landing page that changed slug still has every pageview before the rename
@@ -120,17 +141,28 @@ function pageWhere(page: string): string {
 
 function segmentWhere(f: SegmentFilter): string {
   const parts = [f.days === 0 ? `toDate(timestamp) = today()` : `timestamp >= now() - interval ${Math.max(1, Math.min(365, f.days))} day`];
-  if (f.device) parts.push(`properties.device_type = '${f.device.replace(/'/g, "")}'`);
-  if (f.source) parts.push(`properties.traffic_source = '${f.source.replace(/'/g, "")}'`);
-  if (f.page) parts.push(pageWhere(f.page));
-  return parts.join(" AND ");
+  return [...parts, ...filterParts(f)].join(" AND ");
 }
 
-/** Unique users per funnel step (single HogQL round-trip). */
+/** Device, source and page, shared by the current and the previous period.
+ *  Sessions from local development, Vercel previews and Tag Assistant are
+ *  never real traffic and are left out of every count. The source filter is
+ *  the one Targets uses, so "organic" means every search engine here too. */
+function filterParts(f: SegmentFilter): string[] {
+  const parts = [`NOT match(coalesce(toString(properties.traffic_source), ''), '${DEV_SOURCE_PATTERN}')`];
+  if (f.device) parts.push(`properties.device_type = '${f.device.replace(/'/g, "")}'`);
+  if (f.source) parts.push(sourceCondition(f.source));
+  if (f.page) parts.push(pageWhere(f.page));
+  return parts;
+}
+
+/** Unique people per funnel step (single HogQL round-trip). People, not
+ *  distinct_ids, as on Targets: submitting the form gives a visitor a new
+ *  distinct_id, which made one person two visitors. */
 export async function fetchFunnel(f: SegmentFilter): Promise<{ steps: FunnelStepResult[]; ok: boolean; configured: boolean; error?: string }> {
   const where = segmentWhere(f);
   const selects = FUNNEL_STEPS.map(
-    (s, i) => `count(DISTINCT if(event = '${s.event}'${s.where ? ` AND ${s.where}` : ""}, distinct_id, NULL)) AS step_${i}`,
+    (s, i) => `count(DISTINCT if(${s.where}, person_id, NULL)) AS step_${i}`,
   ).join(", ");
   const r = await hogql(`SELECT ${selects} FROM events WHERE ${where}`);
   if (!r.ok || !r.results.length) return { steps: [], ok: r.ok, configured: r.configured, error: r.error };
@@ -156,7 +188,7 @@ export async function fetchFunnel(f: SegmentFilter): Promise<{ steps: FunnelStep
  *  funnel is broken down question by question. Every live landing fixes the
  *  service up front (skipServiceStep), so there is no service question row. */
 export const FORM_QUESTION_STEPS: Array<{ label: string; where: string }> = [
-  { label: "Started form (postcode)", where: `event = 'quote_started'` },
+  { label: "Started form (postcode)", where: FORM_START },
   { label: "Reached: name", where: `event = 'form_step_viewed' AND properties.step_name = 'name'` },
   { label: "Reached: phone", where: `event = 'form_step_viewed' AND properties.step_name = 'phone'` },
   { label: "Reached: email", where: `event = 'form_step_viewed' AND properties.step_name = 'email'` },
@@ -167,7 +199,7 @@ export const FORM_QUESTION_STEPS: Array<{ label: string; where: string }> = [
 export async function fetchFormQuestionFunnel(f: SegmentFilter): Promise<{ steps: FunnelStepResult[]; ok: boolean; error?: string }> {
   const where = segmentWhere(f);
   const selects = FORM_QUESTION_STEPS.map(
-    (s, i) => `count(DISTINCT if(${s.where}, distinct_id, NULL)) AS step_${i}`,
+    (s, i) => `count(DISTINCT if(${s.where}, person_id, NULL)) AS step_${i}`,
   ).join(", ");
   const r = await hogql(`SELECT ${selects} FROM events WHERE ${where}`);
   if (!r.ok || !r.results.length) return { steps: [], ok: r.ok, error: r.error };
@@ -190,15 +222,14 @@ export async function fetchFormQuestionFunnel(f: SegmentFilter): Promise<{ steps
 /** Same funnel for the preceding period, to flag >20% step drops. */
 export async function fetchFunnelPrevious(f: SegmentFilter): Promise<number[]> {
   const days = Math.max(1, Math.min(365, f.days));
-  // "Today" compares against yesterday, whole day to whole day.
+  // "Today" compares against yesterday up to the same time. Against the whole
+  // of yesterday, every step read as a drop until late evening.
   const parts = f.days === 0
-    ? [`toDate(timestamp) = yesterday()`]
+    ? [`toDate(timestamp) = yesterday()`, `timestamp < now() - interval 1 day`]
     : [`timestamp >= now() - interval ${days * 2} day`, `timestamp < now() - interval ${days} day`];
-  if (f.device) parts.push(`properties.device_type = '${f.device.replace(/'/g, "")}'`);
-  if (f.source) parts.push(`properties.traffic_source = '${f.source.replace(/'/g, "")}'`);
-  if (f.page) parts.push(pageWhere(f.page));
+  parts.push(...filterParts(f));
   const selects = FUNNEL_STEPS.map(
-    (s, i) => `count(DISTINCT if(event = '${s.event}', distinct_id, NULL)) AS step_${i}`,
+    (s, i) => `count(DISTINCT if(${s.where}, person_id, NULL)) AS step_${i}`,
   ).join(", ");
   const r = await hogql(`SELECT ${selects} FROM events WHERE ${parts.join(" AND ")}`);
   if (!r.ok || !r.results.length) return [];
@@ -210,8 +241,8 @@ export async function fetchDailyRates(f: SegmentFilter): Promise<Array<{ day: st
   const where = segmentWhere(f);
   const r = await hogql(
     `SELECT toDate(timestamp) AS day,
-            count(DISTINCT if(event = 'page_view', distinct_id, NULL)) AS visitors,
-            count(DISTINCT if(event = 'quote_submitted', distinct_id, NULL)) AS submits
+            count(DISTINCT if(${landingWhere()}, person_id, NULL)) AS visitors,
+            count(DISTINCT if(event = 'quote_submitted', person_id, NULL)) AS submits
      FROM events WHERE ${where}
      GROUP BY day ORDER BY day`,
   );
@@ -227,6 +258,8 @@ export async function fetchDailyRates(f: SegmentFilter): Promise<Array<{ day: st
 /** Sources that only appear while developing or testing tags: local dev,
  *  Vercel previews and Google Tag Assistant. Never real traffic. */
 const DEV_SOURCE = /^(localhost(:\d+)?|vercel\.com|tagassistant\.google\.com)$|\.vercel\.app$/;
+/** The same, as an RE2 pattern for HogQL ([.] because HogQL strings reject \.). */
+const DEV_SOURCE_PATTERN = "^(localhost(:[0-9]+)?|vercel[.]com|tagassistant[.]google[.]com)$|[.]vercel[.]app$";
 
 /** RE2 pattern (HogQL `match`) for search-engine referrers, i.e. organic
  *  search. Paid Google traffic is recorded as plain "google" (gclid or
@@ -255,15 +288,6 @@ export async function fetchSources(days: number): Promise<string[]> {
 
 // ── Landing-page conversion (visitor → lead) ──────────────────────────────
 
-/** Paths that are not "the landing page": the internal dashboard, auth, and
- *  the pages a visitor only reaches after submitting. Counting those would
- *  inflate the denominator with our own team and with already-converted leads. */
-const NON_LANDING_PREFIXES = ["/dashboard", "/auth", "/thank-you", "/upload-property-images"] as const;
-
-function landingWhere(): string {
-  const excl = NON_LANDING_PREFIXES.map((p) => `NOT startsWith(properties.page_path, '${p}')`).join(" AND ");
-  return `event = 'page_view' AND ${excl}`;
-}
 
 export interface VisitorCounts {
   ok: boolean;
@@ -366,7 +390,7 @@ export async function fetchTargetCounts(f: { since: string; until?: string; page
     hogql(
       `SELECT properties.device_type AS device,
               count(DISTINCT if(event = 'page_view'${onPage}, person_id, NULL)) AS visitors,
-              count(DISTINCT if(event IN ('quote_started', 'coverage_checked')${onPage}, person_id, NULL)) AS starts,
+              count(DISTINCT if(${FORM_START}${onPage}, person_id, NULL)) AS starts,
               count(DISTINCT if(event = 'whatsapp_clicked' AND startsWith(properties.page_path, '/thank-you')
                    AND toString(properties.lead_id) IN (
                      SELECT toString(properties.lead_id) FROM events

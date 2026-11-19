@@ -18,16 +18,18 @@ import type { TargetCounts } from "@/lib/posthog/query";
  * anyone has said about this baseline. It is not one audit's opinion, it is
  * what two methods agree on.
  *
- * mobileVisitorLead is still the audit's GA4 figure, because Paperform gives
- * no device split. It is the one row here built from a different source, and
- * the same gap is why the commercial and security programmes have no mobile
- * row at all.
+ * No mobile baseline. It used to be the June audit's GA4 figure, 18%, with a
+ * 21% target, beside an overall 9.9%. Most visitors are on a phone, so an
+ * overall rate of 9.9% cannot hold a mobile rate of 18% with desktop above
+ * it: the 18% measured something else, and the row compared two different
+ * things. Taken out on 18 November 2026. Paperform gives no device split, so
+ * there is nothing to replace it with; the row still shows the live mobile
+ * rate, as it always did on the other programmes.
  */
 export const BASELINE = {
   formStart: 0.311,
   completion: 0.319,
   visitorLead: 0.099,
-  mobileVisitorLead: 0.18,
 } as const;
 
 /**
@@ -46,13 +48,11 @@ export const TARGET = {
   formStart: 0.4,
   completion: 0.323, // "hold": the guardrail, not a lift
   visitorLead: 0.129,
-  mobileVisitorLead: 0.21,
 } as const;
 
 /** A metric a page has no baseline for is simply left out here. The row still
  *  renders with its live figure; the Baseline and Target cells come up empty
- *  and the status reads "Not enough data", which is the honest version of
- *  both "no baseline exists" and "too few visitors to call it". */
+ *  and the status reads "No baseline". */
 export interface Programme {
   formStart?: number;
   completion?: number;
@@ -206,6 +206,13 @@ export const VEHICLES_TARGET: Programme = {
 
 export const SECURITY_PAGE = "/ajax-security-installation";
 
+/** Hikvision CCTV. Live since 29 October 2026 with no baseline of its own:
+ *  the WordPress security form it would compare with mixed alarm and camera
+ *  enquiries, and borrowing Ajax's or the residential Starlink baseline would
+ *  judge it against a different product. Its rows show the live figures with
+ *  "Not enough data" until a baseline is agreed. */
+export const HIKVISION_PAGE = "/hikvision-cctv-installation";
+
 export const COMMERCIAL_PAGE = "/commercial-starlink-installation";
 
 export const VEHICLES_PAGE = "/starlink-installation-for-vehicles";
@@ -219,6 +226,7 @@ export function programmeFor(page: string): { baseline: Programme; target: Progr
   if (page === COMMERCIAL_PAGE) return { baseline: COMMERCIAL_BASELINE, target: COMMERCIAL_TARGET };
   if (page === SECURITY_PAGE) return { baseline: SECURITY_BASELINE, target: SECURITY_TARGET };
   if (page === VEHICLES_PAGE || page === VEHICLES_VARIANT_PAGE) return { baseline: VEHICLES_BASELINE, target: VEHICLES_TARGET };
+  if (page === HIKVISION_PAGE) return { baseline: {}, target: {} };
   return { baseline: BASELINE, target: TARGET };
 }
 
@@ -228,7 +236,7 @@ export const LAUNCH_DATE = "2026-09-22";
 /** Below this many visitors a rate is shown but not judged. */
 const MIN_VISITORS = 30;
 
-export type TargetStatus = "beaten" | "below" | "insufficient";
+export type TargetStatus = "beaten" | "below" | "insufficient" | "unjudged";
 
 export interface TargetRow {
   metric: string;
@@ -314,7 +322,7 @@ export function buildTargetsReport(
     { key: "formStart", metric: "Form-start rate", detail: "visitors who touch the first field", actual: formStart, sample: visitors },
     { key: "completion", metric: "Form completion", detail: "leads / form starts", actual: completion, sample: starts, hold: true },
     { key: "visitorLead", metric: "Visitor → lead", detail: "the headline number", actual: visitorLead, sample: visitors },
-    { key: "mobileVisitorLead", metric: "Mobile visitor → lead", detail: "closing half the gap to desktop", actual: mobileRate, sample: mobile?.visitors ?? 0 },
+    { key: "mobileVisitorLead", metric: "Mobile visitor → lead", detail: "visitors on a phone", actual: mobileRate, sample: mobile?.visitors ?? 0 },
   ] as const;
 
   const rows: TargetRow[] = defs.map((d) => {
@@ -326,9 +334,9 @@ export function buildTargetsReport(
       baseline: b,
       target: t,
       actual: d.actual,
-      // Nothing to judge against reads the same way to a reader as too few
-      // visitors to judge: we cannot call it. Both say "Not enough data".
-      status: t === null ? ("insufficient" as TargetStatus) : status(d.actual, t, d.sample),
+      // No target is not the same as too few visitors: the mobile row has
+      // thousands of visitors and no baseline. It reads "No baseline".
+      status: t === null ? ("unjudged" as TargetStatus) : status(d.actual, t, d.sample),
       ...("hold" in d && t !== null ? { hold: d.hold } : {}),
     };
   });

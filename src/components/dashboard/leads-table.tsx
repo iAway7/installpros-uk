@@ -71,6 +71,10 @@ export function LeadsTable({
   photos?: Record<string, string[]>;
 }) {
   const [leads, setLeads] = useState(initialLeads);
+  // The server sends a fresh list on every navigation and refresh (a pick in
+  // the search, Refresh intel). Without this the table kept the list it was
+  // first given: a lead that arrived later read "not in the list".
+  useEffect(() => setLeads(initialLeads), [initialLeads]);
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<"all" | LeadStatus>("all");
   const [sortBy, setSortBy] = useState<"newest" | "score">("newest");
@@ -86,10 +90,10 @@ export function LeadsTable({
   const leadParam = useSearchParams().get("lead");
   useEffect(() => {
     if (!leadParam) return;
-    if (leads.some((l) => l.id === leadParam)) setOpenId(leadParam);
+    if (initialLeads.some((l) => l.id === leadParam)) setOpenId(leadParam);
     else toast.error("That lead is not in the list.");
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [leadParam]);
+  }, [leadParam, initialLeads]);
 
   function closeLead() {
     setOpenId(null);

@@ -77,7 +77,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
 /** The logo, linking home. `text-black` is the lockup for light surfaces. */
 function HomeLink({ className }: { className?: string }) {
   return (
-    <a href="/dashboard" aria-label={`${siteConfig.name} dashboard`} className={`block rounded-sm focus-ring ${className ?? ""}`}>
+    <a href="/dashboard" aria-label={`${siteConfig.name} dashboard`} className={`block rounded-sm focus-ring-solid ${className ?? ""}`}>
       <InstallProsLogo className="h-auto w-full text-black" />
     </a>
   );
@@ -103,7 +103,7 @@ function SidebarBody({ name, role, touch }: { name: string; role: string; touch?
           <form action="/auth/signout" method="post">
             <button
               type="submit"
-              className="flex h-control w-full items-center gap-2.5 rounded-md px-3 text-body font-medium text-muted-foreground transition-colors duration-quick hover:bg-foreground/[0.04] hover:text-foreground focus-ring"
+              className="flex h-control w-full items-center gap-2.5 rounded-md px-3 text-body font-medium text-muted-foreground transition-colors duration-quick hover:bg-foreground/[0.04] hover:text-foreground focus-ring-solid"
             >
               <LogOut className="h-4 w-4 shrink-0" aria-hidden /> Sign out
             </button>

@@ -3,7 +3,6 @@ import { createClient } from "@/lib/supabase/server";
 import { fetchAll } from "@/lib/supabase/fetch-all";
 import { Card, CardContent } from "@/components/system/card";
 import { lookupLocations } from "@/lib/dashboard/locations";
-import { WON_STATUSES, type LeadStatus } from "@/lib/dashboard/leads";
 import { ukMap, UK_MAP_VIEWBOX } from "@/lib/funnel/uk-map";
 import { worstServedOutcodes, releaseLabel } from "@/lib/broadband/outcode-coverage";
 import { EmptyState } from "@/components/system/empty-state";
@@ -11,8 +10,6 @@ import { PageHeader } from "@/components/system/page-header";
 import { MapTables, type MapTab } from "@/components/dashboard/map-tables";
 
 export const dynamic = "force-dynamic";
-
-const QUOTED_OR_LATER: LeadStatus[] = ["quoted", "booked", "installed"];
 
 /**
  * A district average is only as good as the number of postcodes behind it.
@@ -42,17 +39,15 @@ function outcodeOf(postcode: string): string {
 interface DistrictStats {
   name: string;
   leads: number;
-  quoted: number;
-  won: number;
 }
 
 export default async function MapPage({ searchParams }: { searchParams: { tab?: string } }) {
   const initialTab: MapTab = searchParams.tab === "gaps" ? "gaps" : "districts";
   const supabase = createClient();
-  const { data, error } = await fetchAll<{ postcode: string; status: LeadStatus }>(() =>
-    supabase.from("leads").select("postcode, status, created_at").eq("is_test", false).order("created_at", { ascending: false }),
+  const { data, error } = await fetchAll<{ postcode: string }>(() =>
+    supabase.from("leads").select("postcode, created_at").eq("is_test", false).order("created_at", { ascending: false }),
   );
-  const leads = ((data as { postcode: string; status: LeadStatus }[] | null) ?? []);
+  const leads = ((data as { postcode: string }[] | null) ?? []);
 
   const locations = error ? {} : await lookupLocations(leads.map((l) => l.postcode));
 
@@ -65,10 +60,8 @@ export default async function MapPage({ searchParams }: { searchParams: { tab?: 
       unmatchedLeads++;
       continue;
     }
-    const d = districts.get(loc.city) ?? { name: loc.city, leads: 0, quoted: 0, won: 0 };
+    const d = districts.get(loc.city) ?? { name: loc.city, leads: 0 };
     d.leads++;
-    if (QUOTED_OR_LATER.includes(l.status)) d.quoted++;
-    if (WON_STATUSES.includes(l.status)) d.won++;
     districts.set(loc.city, d);
   }
 
@@ -121,7 +114,7 @@ export default async function MapPage({ searchParams }: { searchParams: { tab?: 
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
-      <PageHeader title="Map" description="Where your leads come from, and where you close." />
+      <PageHeader title="Map" description="Where your leads come from." />
 
       {error ? (
         <Card><CardContent className="text-body-sm text-destructive">Couldn&apos;t load leads ({error.message}).</CardContent></Card>

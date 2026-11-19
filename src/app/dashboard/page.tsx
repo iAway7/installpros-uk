@@ -1,18 +1,18 @@
-import { Users, CalendarClock, CalendarDays, TrendingUp } from "lucide-react";
+import { Users, CalendarClock, CalendarDays } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { fetchAll } from "@/lib/supabase/fetch-all";
 import { TrendChart } from "@/components/system/chart";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/system/card";
-import { type Lead, serviceOf } from "@/lib/dashboard/leads";
-import { getVisitorLeadRate, fmtRate, fmtDelta } from "@/lib/dashboard/conversion";
-import { realLeads } from "@/lib/dashboard/leads";
+import { Table, TableHead, TableBody, TableRow, TableHeaderCell, TableCell } from "@/components/system/table";
+import { type Lead, realLeads } from "@/lib/dashboard/leads";
+import { normalisePagePath } from "@/lib/dashboard/landings";
 import { Stat } from "@/components/system/stat";
 import { EmptyState } from "@/components/system/empty-state";
 import { PageHeader } from "@/components/system/page-header";
 
 export const dynamic = "force-dynamic";
 
-type Row = Pick<Lead, "id" | "created_at" | "traffic_source" | "service" | "notes" | "is_test">;
+type Row = Pick<Lead, "id" | "created_at" | "landing_page" | "is_test">;
 
 const DAY = 864e5;
 
@@ -21,25 +21,30 @@ export default async function OverviewPage() {
   const { data, error } = await fetchAll<Row>(() =>
     supabase
       .from("leads")
-      .select("id, created_at, traffic_source, service, notes, is_test")
+      .select("id, created_at, landing_page, is_test")
       .order("created_at", { ascending: false }),
   );
 
   // Test submissions are flagged, not deleted; they never count here.
   const leads = realLeads((data as Row[] | null) ?? []);
-  // Landing-page conversion (leads / unique visitors, PostHog). Null-safe: shows "—" when PostHog is off.
-  const conv = await getVisitorLeadRate(leads.map((l) => l.created_at));
-  const convDelta = fmtDelta(conv.deltaPoints, conv.windowDays);
+  // No visitor to lead rate here. The one this page showed divided every
+  // database lead by PostHog's visitors, which reads high (PostHog misses
+  // about 1 in 4 leads) and disagreed with Targets. Targets has the rate.
 
   // Day boundaries in UK time: the leads are British and the team works on
   // UK days. The server runs in UTC, so a plain local midnight would start
   // "today" at 01:00 BST. Every count is a rolling window ending now, so the
   // three numbers nest (today ≤ 7 days ≤ 30 days) instead of mixing a rolling
   // week with a calendar month.
+  //
+  // "Last 7 days" is the six UK days before today plus today so far. The week
+  // it is compared with stops at the same hour, seven days back: against
+  // seven full days it read as a drop every morning.
   const nowMs = Date.now();
   const startOfToday = ukDayStart(nowMs, 0);
   const sevenDaysAgo = ukDayStart(nowMs, 6);
   const fourteenDaysAgo = ukDayStart(nowMs, 13);
+  const prevWeekEnd = ukDayStart(nowMs, 7) + (nowMs - startOfToday);
   const thirtyDaysAgo = ukDayStart(nowMs, 29);
 
   const ts = (l: Row) => new Date(l.created_at).getTime();
@@ -47,7 +52,8 @@ export default async function OverviewPage() {
   const total = leads.length;
   const today = leads.filter((l) => ts(l) >= startOfToday).length;
   const last7 = leads.filter((l) => ts(l) >= sevenDaysAgo).length;
-  const prev7 = leads.filter((l) => ts(l) >= fourteenDaysAgo && ts(l) < sevenDaysAgo).length;
+  const isPrev7 = (l: Row) => ts(l) >= fourteenDaysAgo && ts(l) < prevWeekEnd;
+  const prev7 = leads.filter(isPrev7).length;
   const last30 = leads.filter((l) => ts(l) >= thirtyDaysAgo).length;
   const weekDelta = prev7 ? Math.round(((last7 - prev7) / prev7) * 100) : null;
 
@@ -61,23 +67,25 @@ export default async function OverviewPage() {
     };
   });
 
-  const byService = Object.entries(
-    leads.reduce<Record<string, number>>((acc, l) => {
-      const k = serviceOf(l);
-      acc[k] = (acc[k] || 0) + 1;
-      return acc;
-    }, {}),
-  ).sort((a, b) => b[1] - a[1]);
-
-  const bySource = Object.entries(
-    leads.reduce<Record<string, number>>((acc, l) => {
-      const k = l.traffic_source || "direct";
-      acc[k] = (acc[k] || 0) + 1;
-      return acc;
-    }, {}),
-  )
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 5);
+  // One row per landing that had a lead in the last 30 days, busiest first:
+  // the daily check is whether each page is still sending leads, and a total
+  // led by /install-quote hides a smaller page that has stopped.
+  const byPage = new Map<string, { today: number; last7: number; prev7: number; last30: number; lastAt: number }>();
+  for (const l of leads) {
+    const t = ts(l);
+    if (t < Math.min(thirtyDaysAgo, fourteenDaysAgo)) continue;
+    const page = normalisePagePath(l.landing_page);
+    const r = byPage.get(page) ?? { today: 0, last7: 0, prev7: 0, last30: 0, lastAt: 0 };
+    if (t >= startOfToday) r.today++;
+    if (t >= sevenDaysAgo) r.last7++;
+    if (isPrev7(l)) r.prev7++;
+    if (t >= thirtyDaysAgo) r.last30++;
+    r.lastAt = Math.max(r.lastAt, t);
+    byPage.set(page, r);
+  }
+  const pages = Array.from(byPage.entries())
+    .filter(([, r]) => r.last30 > 0)
+    .sort((x, y) => y[1].last30 - x[1].last30);
 
   return (
     <div className="mx-auto max-w-6xl space-y-8">
@@ -97,7 +105,7 @@ export default async function OverviewPage() {
         />
       ) : (
         <>
-          {/* The number that matters: the last 7 days against the 7 before, plus trend */}
+          {/* The number that matters: the last 7 days against the week before, plus trend */}
           <Card>
             <CardContent className="flex flex-col gap-6 sm:flex-row sm:items-center">
               <div className="shrink-0">
@@ -106,7 +114,7 @@ export default async function OverviewPage() {
                   <span className="text-5xl font-bold tabular-nums">{last7}</span>
                   {weekDelta !== null && (
                     <span className={`text-body-sm font-semibold ${weekDelta >= 0 ? "text-success" : "text-destructive"}`}>
-                      {weekDelta >= 0 ? "▲" : "▼"} {Math.abs(weekDelta)}% vs previous 7 days ({prev7})
+                      {weekDelta >= 0 ? "▲" : "▼"} {Math.abs(weekDelta)}% vs the 7 days before, to this hour ({prev7})
                     </span>
                   )}
                 </div>
@@ -118,55 +126,56 @@ export default async function OverviewPage() {
             </CardContent>
           </Card>
 
-          <div className="grid gap-4 sm:grid-cols-3">
+          <div className="grid gap-4 sm:grid-cols-2">
             <Stat icon={<CalendarClock />} label="Today" value={today} hint="Since midnight, UK time" />
-            <Stat icon={<CalendarDays />} label="Last 30 days" value={last30} />
-            <Stat
-              icon={<TrendingUp />}
-              label={`Visitor → lead rate (${conv.windowDays}d)`}
-              value={fmtRate(conv.rate)}
-              delta={convDelta ? { text: convDelta.text, direction: convDelta.up ? "up" : "down" } : undefined}
-              hint={conv.ok ? undefined : "Connect PostHog"}
-            />
+            <Stat icon={<CalendarDays />} label="Last 30 days" value={last30} hint="29 UK days and today" />
           </div>
 
-
-          <div className="grid gap-4 lg:grid-cols-2">
-            <Card>
-              <CardHeader><CardTitle>Leads by service</CardTitle></CardHeader>
-              <CardContent className="space-y-3">
-                {byService.map(([service, count]) => (
-                  <div key={service} className="flex items-center gap-3">
-                    <span className="w-32 truncate text-body-sm" title={service}>{service}</span>
-                    <div className="h-2 flex-1 overflow-hidden rounded-full bg-secondary">
-                      <div className="h-full rounded-full bg-primary" style={{ width: `${total ? (count / total) * 100 : 0}%` }} />
-                    </div>
-                    <span className="w-8 text-right text-body-sm font-medium tabular-nums">{count}</span>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader><CardTitle>Top traffic sources</CardTitle></CardHeader>
-              <CardContent className="space-y-3">
-                {bySource.map(([source, count]) => (
-                  <div key={source} className="flex items-center gap-3">
-                    <span className="w-28 truncate text-body-sm capitalize">{source}</span>
-                    <div className="h-2 flex-1 overflow-hidden rounded-full bg-secondary">
-                      <div className="h-full rounded-full bg-chart-2" style={{ width: `${total ? (count / total) * 100 : 0}%` }} />
-                    </div>
-                    <span className="w-8 text-right text-body-sm font-medium tabular-nums">{count}</span>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
-          </div>
-
+          <Card>
+            <CardHeader><CardTitle>Leads by landing page</CardTitle></CardHeader>
+            <CardContent className="overflow-x-auto p-0">
+              <Table density="compact">
+                <TableHead>
+                  <TableRow>
+                    <TableHeaderCell>Landing page</TableHeaderCell>
+                    <TableHeaderCell numeric>Today</TableHeaderCell>
+                    <TableHeaderCell numeric>Last 7 days</TableHeaderCell>
+                    <TableHeaderCell numeric>7 days before</TableHeaderCell>
+                    <TableHeaderCell numeric>Last 30 days</TableHeaderCell>
+                    <TableHeaderCell numeric>Last lead</TableHeaderCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {pages.map(([page, r]) => (
+                    <TableRow key={page}>
+                      <TableCell className="font-mono">{page}</TableCell>
+                      <TableCell numeric className="font-semibold">{r.today}</TableCell>
+                      <TableCell numeric>{r.last7}</TableCell>
+                      <TableCell numeric className="text-muted-foreground">{r.prev7}</TableCell>
+                      <TableCell numeric>{r.last30}</TableCell>
+                      <TableCell numeric className="whitespace-nowrap text-muted-foreground">{timeAgo(nowMs - r.lastAt)}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+              <p className="border-t border-border px-4 py-3 text-label text-muted-foreground">
+                Pages with a lead in the last 30 days. &ldquo;7 days before&rdquo; stops at this hour, seven days ago. Visitor to lead rates are on Targets.
+              </p>
+            </CardContent>
+          </Card>
         </>
       )}
     </div>
   );
+}
+
+/** "12 min ago", "5 h ago", "3 days ago". */
+function timeAgo(ms: number): string {
+  const min = Math.max(0, Math.round(ms / 60000));
+  if (min < 60) return `${min} min ago`;
+  const h = Math.round(min / 60);
+  if (h < 48) return `${h} h ago`;
+  return `${Math.round(h / 24)} days ago`;
 }
 
 const UK = new Intl.DateTimeFormat("en-GB", {

@@ -26,11 +26,14 @@ export default async function LeadsPage() {
     ? [{}, null]
     : await Promise.all([
         lookupLocations(leads.map((l) => l.postcode)),
-        supabase.from("lead_intel").select("*"),
+        // fetchAll, like the leads above: a bare select stops at 1,000 rows,
+        // and with 2,147 intel rows on 17 November 2026 more than half the
+        // leads opened as "not enriched" although their intel existed.
+        fetchAll<LeadIntel>(() => supabase.from("lead_intel").select("*").order("lead_id")),
       ]);
 
   const intel: Record<string, LeadIntel> = {};
-  for (const row of (intelRes?.data as LeadIntel[] | null) ?? []) intel[row.lead_id] = row;
+  for (const row of intelRes?.data ?? []) intel[row.lead_id] = row;
 
   // Photos: rows via RLS, thumbnails via short-lived signed URLs (private bucket).
   const photos: Record<string, string[]> = {};

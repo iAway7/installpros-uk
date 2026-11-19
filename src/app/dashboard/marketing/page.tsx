@@ -1,13 +1,8 @@
-import { MousePointerClick, Eye, Percent, TrendingUp, Users, PoundSterling, Search, ExternalLink } from "lucide-react";
-import { createClient } from "@/lib/supabase/server";
-import { fetchAll } from "@/lib/supabase/fetch-all";
+import { MousePointerClick, Eye, Percent, TrendingUp, Search, ExternalLink } from "lucide-react";
 import { getSearchConsole } from "@/lib/google/search-console";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/system/card";
 import { Table, TableHead, TableBody, TableRow, TableHeaderCell, TableCell } from "@/components/system/table";
 import { SearchConsoleChart } from "@/components/dashboard/search-console-chart";
-import { ConversionChart } from "@/components/dashboard/conversion-chart";
-import { type LeadStatus, realLeads } from "@/lib/dashboard/leads";
-import { getVisitorLeadRate, fmtRate, fmtDelta } from "@/lib/dashboard/conversion";
 import { Stat } from "@/components/system/stat";
 import { EmptyState } from "@/components/system/empty-state";
 import { PageHeader } from "@/components/system/page-header";
@@ -15,82 +10,21 @@ import { PageHeader } from "@/components/system/page-header";
 export const dynamic = "force-dynamic";
 
 export default async function MarketingPage() {
-  const supabase = createClient();
-  const [{ data: leadRows }, sc] = await Promise.all([
-    fetchAll(() => supabase.from("leads").select("id, created_at, status, is_test").order("created_at", { ascending: false })),
-    getSearchConsole(28),
-  ]);
+  const sc = await getSearchConsole(28);
 
-  const leads = realLeads((leadRows as { id: string; created_at: string; status: LeadStatus; is_test?: boolean }[] | null) ?? []);
-  const totalLeads = leads.length;
-  // Landing-page conversion: leads (Supabase) / unique visitors (PostHog). Same maths as the Overview.
-  const conv = await getVisitorLeadRate(leads.map((l) => l.created_at));
-  const convDelta = fmtDelta(conv.deltaPoints, conv.windowDays);
-
+  // This page used to open with total leads, a visitor to lead rate and a
+  // "Cost / lead" tile. The rate divided every database lead by PostHog's
+  // visitors, which reads high and disagreed with Targets; the cost could
+  // never be filled (no Google Ads API access); the total repeated Overview.
+  // What is left is Search Console. The landing pages are noindex, so this is
+  // the organic search of installpros.co.uk, not of the landings. It is off
+  // the sidebar for that reason, and still answers at /dashboard/marketing.
   return (
     <div className="mx-auto max-w-6xl space-y-8">
-      <PageHeader title="Marketing" description="Acquisition and SEO performance, blended with your lead pipeline." />
-
-      {/* Blended overview */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <Stat icon={<Users />} label="Total leads" value={totalLeads} />
-        <Stat
-          icon={<TrendingUp />}
-          label={`Visitor → lead rate (${conv.windowDays}d)`}
-          value={fmtRate(conv.rate)}
-          hint={conv.ok ? undefined : "Connect PostHog"}
-          delta={convDelta ? { text: convDelta.text, direction: convDelta.up ? "up" : "down" } : undefined}
-        />
-        <Stat
-          icon={<Search />}
-          label="Search clicks (28d)"
-          value={sc.ok ? sc.totals.clicks.toLocaleString("en-GB") : "—"}
-        />
-        <Stat
-          icon={<PoundSterling />}
-          label="Cost / lead"
-          value="—"
-          hint="Connect Google Ads"
-        />
-      </div>
-
-      {/* Landing-page conversion (CRO) */}
-      <section className="space-y-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-title font-semibold">Landing page conversion</h2>
-          {conv.ok ? (
-            <span className="text-label text-muted-foreground">
-              {conv.leads} leads / {conv.visitors.toLocaleString("en-GB")} visitors · last {conv.windowDays} days
-            </span>
-          ) : null}
-        </div>
-
-        {!conv.configured ? (
-          <ConnectCard
-            title="Connect PostHog"
-            body="Add a PostHog personal API key and project id so the dashboard can count unique visitors. Leads are already counted; this adds the denominator."
-            doc="POSTHOG_PERSONAL_API_KEY and POSTHOG_PROJECT_ID — see POSTHOG-DASHBOARDS.md."
-          />
-        ) : !conv.ok ? (
-          <Card>
-            <CardContent className="text-body-sm text-destructive">
-              Couldn&apos;t load visitor counts from PostHog{conv.error ? `: ${conv.error}` : ""}.
-            </CardContent>
-          </Card>
-        ) : (
-          <Card>
-            <CardHeader><CardTitle>Weekly visitor → lead rate</CardTitle></CardHeader>
-            <CardContent className="space-y-3">
-              {conv.weekly.some((w) => w.visitors > 0) ? <ConversionChart data={conv.weekly} /> : <EmptyState variant="inline" description="No visitors recorded yet." />}
-              <p className="text-label text-muted-foreground">
-                Leads come from the form submissions in Supabase (every one is counted). Visitors come from PostHog, which
-                only sees people who accepted analytics cookies, so the rate reads a little high. It is measured the same
-                way every week, which is what makes before/after comparisons fair. The last point is the current, partial week.
-              </p>
-            </CardContent>
-          </Card>
-        )}
-      </section>
+      <PageHeader
+        title="Search Console"
+        description="Organic Google search for installpros.co.uk. The landing pages are not indexed, so none of this traffic is theirs."
+      />
 
       {/* Search Console */}
       <section className="space-y-4">

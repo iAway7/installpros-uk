@@ -9,8 +9,6 @@ import { InfoTip } from "@/components/system/info-tip";
 export interface DistrictRow {
   name: string;
   leads: number;
-  quoted: number;
-  won: number;
 }
 
 export interface GapRow {
@@ -80,10 +78,6 @@ export function MapTables({
         <div className="space-y-2 border-t border-border px-4 py-4 text-label text-muted-foreground">
           {tab === "districts" ? (
             <>
-              <p>
-                <span className="font-semibold text-foreground">Gap</span> badge = 3+ leads, zero won. Investigate
-                pricing or follow-up in that area.
-              </p>
               {unmatchedNote && <p>{unmatchedNote}</p>}
             </>
           ) : (
@@ -117,33 +111,19 @@ function DistrictTable({ rows }: { rows: DistrictRow[] }) {
           <tr>
             <th className="px-4 py-2 font-medium">District</th>
             <th className={TH}>Leads</th>
-            <th className={TH}>Quoted+</th>
-            <th className={TH}>Won</th>
-            <th className={TH}>Win rate</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-border">
-          {rows.map((d) => {
-            const gap = d.leads >= 3 && d.won === 0;
-            return (
-              <tr key={d.name}>
-                <td className="px-4 py-2">
-                  {d.name}
-                  {gap && (
-                    <span className="ml-2 rounded-full bg-warning/10 px-2 py-0.5 text-micro font-semibold uppercase text-warning">
-                      gap
-                    </span>
-                  )}
-                </td>
-                <td className="px-3 py-2 text-right tabular-nums">{d.leads}</td>
-                <td className="px-3 py-2 text-right tabular-nums text-muted-foreground">{d.quoted}</td>
-                <td className="px-3 py-2 text-right tabular-nums text-muted-foreground">{d.won}</td>
-                <td className="px-3 py-2 text-right tabular-nums">
-                  {d.leads ? `${Math.round((d.won / d.leads) * 100)}%` : "—"}
-                </td>
-              </tr>
-            );
-          })}
+          {/* Quoted+, Won, Win rate and a "gap" badge for 3+ leads with none
+              won used to sit here. They read lead statuses, which nobody
+              updates, so every row said zero and every busy district was a
+              "gap". Removed on 18 November 2026. */}
+          {rows.map((d) => (
+            <tr key={d.name}>
+              <td className="px-4 py-2">{d.name}</td>
+              <td className="px-3 py-2 text-right tabular-nums">{d.leads}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>

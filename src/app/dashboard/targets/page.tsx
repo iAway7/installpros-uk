@@ -7,7 +7,7 @@ import { createClient } from "@/lib/supabase/server";
 import { fetchAll } from "@/lib/supabase/fetch-all";
 import { realLeads } from "@/lib/dashboard/leads";
 import { fetchSources, fetchTargetCounts, isOrganicSource, posthogConfigured, FUNNEL_PAGES, ORGANIC_SOURCE } from "@/lib/posthog/query";
-import { buildTargetsReport, pct, LAUNCH_DATE, COMMERCIAL_PAGE, SECURITY_PAGE, VEHICLES_PAGE, VEHICLES_VARIANT_PAGE, type TargetStatus, type TargetsReport } from "@/lib/dashboard/targets";
+import { buildTargetsReport, pct, LAUNCH_DATE, COMMERCIAL_PAGE, SECURITY_PAGE, HIKVISION_PAGE, VEHICLES_PAGE, VEHICLES_VARIANT_PAGE, type TargetStatus, type TargetsReport } from "@/lib/dashboard/targets";
 import { EmptyState } from "@/components/system/empty-state";
 import { PageHeader } from "@/components/system/page-header";
 import { Pill, type PillVariant } from "@/components/system/badge";
@@ -31,7 +31,11 @@ const BASELINE_NOTE: Record<string, string> = {
     "The vehicle landing against the WordPress vehicle form it replaces, 29 June to 7 October 2026. That baseline is 96 viewers and 6 leads of organic traffic, so a point either way is noise.",
   [VEHICLES_VARIANT_PAGE]:
     "The vehicle landing against the WordPress vehicle form it replaces, 29 June to 7 October 2026. That baseline is 96 viewers and 6 leads of organic traffic, so a point either way is noise.",
-  default: "The new landing against the June 2026 baseline and the targets set for it.",
+  [TARGETS_DEFAULT_PAGE]:
+    "The residential landing against the WordPress Paperform form it replaces, 17 July to 30 September 2026, and the targets set in June.",
+  [HIKVISION_PAGE]:
+    "The Hikvision CCTV landing has no baseline yet, so its rates are shown and not judged.",
+  default: "Measured against the residential Starlink baseline: the WordPress Paperform form, 17 July to 30 September 2026.",
 };
 const DEFAULT_SOURCE = "google";
 
@@ -278,6 +282,7 @@ const STATUS_TONE: Record<TargetStatus, [string, PillVariant]> = {
   beaten: ["Beaten", "success"],
   below: ["Below target", "warning"],
   insufficient: ["Not enough data", "muted"],
+  unjudged: ["No baseline", "muted"],
 };
 
 function StatusBadge({ status }: { status: TargetStatus }) {

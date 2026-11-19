@@ -125,7 +125,7 @@ const INSTALL_TYPE_LABEL: Record<string, string> = {
   commercial: "Commercial",
   mobile_rv: "Mobile / RV",
   marine: "Marine",
-  security: "Ajax Security",
+  security: "Security (Ajax, Hikvision)",
   business: "Business",
   rural: "Rural",
   events: "Events",

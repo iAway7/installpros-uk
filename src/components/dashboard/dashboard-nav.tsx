@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import {
-  BarChart3,
   Filter,
   LayoutDashboard,
   LayoutTemplate,
@@ -29,12 +28,15 @@ import { cn } from "@/lib/utils";
  * breadcrumb in the top bar and the "Go to" list in the search all read this.
  *
  * It was nine links in a flat column, with only the first two reachable on a
- * phone. The pages fall into what they answer: the leads themselves, how the
- * landings convert, and where the traffic comes from. The first group has no
- * label because Overview, Leads and Map need no introduction.
+ * phone. The pages fall into what they answer: the leads themselves, and how
+ * the landings convert. The first group has no label because Overview, Leads
+ * and Map need no introduction.
  *
- * Experiments is not listed: no test has ever been created. The page still
- * answers at /dashboard/experiments, so putting it back is one line here.
+ * Not listed, though both pages still answer at their address:
+ *   Experiments  no test has ever been created.
+ *   Marketing    now only Search Console, which covers installpros.co.uk;
+ *                the landings are noindex, so none of it is theirs.
+ * Putting either back is one line here.
  */
 export interface NavLink {
   href: string;
@@ -62,10 +64,6 @@ export const NAV_GROUPS: NavGroup[] = [
       { href: FUNNEL_PATH, label: "Funnel", icon: Filter },
       { href: LANDINGS_PATH, label: "Landing pages", icon: LayoutTemplate },
     ],
-  },
-  {
-    label: "Traffic",
-    items: [{ href: "/dashboard/marketing", label: "Marketing", icon: BarChart3 }],
   },
 ];
 
@@ -124,7 +122,7 @@ export function NavItem({ link, to, touch }: { link: NavLink; to?: string; touch
       href={to ?? link.href}
       aria-current={active ? "page" : undefined}
       className={cn(
-        "flex items-center gap-2.5 rounded-md px-3 text-body font-medium transition-colors duration-quick focus-ring",
+        "flex items-center gap-2.5 rounded-md px-3 text-body font-medium transition-colors duration-quick focus-ring-solid",
         touch ? "h-control" : "h-control-sm",
         active
           ? "bg-foreground/[0.07] text-foreground"
